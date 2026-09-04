@@ -602,15 +602,81 @@
     function openModal(id) { document.getElementById(id).classList.add('show'); }
     function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-    function postData(data, callback) {
+    // বাটন লক ও "অপেক্ষা করুন..." হ্যান্ডলার
+    function setBtnLoading(btn, text = "অপেক্ষা করুন...") {
+      if (!btn) return null;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = `⏳ ${text}`;
+      btn.disabled = true;
+      btn.style.cursor = "not-allowed";
+      btn.style.opacity = "0.6";
+
+      return () => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        btn.style.cursor = "pointer";
+        btn.style.opacity = "1";
+      };
+    }
+
+    function postData(data, callback, btn = null) {
+      const resetBtn = btn ? setBtnLoading(btn) : null;
+
       fetch(SCRIPT_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(data)
       })
       .then(r => r.json())
-      .then(res => { if (callback) callback(res); })
-      .catch(err => alert("সার্ভার সংযোগে ত্রুটি: " + err));
+      .then(res => { 
+        if (resetBtn) resetBtn();
+        if (callback) callback(res); 
+      })
+      .catch(err => {
+        if (resetBtn) resetBtn();
+        console.error("Server Error:", err);
+        alert("সার্ভার সংযোগে ত্রুটি বা সময় বেশি লাগছে: " + err);
+      });
+    }
+
+    function compressImage(file, maxWidth = 500, quality = 0.7) {
+      return new Promise((resolve, reject) => {
+        if (!file.type.match(/image.*/)) {
+          const reader = new FileReader();
+          reader.onload = e => resolve({ base64: e.target.result, mime: file.type });
+          reader.onerror = err => reject(err);
+          reader.readAsDataURL(file);
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (readerEvent) => {
+          const img = new Image();
+          img.onload = () => {
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxWidth) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+            resolve({ base64: compressedBase64, mime: 'image/jpeg' });
+          };
+          img.onerror = err => reject(err);
+          img.src = readerEvent.target.result;
+        };
+        reader.onerror = err => reject(err);
+        reader.readAsDataURL(file);
+      });
     }
 
     function openAdminGate() {
@@ -619,7 +685,10 @@
     }
 
     function verifyAdminAccess() {
+      const btn = event?.currentTarget || event?.target;
       const pin = document.getElementById('adminSecretPin').value;
+      if (!pin) return alert("পিন দিন!");
+
       postData({ action: "adminLogin", pin: pin }, res => {
         if (res && res.success) {
           closeModal('adminGateModal');
@@ -627,30 +696,29 @@
         } else {
           alert("ভুল এডমিন পিন!");
         }
-      });
+      }, btn);
     }
 
-    function switchAdminTab(tabId) {
+    function switchAdminTab(event, tabId) {
       document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
       document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(tabId).classList.remove('hidden');
-      event.target.classList.add('active');
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+      }
     }
 
-    /* নতুন ১০০% সমাধানকৃত ফ্লেক্সিবল টোকেন পার্সার */
     function autoParseMCQSmart() {
       const raw = document.getElementById('rawMcqPaste').value.trim();
       if (!raw) return alert("MCQ পেস্ট করুন!");
 
       smartParsedMcq = [];
-      // প্রতিটি প্রশ্নের ব্লক আলাদা করা (১., ২., ৩. ইত্যাদি)
       const blocks = raw.split(/(?=\n\s*[০-৯\d]+[\.\)])/g);
 
       blocks.forEach((block, index) => {
         let text = block.trim();
         if (!text) return;
 
-        // উত্তর ও ব্যাখ্যা আলাদা করে মূল টেক্সট থেকে ছেঁটে নেওয়া
         let ans = "";
         const ansMatch = text.match(/(?:ans|উত্তর|সঠিক উত্তর)\s*[:=]\s*([^\n|]+)/i);
         if (ansMatch) {
@@ -665,7 +733,6 @@
           text = text.replace(explMatch[0], "");
         }
 
-        // প্রশ্ন ও অপশন আলাদা করা
         const optMarkers = [
           text.search(/[কA][\)\.\-]/),
           text.search(/[খB][\)\.\-]/),
@@ -676,7 +743,6 @@
         let qText = "";
         let cleanOptions = [];
 
-        // যদি ক, খ, গ, ঘ মার্কার পাওয়া যায়
         if (optMarkers[0] !== -1 && optMarkers[1] !== -1) {
           qText = text.substring(0, optMarkers[0]).replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
 
@@ -690,7 +756,6 @@
           if (optMarkers[2] !== -1) cleanOptions.push(text.substring(m2, m3).trim());
           if (optMarkers[3] !== -1) cleanOptions.push(text.substring(m3).trim());
         } else {
-          // লাইন-বাই-লাইন ফলব্যাক
           const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
           qText = lines[0].replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
           for (let i = 1; i < lines.length && cleanOptions.length < 4; i++) {
@@ -698,12 +763,10 @@
           }
         }
 
-        // যদি ৪টি অপশন পূর্ণ না হয়
         while (cleanOptions.length < 4) {
           cleanOptions.push(`বিকল্প ${cleanOptions.length + 1}`);
         }
 
-        // সঠিক উত্তরের সাথে মিলিয়ে নেওয়া
         let finalAns = cleanOptions[0];
         if (ans) {
           const found = cleanOptions.find(o => o.includes(ans) || o.startsWith(ans));
@@ -719,10 +782,8 @@
         });
       });
 
-      // অটো সময় সেট (১ প্রশ্ন = ১ মিনিট)
       document.getElementById('admMcqDuration').value = smartParsedMcq.length;
 
-      // প্রিভিউ রেন্ডার
       const p = document.getElementById('mcqParsedPreview');
       p.classList.remove('hidden');
       p.innerHTML = `<h5 style="color:#15803d; margin-bottom:8px;">মোট প্রস্তুতকৃত প্রশ্ন: ${smartParsedMcq.length} টি (মোট মার্কস: ${smartParsedMcq.length})</h5>` +
@@ -736,6 +797,7 @@
     }
 
     function saveScheduledExam() {
+      const btn = event?.currentTarget || event?.target;
       if (!smartParsedMcq.length) return alert("MCQ অটো সেট করুন!");
       const cqFile = document.getElementById('admCqFile').files[0];
 
@@ -753,14 +815,14 @@
           cqMime: mime,
           mcqList: smartParsedMcq
         };
-        if (!payload.subject || !payload.publishDate) return alert("বিষয় ও প্রকাশের তারিখ দিন!");
+        if (!payload.subject || !payload.publishDate) return alert("বিষয় ও প্রকাশের তারিখ দিন!");
 
         postData(payload, res => {
           if (res && res.success) {
-            alert("পরীক্ষা সফলভাবে শিডিউল ও প্রকাশ করা হয়েছে!");
+            alert("পরীক্ষা সফলভাবে শিডিউল ও প্রকাশ করা হয়েছে!");
             closeModal('adminPanelModal');
           }
-        });
+        }, btn);
       };
 
       if (cqFile) {
@@ -770,15 +832,15 @@
       } else send();
     }
 
-    /* ক্লাসরুম নোটস পাবলিশ ও লোড */
     function publishClassroomNote() {
+      const btn = event?.currentTarget || event?.target;
       const classVal = document.getElementById('admNoteClass').value;
       const subject = document.getElementById('admNoteSubject').value;
       const title = document.getElementById('admNoteTitle').value;
       const textContent = document.getElementById('admNoteText').value;
       const noteFile = document.getElementById('admNoteFile').files[0];
 
-      if (!subject || !title) return alert("বিষয় ও শিরোনাম দিন!");
+      if (!subject || !title) return alert("বিষয় ও শিরোনাম দিন!");
 
       const send = (b64 = "", mime = "", fname = "") => {
         postData({
@@ -787,10 +849,11 @@
           textContent: textContent, fileBase64: b64, mimeType: mime, fileName: fname
         }, res => {
           if (res && res.success) {
-            alert("ক্লাসরুম নোট সফলভাবে পাবলিশ করা হয়েছে!");
+            alert("ক্লাসরুম নোট সফলভাবে পাবলিশ করা হয়েছে!");
+            localStorage.removeItem("gyan_notes_" + classVal);
             closeModal('adminPanelModal');
           }
-        });
+        }, btn);
       };
 
       if (noteFile) {
@@ -804,25 +867,40 @@
       const classVal = document.getElementById('crFilterClass').value;
       if (!classVal) return;
       const container = document.getElementById('notesContainer');
-      container.innerHTML = "<p style='text-align:center;'>নোটস লোড হচ্ছে...</p>";
+
+      const cached = localStorage.getItem("gyan_notes_" + classVal);
+      if (cached) {
+        renderNotes(JSON.parse(cached));
+      } else {
+        container.innerHTML = "<p style='text-align:center;'>নোটস লোড হচ্ছে...</p>";
+      }
 
       postData({ action: "getClassroomNotes", classVal: classVal }, res => {
-        if (res && res.success && res.notes.length) {
-          container.innerHTML = res.notes.map(n => `
-            <div class="note-item">
-              <h4>${n[3]} (${n[2]})</h4>
-              <p style="font-size:0.9rem; color:#334155; white-space:pre-wrap;">${n[4]}</p>
-              ${n[5] ? `<a href="${n[5]}" target="_blank">📥 সংযুক্ত ফাইলটি দেখুন/ডাউনলোড করুন</a>` : ''}
-              <div style="font-size:0.75rem; color:#94a3b8; margin-top:6px;">তারিখ: ${n[6]}</div>
-            </div>
-          `).join('');
-        } else {
-          container.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:20px;'>এই শ্রেণির জন্য এখনো কোনো নোট পাবলিশ করা হয়নি।</p>";
+        if (res && res.success) {
+          localStorage.setItem("gyan_notes_" + classVal, JSON.stringify(res.notes));
+          renderNotes(res.notes);
         }
       });
     }
 
+    function renderNotes(notes) {
+      const container = document.getElementById('notesContainer');
+      if (notes && notes.length) {
+        container.innerHTML = notes.map(n => `
+          <div class="note-item">
+            <h4>${n[3]} (${n[2]})</h4>
+            <p style="font-size:0.9rem; color:#334155; white-space:pre-wrap;">${n[4]}</p>
+            ${n[5] ? `<a href="${n[5]}" target="_blank">📥 সংযুক্ত ফাইলটি দেখুন/ডাউনলোড করুন</a>` : ''}
+            <div style="font-size:0.75rem; color:#94a3b8; margin-top:6px;">তারিখ: ${n[6]}</div>
+          </div>
+        `).join('');
+      } else {
+        container.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:20px;'>এই শ্রেণির জন্য এখনো কোনো নোট পাবলিশ করা হয়নি।</p>";
+      }
+    }
+
     function loadAndStartExam() {
+      const btn = event?.currentTarget || event?.target;
       const reg = document.getElementById('stExReg').value;
       const classVal = document.getElementById('stExClass').value;
       const subject = document.getElementById('stExSubject').value;
@@ -840,20 +918,20 @@
               closeModal('examInitModal');
               startLiveExamSession();
             } else {
-              alert(exRes.message || "পরীক্ষা পাওয়া যায়নি!");
+              alert(exRes.message || "পরীক্ষা পাওয়া যায়নি!");
             }
-          });
+          }, btn);
         } else {
           alert("শিক্ষার্থীর তথ্য মেলেনি!");
         }
-      });
+      }, btn);
     }
 
     function startLiveExamSession() {
       document.getElementById('liveSubjectTitle').innerText = activeExamData.subject + " (" + activeExamData.classVal + " শ্রেণি)";
       document.getElementById('liveStudentName').innerText = activeExamData.studentName;
       document.getElementById('liveTotalMarks').innerText = activeExamData.totalMarks;
-      document.getElementById('cqDescPrompt').innerText = activeExamData.cqDescription || "লিখিত উত্তরপত্র খাতায় লিখে ফাইল আপলোড করুন।";
+      document.getElementById('cqDescPrompt').innerText = activeExamData.cqDescription || "লিখিত উত্তরপত্র খাতায় লিখে ফাইল আপলোড করুন।";
       
       if (activeExamData.cqQuestionFileUrl) {
         document.getElementById('cqQuestionFileLink').innerHTML = `<a href="${activeExamData.cqQuestionFileUrl}" target="_blank" style="color:#2563eb; font-weight:700;">📄 CQ প্রশ্ন ফাইলটি ডাউনলোড/দেখুন</a>`;
@@ -861,7 +939,6 @@
         document.getElementById('cqQuestionFileLink').innerHTML = "";
       }
 
-      // সম্পূর্ণ অক্ষত লেখা সহ অপশন রেন্ডার
       const container = document.getElementById('questionsRenderContainer');
       container.innerHTML = activeExamData.mcq.map((q, idx) => `
         <div class="question-box">
@@ -888,13 +965,14 @@
         display.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
         if (--timeLeft < 0) {
           clearInterval(examTimerInterval);
-          alert("সময় শেষ! খাতা স্বয়ংক্রিয়ভাবে জমা দেওয়া হচ্ছে...");
+          alert("সময় শেষ! খাতা স্বয়ংক্রিয়ভাবে জমা দেওয়া হচ্ছে...");
           submitLiveExam();
         }
       }, 1000);
     }
 
     function submitLiveExam() {
+      const btn = event?.currentTarget || event?.target;
       clearInterval(examTimerInterval);
       const userAnswers = {};
       activeExamData.mcq.forEach(q => {
@@ -920,7 +998,7 @@
             closeModal('liveExamModal');
             showExamReview(res);
           }
-        });
+        }, btn);
       };
 
       if (cqFile) {
@@ -939,7 +1017,7 @@
       container.innerHTML = res.reviewDetails.map((item, idx) => `
         <div class="question-box ${item.isCorrect ? 'review-correct' : 'review-wrong'}">
           <p><b>${idx + 1}. ${item.question}</b></p>
-          <p style="font-size:0.85rem;">আপনার দেওয়া উত্তর: <b>${item.userAnswer}</b> ${item.isCorrect ? '✅ (সঠিক)' : '❌ (ভুল)'}</p>
+          <p style="font-size:0.85rem;">আপনার দেওয়া উত্তর: <b>${item.userAnswer}</b> ${item.isCorrect ? '✅ (সঠিক)' : '❌ (ভুল)'}</p>
           ${!item.isCorrect ? `<p style="font-size:0.85rem; color:#15803d;">সঠিক উত্তর: <b>${item.correctAnswer}</b></p>` : ''}
           <div class="expl-box"><b>সংক্ষিপ্ত ব্যাখ্যা:</b> ${item.explanation}</div>
         </div>
@@ -949,6 +1027,7 @@
     }
 
     function loadFullProfile() {
+      const btn = event?.currentTarget || event?.target;
       const reg = document.getElementById('pReg').value;
       const classVal = document.getElementById('pClass').value;
       if (!reg || !classVal) return alert("রেজিস্ট্রেশন ও শ্রেণি দিন!");
@@ -957,7 +1036,7 @@
         if (res && res.success) {
           currentStudentProfile = res;
           document.getElementById('profileDisplay').classList.remove('hidden');
-          document.getElementById('photoContainer').innerHTML = res.student[7] ? `<img src="${res.student[7]}" class="profile-photo">` : '';
+          document.getElementById('profileAvatar').src = res.student[7] || "https://via.placeholder.com/100?text=Student";
           document.getElementById('studentDetails').innerHTML = `
             <p><b>নাম:</b> ${res.student[1]}</p>
             <p><b>পিতা:</b> ${res.student[2]}</p>
@@ -965,11 +1044,41 @@
           `;
           document.getElementById('examHistoryList').innerHTML = res.results.length ? 
             res.results.map((r, i) => `<li><b>${i+1}. ${r[3]}</b>: MCQ- ${r[4]} | Total: ${r[6]} (${r[7]}) - <i>${r[0]}</i></li>`).join('') :
-            '<li>কোনো ফলাফল পাওয়া যায়নি।</li>';
+            '<li>কোনো ফলাফল পাওয়া যায়নি।</li>';
         } else {
           alert("শিক্ষার্থীর তথ্য মেলেনি!");
         }
-      });
+      }, btn);
+    }
+
+    async function uploadNewProfilePhoto() {
+      const file = document.getElementById('changePhotoInput').files[0];
+      if (!file || !currentStudentProfile) return;
+
+      const avatar = document.getElementById('profileAvatar');
+      avatar.style.opacity = "0.3";
+
+      try {
+        const compressed = await compressImage(file, 500, 0.7);
+        postData({
+          action: "updateStudentPhoto",
+          reg: currentStudentProfile.student[0],
+          photoBase64: compressed.base64,
+          photoMime: compressed.mime
+        }, res => {
+          avatar.style.opacity = "1";
+          if (res && res.success) {
+            alert("প্রোফাইল ছবি সফলভাবে আপডেট হয়েছে!");
+            avatar.src = res.photoUrl;
+            currentStudentProfile.student[7] = res.photoUrl;
+          } else {
+            alert(res.message || "ছবি আপলোডে ব্যর্থ!");
+          }
+        });
+      } catch (err) {
+        avatar.style.opacity = "1";
+        alert("ছবি প্রসেসিং করতে সমস্যা হয়েছে: " + err);
+      }
     }
 
     function generateSscMarksheet() {
@@ -995,137 +1104,57 @@
       openModal('marksheetModal');
     }
 
-  // ১. স্বয়ংক্রিয় ইমেজ কম্প্রেস ও রিসাইজ ফাংশন (Canvas Helper)
-function compressImage(file, maxWidth = 500, quality = 0.7) {
-  return new Promise((resolve, reject) => {
-    // ফাইলটি ইমেজ না হলে সরাসরি রিড করবে
-    if (!file.type.match(/image.*/)) {
-      const reader = new FileReader();
-      reader.onload = e => resolve({ base64: e.target.result, mime: file.type });
-      reader.onerror = err => reject(err);
-      reader.readAsDataURL(file);
-      return;
-    }
+    async function submitRegistration() {
+      const btn = event?.currentTarget || event?.target;
+      const photoFile = document.getElementById('regPhoto').files[0];
+      const reg = document.getElementById('regNo').value;
+      if (!reg) return alert("রেজিস্ট্রেশন নম্বর দিন!");
 
-    const reader = new FileReader();
-    reader.onload = (readerEvent) => {
-      const img = new Image();
-      img.onload = () => {
-        let width = img.width;
-        let height = img.height;
+      // ছবি কম্প্রেস চলাকালীনই বাটন লক
+      const releaseBtn = setBtnLoading(btn, "ছবি প্রসেস হচ্ছে...");
 
-        // অনুপাত ঠিক রেখে সর্বোচ্চ ৫০০ পিক্সেল সাইজে নামানো
-        if (width > maxWidth) {
-          height = Math.round((height * maxWidth) / width);
-          width = maxWidth;
+      let photoBase64 = "";
+      let photoMime = "";
+
+      if (photoFile) {
+        try {
+          const comp = await compressImage(photoFile, 500, 0.7);
+          photoBase64 = comp.base64;
+          photoMime = comp.mime;
+        } catch (e) {
+          console.error(e);
         }
-
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-
-        // JPEG ফরম্যাটে ৭০% কোয়ালিটিতে কম্প্রেস (সাইজ ৫০-৮০ KB এর নিচে নেমে আসবে)
-        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-        resolve({ base64: compressedBase64, mime: 'image/jpeg' });
-      };
-      img.onerror = err => reject(err);
-      img.src = readerEvent.target.result;
-    };
-    reader.onerror = err => reject(err);
-    reader.readAsDataURL(file);
-  });
-}
-
-// ২. দ্রুততর শিক্ষার্থী রেজিস্ট্রেশন ফাংশন (কম্প্রেশন যুক্ত)
-async function submitRegistration() {
-  const photoFile = document.getElementById('regPhoto').files[0];
-  const reg = document.getElementById('regNo').value;
-  if (!reg) return alert("রেজিস্ট্রেশন নম্বর দিন!");
-
-  // লোডিং মেসেজ প্রদর্শন
-  const submitBtn = event.target;
-  const originalText = submitBtn.innerText;
-  submitBtn.innerText = "সংরক্ষণ হচ্ছে...";
-  submitBtn.disabled = true;
-
-  let photoBase64 = "";
-  let photoMime = "";
-
-  // ছবি থাকলে ইনস্ট্যান্ট কম্প্রেস করা
-  if (photoFile) {
-    try {
-      const compressed = await compressImage(photoFile, 500, 0.7);
-      photoBase64 = compressed.base64;
-      photoMime = compressed.mime;
-    } catch (e) {
-      console.error("Image compression error:", e);
-    }
-  }
-
-  postData({
-    action: "registerStudent",
-    name: document.getElementById('regName').value,
-    father: document.getElementById('regFather').value,
-    mother: document.getElementById('regMother').value,
-    classVal: document.getElementById('regClass').value,
-    reg: reg,
-    mobile: document.getElementById('regMobile').value,
-    pin: document.getElementById('regPin').value,
-    photoBase64: photoBase64,
-    photoMime: photoMime
-  }, res => {
-    submitBtn.innerText = originalText;
-    submitBtn.disabled = false;
-    
-    if (res && res.success) {
-      alert("রেজিস্ট্রেশন সম্পূর্ণ হয়েছে!");
-      closeModal('regModal');
-    } else {
-      alert(res.message || "রেজিস্ট্রেশন ব্যর্থ হয়েছে!");
-    }
-  });
-}
-
-// ৩. দ্রুততর প্রোফাইল ছবি আপডেট ফাংশন (কম্প্রেশন যুক্ত)
-async function uploadNewProfilePhoto() {
-  const file = document.getElementById('changePhotoInput').files[0];
-  if (!file || !currentStudentProfile) return;
-
-  const avatar = document.getElementById('profileAvatar');
-  const originalOpacity = avatar.style.opacity;
-  avatar.style.opacity = "0.4"; // প্রসেসিং বোঝানোর জন্য হালকা ফেড করা
-
-  try {
-    // আপলোডের পূর্বে ছবি কম্প্রেস
-    const compressed = await compressImage(file, 500, 0.7);
-
-    postData({
-      action: "updateStudentPhoto",
-      reg: currentStudentProfile.student[0],
-      photoBase64: compressed.base64,
-      photoMime: compressed.mime
-    }, res => {
-      avatar.style.opacity = originalOpacity;
-      if (res && res.success) {
-        alert("প্রোফাইল ছবি সফলভাবে আপডেট হয়েছে!");
-        avatar.src = res.photoUrl;
-        currentStudentProfile.student[7] = res.photoUrl;
-      } else {
-        alert(res.message || "ছবি আপলোডে ব্যর্থ!");
       }
-    });
-  } catch (err) {
-    avatar.style.opacity = originalOpacity;
-    alert("ছবি প্রসেসিং করতে সমস্যা হয়েছে: " + err);
-  }
-}
+
+      if (releaseBtn) releaseBtn();
+
+      postData({
+        action: "registerStudent",
+        name: document.getElementById('regName').value,
+        father: document.getElementById('regFather').value,
+        mother: document.getElementById('regMother').value,
+        classVal: document.getElementById('regClass').value,
+        reg: reg,
+        mobile: document.getElementById('regMobile').value,
+        pin: document.getElementById('regPin').value,
+        photoBase64: photoBase64,
+        photoMime: photoMime
+      }, res => { 
+        if (res && res.success) {
+          alert("রেজিস্ট্রেশন সম্পূর্ণ হয়েছে!"); 
+          closeModal('regModal'); 
+        } else {
+          alert(res.message || "রেজিস্ট্রেশন ব্যর্থ হয়েছে!");
+        }
+      }, btn);
+    }
 
     function studentLogin() {
+      const btn = event?.currentTarget || event?.target;
       const reg = document.getElementById('logReg').value;
       const pin = document.getElementById('logPin').value;
+      if (!reg || !pin) return alert("সকল তথ্য দিন!");
+
       postData({ action: "studentLogin", reg: reg, pin: pin }, res => {
         if (res && res.success) {
           alert("স্বাগতম, " + res.student[1] + "!");
@@ -1135,26 +1164,65 @@ async function uploadNewProfilePhoto() {
           loadFullProfile();
           openModal('profileModal');
         } else alert("ভুল তথ্য!");
-      });
+      }, btn);
+    }
+
+    function openForgotPinModal() {
+      closeModal('loginModal');
+      openModal('forgotPinModal');
+    }
+
+    function submitForgotPin() {
+      const btn = event?.currentTarget || event?.target;
+      const reg = document.getElementById('fpReg').value;
+      const mobile = document.getElementById('fpMobile').value;
+      const newPin = document.getElementById('fpNewPin').value;
+
+      if (!reg || !mobile || !newPin) return alert("সকল তথ্য দিন!");
+
+      postData({
+        action: "resetStudentPin",
+        reg: reg,
+        mobile: mobile,
+        newPin: newPin
+      }, res => {
+        if (res && res.success) {
+          alert("পিন সফলভাবে পরিবর্তন হয়েছে! নতুন পিন দিয়ে লগইন করুন।");
+          closeModal('forgotPinModal');
+          openModal('loginModal');
+        } else {
+          alert(res.message || "তথ্য মেলেনি!");
+        }
+      }, btn);
     }
 
     function changeAdminPin() {
+      const btn = event?.currentTarget || event?.target;
       const oldPin = document.getElementById('oldPinInput').value;
       const newPin = document.getElementById('newPinInput').value;
+      if (!oldPin || !newPin) return alert("পিন দিন!");
+
       postData({ action: "changeAdminPin", oldPin: oldPin, newPin: newPin }, res => {
         if (res && res.success) {
-          alert("পিন পরিবর্তন হয়েছে!");
+          alert("পিন পরিবর্তন হয়েছে!");
           closeModal('adminPanelModal');
-        } else alert("বর্তমান পিন সঠিক নয়!");
-      });
+        } else alert("বর্তমান পিন সঠিক নয়!");
+      }, btn);
     }
 
     function loadNotices() {
+      const cachedNotice = localStorage.getItem("gyan_notice");
+      if (cachedNotice) {
+        const marqueeElem = document.getElementById('marqueeText');
+        if (marqueeElem) marqueeElem.innerText = cachedNotice;
+      }
+
       postData({ action: "getNotices" }, res => {
         if (res && res.success) {
           const marqueeElem = document.getElementById('marqueeText');
           if (marqueeElem) {
             marqueeElem.innerText = res.current || "জ্ঞান.কম এ স্বাগতম!";
+            localStorage.setItem("gyan_notice", res.current || "জ্ঞান.কম এ স্বাগতম!");
             const duration = Math.max(15, (res.current || "").length * 0.25);
             marqueeElem.style.animationDuration = duration + "s";
           }
@@ -1163,19 +1231,35 @@ async function uploadNewProfilePhoto() {
     }
 
     function postNoticeFromAdmin() {
+      const btn = event?.currentTarget || event?.target;
       const text = document.getElementById('admNoticeText').value;
+      if (!text) return alert("নোটিশ লিখুন!");
+
       postData({ action: "addNotice", text: text }, () => {
-        alert("নোটিশ লাইভ হয়েছে!");
+        alert("নোটিশ লাইভ হয়েছে!");
+        localStorage.setItem("gyan_notice", text);
         loadNotices();
-      });
+      }, btn);
     }
 
     function submitFeedback() {
+      const btn = event?.currentTarget || event?.target;
       const name = document.getElementById('fbName').value;
       const msg = document.getElementById('fbMsg').value;
+      if (!name || !msg) return alert("নাম ও বার্তা দিন!");
+
       postData({ action: "saveFeedback", name: name, message: msg }, () => {
-        alert("মতামত জমা হয়েছে!");
+        alert("মতামত জমা হয়েছে!");
         closeModal('feedbackModal');
+      }, btn);
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('data:application/javascript;charset=utf-8,' + encodeURIComponent(`
+          self.addEventListener('install', e => self.skipWaiting());
+          self.addEventListener('activate', e => clients.claim());
+        `)).catch(() => {});
       });
     }
   </script>
