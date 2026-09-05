@@ -26,13 +26,13 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Serif Bengali', 'Kalpurush', serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #f8fafc; color: #0f172a; min-height: 100vh; overflow-x: hidden; user-select: none; transition: background 0.3s, color 0.3s; }
 
-    /* ডার্ক মোড স্টাইল */
+    /* ডার্ক মোড */
     body.dark-mode { background-color: #0b0f19; color: #f1f5f9; }
     body.dark-mode .card, body.dark-mode .modal-box, body.dark-mode .sidebar, body.dark-mode .top-news-card { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
     body.dark-mode .menu-item { background: #1e293b; color: #f1f5f9; border-color: #334155; }
     body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: #0f172a; color: #f8fafc; border-color: #475569; }
     body.dark-mode .question-box, body.dark-mode .opt-label { background: #0f172a; color: #f8fafc; border-color: #334155; }
-    body.dark-mode .top-news-item, body.dark-mode .note-item { background: #0f172a; color: #f8fafc; }
+    body.dark-mode .top-news-item, body.dark-mode .note-item, body.dark-mode .gk-box { background: #0f172a; color: #f8fafc; }
 
     .page { display: none; min-height: 100vh; width: 100%; }
     .page.active { display: flex; }
@@ -126,7 +126,7 @@
     }
 
     .sidebar {
-      position: fixed; top: 0; right: -340px; width: min(88vw, 320px); height: 100%;
+      position: fixed; top: 0; right: -350px; width: min(88vw, 325px); height: 100%;
       background: white; box-shadow: -5px 0 25px rgba(0,0,0,0.15); z-index: 50;
       transition: right 0.3s ease; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;
       overflow-y: auto;
@@ -188,12 +188,21 @@
     .dict-result-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; margin-top: 10px; display: none; }
     .dict-word-title { font-size: 1.25rem; font-weight: 800; color: #1e1b4b; display: flex; justify-content: space-between; align-items: center; }
 
-    /* ক্যালকুলেটর গ্রিড */
-    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
-    .calc-btn { padding: 12px; font-size: 1.1rem; font-weight: 700; border-radius: 6px; border: 1px solid #cbd5e1; background: #f1f5f9; cursor: pointer; }
-    .calc-btn.op { background: #fde68a; color: #b45309; }
-    .calc-btn.eq { background: #10b981; color: white; grid-column: span 2; }
-    .calc-btn.clear { background: #fca5a5; color: #991b1b; }
+    /* সায়েন্টিফিক ক্যালকুলেটর গ্রিড */
+    .sci-calc-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: 8px; }
+    .sci-btn { padding: 11px 4px; font-size: 0.88rem; font-weight: 700; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; }
+    .sci-btn.sci-fn { background: #e0e7ff; color: #3730a3; font-size: 0.82rem; }
+    .sci-btn.op { background: #fef08a; color: #854d0e; }
+    .sci-btn.eq { background: #059669; color: white; grid-column: span 2; }
+    .sci-btn.clear { background: #fecaca; color: #991b1b; }
+
+    /* সাধারণ জ্ঞান ট্যাব স্টাইল */
+    .gk-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+    .gk-tab-btn { flex: 1; padding: 8px; border: 1px solid #cbd5e1; background: #f1f5f9; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.85rem; }
+    .gk-tab-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+    .gk-item { border-bottom: 1px solid #e2e8f0; padding: 8px 0; }
+    .gk-q { font-weight: 700; color: #1e293b; font-size: 0.9rem; }
+    .gk-a { color: #059669; font-weight: 600; font-size: 0.85rem; margin-top: 2px; }
 
     @media print {
       body * { visibility: hidden; }
@@ -208,6 +217,8 @@
       .big-exam-card button { width: 100% !important; }
       .admin-tabs { flex-direction: column; }
       .admin-tab-btn { width: 100%; text-align: center; }
+      .sci-calc-grid { gap: 4px; }
+      .sci-btn { padding: 9px 2px; font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -276,18 +287,18 @@
     </div>
   </div>
 
-  <!-- সম্পূর্ণ সমৃদ্ধশালী মেনু বার -->
+  <!-- মেনু বার -->
   <aside id="sidebar" class="sidebar">
     <div>
       <div class="sidebar-header">
         <h3 data-i18n="menuBar">মেনু বার</h3>
         <button onclick="toggleSidebar()" class="close-icon-btn">×</button>
       </div>
-      <div style="margin-top: 10px;">
+      <div style="margin-top: 8px;">
         <button id="pwaInstallMenuBtn" class="menu-item highlight" style="display:none;" onclick="triggerPwaInstall()" data-i18n="installAppMenu">📲 সরাসরি অ্যাপ ইনস্টল করুন</button>
         
-        <!-- ভাষা পরিবর্তন ও নাইট মোড দ্রুত টগল -->
-        <div style="display: flex; gap: 6px; margin: 8px 0;">
+        <!-- ভাষা ও ডার্ক মোড -->
+        <div style="display: flex; gap: 6px; margin: 6px 0;">
           <button class="menu-item" style="flex:1; justify-content:center; background:#e0e7ff; color:#3730a3; font-weight:700;" onclick="toggleLanguage()">🌐 <span id="langBtnText">English</span></button>
           <button class="menu-item" style="flex:1; justify-content:center; background:#f1f5f9; font-weight:700;" onclick="toggleDarkMode()">🌙 নাইট মোড</button>
         </div>
@@ -297,14 +308,16 @@
         
         <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
         
-        <!-- শিক্ষণীয় টুলস -->
+        <!-- শিক্ষণীয় টুলস (নতুন ফিচারসহ) -->
+        <button class="menu-item tool-btn" onclick="toggleSidebar(); openModal('textbooksModal');">📚 ১ম - ১০ম শ্রেণির বোর্ড বই ডাউনলোড</button>
+        <button class="menu-item tool-btn" style="background:#eff6ff; border-color:#93c5fd; color:#1e40af;" onclick="toggleSidebar(); openModal('gkModal');">🧠 সাধারণ জ্ঞান (বাংলাদেশ ও বিশ্ব)</button>
+        <button class="menu-item tool-btn" style="background:#fefce8; border-color:#fef08a; color:#854d0e;" onclick="toggleSidebar(); openModal('sciCalculatorModal');">🔬 সায়েন্টিফিক ক্যালকুলেটর (Advanced)</button>
+        <button class="menu-item tool-btn" style="background:#f5f3ff; border-color:#ddd6fe; color:#5b21b6;" onclick="toggleSidebar(); openModal('formulaModal');">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার (সকল সূত্র)</button>
+        <button class="menu-item tool-btn" style="background:#fdf2f8; border-color:#fbcfe8; color:#9d174d;" onclick="toggleSidebar(); openDuolingoDirect();">🦉 ডুওলিঙ্গো (ইংরেজি ও ভাষা শেখা)</button>
         <button class="menu-item tool-btn" onclick="toggleSidebar(); openModal('dictionaryModal');">📖 বাংলা ⇄ ইংলিশ ডিকশনারি</button>
-        <button class="menu-item tool-btn" style="background:#eff6ff; border-color:#93c5fd; color:#1e40af;" onclick="toggleSidebar(); openDuolingoInApp();">🦉 ডুওলিঙ্গো (ভাষা শেখা)</button>
-        <button class="menu-item tool-btn" style="background:#fefce8; border-color:#fef08a; color:#854d0e;" onclick="toggleSidebar(); openModal('calculatorModal');">🧮 স্টাডি ক্যালকুলেটর</button>
         <button class="menu-item tool-btn" style="background:#fef2f2; border-color:#fecaca; color:#991b1b;" onclick="toggleSidebar(); openModal('pomodoroModal');">⏱️ পমোডোরো ফোকাস টাইমার</button>
-        <button class="menu-item tool-btn" style="background:#fdf2f8; border-color:#fbcfe8; color:#9d174d;" onclick="toggleSidebar(); openModal('scratchpadModal');">📝 কুইক স্টাডি নোটপ্যাড</button>
         <button class="menu-item tool-btn" style="background:#f0fdfa; border-color:#99f6e4; color:#115e59;" onclick="toggleSidebar(); openModal('gpaCalcModal');">🎯 GPA / গ্রেড ক্যালকুলেটর</button>
-        <button class="menu-item tool-btn" style="background:#f5f3ff; border-color:#ddd6fe; color:#5b21b6;" onclick="toggleSidebar(); openModal('formulaModal');">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার</button>
+        <button class="menu-item tool-btn" style="background:#f8fafc; border-color:#cbd5e1; color:#334155;" onclick="toggleSidebar(); openModal('scratchpadModal');">📝 কুইক স্টাডি নোটপ্যাড</button>
         
         <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
         <button class="menu-item" onclick="toggleSidebar(); openModal('profileModal');" data-i18n="profileHistory">👤 স্টুডেন্ট প্রোফাইল ও হিস্ট্রি</button>
@@ -314,120 +327,156 @@
     <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; margin-top:10px;">জ্ঞান.com © 2026</div>
   </aside>
 
-  <!-- নতুন ফিচার ১: ক্যালকুলেটর মডাল -->
-  <div id="calculatorModal" class="modal">
-    <div class="modal-box" style="max-width: 360px;">
-      <div class="modal-header">
-        <h3 style="color: #854d0e;">🧮 স্টাডি ক্যালকুলেটর</h3>
-        <button class="close-icon-btn" onclick="closeModal('calculatorModal')">×</button>
-      </div>
-      <input type="text" id="calcDisplay" readonly style="text-align: right; font-size: 1.4rem; font-weight: 700; height: 50px; background: #f8fafc;">
-      <div class="calc-grid">
-        <button class="calc-btn clear" onclick="clearCalc()">C</button>
-        <button class="calc-btn op" onclick="calcInput('(')">(</button>
-        <button class="calc-btn op" onclick="calcInput(')')">)</button>
-        <button class="calc-btn op" onclick="calcInput('/')">÷</button>
-        
-        <button class="calc-btn" onclick="calcInput('7')">7</button>
-        <button class="calc-btn" onclick="calcInput('8')">8</button>
-        <button class="calc-btn" onclick="calcInput('9')">9</button>
-        <button class="calc-btn op" onclick="calcInput('*')">×</button>
-        
-        <button class="calc-btn" onclick="calcInput('4')">4</button>
-        <button class="calc-btn" onclick="calcInput('5')">5</button>
-        <button class="calc-btn" onclick="calcInput('6')">6</button>
-        <button class="calc-btn op" onclick="calcInput('-')">-</button>
-        
-        <button class="calc-btn" onclick="calcInput('1')">1</button>
-        <button class="calc-btn" onclick="calcInput('2')">2</button>
-        <button class="calc-btn" onclick="calcInput('3')">3</button>
-        <button class="calc-btn op" onclick="calcInput('+')">+</button>
-        
-        <button class="calc-btn" onclick="calcInput('0')">0</button>
-        <button class="calc-btn" onclick="calcInput('.')">.</button>
-        <button class="calc-btn eq" onclick="calcResult()">=</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- নতুন ফিচার ২: পমোডোরো টাইমার মডাল -->
-  <div id="pomodoroModal" class="modal">
-    <div class="modal-box" style="max-width: 380px; text-align:center;">
-      <div class="modal-header">
-        <h3 style="color: #991b1b;">⏱️ পমোডোরো ফোকাস টাইমার</h3>
-        <button class="close-icon-btn" onclick="closeModal('pomodoroModal')">×</button>
-      </div>
-      <div style="margin: 15px 0;">
-        <span id="pomoStatus" style="font-size: 1rem; font-weight: 700; color: #dc2626;">📚 পড়াশোনার সময় (Study Time)</span>
-        <h1 id="pomoTimeDisplay" style="font-size: 3.5rem; color: #1e1b4b; margin: 10px 0; font-family: monospace;">25:00</h1>
-      </div>
-      <div style="display: flex; gap: 8px; justify-content: center;">
-        <button class="btn btn-green" style="width: auto; padding: 10px 24px;" onclick="startPomodoro()">শুরু করুন</button>
-        <button class="btn btn-amber" style="width: auto; padding: 10px 20px;" onclick="pausePomodoro()">পজ</button>
-        <button class="btn btn-cancel" onclick="resetPomodoro()">রিসেট</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- নতুন ফিচার ৩: কুইক নোটপ্যাড মডাল -->
-  <div id="scratchpadModal" class="modal">
-    <div class="modal-box" style="max-width: 480px;">
-      <div class="modal-header">
-        <h3 style="color: #9d174d;">📝 ব্যক্তিগত স্টাডি নোটপ্যাড</h3>
-        <button class="close-icon-btn" onclick="closeModal('scratchpadModal')">×</button>
-      </div>
-      <textarea id="scratchpadArea" rows="10" placeholder="ক্লাসের পড়া বা গুরুত্বপূর্ণ তথ্য এখানে লিখে রাখুন... এটি আপনার ফোনে স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকবে।" oninput="saveScratchpad()"></textarea>
-      <div style="font-size: 0.75rem; color: #15803d; font-weight: 700;" id="scratchSaveMsg">✅ ফোনে সেভ হয়েছে</div>
-    </div>
-  </div>
-
-  <!-- নতুন ফিচার ৪: GPA ক্যালকুলেটর মডাল -->
-  <div id="gpaCalcModal" class="modal">
+  <!-- ১. সায়েন্টিফিক ক্যালকুলেটর মডাল (High-Quality Advanced Scientific) -->
+  <div id="sciCalculatorModal" class="modal">
     <div class="modal-box" style="max-width: 440px;">
       <div class="modal-header">
-        <h3 style="color: #115e59;">🎯 GPA ও গ্রেড ক্যালকুলেটর</h3>
-        <button class="close-icon-btn" onclick="closeModal('gpaCalcModal')">×</button>
+        <h3 style="color: #4338ca;">🔬 সায়েন্টিফিক ক্যালকুলেটর</h3>
+        <button class="close-icon-btn" onclick="closeModal('sciCalculatorModal')">×</button>
       </div>
-      <p style="font-size:0.85rem; color:#64748b;">নম্বর বসালে স্বয়ংক্রিয়ভাবে গ্রেড ও পয়েন্ট হিসাব হবে:</p>
-      <div id="gpaSubjectInputs" style="display:flex; flex-direction:column; gap:6px; margin: 8px 0;">
-        <input type="number" placeholder="বাংলা নম্বর (যেমন: 75)" class="gpa-score-input" oninput="calculateGpa()">
-        <input type="number" placeholder="ইংরেজি নম্বর (যেমন: 68)" class="gpa-score-input" oninput="calculateGpa()">
-        <input type="number" placeholder="গণিত নম্বর (যেমন: 85)" class="gpa-score-input" oninput="calculateGpa()">
-        <input type="number" placeholder="বিজ্ঞান নম্বর (যেমন: 80)" class="gpa-score-input" oninput="calculateGpa()">
+      <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:8px;">
+        <div id="sciHistoryDisplay" style="text-align:right; font-size:0.85rem; color:#64748b; height:20px; overflow:hidden;"></div>
+        <input type="text" id="sciCalcDisplay" readonly style="text-align: right; font-size: 1.5rem; font-weight: 800; border: none; background: transparent; width:100%; color:#1e1b4b;" value="0">
       </div>
-      <div style="background:#f0fdfa; border:1px solid #99f6e4; padding:12px; border-radius:8px; text-align:center;">
-        <h4>সম্ভাব্য ফলাফল:</h4>
-        <h2 id="gpaResultDisplay" style="color:#0f766e; margin-top:4px;">GPA: 0.00 (F)</h2>
+      <div class="sci-calc-grid">
+        <button class="sci-btn sci-fn" onclick="sciFn('sin')">sin</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('cos')">cos</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('tan')">tan</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('log')">log</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('ln')">ln</button>
+
+        <button class="sci-btn sci-fn" onclick="sciFn('sqrt')">√x</button>
+        <button class="sci-btn sci-fn" onclick="sciInput('**')">xʸ</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('fact')">n!</button>
+        <button class="sci-btn sci-fn" onclick="sciInput('(')">(</button>
+        <button class="sci-btn sci-fn" onclick="sciInput(')')">)</button>
+
+        <button class="sci-btn sci-fn" onclick="sciInput('Math.PI')">π</button>
+        <button class="sci-btn sci-fn" onclick="sciInput('Math.E')">e</button>
+        <button class="sci-btn clear" onclick="clearSciCalc()">AC</button>
+        <button class="sci-btn clear" onclick="delSciCalc()">DEL</button>
+        <button class="sci-btn op" onclick="sciInput('/')">÷</button>
+
+        <button class="sci-btn" onclick="sciInput('7')">7</button>
+        <button class="sci-btn" onclick="sciInput('8')">8</button>
+        <button class="sci-btn" onclick="sciInput('9')">9</button>
+        <button class="sci-btn op" onclick="sciInput('*')">×</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('square')">x²</button>
+
+        <button class="sci-btn" onclick="sciInput('4')">4</button>
+        <button class="sci-btn" onclick="sciInput('5')">5</button>
+        <button class="sci-btn" onclick="sciInput('6')">6</button>
+        <button class="sci-btn op" onclick="sciInput('-')">-</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('cube')">x³</button>
+
+        <button class="sci-btn" onclick="sciInput('1')">1</button>
+        <button class="sci-btn" onclick="sciInput('2')">2</button>
+        <button class="sci-btn" onclick="sciInput('3')">3</button>
+        <button class="sci-btn op" onclick="sciInput('+')">+</button>
+        <button class="sci-btn sci-fn" onclick="sciInput('%')">%</button>
+
+        <button class="sci-btn" onclick="sciInput('0')">0</button>
+        <button class="sci-btn" onclick="sciInput('.')">.</button>
+        <button class="sci-btn sci-fn" onclick="sciInput('00')">00</button>
+        <button class="sci-btn eq" onclick="calcSciResult()">=</button>
       </div>
     </div>
   </div>
 
-  <!-- নতুন ফিচার ৫: গণিত ও বিজ্ঞান সূত্র ভান্ডার -->
-  <div id="formulaModal" class="modal">
-    <div class="modal-box" style="max-width: 540px;">
+  <!-- ২. ১ম - ১০ম শ্রেণির বোর্ড বই ডাউনলোড কর্নার (NCTB Official Links) -->
+  <div id="textbooksModal" class="modal">
+    <div class="modal-box" style="max-width: 600px;">
       <div class="modal-header">
-        <h3 style="color: #5b21b6;">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার</h3>
+        <h3 style="color: #0f766e;">📚 ১ম - ১০ম শ্রেণির সরকারি পাঠ্যবই ডাউনলোড</h3>
+        <button class="close-icon-btn" onclick="closeModal('textbooksModal')">×</button>
+      </div>
+      <p style="font-size:0.85rem; color:#64748b;">জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) অনুমোদিত সকল বিষয়ের মূল বই সরাসরি ডাউনলোড করুন:</p>
+      
+      <div style="margin: 8px 0;">
+        <select id="bookClassSelect" onchange="renderClassBooks()">
+          <option value="">শ্রেণি নির্বাচন করুন</option>
+          <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+          <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+          <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
+          <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
+          <option value="9">৯ম-১০ম শ্রেণি (SSC)</option>
+        </select>
+      </div>
+
+      <div id="booksListContainer" style="max-height:360px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+        <p style="text-align:center; color:#94a3b8; padding:20px;">শ্রেণি নির্বাচন করলে পাঠ্যবইয়ের তালিকা ও ডাউনলোড লিংক দেখা যাবে।</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ৩. সাধারণ জ্ঞান (বাংলাদেশ ও বিশ্ব বিষয়াবলি) -->
+  <div id="gkModal" class="modal">
+    <div class="modal-box" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3 style="color: #2563eb;">🧠 সাধারণ জ্ঞান ভান্ডার (GK Hub)</h3>
+        <button class="close-icon-btn" onclick="closeModal('gkModal')">×</button>
+      </div>
+      
+      <div class="gk-tabs">
+        <button id="gkTabBd" class="gk-tab-btn active" onclick="switchGkTab('bd')">🇧🇩 বাংলাদেশ বিষয়াবলি</button>
+        <button id="gkTabWorld" class="gk-tab-btn" onclick="switchGkTab('world')">🌍 আন্তর্জাতিক ও বিশ্ব বিষয়াবলি</button>
+      </div>
+
+      <div id="gkContentContainer" style="max-height:380px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
+  </div>
+
+  <!-- ৪. গণিত ও বিজ্ঞান সূত্র ভান্ডার (সকল সূত্র) -->
+  <div id="formulaModal" class="modal">
+    <div class="modal-box" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3 style="color: #5b21b6;">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার (Formula Hub)</h3>
         <button class="close-icon-btn" onclick="closeModal('formulaModal')">×</button>
       </div>
-      <div style="max-height:360px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
+      <div style="max-height:400px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
+        <!-- বীজগণিত -->
         <div style="background:#f5f3ff; border-left:4px solid #7c3aed; padding:10px; border-radius:4px;">
           <h4 style="color:#5b21b6;">বীজগণিত (Algebra)</h4>
-          <p style="font-size:0.88rem; margin-top:4px; font-family: monospace;">• (a + b)² = a² + 2ab + b²</p>
-          <p style="font-size:0.88rem; font-family: monospace;">• (a - b)² = a² - 2ab + b²</p>
-          <p style="font-size:0.88rem; font-family: monospace;">• a² - b² = (a + b)(a - b)</p>
-          <p style="font-size:0.88rem; font-family: monospace;">• (a + b)³ = a³ + 3a²b + 3ab² + b³</p>
+          <p style="font-size:0.88rem; font-family:monospace; margin-top:4px;">• (a + b)² = a² + 2ab + b²</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• (a - b)² = a² - 2ab + b²</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• a² - b² = (a + b)(a - b)</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• (a + b + c)² = a² + b² + c² + 2(ab + bc + ca)</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• a³ + b³ = (a + b)(a² - ab + b²)</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• a³ - b³ = (a - b)(a² + ab + b²)</p>
         </div>
+        <!-- ত্রিকোণমিতি -->
+        <div style="background:#fffbeb; border-left:4px solid #d97706; padding:10px; border-radius:4px;">
+          <h4 style="color:#b45309;">ত্রিকোণমিতি (Trigonometry)</h4>
+          <p style="font-size:0.88rem; margin-top:4px;">• sin²θ + cos²θ = 1</p>
+          <p style="font-size:0.88rem;">• sec²θ - tan²θ = 1 &nbsp;|&nbsp; cosec²θ - cot²θ = 1</p>
+          <p style="font-size:0.88rem;">• tanθ = sinθ / cosθ &nbsp;|&nbsp; cotθ = cosθ / sinθ</p>
+          <p style="font-size:0.88rem;">• sin(90° - θ) = cosθ &nbsp;|&nbsp; cos(90° - θ) = sinθ</p>
+        </div>
+        <!-- জ্যামিতি ও পরিমিতি -->
         <div style="background:#eff6ff; border-left:4px solid #2563eb; padding:10px; border-radius:4px;">
-          <h4 style="color:#1e40af;">জ্যামিতি ও পরিমিতি</h4>
+          <h4 style="color:#1e40af;">জ্যামিতি ও পরিমিতি (Mensuration)</h4>
           <p style="font-size:0.88rem; margin-top:4px;">• ত্রিভুজের ক্ষেত্রফল = ½ × ভূমি × উচ্চতা</p>
-          <p style="font-size:0.88rem;">• বৃত্তের ক্ষেত্রফল = πr² (π ≈ 3.1416)</p>
-          <p style="font-size:0.88rem;">• বৃত্তের পরিধি = 2πr</p>
+          <p style="font-size:0.88rem;">• বিষমবাহু ত্রিভুজ = √[s(s-a)(s-b)(s-c)], যেখানে s = (a+b+c)/2</p>
+          <p style="font-size:0.88rem;">• সমবাহু ত্রিভুজের ক্ষেত্রফল = (√3 / 4) × a²</p>
+          <p style="font-size:0.88rem;">• বৃত্তের ক্ষেত্রফল = πr² &nbsp;|&nbsp; পরিধি = 2πr (π ≈ 3.1416)</p>
+          <p style="font-size:0.88rem;">• সিলিন্ডারের আয়তন = πr²h &nbsp;|&nbsp; বক্রতলের ক্ষেত্রফল = 2πrh</p>
         </div>
+        <!-- পদার্থবিজ্ঞান -->
         <div style="background:#f0fdf4; border-left:4px solid #16a34a; padding:10px; border-radius:4px;">
           <h4 style="color:#15803d;">পদার্থবিজ্ঞান (Physics)</h4>
-          <p style="font-size:0.88rem; margin-top:4px; font-family: monospace;">• বল (F) = m × a</p>
-          <p style="font-size:0.88rem; font-family: monospace;">• গতিবেগ (v) = u + at</p>
-          <p style="font-size:0.88rem; font-family: monospace;">• কাজ (W) = F × s</p>
+          <p style="font-size:0.88rem; margin-top:4px; font-family:monospace;">• গতি: v = u + at &nbsp;|&nbsp; s = ut + ½at² &nbsp;|&nbsp; v² = u² + 2as</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• নিউটনের গতিসূত্র: F = ma &nbsp;|&nbsp; ওজন: W = mg (g = 9.8 m/s²)</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• গতিশক্তি: Ek = ½mv² &nbsp;|&nbsp; বিভব শক্তি: Ep = mgh</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• কাজ: W = Fs &nbsp;|&nbsp; ক্ষমতা: P = W / t</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• ওহমের সূত্র: V = IR &nbsp;|&nbsp; রোধের ক্ষমতা: P = VI = I²R</p>
+        </div>
+        <!-- রসায়ন -->
+        <div style="background:#fdf2f8; border-left:4px solid #db2777; padding:10px; border-radius:4px;">
+          <h4 style="color:#9d174d;">রসায়ন (Chemistry)</h4>
+          <p style="font-size:0.88rem; margin-top:4px; font-family:monospace;">• মোল সংখ্যা: n = w / M = V / 22.4L = N / NA (NA = 6.023 × 10²³)</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• মোলারিটি: S = (1000 × w) / (M × V(mL))</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• বয়েলের সূত্র: P₁V₁ = P₂V₂ &nbsp;|&nbsp; চার্লসের সূত্র: V₁/T₁ = V₂/T₂</p>
+          <p style="font-size:0.88rem; font-family:monospace;">• আদর্শ গ্যাস সমীকরণ: PV = nRT (R = 0.0821 L·atm/mol·K)</p>
         </div>
       </div>
     </div>
@@ -468,18 +517,54 @@
     </div>
   </div>
 
-  <!-- ডুওলিঙ্গো ইন-অ্যাপ মডাল -->
-  <div id="duolingoModal" class="modal">
-    <div class="modal-box" style="max-width: 900px; width:95%; height:90vh; padding:10px; display:flex; flex-direction:column;">
-      <div class="modal-header" style="padding-bottom:6px;">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span style="font-size:1.4rem;">🦉</span>
-          <h3 style="color:#58cc02;">Duolingo Language Learning</h3>
-        </div>
-        <button class="close-icon-btn" onclick="closeModal('duolingoModal')">×</button>
+  <!-- পমোডোরো টাইমার মডাল -->
+  <div id="pomodoroModal" class="modal">
+    <div class="modal-box" style="max-width: 380px; text-align:center;">
+      <div class="modal-header">
+        <h3 style="color: #991b1b;">⏱️ পমোডোরো ফোকাস টাইমার</h3>
+        <button class="close-icon-btn" onclick="closeModal('pomodoroModal')">×</button>
       </div>
-      <div style="flex-grow:1; width:100%; border-radius:8px; overflow:hidden; border:1px solid #cbd5e1; margin-top:6px; position:relative;">
-        <iframe id="duolingoFrame" src="" style="width:100%; height:100%; border:none;" allow="autoplay; microphone; camera"></iframe>
+      <div style="margin: 15px 0;">
+        <span id="pomoStatus" style="font-size: 1rem; font-weight: 700; color: #dc2626;">📚 পড়াশোনার সময় (Study Time)</span>
+        <h1 id="pomoTimeDisplay" style="font-size: 3.5rem; color: #1e1b4b; margin: 10px 0; font-family: monospace;">25:00</h1>
+      </div>
+      <div style="display: flex; gap: 8px; justify-content: center;">
+        <button class="btn btn-green" style="width: auto; padding: 10px 24px;" onclick="startPomodoro()">শুরু করুন</button>
+        <button class="btn btn-amber" style="width: auto; padding: 10px 20px;" onclick="pausePomodoro()">পজ</button>
+        <button class="btn btn-cancel" onclick="resetPomodoro()">রিসেট</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- কুইক নোটপ্যাড মডাল -->
+  <div id="scratchpadModal" class="modal">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 style="color: #9d174d;">📝 ব্যক্তিগত স্টাডি নোটপ্যাড</h3>
+        <button class="close-icon-btn" onclick="closeModal('scratchpadModal')">×</button>
+      </div>
+      <textarea id="scratchpadArea" rows="10" placeholder="ক্লাসের পড়া বা গুরুত্বপূর্ণ তথ্য এখানে লিখে রাখুন... এটি আপনার ফোনে স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকবে।" oninput="saveScratchpad()"></textarea>
+      <div style="font-size: 0.75rem; color: #15803d; font-weight: 700;" id="scratchSaveMsg">✅ ফোনে সেভ হয়েছে</div>
+    </div>
+  </div>
+
+  <!-- GPA ক্যালকুলেটর মডাল -->
+  <div id="gpaCalcModal" class="modal">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 style="color: #115e59;">🎯 GPA ও গ্রেড ক্যালকুলেটর</h3>
+        <button class="close-icon-btn" onclick="closeModal('gpaCalcModal')">×</button>
+      </div>
+      <p style="font-size:0.85rem; color:#64748b;">নম্বর বসালে স্বয়ংক্রিয়ভাবে গ্রেড ও পয়েন্ট হিসাব হবে:</p>
+      <div id="gpaSubjectInputs" style="display:flex; flex-direction:column; gap:6px; margin: 8px 0;">
+        <input type="number" placeholder="বাংলা নম্বর (যেমন: 75)" class="gpa-score-input" oninput="calculateGpa()">
+        <input type="number" placeholder="ইংরেজি নম্বর (যেমন: 68)" class="gpa-score-input" oninput="calculateGpa()">
+        <input type="number" placeholder="গণিত নম্বর (যেমন: 85)" class="gpa-score-input" oninput="calculateGpa()">
+        <input type="number" placeholder="বিজ্ঞান নম্বর (যেমন: 80)" class="gpa-score-input" oninput="calculateGpa()">
+      </div>
+      <div style="background:#f0fdfa; border:1px solid #99f6e4; padding:12px; border-radius:8px; text-align:center;">
+        <h4>সম্ভাব্য ফলাফল:</h4>
+        <h2 id="gpaResultDisplay" style="color:#0f766e; margin-top:4px;">GPA: 0.00 (F)</h2>
       </div>
     </div>
   </div>
@@ -899,6 +984,188 @@
     let deferredPrompt = null;
     let currentDictMode = 'en-bn';
     let currentLang = 'bn';
+    let sciCalcVal = "";
+
+    // ১ম - ১০ম শ্রেণির সরকারি পাঠ্যবইয়ের তালিকা ও অফিসিয়াল NCTB লিংক
+    const nctbBooks = {
+      "1": [
+        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "2": [
+        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "3": [
+        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "ইসলাম ও নৈতিক শিক্ষা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "4": [
+        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "5": [
+        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "6": [
+        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বিজ্ঞান (অনুসন্ধানী ও অনুশীলন)", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "ইতিহাস ও সামাজিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "ডিজিটাল প্রযুক্তি", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "7": [
+        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "ডিজিটাল প্রযুক্তি", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "8": [
+        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "ইতিহাস ও সামাজিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "9": [
+        { name: "বাংলা সাহিত্য ও সহপাঠ", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "English For Today & Grammar", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "সাধারণ গণিত (General Math)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "উচ্চতর গণিত (Higher Math)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "পদার্থবিজ্ঞান (Physics)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "রসায়ন (Chemistry)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "জীববিজ্ঞান (Biology)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" }
+      ]
+    };
+
+    function renderClassBooks() {
+      const cls = document.getElementById('bookClassSelect').value;
+      const container = document.getElementById('booksListContainer');
+      if (!cls || !nctbBooks[cls]) {
+        container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:20px;">শ্রেণি নির্বাচন করুন।</p>`;
+        return;
+      }
+
+      container.innerHTML = nctbBooks[cls].map(b => `
+        <div class="note-item" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h4 style="color:#0f766e;">📖 ${b.name}</h4>
+            <span style="font-size:0.75rem; color:#64748b;">জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB)</span>
+          </div>
+          <a href="${b.url}" target="_blank" class="btn btn-teal" style="width:auto; padding:6px 14px; font-size:0.8rem; text-decoration:none;">📥 ডাউনলোড</a>
+        </div>
+      `).join('');
+    }
+
+    // সাধারণ জ্ঞান ডাটাবেজ (বাংলাদেশ ও বিশ্ব)
+    const gkDatabase = {
+      bd: [
+        { q: "বাংলাদেশের সাংবিধানিক নাম কী?", a: "গণপ্রজাতন্ত্রী বাংলাদেশ (People's Republic of Bangladesh)" },
+        { q: "বাংলাদেশের স্বাধীনতা দিবস ও জাতীয় দিবস কবে?", a: "২৬শে মার্চ" },
+        { q: "ঐতিহাসিক ৭ই মার্চের ভাষণকে ইউনেস্কো কী হিসেবে স্বীকৃতি দিয়েছে?", a: "বিশ্ব প্রামাণ্য ঐতিহ্য (Memory of the World International Register)" },
+        { q: "বাংলাদেশের জাতীয় পতাকার অনুপাত কত?", a: "১০ : ৬ বা ৫ : ৩ (মাঝের লাল বৃত্তের ব্যাসার্ধ দৈর্ঘ্যের ৫ ভাগের ১ অংশ)" },
+        { q: "বঙ্গবন্ধু স্যাটেলাইট-১ কত তারিখে মহাকাশে উৎক্ষেপণ করা হয়?", a: "১১ মে, ২০১৮ (বাংলাদেশ ৫৭তম স্যাটেলাইট দেশ)" },
+        { q: "বাংলাদেশের একমাত্র প্রবাল দ্বীপ কোনটি?", a: "সেন্ট মার্টিন দ্বীপ (স্থানীয় নাম নারিকেল জিঞ্জিরা)" },
+        { q: "মুক্তিযুদ্ধে সর্বোচ্চ বীরত্বসূচক রাষ্ট্রীয় খেতাব কোনটি?", a: "বীরশ্রেষ্ঠ (মোট ৭ জন)" },
+        { q: "বাংলাদেশের সর্বোচ্চ পর্বতশৃঙ্গ কোনটি?", a: "তাজিংডং বা বিজয় (বান্দরবান)" },
+        { q: "পদ্মা সেতুর মূল দৈর্ঘ্য কত?", a: "৬.১৫ কিলোমিটার (মোট স্প্যান ৪১টি, পিলার ৪২টি)" }
+      ],
+      world: [
+        { q: "বিশ্বের বৃহত্তম এবং গভীরতম মহাসাগর কোনটি?", a: "প্রশান্ত মহাসাগর (Pacific Ocean)" },
+        { q: "জাতিসংঘ (UN) কত সালে প্রতিষ্ঠিত হয়?", a: "২৪ অক্টোবর, ১৯৪৫ সালে (সদর দপ্তর: নিউইয়র্ক, যুক্তরাষ্ট্র)" },
+        { q: "পৃথিবীর দীর্ঘতম নদী কোনটি?", a: "নীলনদ (আফ্রিকা মহাদেশ - দৈর্ঘ্য প্রায় ৬,৬৫০ কিমি)" },
+        { q: "বিশ্বের সবচেয়ে বড় মরুভূমি কোনটি?", a: "অ্যান্টার্কটিকা (শীতল) এবং সাহারা মরুভূমি (উষ্ণ)" },
+        { q: "নোবেল পুরস্কার কোন দেশ থেকে প্রদান করা হয়?", a: "সুইডেন (শান্তি পুরস্কার নরওয়ের অসলো থেকে দেওয়া হয়)" },
+        { q: "পৃথিবীর সবচেয়ে ক্ষুদ্রতম দেশ কোনটি?", a: "ভ্যাটিকান সিটি (আয়তন ০.৪৯ বর্গ কিমি)" },
+        { q: "কম্পিউটারের জনক ও আধুনিক কম্পিউটারের জনক কে?", a: "চার্লস ব্যাবেজ (জনক) ও অ্যালান টুরিং (আধুনিক জনক)" },
+        { q: "সূর্য থেকে পৃথিবীতে আলো পৌঁছাতে কত সময় লাগে?", a: "প্রায় ৮ মিনিট ২০ সেকেন্ড" }
+      ]
+    };
+
+    function switchGkTab(tab) {
+      document.getElementById('gkTabBd').classList.toggle('active', tab === 'bd');
+      document.getElementById('gkTabWorld').classList.toggle('active', tab === 'world');
+      renderGk(tab);
+    }
+
+    function renderGk(type) {
+      const container = document.getElementById('gkContentContainer');
+      const list = gkDatabase[type] || [];
+      container.innerHTML = list.map((item, idx) => `
+        <div class="gk-item">
+          <div class="gk-q">${idx + 1}. ${item.q}</div>
+          <div class="gk-a">উত্তর: ${item.a}</div>
+        </div>
+      `).join('');
+    }
+
+    // সায়েন্টিফিক ক্যালকুলেটর ইঞ্জিন
+    function sciInput(val) {
+      const d = document.getElementById('sciCalcDisplay');
+      if (d.value === "0" || d.value === "Error") d.value = "";
+      d.value += val;
+    }
+    function clearSciCalc() {
+      document.getElementById('sciCalcDisplay').value = "0";
+      document.getElementById('sciHistoryDisplay').innerText = "";
+    }
+    function delSciCalc() {
+      const d = document.getElementById('sciCalcDisplay');
+      d.value = d.value.slice(0, -1);
+      if (!d.value) d.value = "0";
+    }
+    function sciFn(fn) {
+      const d = document.getElementById('sciCalcDisplay');
+      let val = parseFloat(d.value);
+      if (isNaN(val)) return;
+
+      document.getElementById('sciHistoryDisplay').innerText = `${fn}(${val})`;
+      if (fn === 'sin') d.value = Math.sin(val * Math.PI / 180).toFixed(6);
+      else if (fn === 'cos') d.value = Math.cos(val * Math.PI / 180).toFixed(6);
+      else if (fn === 'tan') d.value = Math.tan(val * Math.PI / 180).toFixed(6);
+      else if (fn === 'log') d.value = Math.log10(val).toFixed(6);
+      else if (fn === 'ln') d.value = Math.log(val).toFixed(6);
+      else if (fn === 'sqrt') d.value = Math.sqrt(val).toFixed(6);
+      else if (fn === 'square') d.value = Math.pow(val, 2);
+      else if (fn === 'cube') d.value = Math.pow(val, 3);
+      else if (fn === 'fact') {
+        let f = 1;
+        for (let i = 2; i <= val; i++) f *= i;
+        d.value = f;
+      }
+    }
+    function calcSciResult() {
+      const d = document.getElementById('sciCalcDisplay');
+      try {
+        document.getElementById('sciHistoryDisplay').innerText = d.value + " =";
+        let expr = d.value.replace(/Math\.PI/g, Math.PI).replace(/Math\.E/g, Math.E);
+        let res = eval(expr);
+        d.value = res !== undefined ? res : "0";
+      } catch (e) {
+        d.value = "Error";
+      }
+    }
+
+    // ডুওলিঙ্গো ওয়ান-ক্লিক ক্লিন লঞ্চ (ইন-অ্যাপ ব্লকিং বাইপাস)
+    function openDuolingoDirect() {
+      window.open("https://www.duolingo.com/learn", "_blank");
+    }
 
     // ভাষা পরিবর্তন ডিকশনারি
     const i18nData = {
@@ -979,22 +1246,6 @@
       document.body.classList.add('dark-mode');
     }
 
-    // ক্যালকুলেটর লজিক
-    function calcInput(val) {
-      document.getElementById('calcDisplay').value += val;
-    }
-    function clearCalc() {
-      document.getElementById('calcDisplay').value = '';
-    }
-    function calcResult() {
-      try {
-        const res = eval(document.getElementById('calcDisplay').value);
-        document.getElementById('calcDisplay').value = res !== undefined ? res : '';
-      } catch(e) {
-        document.getElementById('calcDisplay').value = 'Error';
-      }
-    }
-
     // পমোডোরো টাইমার লজিক
     let pomoInterval = null;
     let pomoTime = 25 * 60;
@@ -1057,6 +1308,7 @@
       if (savedNote && document.getElementById('scratchpadArea')) {
         document.getElementById('scratchpadArea').value = savedNote;
       }
+      renderGk('bd');
     });
 
     // GPA ক্যালকুলেটর লজিক
@@ -1188,12 +1440,6 @@
       window.speechSynthesis.speak(utterance);
     }
 
-    function openDuolingoInApp() {
-      const frame = document.getElementById('duolingoFrame');
-      frame.src = "https://www.duolingo.com/learn";
-      openModal('duolingoModal');
-    }
-
     function goToPage(n) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page' + n).classList.add('active');
@@ -1202,12 +1448,7 @@
 
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
     function openModal(id) { document.getElementById(id).classList.add('show'); }
-    function closeModal(id) { 
-      document.getElementById(id).classList.remove('show'); 
-      if (id === 'duolingoModal') {
-        document.getElementById('duolingoFrame').src = '';
-      }
-    }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
     function setBtnLoading(btn, text = "অপেক্ষা করুন...") {
       if (!btn) return null;
