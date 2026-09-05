@@ -196,13 +196,21 @@
     .sci-btn.eq { background: #059669; color: white; grid-column: span 2; }
     .sci-btn.clear { background: #fecaca; color: #991b1b; }
 
-    /* সাধারণ জ্ঞান ট্যাব স্টাইল */
-    .gk-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
-    .gk-tab-btn { flex: 1; padding: 8px; border: 1px solid #cbd5e1; background: #f1f5f9; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.85rem; }
+    /* সাধারণ জ্ঞান স্টাইল */
+    .gk-tabs { display: flex; gap: 6px; margin-bottom: 8px; }
+    .gk-tab-btn { flex: 1; padding: 8px; border: 1px solid #cbd5e1; background: #f1f5f9; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.85rem; text-align: center; }
     .gk-tab-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
-    .gk-item { border-bottom: 1px solid #e2e8f0; padding: 8px 0; }
-    .gk-q { font-weight: 700; color: #1e293b; font-size: 0.9rem; }
-    .gk-a { color: #059669; font-weight: 600; font-size: 0.85rem; margin-top: 2px; }
+    .gk-cat-section { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; margin-bottom: 12px; }
+    .gk-cat-title { font-size: 0.95rem; font-weight: 800; color: #1e3a8a; border-bottom: 2px solid #bfdbfe; padding-bottom: 4px; margin-bottom: 8px; }
+    .gk-item { border-bottom: 1px dashed #e2e8f0; padding: 6px 0; }
+    .gk-item:last-child { border-bottom: none; }
+    .gk-q { font-weight: 700; color: #1e293b; font-size: 0.88rem; }
+    .gk-a { color: #059669; font-weight: 600; font-size: 0.84rem; margin-top: 2px; }
+
+    /* এক্সাম ট্যাব সিলেক্টর স্টাইল */
+    .exam-mode-nav { display: flex; gap: 6px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px; }
+    .exam-nav-btn { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; font-weight: 700; font-size: 0.88rem; text-align: center; }
+    .exam-nav-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
 
     @media print {
       body * { visibility: hidden; }
@@ -279,7 +287,7 @@
         <div class="big-exam-card">
           <div>
             <h2 style="color: #1e1b4b; font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 800;" data-i18n="examPortalTitle">✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)</h2>
-            <p style="color: #475569; margin-top: 4px; font-size: 0.85rem;" data-i18n="examPortalDesc">এডমিন নির্ধারিত শিডিউল অনুযায়ী পরীক্ষা, অটো-টাইমার ও CQ ফাইল আপলোড।</p>
+            <p style="color: #475569; margin-top: 4px; font-size: 0.85rem;" data-i18n="examPortalDesc">এডমিন নির্ধারিত শিডিউল অনুযায়ী MCQ বা CQ পরীক্ষা দিন (যেকোনো একটি দিয়েও জমা দেওয়া যাবে)।</p>
           </div>
           <button class="btn btn-blue" style="width: auto; padding: 10px 20px;" onclick="openModal('examInitModal')" data-i18n="startExamBtn">পরীক্ষা শুরু করুন</button>
         </div>
@@ -308,9 +316,9 @@
         
         <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
         
-        <!-- শিক্ষণীয় টুলস (নতুন ফিচারসহ) -->
+        <!-- শিক্ষণীয় টুলস -->
+        <button class="menu-item tool-btn" style="background:#eff6ff; border-color:#93c5fd; color:#1e40af;" onclick="toggleSidebar(); openModal('gkModal');">🧠 সাধারণ জ্ঞান (BCS ও ভর্তি প্রস্তুতি)</button>
         <button class="menu-item tool-btn" onclick="toggleSidebar(); openModal('textbooksModal');">📚 ১ম - ১০ম শ্রেণির বোর্ড বই ডাউনলোড</button>
-        <button class="menu-item tool-btn" style="background:#eff6ff; border-color:#93c5fd; color:#1e40af;" onclick="toggleSidebar(); openModal('gkModal');">🧠 সাধারণ জ্ঞান (বাংলাদেশ ও বিশ্ব)</button>
         <button class="menu-item tool-btn" style="background:#fefce8; border-color:#fef08a; color:#854d0e;" onclick="toggleSidebar(); openModal('sciCalculatorModal');">🔬 সায়েন্টিফিক ক্যালকুলেটর (Advanced)</button>
         <button class="menu-item tool-btn" style="background:#f5f3ff; border-color:#ddd6fe; color:#5b21b6;" onclick="toggleSidebar(); openModal('formulaModal');">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার (সকল সূত্র)</button>
         <button class="menu-item tool-btn" style="background:#fdf2f8; border-color:#fbcfe8; color:#9d174d;" onclick="toggleSidebar(); openDuolingoDirect();">🦉 ডুওলিঙ্গো (ইংরেজি ও ভাষা শেখা)</button>
@@ -327,7 +335,93 @@
     <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; margin-top:10px;">জ্ঞান.com © 2026</div>
   </aside>
 
-  <!-- ১. সায়েন্টিফিক ক্যালকুলেটর মডাল (High-Quality Advanced Scientific) -->
+  <!-- লাইভ পরীক্ষা মডাল (MCQ বা CQ যেকোনো একটি সাবমিটের সুবিধাসহ) -->
+  <div id="liveExamModal" class="modal">
+    <div class="modal-box" style="max-width: 720px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="liveSubjectTitle">পরীক্ষা</h3>
+          <span style="font-size:0.8rem; color:#64748b;">শিক্ষার্থী: <b id="liveStudentName"></b> | মোট MCQ মার্কস: <b id="liveTotalMarks"></b></span>
+        </div>
+        <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1rem;">MCQ সময়: <span id="timerDisplay">00:00</span></span>
+      </div>
+
+      <!-- পরীক্ষা নেভিগেশন ট্যাব (MCQ or CQ or Both) -->
+      <div class="exam-mode-nav">
+        <button id="examTabAll" class="exam-nav-btn active" onclick="switchExamSection('all')">উভয় পরীক্ষা (MCQ + CQ)</button>
+        <button id="examTabMcq" class="exam-nav-btn" onclick="switchExamSection('mcq')">শুধুমাত্র MCQ পরীক্ষা</button>
+        <button id="examTabCq" class="exam-nav-btn" onclick="switchExamSection('cq')">শুধুমাত্র CQ (লিখিত)</button>
+      </div>
+
+      <!-- MCQ অংশ -->
+      <div id="mcqExamSection">
+        <h4 style="font-size:0.95rem; color:#1e3a8a; margin-bottom:8px;">🔘 MCQ বহুনির্বাচনী প্রশ্নমালা:</h4>
+        <div id="questionsRenderContainer" style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div>
+      </div>
+
+      <!-- CQ লিখিত অংশ -->
+      <div id="cqExamSection" style="border:1.5px dashed #6366f1; padding:12px; border-radius:8px; background:#f5f3ff; margin-bottom:10px;">
+        <h4 style="font-size:0.95rem; color:#4338ca;">📝 CQ সৃজনশীল / লিখিত অংশ:</h4>
+        <p id="cqDescPrompt" style="font-size:0.85rem; color:#334155; margin:6px 0;"></p>
+        <div id="cqQuestionFileLink" style="margin:6px 0;"></div>
+        <hr style="margin:8px 0; border:0; border-top:1px dashed #cbd5e1;">
+        <label style="font-size:0.82rem; font-weight:700; color:#312e81;">উত্তরপত্র আপলোড করুন (PDF / Image):</label>
+        <input type="file" id="cqUploadFile" style="margin-top:4px; border:none; padding:4px;">
+        <small style="color:#64748b; font-size:0.75rem; display:block; margin-top:2px;">* শুধু CQ জমা দিতে চাইলে ফাইল সিলেক্ট করে নিচের বাটনে ক্লিক করুন।</small>
+      </div>
+
+      <div class="modal-btns">
+        <button class="btn btn-green" id="examSubmitBtn" onclick="submitLiveExam()">উত্তরপত্র জমা দিন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- পরীক্ষা যাচাইকরণ মডাল -->
+  <div id="examInitModal" class="modal">
+    <div class="modal-box" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 data-i18n="examVerifyTitle">পরীক্ষা যাচাইকরণ</h3>
+        <button class="close-icon-btn" onclick="closeModal('examInitModal')">×</button>
+      </div>
+      <input type="number" id="stExReg" placeholder="রেজিস্ট্রেশন নম্বর">
+      <select id="stExClass">
+        <option value="">শ্রেণি নির্বাচন করুন</option>
+        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
+        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
+        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
+      </select>
+      <input type="text" id="stExSubject" placeholder="বিষয়ের নাম (যেমন: বাংলা)">
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('examInitModal')">ক্যানসেল</button>
+        <button class="btn btn-blue" style="width:auto;" onclick="loadAndStartExam()">পরীক্ষা শুরু করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- সাধারণ জ্ঞান ভান্ডার -->
+  <div id="gkModal" class="modal">
+    <div class="modal-box" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 style="color: #2563eb;">🧠 সাধারণ জ্ঞান ভান্ডার (BCS & Admission)</h3>
+        <button class="close-icon-btn" onclick="closeModal('gkModal')">×</button>
+      </div>
+
+      <div class="gk-tabs">
+        <button id="gkTabBd" class="gk-tab-btn active" onclick="switchGkTab('bd')">🇧🇩 বাংলাদেশ বিষয়াবলি</button>
+        <button id="gkTabWorld" class="gk-tab-btn" onclick="switchGkTab('world')">🌍 আন্তর্জাতিক বিষয়াবলি</button>
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <input type="text" id="gkSearchInput" placeholder="যেকোনো তথ্য খুঁজুন (যেমন: মুক্তিযুদ্ধ, নদী, জাতিসংঘ, নোবেল)..." oninput="filterGkContent()">
+      </div>
+
+      <div id="gkContentContainer" style="max-height: 420px; overflow-y: auto;"></div>
+    </div>
+  </div>
+
+  <!-- সায়েন্টিফিক ক্যালকুলেটর মডাল -->
   <div id="sciCalculatorModal" class="modal">
     <div class="modal-box" style="max-width: 440px;">
       <div class="modal-header">
@@ -383,7 +477,7 @@
     </div>
   </div>
 
-  <!-- ২. ১ম - ১০ম শ্রেণির বোর্ড বই ডাউনলোড কর্নার (NCTB Official Links) -->
+  <!-- ১ম - ১০ম শ্রেণির বোর্ড বই ডাউনলোড কর্নার -->
   <div id="textbooksModal" class="modal">
     <div class="modal-box" style="max-width: 600px;">
       <div class="modal-header">
@@ -409,24 +503,7 @@
     </div>
   </div>
 
-  <!-- ৩. সাধারণ জ্ঞান (বাংলাদেশ ও বিশ্ব বিষয়াবলি) -->
-  <div id="gkModal" class="modal">
-    <div class="modal-box" style="max-width: 620px;">
-      <div class="modal-header">
-        <h3 style="color: #2563eb;">🧠 সাধারণ জ্ঞান ভান্ডার (GK Hub)</h3>
-        <button class="close-icon-btn" onclick="closeModal('gkModal')">×</button>
-      </div>
-      
-      <div class="gk-tabs">
-        <button id="gkTabBd" class="gk-tab-btn active" onclick="switchGkTab('bd')">🇧🇩 বাংলাদেশ বিষয়াবলি</button>
-        <button id="gkTabWorld" class="gk-tab-btn" onclick="switchGkTab('world')">🌍 আন্তর্জাতিক ও বিশ্ব বিষয়াবলি</button>
-      </div>
-
-      <div id="gkContentContainer" style="max-height:380px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
-    </div>
-  </div>
-
-  <!-- ৪. গণিত ও বিজ্ঞান সূত্র ভান্ডার (সকল সূত্র) -->
+  <!-- গণিত ও বিজ্ঞান সূত্র ভান্ডার -->
   <div id="formulaModal" class="modal">
     <div class="modal-box" style="max-width: 620px;">
       <div class="modal-header">
@@ -434,7 +511,6 @@
         <button class="close-icon-btn" onclick="closeModal('formulaModal')">×</button>
       </div>
       <div style="max-height:400px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
-        <!-- বীজগণিত -->
         <div style="background:#f5f3ff; border-left:4px solid #7c3aed; padding:10px; border-radius:4px;">
           <h4 style="color:#5b21b6;">বীজগণিত (Algebra)</h4>
           <p style="font-size:0.88rem; font-family:monospace; margin-top:4px;">• (a + b)² = a² + 2ab + b²</p>
@@ -444,7 +520,6 @@
           <p style="font-size:0.88rem; font-family:monospace;">• a³ + b³ = (a + b)(a² - ab + b²)</p>
           <p style="font-size:0.88rem; font-family:monospace;">• a³ - b³ = (a - b)(a² + ab + b²)</p>
         </div>
-        <!-- ত্রিকোণমিতি -->
         <div style="background:#fffbeb; border-left:4px solid #d97706; padding:10px; border-radius:4px;">
           <h4 style="color:#b45309;">ত্রিকোণমিতি (Trigonometry)</h4>
           <p style="font-size:0.88rem; margin-top:4px;">• sin²θ + cos²θ = 1</p>
@@ -452,7 +527,6 @@
           <p style="font-size:0.88rem;">• tanθ = sinθ / cosθ &nbsp;|&nbsp; cotθ = cosθ / sinθ</p>
           <p style="font-size:0.88rem;">• sin(90° - θ) = cosθ &nbsp;|&nbsp; cos(90° - θ) = sinθ</p>
         </div>
-        <!-- জ্যামিতি ও পরিমিতি -->
         <div style="background:#eff6ff; border-left:4px solid #2563eb; padding:10px; border-radius:4px;">
           <h4 style="color:#1e40af;">জ্যামিতি ও পরিমিতি (Mensuration)</h4>
           <p style="font-size:0.88rem; margin-top:4px;">• ত্রিভুজের ক্ষেত্রফল = ½ × ভূমি × উচ্চতা</p>
@@ -461,7 +535,6 @@
           <p style="font-size:0.88rem;">• বৃত্তের ক্ষেত্রফল = πr² &nbsp;|&nbsp; পরিধি = 2πr (π ≈ 3.1416)</p>
           <p style="font-size:0.88rem;">• সিলিন্ডারের আয়তন = πr²h &nbsp;|&nbsp; বক্রতলের ক্ষেত্রফল = 2πrh</p>
         </div>
-        <!-- পদার্থবিজ্ঞান -->
         <div style="background:#f0fdf4; border-left:4px solid #16a34a; padding:10px; border-radius:4px;">
           <h4 style="color:#15803d;">পদার্থবিজ্ঞান (Physics)</h4>
           <p style="font-size:0.88rem; margin-top:4px; font-family:monospace;">• গতি: v = u + at &nbsp;|&nbsp; s = ut + ½at² &nbsp;|&nbsp; v² = u² + 2as</p>
@@ -470,7 +543,6 @@
           <p style="font-size:0.88rem; font-family:monospace;">• কাজ: W = Fs &nbsp;|&nbsp; ক্ষমতা: P = W / t</p>
           <p style="font-size:0.88rem; font-family:monospace;">• ওহমের সূত্র: V = IR &nbsp;|&nbsp; রোধের ক্ষমতা: P = VI = I²R</p>
         </div>
-        <!-- রসায়ন -->
         <div style="background:#fdf2f8; border-left:4px solid #db2777; padding:10px; border-radius:4px;">
           <h4 style="color:#9d174d;">রসায়ন (Chemistry)</h4>
           <p style="font-size:0.88rem; margin-top:4px; font-family:monospace;">• মোল সংখ্যা: n = w / M = V / 22.4L = N / NA (NA = 6.023 × 10²³)</p>
@@ -733,56 +805,6 @@
     </div>
   </div>
 
-  <div id="examInitModal" class="modal">
-    <div class="modal-box" style="max-width: 420px;">
-      <div class="modal-header">
-        <h3 data-i18n="examVerifyTitle">পরীক্ষা যাচাইকরণ</h3>
-        <button class="close-icon-btn" onclick="closeModal('examInitModal')">×</button>
-      </div>
-      <input type="number" id="stExReg" placeholder="রেজিস্ট্রেশন নম্বর">
-      <select id="stExClass">
-        <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
-      </select>
-      <input type="text" id="stExSubject" placeholder="বিষয়ের নাম (যেমন: বাংলা)">
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('examInitModal')">ক্যানসেল</button>
-        <button class="btn btn-blue" style="width:auto;" onclick="loadAndStartExam()">পরীক্ষা শুরু করুন</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="liveExamModal" class="modal">
-    <div class="modal-box" style="max-width: 680px;">
-      <div class="modal-header">
-        <div>
-          <h3 id="liveSubjectTitle">পরীক্ষা</h3>
-          <span style="font-size:0.8rem; color:#64748b;">শিক্ষার্থী: <b id="liveStudentName"></b> | মোট নম্বর: <b id="liveTotalMarks"></b></span>
-        </div>
-        <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1rem;">সময়: <span id="timerDisplay">00:00</span></span>
-      </div>
-
-      <div id="questionsRenderContainer" style="display:flex; flex-direction:column; gap:8px; margin:8px 0;"></div>
-
-      <div id="cqLiveSection" style="border:1px dashed #6366f1; padding:10px; border-radius:8px; background:#f5f3ff;">
-        <h4 style="font-size:0.9rem; color:#4338ca;">📝 CQ লিখিত অংশ:</h4>
-        <p id="cqDescPrompt" style="font-size:0.85rem; color:#334155; margin:4px 0;"></p>
-        <div id="cqQuestionFileLink" style="margin:4px 0;"></div>
-        <hr style="margin:6px 0;">
-        <label style="font-size:0.8rem; font-weight:700;">উত্তরপত্র আপলোড (PDF/Image):</label>
-        <input type="file" id="cqUploadFile" style="margin-top:4px; border:none; padding:4px;">
-      </div>
-
-      <div class="modal-btns">
-        <button class="btn btn-green" onclick="submitLiveExam()">উত্তরপত্র জমা দিন</button>
-      </div>
-    </div>
-  </div>
-
   <div id="examReviewModal" class="modal">
     <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
@@ -984,75 +1006,225 @@
     let deferredPrompt = null;
     let currentDictMode = 'en-bn';
     let currentLang = 'bn';
-    let sciCalcVal = "";
+    let currentGkTab = 'bd';
+    let currentExamSection = 'all';
 
-    // ১ম - ১০ম শ্রেণির সরকারি পাঠ্যবইয়ের তালিকা ও অফিসিয়াল NCTB লিংক
-    const nctbBooks = {
-      "1": [
-        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "2": [
-        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "3": [
-        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "ইসলাম ও নৈতিক শিক্ষা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "4": [
-        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "5": [
-        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "6": [
-        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "বিজ্ঞান (অনুসন্ধানী ও অনুশীলন)", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "ইতিহাস ও সামাজিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "ডিজিটাল প্রযুক্তি", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "7": [
-        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "ডিজিটাল প্রযুক্তি", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "8": [
-        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "ইতিহাস ও সামাজিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "9": [
-        { name: "বাংলা সাহিত্য ও সহপাঠ", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "English For Today & Grammar", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "সাধারণ গণিত (General Math)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "উচ্চতর গণিত (Higher Math)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "পদার্থবিজ্ঞান (Physics)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "রসায়ন (Chemistry)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "জীববিজ্ঞান (Biology)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" }
-      ]
-    };
+    // পরীক্ষা সেকশন পরিবর্তন (MCQ or CQ or Both)
+    function switchExamSection(mode) {
+      currentExamSection = mode;
+      document.getElementById('examTabAll').classList.toggle('active', mode === 'all');
+      document.getElementById('examTabMcq').classList.toggle('active', mode === 'mcq');
+      document.getElementById('examTabCq').classList.toggle('active', mode === 'cq');
+
+      const mcqSec = document.getElementById('mcqExamSection');
+      const cqSec = document.getElementById('cqExamSection');
+      const timerBox = document.getElementById('timerBox');
+
+      if (mode === 'all') {
+        mcqSec.style.display = 'block';
+        cqSec.style.display = 'block';
+        timerBox.style.display = 'inline-block';
+        document.getElementById('examSubmitBtn').innerText = "সম্পূর্ণ পরীক্ষা জমা দিন (MCQ + CQ)";
+      } else if (mode === 'mcq') {
+        mcqSec.style.display = 'block';
+        cqSec.style.display = 'none';
+        timerBox.style.display = 'inline-block';
+        document.getElementById('examSubmitBtn').innerText = "শুধুমাত্র MCQ খাতা জমা দিন";
+      } else if (mode === 'cq') {
+        mcqSec.style.display = 'none';
+        cqSec.style.display = 'block';
+        timerBox.style.display = 'none'; // শুধু CQ দিলে MCQ টাইমার প্রযোজ্য নয়
+        document.getElementById('examSubmitBtn').innerText = "শুধুমাত্র CQ খাতা জমা দিন";
+      }
+    }
+
+    function loadAndStartExam() {
+      const btn = event?.currentTarget || event?.target;
+      const reg = document.getElementById('stExReg').value;
+      const classVal = document.getElementById('stExClass').value;
+      const subject = document.getElementById('stExSubject').value;
+      if (!reg || !classVal || !subject) return alert("সকল তথ্য দিন!");
+
+      postData({ action: "getStudentByClass", reg: reg, classVal: classVal }, stRes => {
+        if (stRes && stRes.success) {
+          postData({ action: "checkAndGetExam", classVal: classVal, subject: subject }, exRes => {
+            if (exRes && exRes.success) {
+              activeExamData = exRes.exam;
+              activeExamData.studentReg = reg;
+              activeExamData.studentClass = classVal;
+              activeExamData.studentName = stRes.student[1];
+
+              closeModal('examInitModal');
+              startLiveExamSession();
+            } else {
+              alert(exRes.message || "পরীক্ষা পাওয়া যায়নি!");
+            }
+          }, btn);
+        } else {
+          alert("শিক্ষার্থীর তথ্য মেলেনি!");
+        }
+      }, btn);
+    }
+
+    function startLiveExamSession() {
+      document.getElementById('liveSubjectTitle').innerText = activeExamData.subject + " (" + activeExamData.classVal + " শ্রেণি)";
+      document.getElementById('liveStudentName').innerText = activeExamData.studentName;
+      document.getElementById('liveTotalMarks').innerText = activeExamData.totalMarks;
+      document.getElementById('cqDescPrompt').innerText = activeExamData.cqDescription || "লিখিত উত্তরপত্র খাতায় লিখে ফাইল আপলোড করুন।";
+      
+      if (activeExamData.cqQuestionFileUrl) {
+        document.getElementById('cqQuestionFileLink').innerHTML = `<a href="${activeExamData.cqQuestionFileUrl}" target="_blank" style="color:#2563eb; font-weight:700;">📄 CQ প্রশ্ন ফাইল ডাউনলোড</a>`;
+      } else {
+        document.getElementById('cqQuestionFileLink').innerHTML = "";
+      }
+
+      const container = document.getElementById('questionsRenderContainer');
+      container.innerHTML = activeExamData.mcq.map((q, idx) => `
+        <div class="question-box">
+          <p style="font-weight:700; font-size:0.95rem; margin-bottom:8px;">${idx + 1}. ${q.question}</p>
+          ${q.options.map(opt => `
+            <label class="opt-label">
+              <span>${opt}</span>
+              <input type="radio" name="ans_${q.id}" value="${opt}">
+            </label>
+          `).join('')}
+        </div>
+      `).join('');
+
+      switchExamSection('all');
+      openModal('liveExamModal');
+
+      // MCQ অটো সাবমিট টাইমার
+      const totalSeconds = (parseInt(activeExamData.mcqDuration) || activeExamData.totalMarks) * 60;
+      let timeLeft = totalSeconds;
+      const display = document.getElementById('timerDisplay');
+      
+      clearInterval(examTimerInterval);
+      examTimerInterval = setInterval(() => {
+        let m = Math.floor(timeLeft / 60);
+        let s = timeLeft % 60;
+        display.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        if (--timeLeft < 0) {
+          clearInterval(examTimerInterval);
+          alert("MCQ পরীক্ষার সময় শেষ! খাতা স্বয়ংক্রিয়ভাবে জমা নেওয়া হচ্ছে...");
+          submitLiveExam(true); // অটো সাবমিট
+        }
+      }, 1000);
+    }
+
+    function submitLiveExam(isAuto = false) {
+      const btn = document.getElementById('examSubmitBtn');
+      clearInterval(examTimerInterval);
+
+      const userAnswers = {};
+      if (currentExamSection !== 'cq') {
+        activeExamData.mcq.forEach(q => {
+          const checked = document.querySelector(`input[name="ans_${q.id}"]:checked`);
+          if (checked) userAnswers[q.id] = checked.value;
+        });
+      }
+
+      const cqFile = document.getElementById('cqUploadFile').files[0];
+
+      if (!isAuto && currentExamSection === 'cq' && !cqFile) {
+        return alert("অনুগ্রহ করে আপনার লিখিত CQ খাতার ফাইল সিলেক্ট করুন!");
+      }
+
+      const send = (b64 = "", mime = "") => {
+        const payload = {
+          action: "submitLiveExam",
+          examId: activeExamData.examId,
+          reg: activeExamData.studentReg,
+          classVal: activeExamData.studentClass,
+          subject: activeExamData.subject,
+          userAnswers: userAnswers,
+          cqSubBase64: b64,
+          cqSubMime: mime
+        };
+        postData(payload, res => {
+          if (res && res.success) {
+            closeModal('liveExamModal');
+            showExamReview(res);
+          }
+        }, btn);
+      };
+
+      if (cqFile && currentExamSection !== 'mcq') {
+        const reader = new FileReader();
+        reader.onload = e => send(e.target.result, cqFile.type);
+        reader.readAsDataURL(cqFile);
+      } else {
+        send();
+      }
+    }
+
+    function showExamReview(res) {
+      document.getElementById('resCorrect').innerText = res.correctCount;
+      document.getElementById('resWrong').innerText = res.wrongCount;
+      document.getElementById('resTotal').innerText = `${res.totalScore} / ${res.totalMarks}`;
+
+      const container = document.getElementById('reviewQuestionsContainer');
+      container.innerHTML = res.reviewDetails.map((item, idx) => `
+        <div class="question-box ${item.isCorrect ? 'review-correct' : 'review-wrong'}">
+          <p><b>${idx + 1}. ${item.question}</b></p>
+          <p style="font-size:0.8rem;">আপনার উত্তর: <b>${item.userAnswer}</b> ${item.isCorrect ? '✅ (সঠিক)' : '❌ (ভুল)'}</p>
+          ${!item.isCorrect ? `<p style="font-size:0.8rem; color:#15803d;">সঠিক উত্তর: <b>${item.correctAnswer}</b></p>` : ''}
+          <div class="expl-box"><b>ব্যাখ্যা:</b> ${item.explanation}</div>
+        </div>
+      `).join('');
+
+      openModal('examReviewModal');
+    }
+
+    // সাধারণ জ্ঞান ইঞ্জিন
+    function switchGkTab(tab) {
+      currentGkTab = tab;
+      document.getElementById('gkTabBd').classList.toggle('active', tab === 'bd');
+      document.getElementById('gkTabWorld').classList.toggle('active', tab === 'world');
+      document.getElementById('gkSearchInput').value = "";
+      renderGk(tab);
+    }
+
+    function renderGk(tab, filter = "") {
+      const container = document.getElementById('gkContentContainer');
+      const categories = gkDatabase[tab] || [];
+      const query = filter.toLowerCase().trim();
+
+      let html = "";
+      let foundCount = 0;
+
+      categories.forEach(cat => {
+        const matchedItems = cat.items.filter(it => 
+          it.q.toLowerCase().includes(query) || it.a.toLowerCase().includes(query) || cat.category.toLowerCase().includes(query)
+        );
+
+        if (matchedItems.length > 0) {
+          foundCount += matchedItems.length;
+          html += `
+            <div class="gk-cat-section">
+              <div class="gk-cat-title">📁 ${cat.category}</div>
+              ${matchedItems.map((it, idx) => `
+                <div class="gk-item">
+                  <div class="gk-q">${idx + 1}. ${it.q}</div>
+                  <div class="gk-a">উত্তরঃ ${it.a}</div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+      });
+
+      if (foundCount === 0) {
+        container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:30px;">কোনো তথ্য পাওয়া যায়নি।</p>`;
+      } else {
+        container.innerHTML = html;
+      }
+    }
+
+    function filterGkContent() {
+      const q = document.getElementById('gkSearchInput').value;
+      renderGk(currentGkTab, q);
+    }
 
     function renderClassBooks() {
       const cls = document.getElementById('bookClassSelect').value;
@@ -1069,48 +1241,6 @@
             <span style="font-size:0.75rem; color:#64748b;">জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB)</span>
           </div>
           <a href="${b.url}" target="_blank" class="btn btn-teal" style="width:auto; padding:6px 14px; font-size:0.8rem; text-decoration:none;">📥 ডাউনলোড</a>
-        </div>
-      `).join('');
-    }
-
-    // সাধারণ জ্ঞান ডাটাবেজ (বাংলাদেশ ও বিশ্ব)
-    const gkDatabase = {
-      bd: [
-        { q: "বাংলাদেশের সাংবিধানিক নাম কী?", a: "গণপ্রজাতন্ত্রী বাংলাদেশ (People's Republic of Bangladesh)" },
-        { q: "বাংলাদেশের স্বাধীনতা দিবস ও জাতীয় দিবস কবে?", a: "২৬শে মার্চ" },
-        { q: "ঐতিহাসিক ৭ই মার্চের ভাষণকে ইউনেস্কো কী হিসেবে স্বীকৃতি দিয়েছে?", a: "বিশ্ব প্রামাণ্য ঐতিহ্য (Memory of the World International Register)" },
-        { q: "বাংলাদেশের জাতীয় পতাকার অনুপাত কত?", a: "১০ : ৬ বা ৫ : ৩ (মাঝের লাল বৃত্তের ব্যাসার্ধ দৈর্ঘ্যের ৫ ভাগের ১ অংশ)" },
-        { q: "বঙ্গবন্ধু স্যাটেলাইট-১ কত তারিখে মহাকাশে উৎক্ষেপণ করা হয়?", a: "১১ মে, ২০১৮ (বাংলাদেশ ৫৭তম স্যাটেলাইট দেশ)" },
-        { q: "বাংলাদেশের একমাত্র প্রবাল দ্বীপ কোনটি?", a: "সেন্ট মার্টিন দ্বীপ (স্থানীয় নাম নারিকেল জিঞ্জিরা)" },
-        { q: "মুক্তিযুদ্ধে সর্বোচ্চ বীরত্বসূচক রাষ্ট্রীয় খেতাব কোনটি?", a: "বীরশ্রেষ্ঠ (মোট ৭ জন)" },
-        { q: "বাংলাদেশের সর্বোচ্চ পর্বতশৃঙ্গ কোনটি?", a: "তাজিংডং বা বিজয় (বান্দরবান)" },
-        { q: "পদ্মা সেতুর মূল দৈর্ঘ্য কত?", a: "৬.১৫ কিলোমিটার (মোট স্প্যান ৪১টি, পিলার ৪২টি)" }
-      ],
-      world: [
-        { q: "বিশ্বের বৃহত্তম এবং গভীরতম মহাসাগর কোনটি?", a: "প্রশান্ত মহাসাগর (Pacific Ocean)" },
-        { q: "জাতিসংঘ (UN) কত সালে প্রতিষ্ঠিত হয়?", a: "২৪ অক্টোবর, ১৯৪৫ সালে (সদর দপ্তর: নিউইয়র্ক, যুক্তরাষ্ট্র)" },
-        { q: "পৃথিবীর দীর্ঘতম নদী কোনটি?", a: "নীলনদ (আফ্রিকা মহাদেশ - দৈর্ঘ্য প্রায় ৬,৬৫০ কিমি)" },
-        { q: "বিশ্বের সবচেয়ে বড় মরুভূমি কোনটি?", a: "অ্যান্টার্কটিকা (শীতল) এবং সাহারা মরুভূমি (উষ্ণ)" },
-        { q: "নোবেল পুরস্কার কোন দেশ থেকে প্রদান করা হয়?", a: "সুইডেন (শান্তি পুরস্কার নরওয়ের অসলো থেকে দেওয়া হয়)" },
-        { q: "পৃথিবীর সবচেয়ে ক্ষুদ্রতম দেশ কোনটি?", a: "ভ্যাটিকান সিটি (আয়তন ০.৪৯ বর্গ কিমি)" },
-        { q: "কম্পিউটারের জনক ও আধুনিক কম্পিউটারের জনক কে?", a: "চার্লস ব্যাবেজ (জনক) ও অ্যালান টুরিং (আধুনিক জনক)" },
-        { q: "সূর্য থেকে পৃথিবীতে আলো পৌঁছাতে কত সময় লাগে?", a: "প্রায় ৮ মিনিট ২০ সেকেন্ড" }
-      ]
-    };
-
-    function switchGkTab(tab) {
-      document.getElementById('gkTabBd').classList.toggle('active', tab === 'bd');
-      document.getElementById('gkTabWorld').classList.toggle('active', tab === 'world');
-      renderGk(tab);
-    }
-
-    function renderGk(type) {
-      const container = document.getElementById('gkContentContainer');
-      const list = gkDatabase[type] || [];
-      container.innerHTML = list.map((item, idx) => `
-        <div class="gk-item">
-          <div class="gk-q">${idx + 1}. ${item.q}</div>
-          <div class="gk-a">উত্তর: ${item.a}</div>
         </div>
       `).join('');
     }
@@ -1162,12 +1292,11 @@
       }
     }
 
-    // ডুওলিঙ্গো ওয়ান-ক্লিক ক্লিন লঞ্চ (ইন-অ্যাপ ব্লকিং বাইপাস)
     function openDuolingoDirect() {
       window.open("https://www.duolingo.com/learn", "_blank");
     }
 
-    // ভাষা পরিবর্তন ডিকশনারি
+    // ভাষা পরিবর্তন
     const i18nData = {
       bn: {
         welcomeSub: "স্বাগতম আপনাকে",
@@ -1187,7 +1316,7 @@
         resultDesc: "MCQ, CQ মার্কস ও ফলাফল হিস্ট্রি",
         viewResult: "ফলাফল দেখুন",
         examPortalTitle: "✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)",
-        examPortalDesc: "এডমিন নির্ধারিত শিডিউল অনুযায়ী পরীক্ষা, অটো-টাইমার ও CQ ফাইল আপলোড।",
+        examPortalDesc: "এডমিন নির্ধারিত শিডিউল অনুযায়ী MCQ বা CQ পরীক্ষা দিন (যেকোনো একটি দিয়েও জমা দেওয়া যাবে)।",
         startExamBtn: "পরীক্ষা শুরু করুন",
         menuBar: "মেনু বার",
         installAppMenu: "📲 সরাসরি অ্যাপ ইনস্টল করুন",
@@ -1215,7 +1344,7 @@
         resultDesc: "MCQ, CQ marks & result history",
         viewResult: "View Results",
         examPortalTitle: "✍️ Online Exam Portal (Class 1 - 10)",
-        examPortalDesc: "Admin scheduled exams with auto-timer and CQ submission.",
+        examPortalDesc: "Take MCQ or CQ exam (either can be submitted independently).",
         startExamBtn: "Start Exam",
         menuBar: "Menu Bar",
         installAppMenu: "📲 Install App Directly",
@@ -1246,7 +1375,7 @@
       document.body.classList.add('dark-mode');
     }
 
-    // পমোডোরো টাইমার লজিক
+    // পমোডোরো টাইমার
     let pomoInterval = null;
     let pomoTime = 25 * 60;
     let isPomoBreak = false;
@@ -1295,7 +1424,7 @@
       updatePomoDisplay();
     }
 
-    // ব্যক্তিগত নোটপ্যাড লজিক
+    // ব্যক্তিগত নোটপ্যাড
     function saveScratchpad() {
       const text = document.getElementById('scratchpadArea').value;
       localStorage.setItem('gyan_scratchpad', text);
@@ -1311,7 +1440,7 @@
       renderGk('bd');
     });
 
-    // GPA ক্যালকুলেটর লজিক
+    // GPA ক্যালকুলেটর
     function calculateGpa() {
       const inputs = document.querySelectorAll('.gpa-score-input');
       let totalPoints = 0;
@@ -1356,7 +1485,7 @@
       document.getElementById('gpaResultDisplay').innerText = `GPA: ${gpa} (${grade})`;
     }
 
-    // PWA ইনস্টল হ্যান্ডলার
+    // PWA ইনস্টল
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -1389,7 +1518,7 @@
       deferredPrompt = null;
     });
 
-    // ডিকশনারি কন্ট্রোলার লজিক
+    // ডিকশনারি
     function setDictMode(mode) {
       currentDictMode = mode;
       document.getElementById('dictModeEnBn').classList.toggle('active', mode === 'en-bn');
@@ -1803,133 +1932,6 @@
       } else {
         container.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:20px;'>কোনো নোট পাওয়া যায়নি।</p>";
       }
-    }
-
-    function loadAndStartExam() {
-      const btn = event?.currentTarget || event?.target;
-      const reg = document.getElementById('stExReg').value;
-      const classVal = document.getElementById('stExClass').value;
-      const subject = document.getElementById('stExSubject').value;
-      if (!reg || !classVal || !subject) return alert("সকল তথ্য দিন!");
-
-      postData({ action: "getStudentByClass", reg: reg, classVal: classVal }, stRes => {
-        if (stRes && stRes.success) {
-          postData({ action: "checkAndGetExam", classVal: classVal, subject: subject }, exRes => {
-            if (exRes && exRes.success) {
-              activeExamData = exRes.exam;
-              activeExamData.studentReg = reg;
-              activeExamData.studentClass = classVal;
-              activeExamData.studentName = stRes.student[1];
-
-              closeModal('examInitModal');
-              startLiveExamSession();
-            } else {
-              alert(exRes.message || "পরীক্ষা পাওয়া যায়নি!");
-            }
-          }, btn);
-        } else {
-          alert("শিক্ষার্থীর তথ্য মেলেনি!");
-        }
-      }, btn);
-    }
-
-    function startLiveExamSession() {
-      document.getElementById('liveSubjectTitle').innerText = activeExamData.subject + " (" + activeExamData.classVal + " শ্রেণি)";
-      document.getElementById('liveStudentName').innerText = activeExamData.studentName;
-      document.getElementById('liveTotalMarks').innerText = activeExamData.totalMarks;
-      document.getElementById('cqDescPrompt').innerText = activeExamData.cqDescription || "লিখিত উত্তরপত্র খাতায় লিখে ফাইল আপলোড করুন।";
-      
-      if (activeExamData.cqQuestionFileUrl) {
-        document.getElementById('cqQuestionFileLink').innerHTML = `<a href="${activeExamData.cqQuestionFileUrl}" target="_blank" style="color:#2563eb; font-weight:700;">📄 CQ প্রশ্ন ফাইল ডাউনলোড</a>`;
-      } else {
-        document.getElementById('cqQuestionFileLink').innerHTML = "";
-      }
-
-      const container = document.getElementById('questionsRenderContainer');
-      container.innerHTML = activeExamData.mcq.map((q, idx) => `
-        <div class="question-box">
-          <p style="font-weight:700; font-size:0.95rem; margin-bottom:8px;">${idx + 1}. ${q.question}</p>
-          ${q.options.map(opt => `
-            <label class="opt-label">
-              <span>${opt}</span>
-              <input type="radio" name="ans_${q.id}" value="${opt}">
-            </label>
-          `).join('')}
-        </div>
-      `).join('');
-
-      openModal('liveExamModal');
-
-      const totalSeconds = (parseInt(activeExamData.mcqDuration) || activeExamData.totalMarks) * 60;
-      let timeLeft = totalSeconds;
-      const display = document.getElementById('timerDisplay');
-      
-      clearInterval(examTimerInterval);
-      examTimerInterval = setInterval(() => {
-        let m = Math.floor(timeLeft / 60);
-        let s = timeLeft % 60;
-        display.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
-        if (--timeLeft < 0) {
-          clearInterval(examTimerInterval);
-          alert("সময় শেষ! খাতা স্বয়ংক্রিয়ভাবে জমা দেওয়া হচ্ছে...");
-          submitLiveExam();
-        }
-      }, 1000);
-    }
-
-    function submitLiveExam() {
-      const btn = event?.currentTarget || event?.target;
-      clearInterval(examTimerInterval);
-      const userAnswers = {};
-      activeExamData.mcq.forEach(q => {
-        const checked = document.querySelector(`input[name="ans_${q.id}"]:checked`);
-        if (checked) userAnswers[q.id] = checked.value;
-      });
-
-      const cqFile = document.getElementById('cqUploadFile').files[0];
-
-      const send = (b64 = "", mime = "") => {
-        const payload = {
-          action: "submitLiveExam",
-          examId: activeExamData.examId,
-          reg: activeExamData.studentReg,
-          classVal: activeExamData.studentClass,
-          subject: activeExamData.subject,
-          userAnswers: userAnswers,
-          cqSubBase64: b64,
-          cqSubMime: mime
-        };
-        postData(payload, res => {
-          if (res && res.success) {
-            closeModal('liveExamModal');
-            showExamReview(res);
-          }
-        }, btn);
-      };
-
-      if (cqFile) {
-        const reader = new FileReader();
-        reader.onload = e => send(e.target.result, cqFile.type);
-        reader.readAsDataURL(cqFile);
-      } else send();
-    }
-
-    function showExamReview(res) {
-      document.getElementById('resCorrect').innerText = res.correctCount;
-      document.getElementById('resWrong').innerText = res.wrongCount;
-      document.getElementById('resTotal').innerText = `${res.totalScore} / ${res.totalMarks}`;
-
-      const container = document.getElementById('reviewQuestionsContainer');
-      container.innerHTML = res.reviewDetails.map((item, idx) => `
-        <div class="question-box ${item.isCorrect ? 'review-correct' : 'review-wrong'}">
-          <p><b>${idx + 1}. ${item.question}</b></p>
-          <p style="font-size:0.8rem;">আপনার উত্তর: <b>${item.userAnswer}</b> ${item.isCorrect ? '✅ (সঠিক)' : '❌ (ভুল)'}</p>
-          ${!item.isCorrect ? `<p style="font-size:0.8rem; color:#15803d;">সঠিক উত্তর: <b>${item.correctAnswer}</b></p>` : ''}
-          <div class="expl-box"><b>ব্যাখ্যা:</b> ${item.explanation}</div>
-        </div>
-      `).join('');
-
-      openModal('examReviewModal');
     }
 
     function loadFullProfile() {
