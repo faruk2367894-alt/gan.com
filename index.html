@@ -26,13 +26,14 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Serif Bengali', 'Kalpurush', serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #f8fafc; color: #0f172a; min-height: 100vh; overflow-x: hidden; user-select: none; transition: background 0.3s, color 0.3s; }
 
-    /* ডার্ক মোড */
+    /* ডার্ক মোড কালার ফিক্স */
     body.dark-mode { background-color: #0b0f19; color: #f1f5f9; }
     body.dark-mode .card, body.dark-mode .modal-box, body.dark-mode .sidebar, body.dark-mode .top-news-card { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
     body.dark-mode .menu-item { background: #1e293b; color: #f1f5f9; border-color: #334155; }
     body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: #0f172a; color: #f8fafc; border-color: #475569; }
     body.dark-mode .question-box, body.dark-mode .opt-label { background: #0f172a; color: #f8fafc; border-color: #334155; }
-    body.dark-mode .top-news-item, body.dark-mode .note-item, body.dark-mode .gk-box { background: #0f172a; color: #f8fafc; }
+    body.dark-mode .top-news-item, body.dark-mode .note-item, body.dark-mode .gk-cat-section, body.dark-mode .formula-card { background: #0f172a !important; color: #f8fafc !important; }
+    body.dark-mode .formula-card p, body.dark-mode .gk-q { color: #f1f5f9 !important; }
 
     .page { display: none; min-height: 100vh; width: 100%; }
     .page.active { display: flex; }
@@ -196,7 +197,7 @@
     .sci-btn.eq { background: #059669; color: white; grid-column: span 2; }
     .sci-btn.clear { background: #fecaca; color: #991b1b; }
 
-    /* সাধারণ জ্ঞান স্টাইল */
+    /* সাধারণ জ্ঞান ও সূত্র কার্ড */
     .gk-tabs { display: flex; gap: 6px; margin-bottom: 8px; }
     .gk-tab-btn { flex: 1; padding: 8px; border: 1px solid #cbd5e1; background: #f1f5f9; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.85rem; text-align: center; }
     .gk-tab-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
@@ -207,9 +208,11 @@
     .gk-q { font-weight: 700; color: #1e293b; font-size: 0.88rem; }
     .gk-a { color: #059669; font-weight: 600; font-size: 0.84rem; margin-top: 2px; }
 
-    /* এক্সাম ট্যাব সিলেক্টর স্টাইল */
+    .formula-card { background: #f8fafc; border-radius: 6px; padding: 10px; margin-bottom: 10px; border-left: 4px solid #7c3aed; }
+    .formula-card p { color: #1e293b; font-size: 0.88rem; margin: 3px 0; }
+
     .exam-mode-nav { display: flex; gap: 6px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px; }
-    .exam-nav-btn { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; font-weight: 700; font-size: 0.88rem; text-align: center; }
+    .exam-nav-btn { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; font-weight: 700; font-size: 0.85rem; text-align: center; }
     .exam-nav-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
 
     @media print {
@@ -295,7 +298,7 @@
     </div>
   </div>
 
-  <!-- মেনু বার -->
+  <!-- পরিমার্জিত মেনু বার -->
   <aside id="sidebar" class="sidebar">
     <div>
       <div class="sidebar-header">
@@ -305,7 +308,6 @@
       <div style="margin-top: 8px;">
         <button id="pwaInstallMenuBtn" class="menu-item highlight" style="display:none;" onclick="triggerPwaInstall()" data-i18n="installAppMenu">📲 সরাসরি অ্যাপ ইনস্টল করুন</button>
         
-        <!-- ভাষা ও ডার্ক মোড -->
         <div style="display: flex; gap: 6px; margin: 6px 0;">
           <button class="menu-item" style="flex:1; justify-content:center; background:#e0e7ff; color:#3730a3; font-weight:700;" onclick="toggleLanguage()">🌐 <span id="langBtnText">English</span></button>
           <button class="menu-item" style="flex:1; justify-content:center; background:#f1f5f9; font-weight:700;" onclick="toggleDarkMode()">🌙 নাইট মোড</button>
@@ -335,72 +337,7 @@
     <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; margin-top:10px;">জ্ঞান.com © 2026</div>
   </aside>
 
-  <!-- লাইভ পরীক্ষা মডাল (MCQ বা CQ যেকোনো একটি সাবমিটের সুবিধাসহ) -->
-  <div id="liveExamModal" class="modal">
-    <div class="modal-box" style="max-width: 720px;">
-      <div class="modal-header">
-        <div>
-          <h3 id="liveSubjectTitle">পরীক্ষা</h3>
-          <span style="font-size:0.8rem; color:#64748b;">শিক্ষার্থী: <b id="liveStudentName"></b> | মোট MCQ মার্কস: <b id="liveTotalMarks"></b></span>
-        </div>
-        <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1rem;">MCQ সময়: <span id="timerDisplay">00:00</span></span>
-      </div>
-
-      <!-- পরীক্ষা নেভিগেশন ট্যাব (MCQ or CQ or Both) -->
-      <div class="exam-mode-nav">
-        <button id="examTabAll" class="exam-nav-btn active" onclick="switchExamSection('all')">উভয় পরীক্ষা (MCQ + CQ)</button>
-        <button id="examTabMcq" class="exam-nav-btn" onclick="switchExamSection('mcq')">শুধুমাত্র MCQ পরীক্ষা</button>
-        <button id="examTabCq" class="exam-nav-btn" onclick="switchExamSection('cq')">শুধুমাত্র CQ (লিখিত)</button>
-      </div>
-
-      <!-- MCQ অংশ -->
-      <div id="mcqExamSection">
-        <h4 style="font-size:0.95rem; color:#1e3a8a; margin-bottom:8px;">🔘 MCQ বহুনির্বাচনী প্রশ্নমালা:</h4>
-        <div id="questionsRenderContainer" style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div>
-      </div>
-
-      <!-- CQ লিখিত অংশ -->
-      <div id="cqExamSection" style="border:1.5px dashed #6366f1; padding:12px; border-radius:8px; background:#f5f3ff; margin-bottom:10px;">
-        <h4 style="font-size:0.95rem; color:#4338ca;">📝 CQ সৃজনশীল / লিখিত অংশ:</h4>
-        <p id="cqDescPrompt" style="font-size:0.85rem; color:#334155; margin:6px 0;"></p>
-        <div id="cqQuestionFileLink" style="margin:6px 0;"></div>
-        <hr style="margin:8px 0; border:0; border-top:1px dashed #cbd5e1;">
-        <label style="font-size:0.82rem; font-weight:700; color:#312e81;">উত্তরপত্র আপলোড করুন (PDF / Image):</label>
-        <input type="file" id="cqUploadFile" style="margin-top:4px; border:none; padding:4px;">
-        <small style="color:#64748b; font-size:0.75rem; display:block; margin-top:2px;">* শুধু CQ জমা দিতে চাইলে ফাইল সিলেক্ট করে নিচের বাটনে ক্লিক করুন।</small>
-      </div>
-
-      <div class="modal-btns">
-        <button class="btn btn-green" id="examSubmitBtn" onclick="submitLiveExam()">উত্তরপত্র জমা দিন</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- পরীক্ষা যাচাইকরণ মডাল -->
-  <div id="examInitModal" class="modal">
-    <div class="modal-box" style="max-width: 420px;">
-      <div class="modal-header">
-        <h3 data-i18n="examVerifyTitle">পরীক্ষা যাচাইকরণ</h3>
-        <button class="close-icon-btn" onclick="closeModal('examInitModal')">×</button>
-      </div>
-      <input type="number" id="stExReg" placeholder="রেজিস্ট্রেশন নম্বর">
-      <select id="stExClass">
-        <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
-      </select>
-      <input type="text" id="stExSubject" placeholder="বিষয়ের নাম (যেমন: বাংলা)">
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('examInitModal')">ক্যানসেল</button>
-        <button class="btn btn-blue" style="width:auto;" onclick="loadAndStartExam()">পরীক্ষা শুরু করুন</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- সাধারণ জ্ঞান ভান্ডার -->
+  <!-- ১. সাধারণ জ্ঞান ভান্ডার মডাল (১০০% ফিক্সড) -->
   <div id="gkModal" class="modal">
     <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
@@ -421,7 +358,84 @@
     </div>
   </div>
 
-  <!-- সায়েন্টিফিক ক্যালকুলেটর মডাল -->
+  <!-- ২. গণিত ও বিজ্ঞান সূত্র ভান্ডার (লেখা ও কালার ১০০% ফিক্সড) -->
+  <div id="formulaModal" class="modal">
+    <div class="modal-box" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3 style="color: #5b21b6;">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার (Formula Hub)</h3>
+        <button class="close-icon-btn" onclick="closeModal('formulaModal')">×</button>
+      </div>
+      <div style="max-height:400px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
+        <div class="formula-card" style="border-left-color: #7c3aed;">
+          <h4 style="color:#7c3aed; font-weight:800;">বীজগণিত (Algebra)</h4>
+          <p style="font-family:monospace; margin-top:4px;">• (a + b)² = a² + 2ab + b²</p>
+          <p style="font-family:monospace;">• (a - b)² = a² - 2ab + b²</p>
+          <p style="font-family:monospace;">• a² - b² = (a + b)(a - b)</p>
+          <p style="font-family:monospace;">• (a + b + c)² = a² + b² + c² + 2(ab + bc + ca)</p>
+          <p style="font-family:monospace;">• a³ + b³ = (a + b)(a² - ab + b²)</p>
+          <p style="font-family:monospace;">• a³ - b³ = (a - b)(a² + ab + b²)</p>
+        </div>
+        <div class="formula-card" style="border-left-color: #d97706;">
+          <h4 style="color:#d97706; font-weight:800;">ত্রিকোণমিতি (Trigonometry)</h4>
+          <p>• sin²θ + cos²θ = 1</p>
+          <p>• sec²θ - tan²θ = 1 &nbsp;|&nbsp; cosec²θ - cot²θ = 1</p>
+          <p>• tanθ = sinθ / cosθ &nbsp;|&nbsp; cotθ = cosθ / sinθ</p>
+          <p>• sin(90° - θ) = cosθ &nbsp;|&nbsp; cos(90° - θ) = sinθ</p>
+        </div>
+        <div class="formula-card" style="border-left-color: #2563eb;">
+          <h4 style="color:#2563eb; font-weight:800;">জ্যামিতি ও পরিমিতি (Mensuration)</h4>
+          <p>• ত্রিভুজের ক্ষেত্রফল = ½ × ভূমি × উচ্চতা</p>
+          <p>• বিষমবাহু ত্রিভুজ = √[s(s-a)(s-b)(s-c)], যেখানে s = (a+b+c)/2</p>
+          <p>• সমবাহু ত্রিভুজের ক্ষেত্রফল = (√3 / 4) × a²</p>
+          <p>• বৃত্তের ক্ষেত্রফল = πr² &nbsp;|&nbsp; পরিধি = 2πr (π ≈ 3.1416)</p>
+          <p>• সিলিন্ডারের আয়তন = πr²h &nbsp;|&nbsp; বক্রতলের ক্ষেত্রফল = 2πrh</p>
+        </div>
+        <div class="formula-card" style="border-left-color: #16a34a;">
+          <h4 style="color:#16a34a; font-weight:800;">পদার্থবিজ্ঞান (Physics)</h4>
+          <p style="font-family:monospace;">• গতি: v = u + at &nbsp;|&nbsp; s = ut + ½at² &nbsp;|&nbsp; v² = u² + 2as</p>
+          <p style="font-family:monospace;">• নিউটনের গতিসূত্র: F = ma &nbsp;|&nbsp; ওজন: W = mg (g = 9.8 m/s²)</p>
+          <p style="font-family:monospace;">• গতিশক্তি: Ek = ½mv² &nbsp;|&nbsp; বিভব শক্তি: Ep = mgh</p>
+          <p style="font-family:monospace;">• কাজ: W = Fs &nbsp;|&nbsp; ক্ষমতা: P = W / t</p>
+          <p style="font-family:monospace;">• ওহমের সূত্র: V = IR &nbsp;|&nbsp; রোধের ক্ষমতা: P = VI = I²R</p>
+        </div>
+        <div class="formula-card" style="border-left-color: #db2777;">
+          <h4 style="color:#db2777; font-weight:800;">রসায়ন (Chemistry)</h4>
+          <p style="font-family:monospace;">• মোল সংখ্যা: n = w / M = V / 22.4L = N / NA (NA = 6.023 × 10²³)</p>
+          <p style="font-family:monospace;">• মোলারিটি: S = (1000 × w) / (M × V(mL))</p>
+          <p style="font-family:monospace;">• বয়েলের সূত্র: P₁V₁ = P₂V₂ &nbsp;|&nbsp; চার্লসের সূত্র: V₁/T₁ = V₂/T₂</p>
+          <p style="font-family:monospace;">• আদর্শ গ্যাস সমীকরণ: PV = nRT (R = 0.0821 L·atm/mol·K)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ৩. ১ম - ১০ম শ্রেণির বোর্ড বই ডাউনলোড কর্নার -->
+  <div id="textbooksModal" class="modal">
+    <div class="modal-box" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="color: #0f766e;">📚 ১ম - ১০ম শ্রেণির সরকারি পাঠ্যবই ডাউনলোড</h3>
+        <button class="close-icon-btn" onclick="closeModal('textbooksModal')">×</button>
+      </div>
+      <p style="font-size:0.85rem; color:#64748b;">জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) অনুমোদিত সকল বিষয়ের মূল বই সরাসরি ডাউনলোড করুন:</p>
+      
+      <div style="margin: 8px 0;">
+        <select id="bookClassSelect" onchange="renderClassBooks()">
+          <option value="">শ্রেণি নির্বাচন করুন</option>
+          <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+          <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+          <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
+          <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
+          <option value="9">৯ম-১০ম শ্রেণি (SSC)</option>
+        </select>
+      </div>
+
+      <div id="booksListContainer" style="max-height:360px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+        <p style="text-align:center; color:#94a3b8; padding:20px;">শ্রেণি নির্বাচন করলে পাঠ্যবইয়ের তালিকা ও ডাউনলোড লিংক দেখা যাবে।</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ৪. সায়েন্টিফিক ক্যালকুলেটর মডাল -->
   <div id="sciCalculatorModal" class="modal">
     <div class="modal-box" style="max-width: 440px;">
       <div class="modal-header">
@@ -477,80 +491,93 @@
     </div>
   </div>
 
-  <!-- ১ম - ১০ম শ্রেণির বোর্ড বই ডাউনলোড কর্নার -->
-  <div id="textbooksModal" class="modal">
-    <div class="modal-box" style="max-width: 600px;">
+  <!-- লাইভ পরীক্ষা মডাল (MCQ বা CQ আলাদা বা একসাথে সাবমিট) -->
+  <div id="liveExamModal" class="modal">
+    <div class="modal-box" style="max-width: 720px;">
       <div class="modal-header">
-        <h3 style="color: #0f766e;">📚 ১ম - ১০ম শ্রেণির সরকারি পাঠ্যবই ডাউনলোড</h3>
-        <button class="close-icon-btn" onclick="closeModal('textbooksModal')">×</button>
-      </div>
-      <p style="font-size:0.85rem; color:#64748b;">জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) অনুমোদিত সকল বিষয়ের মূল বই সরাসরি ডাউনলোড করুন:</p>
-      
-      <div style="margin: 8px 0;">
-        <select id="bookClassSelect" onchange="renderClassBooks()">
-          <option value="">শ্রেণি নির্বাচন করুন</option>
-          <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-          <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-          <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-          <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-          <option value="9">৯ম-১০ম শ্রেণি (SSC)</option>
-        </select>
+        <div>
+          <h3 id="liveSubjectTitle">পরীক্ষা</h3>
+          <span style="font-size:0.8rem; color:#64748b;">শিক্ষার্থী: <b id="liveStudentName"></b> | মোট MCQ মার্কস: <b id="liveTotalMarks"></b></span>
+        </div>
+        <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1rem;">MCQ সময়: <span id="timerDisplay">00:00</span></span>
       </div>
 
-      <div id="booksListContainer" style="max-height:360px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
-        <p style="text-align:center; color:#94a3b8; padding:20px;">শ্রেণি নির্বাচন করলে পাঠ্যবইয়ের তালিকা ও ডাউনলোড লিংক দেখা যাবে।</p>
+      <div class="exam-mode-nav">
+        <button id="examTabAll" class="exam-nav-btn active" onclick="switchExamSection('all')">উভয় পরীক্ষা (MCQ + CQ)</button>
+        <button id="examTabMcq" class="exam-nav-btn" onclick="switchExamSection('mcq')">শুধুমাত্র MCQ পরীক্ষা</button>
+        <button id="examTabCq" class="exam-nav-btn" onclick="switchExamSection('cq')">শুধুমাত্র CQ (লিখিত)</button>
+      </div>
+
+      <div id="mcqExamSection">
+        <h4 style="font-size:0.95rem; color:#1e3a8a; margin-bottom:8px;">🔘 MCQ বহুনির্বাচনী প্রশ্নমালা:</h4>
+        <div id="questionsRenderContainer" style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div>
+      </div>
+
+      <div id="cqExamSection" style="border:1.5px dashed #6366f1; padding:12px; border-radius:8px; background:#f5f3ff; margin-bottom:10px;">
+        <h4 style="font-size:0.95rem; color:#4338ca;">📝 CQ সৃজনশীল / লিখিত অংশ:</h4>
+        <p id="cqDescPrompt" style="font-size:0.85rem; color:#334155; margin:6px 0;"></p>
+        <div id="cqQuestionFileLink" style="margin:6px 0;"></div>
+        <hr style="margin:8px 0; border:0; border-top:1px dashed #cbd5e1;">
+        <label style="font-size:0.82rem; font-weight:700; color:#312e81;">উত্তরপত্র আপলোড করুন (PDF / Image):</label>
+        <input type="file" id="cqUploadFile" style="margin-top:4px; border:none; padding:4px;">
+        <small style="color:#64748b; font-size:0.75rem; display:block; margin-top:2px;">* শুধু CQ জমা দিতে চাইলে ফাইল সিলেক্ট করে নিচের বাটনে ক্লিক করুন।</small>
+      </div>
+
+      <div class="modal-btns">
+        <button class="btn btn-green" id="examSubmitBtn" onclick="submitLiveExam()">উত্তরপত্র জমা দিন</button>
       </div>
     </div>
   </div>
 
-  <!-- গণিত ও বিজ্ঞান সূত্র ভান্ডার -->
-  <div id="formulaModal" class="modal">
-    <div class="modal-box" style="max-width: 620px;">
+  <!-- পরীক্ষা যাচাইকরণ মডাল -->
+  <div id="examInitModal" class="modal">
+    <div class="modal-box" style="max-width: 420px;">
       <div class="modal-header">
-        <h3 style="color: #5b21b6;">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার (Formula Hub)</h3>
-        <button class="close-icon-btn" onclick="closeModal('formulaModal')">×</button>
+        <h3 data-i18n="examVerifyTitle">পরীক্ষা যাচাইকরণ</h3>
+        <button class="close-icon-btn" onclick="closeModal('examInitModal')">×</button>
       </div>
-      <div style="max-height:400px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
-        <div style="background:#f5f3ff; border-left:4px solid #7c3aed; padding:10px; border-radius:4px;">
-          <h4 style="color:#5b21b6;">বীজগণিত (Algebra)</h4>
-          <p style="font-size:0.88rem; font-family:monospace; margin-top:4px;">• (a + b)² = a² + 2ab + b²</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• (a - b)² = a² - 2ab + b²</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• a² - b² = (a + b)(a - b)</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• (a + b + c)² = a² + b² + c² + 2(ab + bc + ca)</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• a³ + b³ = (a + b)(a² - ab + b²)</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• a³ - b³ = (a - b)(a² + ab + b²)</p>
+      <input type="number" id="stExReg" placeholder="রেজিস্ট্রেশন নম্বর">
+      <select id="stExClass">
+        <option value="">শ্রেণি নির্বাচন করুন</option>
+        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
+        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
+        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
+      </select>
+      <input type="text" id="stExSubject" placeholder="বিষয়ের নাম (যেমন: বাংলা)">
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('examInitModal')">ক্যানসেল</button>
+        <button class="btn btn-blue" style="width:auto;" onclick="loadAndStartExam()">পরীক্ষা শুরু করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- পরীক্ষা মূল্যায়ন মডাল -->
+  <div id="examReviewModal" class="modal">
+    <div class="modal-box" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 style="color:#16a34a;">পরীক্ষার ফলাফল মূল্যায়ন</h3>
+        <button class="close-icon-btn" onclick="closeModal('examReviewModal')">×</button>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; text-align:center; margin:8px 0;">
+        <div style="background:#f0fdf4; padding:8px; border-radius:8px; border:1px solid #bbf7d0;">
+          <span style="font-size:0.75rem; color:#166534;">সঠিক</span>
+          <h3 id="resCorrect" style="color:#15803d; font-size:1.2rem;">0</h3>
         </div>
-        <div style="background:#fffbeb; border-left:4px solid #d97706; padding:10px; border-radius:4px;">
-          <h4 style="color:#b45309;">ত্রিকোণমিতি (Trigonometry)</h4>
-          <p style="font-size:0.88rem; margin-top:4px;">• sin²θ + cos²θ = 1</p>
-          <p style="font-size:0.88rem;">• sec²θ - tan²θ = 1 &nbsp;|&nbsp; cosec²θ - cot²θ = 1</p>
-          <p style="font-size:0.88rem;">• tanθ = sinθ / cosθ &nbsp;|&nbsp; cotθ = cosθ / sinθ</p>
-          <p style="font-size:0.88rem;">• sin(90° - θ) = cosθ &nbsp;|&nbsp; cos(90° - θ) = sinθ</p>
+        <div style="background:#fef2f2; padding:8px; border-radius:8px; border:1px solid #fecaca;">
+          <span style="font-size:0.75rem; color:#991b1b;">ভুল</span>
+          <h3 id="resWrong" style="color:#b91c1c; font-size:1.2rem;">0</h3>
         </div>
-        <div style="background:#eff6ff; border-left:4px solid #2563eb; padding:10px; border-radius:4px;">
-          <h4 style="color:#1e40af;">জ্যামিতি ও পরিমিতি (Mensuration)</h4>
-          <p style="font-size:0.88rem; margin-top:4px;">• ত্রিভুজের ক্ষেত্রফল = ½ × ভূমি × উচ্চতা</p>
-          <p style="font-size:0.88rem;">• বিষমবাহু ত্রিভুজ = √[s(s-a)(s-b)(s-c)], যেখানে s = (a+b+c)/2</p>
-          <p style="font-size:0.88rem;">• সমবাহু ত্রিভুজের ক্ষেত্রফল = (√3 / 4) × a²</p>
-          <p style="font-size:0.88rem;">• বৃত্তের ক্ষেত্রফল = πr² &nbsp;|&nbsp; পরিধি = 2πr (π ≈ 3.1416)</p>
-          <p style="font-size:0.88rem;">• সিলিন্ডারের আয়তন = πr²h &nbsp;|&nbsp; বক্রতলের ক্ষেত্রফল = 2πrh</p>
-        </div>
-        <div style="background:#f0fdf4; border-left:4px solid #16a34a; padding:10px; border-radius:4px;">
-          <h4 style="color:#15803d;">পদার্থবিজ্ঞান (Physics)</h4>
-          <p style="font-size:0.88rem; margin-top:4px; font-family:monospace;">• গতি: v = u + at &nbsp;|&nbsp; s = ut + ½at² &nbsp;|&nbsp; v² = u² + 2as</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• নিউটনের গতিসূত্র: F = ma &nbsp;|&nbsp; ওজন: W = mg (g = 9.8 m/s²)</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• গতিশক্তি: Ek = ½mv² &nbsp;|&nbsp; বিভব শক্তি: Ep = mgh</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• কাজ: W = Fs &nbsp;|&nbsp; ক্ষমতা: P = W / t</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• ওহমের সূত্র: V = IR &nbsp;|&nbsp; রোধের ক্ষমতা: P = VI = I²R</p>
-        </div>
-        <div style="background:#fdf2f8; border-left:4px solid #db2777; padding:10px; border-radius:4px;">
-          <h4 style="color:#9d174d;">রসায়ন (Chemistry)</h4>
-          <p style="font-size:0.88rem; margin-top:4px; font-family:monospace;">• মোল সংখ্যা: n = w / M = V / 22.4L = N / NA (NA = 6.023 × 10²³)</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• মোলারিটি: S = (1000 × w) / (M × V(mL))</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• বয়েলের সূত্র: P₁V₁ = P₂V₂ &nbsp;|&nbsp; চার্লসের সূত্র: V₁/T₁ = V₂/T₂</p>
-          <p style="font-size:0.88rem; font-family:monospace;">• আদর্শ গ্যাস সমীকরণ: PV = nRT (R = 0.0821 L·atm/mol·K)</p>
+        <div style="background:#eff6ff; padding:8px; border-radius:8px; border:1px solid #bfdbfe;">
+          <span style="font-size:0.75rem; color:#1e40af;">মোট নম্বর</span>
+          <h3 id="resTotal" style="color:#1d4ed8; font-size:1.2rem;">0</h3>
         </div>
       </div>
+
+      <div id="reviewQuestionsContainer" style="max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
+      <button class="btn btn-blue" style="margin-top:8px;" onclick="closeModal('examReviewModal')">সম্পন্ন করুন</button>
     </div>
   </div>
 
@@ -662,6 +689,160 @@
     </div>
   </div>
 
+  <!-- রেজিস্ট্রেশন মডাল -->
+  <div id="regModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>শিক্ষার্থী রেজিস্ট্রেশন (একবার প্রযোজ্য)</h3>
+        <button class="close-icon-btn" onclick="closeModal('regModal')">×</button>
+      </div>
+      <input type="text" id="regName" placeholder="শিক্ষার্থীর নাম">
+      <input type="text" id="regFather" placeholder="পিতার নাম">
+      <input type="text" id="regMother" placeholder="মাতার নাম">
+      <select id="regClass">
+        <option value="">শ্রেণি নির্বাচন করুন</option>
+        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
+        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
+        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
+      </select>
+      <input type="number" id="regNo" placeholder="রেজিস্ট্রেশন নম্বর">
+      <input type="tel" id="regMobile" placeholder="মোবাইল নম্বর">
+      <input type="password" id="regPin" placeholder="লগইন পিন সেট করুন">
+      <div style="border:1px dashed #94a3b8; padding:8px; border-radius:6px; text-align:center;">
+        <label style="font-size:0.8rem;">📷 শিক্ষার্থীর ছবি আপলোড:</label>
+        <input type="file" id="regPhoto" accept="image/*" style="border:none;">
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('regModal')">ক্যানসেল</button>
+        <button class="btn btn-purple" style="width:auto;" onclick="submitRegistration()">সংরক্ষণ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- লগইন মডাল -->
+  <div id="loginModal" class="modal">
+    <div class="modal-box" style="max-width:380px;">
+      <div class="modal-header">
+        <h3>শিক্ষার্থী লগইন</h3>
+        <button class="close-icon-btn" onclick="closeModal('loginModal')">×</button>
+      </div>
+      <input type="number" id="logReg" placeholder="রেজিস্ট্রেশন নম্বর">
+      <input type="password" id="logPin" placeholder="পিন কোড">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+        <button type="button" style="background:none; border:none; color:#2563eb; cursor:pointer; font-size:0.8rem; text-decoration:underline;" onclick="openForgotPinModal()">পিন ভুলে গেছেন?</button>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('loginModal')">ক্যানসেল</button>
+        <button class="btn btn-amber" style="width:auto;" onclick="studentLogin()">লগইন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ফরগেট পিন মডাল -->
+  <div id="forgotPinModal" class="modal">
+    <div class="modal-box" style="max-width:380px;">
+      <div class="modal-header">
+        <h3>পিন রিসেট করুন</h3>
+        <button class="close-icon-btn" onclick="closeModal('forgotPinModal')">×</button>
+      </div>
+      <input type="number" id="fpReg" placeholder="রেজিস্ট্রেশন নম্বর">
+      <input type="tel" id="fpMobile" placeholder="রেজিস্টার্ড মোবাইল নম্বর">
+      <input type="password" id="fpNewPin" placeholder="নতুন পিন কোড">
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('forgotPinModal')">ক্যানসেল</button>
+        <button class="btn btn-blue" style="width:auto;" onclick="submitForgotPin()">পিন পরিবর্তন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- প্রোফাইল ও ট্রান্সক্রিপ্ট মডাল -->
+  <div id="profileModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>প্রোফাইল ও ফলাফল ট্রান্সক্রিপ্ট</h3>
+        <button class="close-icon-btn" onclick="closeModal('profileModal')">×</button>
+      </div>
+      <input type="number" id="pReg" placeholder="রেজিস্ট্রেশন নম্বর দিন">
+      <select id="pClass">
+        <option value="">শ্রেণি নির্বাচন করুন</option>
+        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
+        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
+        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
+      </select>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('profileModal')">ক্যানসেল</button>
+        <button class="btn btn-purple" style="width:auto;" onclick="loadFullProfile()">প্রোফাইল দেখুন</button>
+      </div>
+      <div id="profileDisplay" class="hidden" style="margin-top:10px;">
+        <div style="text-align:center;">
+          <img id="profileAvatar" src="" class="profile-photo" alt="Profile Photo">
+          <div>
+            <label for="changePhotoInput" style="font-size:0.8rem; color:#2563eb; cursor:pointer; text-decoration:underline;">📷 নতুন ছবি আপলোড করুন</label>
+            <input type="file" id="changePhotoInput" accept="image/*" style="display:none;" onchange="uploadNewProfilePhoto()">
+          </div>
+        </div>
+        <div id="studentDetails" style="font-size:0.88rem; line-height:1.5; margin-top:8px;"></div>
+        <h4 style="margin-top:8px; font-size:0.9rem;">📜 পূর্ববর্তী পরীক্ষার ফলাফল:</h4>
+        <ul id="examHistoryList" style="list-style:none; font-size:0.82rem; max-height:120px; overflow-y:auto; border:1px solid #e2e8f0; padding:6px; border-radius:6px;"></ul>
+        <button class="btn btn-green" style="margin-top:8px;" onclick="generateSscMarksheet()">📄 SSC Mark Sheet (PDF Print)</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="marksheetModal" class="modal">
+    <div class="modal-box marksheet-modal" id="marksheetContainer">
+      <div class="modal-header no-print">
+        <span style="font-weight: 700; color: #1e3a8a;">Academic Transcript</span>
+        <button class="close-icon-btn" onclick="closeModal('marksheetModal')">×</button>
+      </div>
+
+      <div class="marksheet-header">
+        <h2>জ্ঞান.com শিক্ষা বোর্ড</h2>
+        <p>SECONDARY SCHOOL ACADEMIC TRANSCRIPT</p>
+      </div>
+
+      <div class="st-info-grid">
+        <div>
+          <p><b>Student Name:</b> <span id="msName"></span></p>
+          <p><b>Father's Name:</b> <span id="msFather"></span></p>
+          <p><b>Mother's Name:</b> <span id="msMother"></span></p>
+          <p><b>Registration No:</b> <span id="msReg"></span></p>
+          <p><b>Class:</b> <span id="msClass"></span></p>
+        </div>
+        <div style="text-align: right;">
+          <img id="msPhoto" class="profile-photo" style="margin: 0 0 0 auto; width: 65px; height: 65px;" alt="Photo">
+        </div>
+      </div>
+
+      <table class="ms-table">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>MCQ Score</th>
+            <th>CQ Mark</th>
+            <th>Total Score</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody id="msTableBody"></tbody>
+      </table>
+
+      <div style="margin-top: 20px; display: flex; justify-content: space-between; font-size: 0.8rem; padding-top: 15px; border-top: 1px dashed #64748b;">
+        <span>Controller of Examinations</span>
+        <span>Date: 06/09/2026</span>
+      </div>
+
+      <div class="no-print" style="margin-top: 12px; display: flex; justify-content: flex-end; gap: 6px;">
+        <button class="btn" style="background:#cbd5e1; color:#334155; width:auto;" onclick="closeModal('marksheetModal')">বন্ধ করুন</button>
+        <button class="btn btn-blue" style="width:auto;" onclick="window.print()">🖨️ Print / PDF</button>
+      </div>
+    </div>
+  </div>
+
   <!-- এডমিন গেট -->
   <div id="adminGateModal" class="modal">
     <div class="modal-box" style="max-width: 380px;">
@@ -677,7 +858,7 @@
     </div>
   </div>
 
-  <!-- এডমিন কন্ট্রোল প্যানেল -->
+  <!-- এডমিন কন্ট্রোল প্যানেল (পূর্বের সম্পূর্ণ ফাংশন অপরিবর্তিত) -->
   <div id="adminPanelModal" class="modal">
     <div class="modal-box admin-panel">
       <div class="modal-header">
@@ -805,183 +986,6 @@
     </div>
   </div>
 
-  <div id="examReviewModal" class="modal">
-    <div class="modal-box" style="max-width: 650px;">
-      <div class="modal-header">
-        <h3 style="color:#16a34a;">পরীক্ষার ফলাফল মূল্যায়ন</h3>
-        <button class="close-icon-btn" onclick="closeModal('examReviewModal')">×</button>
-      </div>
-
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; text-align:center; margin:8px 0;">
-        <div style="background:#f0fdf4; padding:8px; border-radius:8px; border:1px solid #bbf7d0;">
-          <span style="font-size:0.75rem; color:#166534;">সঠিক</span>
-          <h3 id="resCorrect" style="color:#15803d; font-size:1.2rem;">0</h3>
-        </div>
-        <div style="background:#fef2f2; padding:8px; border-radius:8px; border:1px solid #fecaca;">
-          <span style="font-size:0.75rem; color:#991b1b;">ভুল</span>
-          <h3 id="resWrong" style="color:#b91c1c; font-size:1.2rem;">0</h3>
-        </div>
-        <div style="background:#eff6ff; padding:8px; border-radius:8px; border:1px solid #bfdbfe;">
-          <span style="font-size:0.75rem; color:#1e40af;">মোট নম্বর</span>
-          <h3 id="resTotal" style="color:#1d4ed8; font-size:1.2rem;">0</h3>
-        </div>
-      </div>
-
-      <div id="reviewQuestionsContainer" style="max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
-      <button class="btn btn-blue" style="margin-top:8px;" onclick="closeModal('examReviewModal')">সম্পন্ন করুন</button>
-    </div>
-  </div>
-
-  <div id="regModal" class="modal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3>শিক্ষার্থী রেজিস্ট্রেশন (একবার প্রযোজ্য)</h3>
-        <button class="close-icon-btn" onclick="closeModal('regModal')">×</button>
-      </div>
-      <input type="text" id="regName" placeholder="শিক্ষার্থীর নাম">
-      <input type="text" id="regFather" placeholder="পিতার নাম">
-      <input type="text" id="regMother" placeholder="মাতার নাম">
-      <select id="regClass">
-        <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
-      </select>
-      <input type="number" id="regNo" placeholder="রেজিস্ট্রেশন নম্বর">
-      <input type="tel" id="regMobile" placeholder="মোবাইল নম্বর">
-      <input type="password" id="regPin" placeholder="লগইন পিন সেট করুন">
-      <div style="border:1px dashed #94a3b8; padding:8px; border-radius:6px; text-align:center;">
-        <label style="font-size:0.8rem;">📷 শিক্ষার্থীর ছবি আপলোড:</label>
-        <input type="file" id="regPhoto" accept="image/*" style="border:none;">
-      </div>
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('regModal')">ক্যানসেল</button>
-        <button class="btn btn-purple" style="width:auto;" onclick="submitRegistration()">সংরক্ষণ</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="loginModal" class="modal">
-    <div class="modal-box" style="max-width:380px;">
-      <div class="modal-header">
-        <h3>শিক্ষার্থী লগইন</h3>
-        <button class="close-icon-btn" onclick="closeModal('loginModal')">×</button>
-      </div>
-      <input type="number" id="logReg" placeholder="রেজিস্ট্রেশন নম্বর">
-      <input type="password" id="logPin" placeholder="পিন কোড">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-        <button type="button" style="background:none; border:none; color:#2563eb; cursor:pointer; font-size:0.8rem; text-decoration:underline;" onclick="openForgotPinModal()">পিন ভুলে গেছেন?</button>
-      </div>
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('loginModal')">ক্যানসেল</button>
-        <button class="btn btn-amber" style="width:auto;" onclick="studentLogin()">লগইন</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="forgotPinModal" class="modal">
-    <div class="modal-box" style="max-width:380px;">
-      <div class="modal-header">
-        <h3>পিন রিসেট করুন</h3>
-        <button class="close-icon-btn" onclick="closeModal('forgotPinModal')">×</button>
-      </div>
-      <input type="number" id="fpReg" placeholder="রেজিস্ট্রেশন নম্বর">
-      <input type="tel" id="fpMobile" placeholder="রেজিস্টার্ড মোবাইল নম্বর">
-      <input type="password" id="fpNewPin" placeholder="নতুন পিন কোড">
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('forgotPinModal')">ক্যানসেল</button>
-        <button class="btn btn-blue" style="width:auto;" onclick="submitForgotPin()">পিন পরিবর্তন</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="profileModal" class="modal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3>প্রোফাইল ও ফলাফল ট্রান্সক্রিপ্ট</h3>
-        <button class="close-icon-btn" onclick="closeModal('profileModal')">×</button>
-      </div>
-      <input type="number" id="pReg" placeholder="রেজিস্ট্রেশন নম্বর দিন">
-      <select id="pClass">
-        <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
-      </select>
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('profileModal')">ক্যানসেল</button>
-        <button class="btn btn-purple" style="width:auto;" onclick="loadFullProfile()">প্রোফাইল দেখুন</button>
-      </div>
-      <div id="profileDisplay" class="hidden" style="margin-top:10px;">
-        <div style="text-align:center;">
-          <img id="profileAvatar" src="" class="profile-photo" alt="Profile Photo">
-          <div>
-            <label for="changePhotoInput" style="font-size:0.8rem; color:#2563eb; cursor:pointer; text-decoration:underline;">📷 নতুন ছবি আপলোড করুন</label>
-            <input type="file" id="changePhotoInput" accept="image/*" style="display:none;" onchange="uploadNewProfilePhoto()">
-          </div>
-        </div>
-        <div id="studentDetails" style="font-size:0.88rem; line-height:1.5; margin-top:8px;"></div>
-        <h4 style="margin-top:8px; font-size:0.9rem;">📜 পূর্ববর্তী পরীক্ষার ফলাফল:</h4>
-        <ul id="examHistoryList" style="list-style:none; font-size:0.82rem; max-height:120px; overflow-y:auto; border:1px solid #e2e8f0; padding:6px; border-radius:6px;"></ul>
-        <button class="btn btn-green" style="margin-top:8px;" onclick="generateSscMarksheet()">📄 SSC Mark Sheet (PDF Print)</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="marksheetModal" class="modal">
-    <div class="modal-box marksheet-modal" id="marksheetContainer">
-      <div class="modal-header no-print">
-        <span style="font-weight: 700; color: #1e3a8a;">Academic Transcript</span>
-        <button class="close-icon-btn" onclick="closeModal('marksheetModal')">×</button>
-      </div>
-
-      <div class="marksheet-header">
-        <h2>জ্ঞান.com শিক্ষা বোর্ড</h2>
-        <p>SECONDARY SCHOOL ACADEMIC TRANSCRIPT</p>
-      </div>
-
-      <div class="st-info-grid">
-        <div>
-          <p><b>Student Name:</b> <span id="msName"></span></p>
-          <p><b>Father's Name:</b> <span id="msFather"></span></p>
-          <p><b>Mother's Name:</b> <span id="msMother"></span></p>
-          <p><b>Registration No:</b> <span id="msReg"></span></p>
-          <p><b>Class:</b> <span id="msClass"></span></p>
-        </div>
-        <div style="text-align: right;">
-          <img id="msPhoto" class="profile-photo" style="margin: 0 0 0 auto; width: 65px; height: 65px;" alt="Photo">
-        </div>
-      </div>
-
-      <table class="ms-table">
-        <thead>
-          <tr>
-            <th>Subject</th>
-            <th>MCQ Score</th>
-            <th>CQ Mark</th>
-            <th>Total Score</th>
-            <th>Grade</th>
-          </tr>
-        </thead>
-        <tbody id="msTableBody"></tbody>
-      </table>
-
-      <div style="margin-top: 20px; display: flex; justify-content: space-between; font-size: 0.8rem; padding-top: 15px; border-top: 1px dashed #64748b;">
-        <span>Controller of Examinations</span>
-        <span>Date: 06/09/2026</span>
-      </div>
-
-      <div class="no-print" style="margin-top: 12px; display: flex; justify-content: flex-end; gap: 6px;">
-        <button class="btn" style="background:#cbd5e1; color:#334155; width:auto;" onclick="closeModal('marksheetModal')">বন্ধ করুন</button>
-        <button class="btn btn-blue" style="width:auto;" onclick="window.print()">🖨️ Print / PDF</button>
-      </div>
-    </div>
-  </div>
-
   <div id="feedbackModal" class="modal">
     <div class="modal-box">
       <div class="modal-header">
@@ -997,6 +1001,7 @@
     </div>
   </div>
 
+  <!-- স্ক্রিপ্ট অংশ (১০০% ক্লিন ও ডুপ্লিকেশন মুক্ত) -->
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzbYG4HmvglvpANyzUmoeLE3YbQccgJIOBIlD9rTl67qEQ2xkcPW7v8unHm1YZDHEM/exec";
     let activeExamData = null;
@@ -1009,7 +1014,294 @@
     let currentGkTab = 'bd';
     let currentExamSection = 'all';
 
-    // পরীক্ষা সেকশন পরিবর্তন (MCQ or CQ or Both)
+    // ১. এনসিটিবি পাঠ্যবই তালিকা
+    const nctbBooks = {
+      "1": [
+        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "2": [
+        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "3": [
+        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "ইসলাম ও নৈতিক শিক্ষা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "4": [
+        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "5": [
+        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "6": [
+        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বিজ্ঞান (অনুসন্ধানী ও অনুশীলন)", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "ইতিহাস ও সামাজিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "ডিজিটাল প্রযুক্তি", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "7": [
+        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "ডিজিটাল প্রযুক্তি", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "8": [
+        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
+        { name: "ইতিহাস ও সামাজিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
+      ],
+      "9": [
+        { name: "বাংলা সাহিত্য ও সহপাঠ", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "English For Today & Grammar", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "সাধারণ গণিত (General Math)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "উচ্চতর গণিত (Higher Math)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "পদার্থবিজ্ঞান (Physics)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "রসায়ন (Chemistry)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "জীববিজ্ঞান (Biology)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" }
+      ]
+    };
+
+    function renderClassBooks() {
+      const cls = document.getElementById('bookClassSelect').value;
+      const container = document.getElementById('booksListContainer');
+      if (!cls || !nctbBooks[cls]) {
+        container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:20px;">শ্রেণি নির্বাচন করুন।</p>`;
+        return;
+      }
+
+      container.innerHTML = nctbBooks[cls].map(b => `
+        <div class="note-item" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h4 style="color:#0f766e;">📖 ${b.name}</h4>
+            <span style="font-size:0.75rem; color:#64748b;">জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB)</span>
+          </div>
+          <a href="${b.url}" target="_blank" class="btn btn-teal" style="width:auto; padding:6px 14px; font-size:0.8rem; text-decoration:none;">📥 ডাউনলোড</a>
+        </div>
+      `).join('');
+    }
+
+    // ২. সাধারণ জ্ঞান ডাটাবেজ
+    const gkDatabase = {
+      bd: [
+        {
+          category: "প্রাচীন কাল ও ঐতিহাসিক পটভূমি",
+          items: [
+            { q: "বাংলার প্রাচীনতম জনপদ কোনটি?", a: "পুন্ড্র (রাজধানী: পুন্ড্রনগর, বর্তমান বগুড়ার মহাস্থানগড়)" },
+            { q: "প্রাচীন বাংলার প্রথম স্বাধীন ও সার্বভৌম রাজা কে ছিলেন?", a: "শশাঙ্ক (গৌড়ের রাজা)" },
+            { q: "বাংলার প্রথম বংশানুক্রমিক রাজবংশ কোনটি?", a: "পাল বংশ (প্রতিষ্ঠাতা: গোপাল, ৭৮ বছর রাজত্ব)" },
+            { q: "বাংলায় মুসলিম শাসনের সূচনা করেন কে?", a: "ইখতিয়ার উদ্দিন মুহম্মদ বখতিয়ার খলজী (১২০৪ সালে লক্ষ্মণ সেনকে পরাজিত করে)" },
+            { q: "পলাশীর যুদ্ধ কবে এবং কার কার মধ্যে সংঘটিত হয়?", a: "২৩ জুন ১৭৫৭; নবাব সিরাজউদ্দৌলা এবং লর্ড ক্লাইভের ব্রিটিশ কোম্পানির মধ্যে" }
+          ]
+        },
+        {
+          category: "ভাষা আন্দোলন ও স্বাধীনতা সংগ্রাম",
+          items: [
+            { q: "তমুদ্দুন মজলিস কার নেতৃত্বে কবে গঠিত হয়েছিল?", a: "অধ্যাপক আবুল কাসেমের নেতৃত্বে ২ সেপ্টেম্বর ১৯৪৭" },
+            { q: "ইউনেস্কো ২১শে ফেব্রুয়ারিকে 'আন্তর্জাতিক মাতৃভাষা দিবস' হিসেবে স্বীকৃতি দেয় কবে?", a: "১৭ নভেম্বর ১৯৯৯ (কার্যকর ২০০০ সাল থেকে)" },
+            { q: "ঐতিহাসিক ৬-দফা দাবি কোথায় এবং কবে উত্থাপন করা হয়?", a: "৫-৬ ফেব্রুয়ারি ১৯৬৬ সালে লাহোরে বঙ্গবন্ধু শেখ মুজিবুর রহমান উত্থাপন করেন" },
+            { q: "আগরতলা ষড়যন্ত্র মামলার অফিসিয়াল নাম কী ছিল?", a: "রাষ্ট্র বনাম শেখ মুজিবুর রহমান ও অন্যান্য (মোট আসামি ৩৫ জন)" },
+            { q: "শেখ মুজিবুর রহমানকে 'বঙ্গবন্ধু' উপাধি দেওয়া হয় কবে?", a: "২৩ ফেব্রুয়ারি ১৯৬৯ (রেসকোর্স ময়দানে তোফায়েল আহমেদ কর্তৃক)" }
+          ]
+        },
+        {
+          category: "মহান মুক্তিযুদ্ধ ও সেক্টর কমান্ড",
+          items: [
+            { q: "মুজিবনগর সরকার কবে গঠিত ও শপথ গ্রহণ করে?", a: "গঠিত: ১০ এপ্রিল ১৯৭১; শপথ গ্রহণ: ১৭ এপ্রিল ১৯৭১ (মেহেরপুরের বৈদ্যনাথতলায়)" },
+            { q: "মুজিবনগর সরকারের প্রধানমন্ত্রী কে ছিলেন?", a: "তাজউদ্দীন আহমদ (রাষ্ট্রপতি: বঙ্গবন্ধু শেখ মুজিবুর রহমান)" },
+            { q: "মুক্তিযুদ্ধে বাংলাদেশকে কয়টি সেক্টরে ভাগ করা হয়েছিল?", a: "১১টি সেক্টর এবং ৬৪টি সাব-সেক্টর (১০ নম্বর সেক্টর ছিল নৌ সেক্টর)" },
+            { q: "মুক্তিযুদ্ধে বীরত্বসূচক রাষ্ট্রীয় খেতাব কয়টি?", a: "৪টি (বীরশ্রেষ্ঠ ৭ জন, বীরউত্তম ৬৮ জন, বীরবিক্রম ১৭৫ জন, বীরপ্রতীক ৪২৬ জন)" },
+            { q: "বীরশ্রেষ্ঠদের মধ্যে সর্বপ্রথম ও সর্বশেষ শহীদ হন কে?", a: "প্রথম শহীদ: মুন্সী আবদুর রউফ; শেষ শহীদ: ক্যাপ্টেন মহিউদ্দীন জাহাঙ্গীর" },
+            { q: "বাংলাদেশকে প্রথম স্বীকৃতি দানকারী দেশ কোনটি?", a: "ভুটান (৬ ডিসেম্বর ১৯৭১ সকালে, ভারত বিকেলে)" }
+          ]
+        },
+        {
+          category: "সংবিধান ও রাষ্ট্রব্যবস্থা",
+          items: [
+            { q: "বাংলাদেশের সংবিধান কবে গৃহীত এবং কার্যকর হয়?", a: "গৃহীত: ৪ নভেম্বর ১৯৭২; কার্যকর: ১৬ ডিসেম্বর ১৯৭২" },
+            { q: "সংবিধানের মূলনীতি কয়টি?", a: "৪টি (জাতীয়তাবাদ, সমাজতন্ত্র, গণতন্ত্র এবং ধর্মনিরপেক্ষতা)" },
+            { q: "সংবিধানে মোট কতটি অনুচ্ছেদ, ভাগ ও তফসিল রয়েছে?", a: "১৫৩টি অনুচ্ছেদ, ১১টি ভাগ এবং ৭টি তফসিল" },
+            { q: "সংবিধানের অভিভাবক ও ব্যাখ্যাকারক কে?", a: "বাংলাদেশ সুপ্রিম কোর্ট" },
+            { q: "জাতীয় সংসদের সংরক্ষিত নারী আসন সংখ্যা কতটি?", a: "৫০টি (সাধারণ আসন ৩০০টি, মোট আসন ৩৫০টি)" }
+          ]
+        },
+        {
+          category: "ভৌগোলিক তথ্য ও জাতীয় অর্জন",
+          items: [
+            { q: "বাংলাদেশের আয়তন এবং সমুদ্রসীমা কত?", a: "আয়তন: ১,৪৭,৫৭০ বর্গ কিমি; সমুদ্রসীমা: ১,১৮,৮১৩ বর্গ কিমি" },
+            { q: "বাংলাদেশের একমাত্র পাহাড়ি দ্বীপ এবং প্রবাল দ্বীপ কোনটি?", a: "পাহাড়ি দ্বীপ: মহেশখালী; প্রবাল দ্বীপ: সেন্ট মার্টিন" },
+            { q: "পদ্মা, মেঘনা ও যমুনা নদী কোথায় মিলিত হয়েছে?", a: "পদ্মা ও যমুনা গোয়ালন্দে; পদ্মা ও মেঘনা চাঁদপুরে" },
+            { q: "বঙ্গবন্ধু স্যাটেলাইট-১ কবে উৎক্ষেপণ করা হয়?", a: "১১ মে ২০১৮ (ফ্লোরিডা থেকে, বাংলাদেশ ৫৭তম দেশ)" },
+            { q: "পদ্মা সেতুর দৈর্ঘ্য কত এবং কবে উদ্বোধন করা হয়?", a: "দৈর্ঘ্য ৬.১৫ কিমি (স্প্যান ৪১টি, পিলার ৪২টি); উদ্বোধন: ২৫ জুন ২০২২" },
+            { q: "বাংলাদেশের প্রথম মেট্রোরেল (MRT Line-6) কবে চালু হয়?", a: "২৮ ডিসেম্বর ২০২২ (উত্তরা থেকে আগারগাঁও অংশ)" },
+            { q: "কর্ণফুলী টানেল (বঙ্গবন্ধু টানেল) এর দৈর্ঘ্য কত?", a: "৩.৩২ কিলোমিটার (নদীর তলদেশে দক্ষিণ এশিয়ার প্রথম টানেল)" }
+          ]
+        }
+      ],
+      world: [
+        {
+          category: "আন্তর্জাতিক সংস্থা ও জাতিসংঘ",
+          items: [
+            { q: "জাতিসংঘ (UN) কবে প্রতিষ্ঠিত হয় এবং এর সদর দপ্তর কোথায়?", a: "২৪ অক্টোবর ১৯৪৫; সদর দপ্তর: নিউইয়র্ক, যুক্তরাষ্ট্র" },
+            { q: "নিরাপত্তা পরিষদের স্থায়ী সদস্য দেশ কয়টি?", a: "৫টি (যুক্তরাষ্ট্র, যুক্তরাজ্য, রাশিয়া, চীন ও ফ্রান্স - ভেটো ক্ষমতাসম্পন্ন)" },
+            { q: "আন্তর্জাতিক বিচারালয় (ICJ) এর সদর দপ্তর কোথায়?", a: "হেগ, নেদারল্যান্ডস (মোট বিচারক ১৫ জন, মেয়াদ ৯ বছর)" },
+            { q: "সার্ক (SAARC) এর স্থায়ী সচিবালয় কোথায়?", a: "কাঠমান্ডু, নেপাল (গঠন: ৮ ডিসেম্বর ১৯৮৫ ঢাকায়)" },
+            { q: "বিশ্ব স্বাস্থ্য সংস্থা (WHO) এবং ইউনেস্কো (UNESCO) এর সদর দপ্তর কোথায়?", a: "WHO: জেনেভা, সুইজারল্যান্ড; UNESCO: প্যারিস, ফ্রান্স" },
+            { q: "ন্যাটো (NATO) কী ধরণের জোট এবং বর্তমান সদস্য কত?", a: "সামরিক জোট (প্রতিষ্ঠা: ১৯৪৯); বর্তমান সদস্য ৩২টি" }
+          ]
+        },
+        {
+          category: "বিশ্ব ইতিহাস ও যুগান্তকারী ঘটনা",
+          items: [
+            { q: "প্রথম ও দ্বিতীয় বিশ্বযুদ্ধ কবে সংঘটিত হয়?", a: "১ম বিশ্বযুদ্ধ: ১৯১৪ - ১৯১৮; ২য় বিশ্বযুদ্ধ: ১৯৩৯ - ১৯৪৫" },
+            { q: "ফরাসি বিপ্লব কবে সংঘটিত হয়েছিল?", a: "১৭৮৯ সালে (স্লোগান: সাম্য, মৈত্রী ও স্বাধীনতা)" },
+            { q: "আমেরিকার স্বাধীনতা দিবস কবে?", a: "৪ জুলাই ১৭৭৬ (ঘোষক: টমাস জেফারসন)" },
+            { q: "হিরোশিমা ও নাগাসাকিতে পারমাণবিক বোমা ফেলা হয়েছিল কবে?", a: "হিরোশিমা: ৬ আগস্ট ১৯৪৫; নাগাসাকি: ৯ আগস্ট ১৯৪৫" }
+          ]
+        },
+        {
+          category: "ভৌগোলিক সীমানা ও মহাদেশ",
+          items: [
+            { q: "বিশ্বের বৃহত্তম এবং ক্ষুদ্রতম দেশ কোনটি?", a: "বৃহত্তম: রাশিয়া (আয়তনে), ক্ষুদ্রতম: ভ্যাটিকান সিটি" },
+            { q: "বিশ্বের দীর্ঘতম নদী এবং গভীরতম হ্রদ কোনটি?", a: "দীর্ঘতম নদী: নীলনদ (৬,৬৫০ কিমি); গভীরতম হ্রদ: বৈকাল হ্রদ" },
+            { q: "ম্যাকমোহন লাইন এবং ডুরান্ড লাইন কোন কোন দেশের সীমানা?", a: "ম্যাকমোহন লাইন: ভারত-চীন; ডুরান্ড লাইন: পাকিস্তান-আফগানিস্তান" },
+            { q: "বিশ্বের সর্বোচ্চ পর্বতশৃঙ্গ মাউন্ট এভারেস্ট কোথায় অবস্থিত?", a: "নেপাল ও তিব্বত সীমান্তে (উচ্চতা: ৮,৮৪৮.৮৬ মিটার)" }
+          ]
+        },
+        {
+          category: "পুরস্কার, বিজ্ঞান ও প্রযুক্তি",
+          items: [
+            { q: "নোবেল পুরস্কার কয়টি বিষয়ে দেওয়া হয়?", a: "৬টি বিষয়ে (পদার্থ, রসায়ন, চিকিৎসা, সাহিত্য, শান্তি ও অর্থনীতি)" },
+            { q: "শান্তিতে নোবেল কোথা থেকে দেওয়া হয়?", a: "নরওয়ের অসলো থেকে (বাকি ৫টি স্টকহোম, সুইডেন থেকে)" },
+            { q: "কম্পিউটারের জনক এবং আধুনিক কম্পিউটারের জনক কে?", a: "জনক: চার্লস ব্যাবেজ; আধুনিক জনক: অ্যালান টুরিং" },
+            { q: "কৃত্রিম বুদ্ধিমত্তা (AI) এর জনক কে?", a: "জন ম্যাককার্থি (John McCarthy)" },
+            { q: "সূর্য থেকে পৃথিবীতে আলো আসতে কত সময় লাগে?", a: "৮ মিনিট ২০ সেকেন্ড" }
+          ]
+        }
+      ]
+    };
+
+    function switchGkTab(tab) {
+      currentGkTab = tab;
+      document.getElementById('gkTabBd').classList.toggle('active', tab === 'bd');
+      document.getElementById('gkTabWorld').classList.toggle('active', tab === 'world');
+      document.getElementById('gkSearchInput').value = "";
+      renderGk(tab);
+    }
+
+    function renderGk(tab, filter = "") {
+      const container = document.getElementById('gkContentContainer');
+      const categories = gkDatabase[tab] || [];
+      const query = filter.toLowerCase().trim();
+
+      let html = "";
+      let foundCount = 0;
+
+      categories.forEach(cat => {
+        const matchedItems = cat.items.filter(it => 
+          it.q.toLowerCase().includes(query) || it.a.toLowerCase().includes(query) || cat.category.toLowerCase().includes(query)
+        );
+
+        if (matchedItems.length > 0) {
+          foundCount += matchedItems.length;
+          html += `
+            <div class="gk-cat-section">
+              <div class="gk-cat-title">📁 ${cat.category}</div>
+              ${matchedItems.map((it, idx) => `
+                <div class="gk-item">
+                  <div class="gk-q">${idx + 1}. ${it.q}</div>
+                  <div class="gk-a">উত্তরঃ ${it.a}</div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+      });
+
+      if (foundCount === 0) {
+        container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:30px;">কোনো তথ্য পাওয়া যায়নি। অন্য শব্দ দিয়ে খুঁজুন।</p>`;
+      } else {
+        container.innerHTML = html;
+      }
+    }
+
+    function filterGkContent() {
+      const q = document.getElementById('gkSearchInput').value;
+      renderGk(currentGkTab, q);
+    }
+
+    // ৩. সায়েন্টিফিক ক্যালকুলেটর ইঞ্জিন
+    function sciInput(val) {
+      const d = document.getElementById('sciCalcDisplay');
+      if (d.value === "0" || d.value === "Error") d.value = "";
+      d.value += val;
+    }
+    function clearSciCalc() {
+      document.getElementById('sciCalcDisplay').value = "0";
+      document.getElementById('sciHistoryDisplay').innerText = "";
+    }
+    function delSciCalc() {
+      const d = document.getElementById('sciCalcDisplay');
+      d.value = d.value.slice(0, -1);
+      if (!d.value) d.value = "0";
+    }
+    function sciFn(fn) {
+      const d = document.getElementById('sciCalcDisplay');
+      let val = parseFloat(d.value);
+      if (isNaN(val)) return;
+
+      document.getElementById('sciHistoryDisplay').innerText = `${fn}(${val})`;
+      if (fn === 'sin') d.value = Math.sin(val * Math.PI / 180).toFixed(6);
+      else if (fn === 'cos') d.value = Math.cos(val * Math.PI / 180).toFixed(6);
+      else if (fn === 'tan') d.value = Math.tan(val * Math.PI / 180).toFixed(6);
+      else if (fn === 'log') d.value = Math.log10(val).toFixed(6);
+      else if (fn === 'ln') d.value = Math.log(val).toFixed(6);
+      else if (fn === 'sqrt') d.value = Math.sqrt(val).toFixed(6);
+      else if (fn === 'square') d.value = Math.pow(val, 2);
+      else if (fn === 'cube') d.value = Math.pow(val, 3);
+      else if (fn === 'fact') {
+        let f = 1;
+        for (let i = 2; i <= val; i++) f *= i;
+        d.value = f;
+      }
+    }
+    function calcSciResult() {
+      const d = document.getElementById('sciCalcDisplay');
+      try {
+        document.getElementById('sciHistoryDisplay').innerText = d.value + " =";
+        let expr = d.value.replace(/Math\.PI/g, Math.PI).replace(/Math\.E/g, Math.E);
+        let res = eval(expr);
+        d.value = res !== undefined ? res : "0";
+      } catch (e) {
+        d.value = "Error";
+      }
+    }
+
+    function openDuolingoDirect() {
+      window.open("https://www.duolingo.com/learn", "_blank");
+    }
+
+    // ৪. পরীক্ষা সেকশন ও স্বতন্ত্র সাবমিশন (MCQ or CQ or Both)
     function switchExamSection(mode) {
       currentExamSection = mode;
       document.getElementById('examTabAll').classList.toggle('active', mode === 'all');
@@ -1033,7 +1325,7 @@
       } else if (mode === 'cq') {
         mcqSec.style.display = 'none';
         cqSec.style.display = 'block';
-        timerBox.style.display = 'none'; // শুধু CQ দিলে MCQ টাইমার প্রযোজ্য নয়
+        timerBox.style.display = 'none';
         document.getElementById('examSubmitBtn').innerText = "শুধুমাত্র CQ খাতা জমা দিন";
       }
     }
@@ -1094,7 +1386,6 @@
       switchExamSection('all');
       openModal('liveExamModal');
 
-      // MCQ অটো সাবমিট টাইমার
       const totalSeconds = (parseInt(activeExamData.mcqDuration) || activeExamData.totalMarks) * 60;
       let timeLeft = totalSeconds;
       const display = document.getElementById('timerDisplay');
@@ -1107,7 +1398,7 @@
         if (--timeLeft < 0) {
           clearInterval(examTimerInterval);
           alert("MCQ পরীক্ষার সময় শেষ! খাতা স্বয়ংক্রিয়ভাবে জমা নেওয়া হচ্ছে...");
-          submitLiveExam(true); // অটো সাবমিট
+          submitLiveExam(true);
         }
       }, 1000);
     }
@@ -1176,127 +1467,7 @@
       openModal('examReviewModal');
     }
 
-    // সাধারণ জ্ঞান ইঞ্জিন
-    function switchGkTab(tab) {
-      currentGkTab = tab;
-      document.getElementById('gkTabBd').classList.toggle('active', tab === 'bd');
-      document.getElementById('gkTabWorld').classList.toggle('active', tab === 'world');
-      document.getElementById('gkSearchInput').value = "";
-      renderGk(tab);
-    }
-
-    function renderGk(tab, filter = "") {
-      const container = document.getElementById('gkContentContainer');
-      const categories = gkDatabase[tab] || [];
-      const query = filter.toLowerCase().trim();
-
-      let html = "";
-      let foundCount = 0;
-
-      categories.forEach(cat => {
-        const matchedItems = cat.items.filter(it => 
-          it.q.toLowerCase().includes(query) || it.a.toLowerCase().includes(query) || cat.category.toLowerCase().includes(query)
-        );
-
-        if (matchedItems.length > 0) {
-          foundCount += matchedItems.length;
-          html += `
-            <div class="gk-cat-section">
-              <div class="gk-cat-title">📁 ${cat.category}</div>
-              ${matchedItems.map((it, idx) => `
-                <div class="gk-item">
-                  <div class="gk-q">${idx + 1}. ${it.q}</div>
-                  <div class="gk-a">উত্তরঃ ${it.a}</div>
-                </div>
-              `).join('')}
-            </div>
-          `;
-        }
-      });
-
-      if (foundCount === 0) {
-        container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:30px;">কোনো তথ্য পাওয়া যায়নি।</p>`;
-      } else {
-        container.innerHTML = html;
-      }
-    }
-
-    function filterGkContent() {
-      const q = document.getElementById('gkSearchInput').value;
-      renderGk(currentGkTab, q);
-    }
-
-    function renderClassBooks() {
-      const cls = document.getElementById('bookClassSelect').value;
-      const container = document.getElementById('booksListContainer');
-      if (!cls || !nctbBooks[cls]) {
-        container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:20px;">শ্রেণি নির্বাচন করুন।</p>`;
-        return;
-      }
-
-      container.innerHTML = nctbBooks[cls].map(b => `
-        <div class="note-item" style="display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <h4 style="color:#0f766e;">📖 ${b.name}</h4>
-            <span style="font-size:0.75rem; color:#64748b;">জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB)</span>
-          </div>
-          <a href="${b.url}" target="_blank" class="btn btn-teal" style="width:auto; padding:6px 14px; font-size:0.8rem; text-decoration:none;">📥 ডাউনলোড</a>
-        </div>
-      `).join('');
-    }
-
-    // সায়েন্টিফিক ক্যালকুলেটর ইঞ্জিন
-    function sciInput(val) {
-      const d = document.getElementById('sciCalcDisplay');
-      if (d.value === "0" || d.value === "Error") d.value = "";
-      d.value += val;
-    }
-    function clearSciCalc() {
-      document.getElementById('sciCalcDisplay').value = "0";
-      document.getElementById('sciHistoryDisplay').innerText = "";
-    }
-    function delSciCalc() {
-      const d = document.getElementById('sciCalcDisplay');
-      d.value = d.value.slice(0, -1);
-      if (!d.value) d.value = "0";
-    }
-    function sciFn(fn) {
-      const d = document.getElementById('sciCalcDisplay');
-      let val = parseFloat(d.value);
-      if (isNaN(val)) return;
-
-      document.getElementById('sciHistoryDisplay').innerText = `${fn}(${val})`;
-      if (fn === 'sin') d.value = Math.sin(val * Math.PI / 180).toFixed(6);
-      else if (fn === 'cos') d.value = Math.cos(val * Math.PI / 180).toFixed(6);
-      else if (fn === 'tan') d.value = Math.tan(val * Math.PI / 180).toFixed(6);
-      else if (fn === 'log') d.value = Math.log10(val).toFixed(6);
-      else if (fn === 'ln') d.value = Math.log(val).toFixed(6);
-      else if (fn === 'sqrt') d.value = Math.sqrt(val).toFixed(6);
-      else if (fn === 'square') d.value = Math.pow(val, 2);
-      else if (fn === 'cube') d.value = Math.pow(val, 3);
-      else if (fn === 'fact') {
-        let f = 1;
-        for (let i = 2; i <= val; i++) f *= i;
-        d.value = f;
-      }
-    }
-    function calcSciResult() {
-      const d = document.getElementById('sciCalcDisplay');
-      try {
-        document.getElementById('sciHistoryDisplay').innerText = d.value + " =";
-        let expr = d.value.replace(/Math\.PI/g, Math.PI).replace(/Math\.E/g, Math.E);
-        let res = eval(expr);
-        d.value = res !== undefined ? res : "0";
-      } catch (e) {
-        d.value = "Error";
-      }
-    }
-
-    function openDuolingoDirect() {
-      window.open("https://www.duolingo.com/learn", "_blank");
-    }
-
-    // ভাষা পরিবর্তন
+    // ৫. ভাষা ও ডার্ক মোড
     const i18nData = {
       bn: {
         welcomeSub: "স্বাগতম আপনাকে",
@@ -1361,7 +1532,7 @@
       document.getElementById('langBtnText').innerText = (currentLang === 'bn') ? 'English' : 'বাংলা';
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (i18nData[currentLang][key]) {
+        if (i18nData[currentLang] && i18nData[currentLang][key]) {
           el.innerText = i18nData[currentLang][key];
         }
       });
@@ -1371,11 +1542,8 @@
       document.body.classList.toggle('dark-mode');
       localStorage.setItem('gyan_dark_mode', document.body.classList.contains('dark-mode'));
     }
-    if (localStorage.getItem('gyan_dark_mode') === 'true') {
-      document.body.classList.add('dark-mode');
-    }
 
-    // পমোডোরো টাইমার
+    // ৬. পমোডোরো টাইমার
     let pomoInterval = null;
     let pomoTime = 25 * 60;
     let isPomoBreak = false;
@@ -1424,7 +1592,7 @@
       updatePomoDisplay();
     }
 
-    // ব্যক্তিগত নোটপ্যাড
+    // ৭. ব্যক্তিগত নোটপ্যাড
     function saveScratchpad() {
       const text = document.getElementById('scratchpadArea').value;
       localStorage.setItem('gyan_scratchpad', text);
@@ -1432,15 +1600,8 @@
       msg.style.display = 'block';
       setTimeout(() => { msg.style.display = 'none'; }, 2000);
     }
-    window.addEventListener('load', () => {
-      const savedNote = localStorage.getItem('gyan_scratchpad');
-      if (savedNote && document.getElementById('scratchpadArea')) {
-        document.getElementById('scratchpadArea').value = savedNote;
-      }
-      renderGk('bd');
-    });
 
-    // GPA ক্যালকুলেটর
+    // ৮. GPA ক্যালকুলেটর
     function calculateGpa() {
       const inputs = document.querySelectorAll('.gpa-score-input');
       let totalPoints = 0;
@@ -1485,40 +1646,7 @@
       document.getElementById('gpaResultDisplay').innerText = `GPA: ${gpa} (${grade})`;
     }
 
-    // PWA ইনস্টল
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const hBtn = document.getElementById('pwaInstallHeaderBtn');
-      const mBtn = document.getElementById('pwaInstallMenuBtn');
-      if (hBtn) hBtn.style.display = 'block';
-      if (mBtn) mBtn.style.display = 'block';
-    });
-
-    function triggerPwaInstall() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choice) => {
-          if (choice.outcome === 'accepted') {
-            document.getElementById('pwaInstallHeaderBtn').style.display = 'none';
-            document.getElementById('pwaInstallMenuBtn').style.display = 'none';
-          }
-          deferredPrompt = null;
-        });
-      } else {
-        alert("আপনার ব্রাউজারের ৩-ডট (⋮) মেনুতে চাপ দিয়ে 'Install App' বা 'Add to Home screen' নির্বাচন করুন।");
-      }
-    }
-
-    window.addEventListener('appinstalled', () => {
-      const hBtn = document.getElementById('pwaInstallHeaderBtn');
-      const mBtn = document.getElementById('pwaInstallMenuBtn');
-      if (hBtn) hBtn.style.display = 'none';
-      if (mBtn) mBtn.style.display = 'none';
-      deferredPrompt = null;
-    });
-
-    // ডিকশনারি
+    // ৯. ডিকশনারি
     function setDictMode(mode) {
       currentDictMode = mode;
       document.getElementById('dictModeEnBn').classList.toggle('active', mode === 'en-bn');
@@ -1569,6 +1697,7 @@
       window.speechSynthesis.speak(utterance);
     }
 
+    // ১০. সিস্টেম নেভিগেশন ও কমন ইউটিলিটি
     function goToPage(n) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page' + n).classList.add('active');
@@ -1737,7 +1866,7 @@
           cleanOptions.push(text.substring(m0, m1).trim());
           cleanOptions.push(text.substring(m1, m2).trim());
           if (optMarkers[2] !== -1) cleanOptions.push(text.substring(m2, m3).trim());
-          if (optMarkers[3] !== -1) cleanOptions.push(text.substring(m3, m4).trim());
+          if (optMarkers[3] !== -1) cleanOptions.push(text.substring(m3).trim());
         } else {
           const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
           qText = lines[0].replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
@@ -2186,7 +2315,51 @@
       }, btn);
     }
 
-    // বিশ্বস্ত ও ক্রস-নেটওয়ার্ক PWA সার্ভিস ওয়ার্কার
+    // PWA অটো-ইনস্টলেশন
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const hBtn = document.getElementById('pwaInstallHeaderBtn');
+      const mBtn = document.getElementById('pwaInstallMenuBtn');
+      if (hBtn) hBtn.style.display = 'block';
+      if (mBtn) mBtn.style.display = 'block';
+    });
+
+    function triggerPwaInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choice) => {
+          if (choice.outcome === 'accepted') {
+            document.getElementById('pwaInstallHeaderBtn').style.display = 'none';
+            document.getElementById('pwaInstallMenuBtn').style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        alert("আপনার ব্রাউজারের ৩-ডট (⋮) মেনুতে চাপ দিয়ে 'Install App' বা 'Add to Home screen' নির্বাচন করুন।");
+      }
+    }
+
+    window.addEventListener('appinstalled', () => {
+      const hBtn = document.getElementById('pwaInstallHeaderBtn');
+      const mBtn = document.getElementById('pwaInstallMenuBtn');
+      if (hBtn) hBtn.style.display = 'none';
+      if (mBtn) mBtn.style.display = 'none';
+      deferredPrompt = null;
+    });
+
+    // পেজ লোড ইনিশিয়ালাইজার
+    window.addEventListener('load', () => {
+      renderGk('bd');
+      if (localStorage.getItem('gyan_dark_mode') === 'true') {
+        document.body.classList.add('dark-mode');
+      }
+      const savedNote = localStorage.getItem('gyan_scratchpad');
+      if (savedNote && document.getElementById('scratchpadArea')) {
+        document.getElementById('scratchpadArea').value = savedNote;
+      }
+    });
+
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         const swBlob = new Blob([`
