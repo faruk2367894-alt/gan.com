@@ -12,8 +12,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="জ্ঞান.com">
 
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8.com%22%2C%22short_name%22%3A%22%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231e1b4b%22%2C%22theme_color%22%3A%22%231e1b4b%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fapi.iconify.design%2Ffluent-emoji-flat%3Agraduation-cap.svg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
+  <!-- বিশ্বজনীন PWA Manifest (যেকোনো নেটওয়ার্কে কাজ করবে) -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8.com%22%2C%22short_name%22%3A%22%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8%22%2C%22start_url%22%3A%22.%2F%22%2C%22scope%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231e1b4b%22%2C%22theme_color%22%3A%22%231e1b4b%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fapi.iconify.design%2Ffluent-emoji-flat%3Agraduation-cap.svg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
 
   <link rel="icon" type="image/svg+xml" href="https://api.iconify.design/fluent-emoji-flat:graduation-cap.svg">
   <link rel="apple-touch-icon" href="https://api.iconify.design/fluent-emoji-flat:graduation-cap.svg">
@@ -29,7 +29,6 @@
     .page { display: none; min-height: 100vh; width: 100%; }
     .page.active { display: flex; }
 
-    /* ওয়েলকাম স্ক্রিন */
     #page1 {
       flex-direction: column; align-items: center; justify-content: center;
       background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 60%, #020617 100%);
@@ -47,7 +46,6 @@
     }
     .enter-btn:hover { transform: scale(1.04); }
 
-    /* হেডার */
     header {
       background: #1e1b4b; color: white; padding: 12px 16px; display: flex; justify-content: space-between;
       align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 30;
@@ -67,7 +65,6 @@
 
     .main-content { width: 100%; max-width: 1150px; margin: 12px auto; padding: 0 12px; display: flex; flex-direction: column; gap: 14px; }
 
-    /* ধীরগতির ও মোবাইল ফ্রেন্ডলি মোটিভেশনাল স্ক্রলিং বার */
     .notice-marquee {
       background: #fef3c7; border-left: 5px solid #f59e0b; padding: 8px 12px;
       border-radius: 8px; display: flex; align-items: center; gap: 10px; overflow: hidden; position: relative;
@@ -79,7 +76,7 @@
     .marquee-container { flex-grow: 1; overflow: hidden; white-space: nowrap; position: relative; }
     .marquee-content {
       display: inline-block; white-space: nowrap; padding-left: 100%;
-      animation: smoothMarquee 45s linear infinite; /* গতি অনেক ধীর করা হয়েছে */
+      animation: smoothMarquee 45s linear infinite;
       font-size: clamp(0.85rem, 2.5vw, 1rem); font-weight: 600; color: #1e293b;
     }
     .marquee-container:hover .marquee-content { animation-play-state: paused; cursor: pointer; }
@@ -88,7 +85,6 @@
       100% { transform: translate3d(-100%, 0, 0); }
     }
 
-    /* রেসপনসিভ গ্রিড (মোবাইলে ১ কলাম, ট্যাবলেটে ২, পিসিতে ৩ কলাম) */
     .feature-grid { 
       display: grid; 
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); 
@@ -98,7 +94,6 @@
     .card h3 { font-size: clamp(1rem, 3.2vw, 1.2rem); color: #1e293b; font-weight: 700; }
     .card p { font-size: clamp(0.8rem, 2.6vw, 0.9rem); color: #64748b; }
 
-    /* বক্স নোটিশ বোর্ড */
     .top-news-card {
       background: #ffffff; border: 1.5px solid #0d9488; padding: 16px; border-radius: 12px;
       box-shadow: 0 4px 12px rgba(13, 148, 136, 0.08); display: flex; flex-direction: column;
@@ -122,7 +117,6 @@
       align-items: center; flex-wrap: wrap; gap: 12px;
     }
 
-    /* সাইডবার মেনু */
     .sidebar {
       position: fixed; top: 0; right: -320px; width: min(85vw, 300px); height: 100%;
       background: white; box-shadow: -5px 0 25px rgba(0,0,0,0.15); z-index: 50;
@@ -133,7 +127,6 @@
     .menu-item { padding: 10px; border: 1px solid #e2e8f0; background: white; border-radius: 8px; font-weight: 600; cursor: pointer; text-align: left; margin-top: 10px; width: 100%; font-size: 0.9rem; }
     .menu-item.highlight { background: #fdf4ff; border-color: #d8b4fe; color: #7e22ce; font-weight: 700; }
 
-    /* মডাল পপআপ */
     .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 60; align-items: center; justify-content: center; padding: 10px; }
     .modal.show { display: flex; }
     .modal-box { background: white; width: 100%; max-width: 560px; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; max-height: 92vh; overflow-y: auto; }
@@ -199,7 +192,7 @@
   <div id="page1" class="page active">
     <h2>স্বাগতম আপনাকে</h2>
     <h1>"জ্ঞান.com"</h1>
-    <p>ডিজিটাল পরীক্ষা, ক্লাসরুম নোটস ও স্বয়ংক্রিয় ক্লাউড প্ল্যাটফর্ম</p>
+    <p>ডিজিタル পরীক্ষা, ক্লাসরুম নোটস ও স্বয়ংক্রিয় ক্লাউড প্ল্যাটফর্ম</p>
     <button class="enter-btn" onclick="goToPage(2)">Enter ➔</button>
   </div>
 
@@ -214,7 +207,6 @@
     </header>
 
     <div class="main-content">
-      <!-- মোটিভেশনাল উক্তি স্ক্রলিং বার (ধীরগতির) -->
       <div class="notice-marquee">
         <span class="notice-badge">💡 অনুপ্রেরণা:</span>
         <div class="marquee-container">
@@ -223,7 +215,6 @@
       </div>
 
       <div class="feature-grid">
-        <!-- ডিজিটাল ক্লাসরুম -->
         <div class="card" style="border: 2px solid #0d9488; background: #f0fdfa;">
           <div>
             <h3 style="color: #0f766e;">📚 ক্লাস রুম (১ম - ১০ম শ্রেণি)</h3>
@@ -232,7 +223,6 @@
           <button class="btn btn-teal" onclick="openModal('classroomModal')">ক্লাস রুমে প্রবেশ করুন</button>
         </div>
 
-        <!-- বক্স নোটিশ বোর্ড (৭ দিনের আপডেট) -->
         <div class="top-news-card">
           <div class="top-news-header">
             <h3>📢 পরীক্ষা ও নোটিশ বোর্ড</h3>
@@ -243,7 +233,6 @@
           </ul>
         </div>
 
-        <!-- ফলাফল ও ট্রান্সক্রিপ্ট -->
         <div class="card">
           <div>
             <h3>📊 ফলাফল ও SSC ট্রান্সক্রিপ্ট</h3>
@@ -252,7 +241,6 @@
           <button class="btn btn-green" onclick="openModal('profileModal')">ফলাফল দেখুন</button>
         </div>
 
-        <!-- অনলাইন পরীক্ষা পোর্টাল -->
         <div class="big-exam-card">
           <div>
             <h2 style="color: #1e1b4b; font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 800;">✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)</h2>
@@ -264,7 +252,6 @@
     </div>
   </div>
 
-  <!-- মেনু বার -->
   <aside id="sidebar" class="sidebar">
     <div>
       <div class="sidebar-header">
@@ -285,7 +272,6 @@
     <div style="font-size: 0.8rem; color: #94a3b8; text-align: center;">জ্ঞান.com © 2026</div>
   </aside>
 
-  <!-- ক্লাসরুম মডাল -->
   <div id="classroomModal" class="modal">
     <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
@@ -306,7 +292,6 @@
     </div>
   </div>
 
-  <!-- এডমিন গেট -->
   <div id="adminGateModal" class="modal">
     <div class="modal-box" style="max-width: 380px;">
       <div class="modal-header">
@@ -321,7 +306,6 @@
     </div>
   </div>
 
-  <!-- এডমিন কন্ট্রোল প্যানেল -->
   <div id="adminPanelModal" class="modal">
     <div class="modal-box admin-panel">
       <div class="modal-header">
@@ -339,7 +323,6 @@
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'pinTab')">পিন পরিবর্তন</button>
       </div>
 
-      <!-- MCQ & CQ শিডিউল -->
       <div id="mcqTab" class="admin-tab-content" style="display:flex; flex-direction:column; gap:8px;">
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:8px;">
           <div>
@@ -394,7 +377,6 @@
         </div>
       </div>
 
-      <!-- ক্লাসরুম নোট ট্যাব -->
       <div id="classroomAdminTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
         <select id="admNoteClass">
           <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
@@ -418,21 +400,18 @@
         </div>
       </div>
 
-      <!-- মোটিভেশনাল উক্তি ট্যাব -->
       <div id="motivationTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
         <label style="font-size:0.82rem; font-weight:700; color:#4338ca;">উপরে স্ক্রল হওয়ার জন্য মোটিভেশনাল বাণী দিন:</label>
         <textarea id="admMotivationInput" rows="3" placeholder="যেমন: যে ব্যক্তি জ্ঞান অর্জনের উদ্দেশ্যে কোনো পথে চলে, আল্লাহ তার জন্য জান্নাতের পথ সহজ করে দেন।"></textarea>
         <button class="btn btn-blue" onclick="updateMotivationText()">বাণী আপডেট করুন</button>
       </div>
 
-      <!-- নোটিশ ও রুটিন ট্যাব -->
       <div id="noticeTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
         <label style="font-size:0.82rem; font-weight:700; color:#b45309;">জরুরি নোটিশ / রুটিন (বক্সে ৭ দিন থাকবে):</label>
         <textarea id="admNoticeText" rows="3" placeholder="পরীক্ষার রুটিন বা জরুরি নোটিশ লিখুন..."></textarea>
         <button class="btn btn-amber" onclick="postNoticeFromAdmin()">নোটিশ লাইভ করুন</button>
       </div>
 
-      <!-- পিন ট্যাব -->
       <div id="pinTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
         <input type="password" id="oldPinInput" placeholder="বর্তমান পিন">
         <input type="password" id="newPinInput" placeholder="নতুন পিন">
@@ -441,7 +420,6 @@
     </div>
   </div>
 
-  <!-- প্রিভিউ মডাল -->
   <div id="adminPreviewModal" class="modal">
     <div class="modal-box" style="max-width: 600px; border: 2px solid #7c3aed;">
       <div class="modal-header">
@@ -455,7 +433,6 @@
     </div>
   </div>
 
-  <!-- পরীক্ষা যাচাইকরণ মডাল -->
   <div id="examInitModal" class="modal">
     <div class="modal-box" style="max-width: 420px;">
       <div class="modal-header">
@@ -479,7 +456,6 @@
     </div>
   </div>
 
-  <!-- লাইভ পরীক্ষা মডাল -->
   <div id="liveExamModal" class="modal">
     <div class="modal-box" style="max-width: 680px;">
       <div class="modal-header">
@@ -507,7 +483,6 @@
     </div>
   </div>
 
-  <!-- পরীক্ষা মূল্যায়ন মডাল -->
   <div id="examReviewModal" class="modal">
     <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
@@ -535,7 +510,6 @@
     </div>
   </div>
 
-  <!-- রেজিস্ট্রেশন মডাল -->
   <div id="regModal" class="modal">
     <div class="modal-box">
       <div class="modal-header">
@@ -567,7 +541,6 @@
     </div>
   </div>
 
-  <!-- লগইন মডাল -->
   <div id="loginModal" class="modal">
     <div class="modal-box" style="max-width:380px;">
       <div class="modal-header">
@@ -586,7 +559,6 @@
     </div>
   </div>
 
-  <!-- ফরগেট পিন মডাল -->
   <div id="forgotPinModal" class="modal">
     <div class="modal-box" style="max-width:380px;">
       <div class="modal-header">
@@ -603,7 +575,6 @@
     </div>
   </div>
 
-  <!-- প্রোফাইল ও মার্কশিট মডাল -->
   <div id="profileModal" class="modal">
     <div class="modal-box">
       <div class="modal-header">
@@ -712,7 +683,7 @@
     let currentStudentProfile = null;
     let deferredPrompt = null;
 
-    // সরাসরি অ্যাপ ইনস্টল হ্যান্ডলার (PWA)
+    // বিশ্বজনীন PWA ইনস্টল ইভেন্ট (যেকোনো নেটওয়ার্কে অটো-ট্রিগার হবে)
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -736,6 +707,15 @@
         alert("আপনার ব্রাউজারের ৩-ডট (⋮) মেনুতে চাপ দিয়ে 'Install App' বা 'Add to Home screen' নির্বাচন করুন।");
       }
     }
+
+    // অ্যাপ ইনস্টল হয়ে গেলে বাটন নিজে থেকেই লুকিয়ে যাবে
+    window.addEventListener('appinstalled', () => {
+      const hBtn = document.getElementById('pwaInstallHeaderBtn');
+      const mBtn = document.getElementById('pwaInstallMenuBtn');
+      if (hBtn) hBtn.style.display = 'none';
+      if (mBtn) mBtn.style.display = 'none';
+      deferredPrompt = null;
+    });
 
     function goToPage(n) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1481,13 +1461,15 @@
       }, btn);
     }
 
-    // PWA Service Worker
+    // বিশ্বস্ত ও নিরাপদ সার্ভিস ওয়ার্কার (ক্রস-নেটওয়ার্কে ক্যাশিং ও PWA ইন্সটল আনলক)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('data:application/javascript;charset=utf-8,' + encodeURIComponent(`
+        const swBlob = new Blob([`
           self.addEventListener('install', e => self.skipWaiting());
           self.addEventListener('activate', e => clients.claim());
-        `)).catch(() => {});
+          self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
+        `], { type: 'text/javascript' });
+        navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
       });
     }
   </script>
