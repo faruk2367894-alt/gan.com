@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="জ্ঞান.com">
 
-  <!-- বিশ্বজনীন PWA Manifest (যেকোনো নেটওয়ার্কে কাজ করবে) -->
+  <!-- বিশ্বজনীন PWA Manifest -->
   <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8.com%22%2C%22short_name%22%3A%22%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8%22%2C%22start_url%22%3A%22.%2F%22%2C%22scope%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231e1b4b%22%2C%22theme_color%22%3A%22%231e1b4b%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fapi.iconify.design%2Ffluent-emoji-flat%3Agraduation-cap.svg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
 
   <link rel="icon" type="image/svg+xml" href="https://api.iconify.design/fluent-emoji-flat:graduation-cap.svg">
@@ -24,7 +24,15 @@
   
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Serif Bengali', 'Kalpurush', serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f8fafc; color: #0f172a; min-height: 100vh; overflow-x: hidden; user-select: none; }
+    body { background-color: #f8fafc; color: #0f172a; min-height: 100vh; overflow-x: hidden; user-select: none; transition: background 0.3s, color 0.3s; }
+
+    /* ডার্ক মোড স্টাইল */
+    body.dark-mode { background-color: #0b0f19; color: #f1f5f9; }
+    body.dark-mode .card, body.dark-mode .modal-box, body.dark-mode .sidebar, body.dark-mode .top-news-card { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
+    body.dark-mode .menu-item { background: #1e293b; color: #f1f5f9; border-color: #334155; }
+    body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: #0f172a; color: #f8fafc; border-color: #475569; }
+    body.dark-mode .question-box, body.dark-mode .opt-label { background: #0f172a; color: #f8fafc; border-color: #334155; }
+    body.dark-mode .top-news-item, body.dark-mode .note-item { background: #0f172a; color: #f8fafc; }
 
     .page { display: none; min-height: 100vh; width: 100%; }
     .page.active { display: flex; }
@@ -118,14 +126,16 @@
     }
 
     .sidebar {
-      position: fixed; top: 0; right: -320px; width: min(85vw, 300px); height: 100%;
+      position: fixed; top: 0; right: -340px; width: min(88vw, 320px); height: 100%;
       background: white; box-shadow: -5px 0 25px rgba(0,0,0,0.15); z-index: 50;
-      transition: right 0.3s ease; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;
+      transition: right 0.3s ease; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;
+      overflow-y: auto;
     }
     .sidebar.open { right: 0; }
     .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
-    .menu-item { padding: 10px; border: 1px solid #e2e8f0; background: white; border-radius: 8px; font-weight: 600; cursor: pointer; text-align: left; margin-top: 10px; width: 100%; font-size: 0.9rem; }
+    .menu-item { padding: 9px 12px; border: 1px solid #e2e8f0; background: white; border-radius: 8px; font-weight: 600; cursor: pointer; text-align: left; margin-top: 6px; width: 100%; font-size: 0.88rem; display: flex; align-items: center; gap: 8px; }
     .menu-item.highlight { background: #fdf4ff; border-color: #d8b4fe; color: #7e22ce; font-weight: 700; }
+    .menu-item.tool-btn { background: #f0fdf4; border-color: #86efac; color: #166534; font-weight: 700; }
 
     .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 60; align-items: center; justify-content: center; padding: 10px; }
     .modal.show { display: flex; }
@@ -171,6 +181,20 @@
     .note-item h4 { color: #0d9488; margin-bottom: 4px; font-size: 0.95rem; }
     .note-item a { display: inline-block; margin-top: 6px; color: #2563eb; font-weight: 700; text-decoration: none; font-size: 0.85rem; }
 
+    /* ডিকশনারি স্টাইল */
+    .dict-mode-switch { display: flex; gap: 6px; margin-bottom: 10px; }
+    .dict-mode-btn { flex: 1; padding: 8px; border: 1px solid #cbd5e1; background: #f8fafc; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.85rem; text-align: center; }
+    .dict-mode-btn.active { background: #059669; color: white; border-color: #059669; }
+    .dict-result-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; margin-top: 10px; display: none; }
+    .dict-word-title { font-size: 1.25rem; font-weight: 800; color: #1e1b4b; display: flex; justify-content: space-between; align-items: center; }
+
+    /* ক্যালকুলেটর গ্রিড */
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
+    .calc-btn { padding: 12px; font-size: 1.1rem; font-weight: 700; border-radius: 6px; border: 1px solid #cbd5e1; background: #f1f5f9; cursor: pointer; }
+    .calc-btn.op { background: #fde68a; color: #b45309; }
+    .calc-btn.eq { background: #10b981; color: white; grid-column: span 2; }
+    .calc-btn.clear { background: #fca5a5; color: #991b1b; }
+
     @media print {
       body * { visibility: hidden; }
       #marksheetContainer, #marksheetContainer * { visibility: visible; }
@@ -190,25 +214,25 @@
 <body class="notranslate">
 
   <div id="page1" class="page active">
-    <h2>স্বাগতম আপনাকে</h2>
+    <h2 data-i18n="welcomeSub">স্বাগতম আপনাকে</h2>
     <h1>"জ্ঞান.com"</h1>
-    <p>ডিজিタル পরীক্ষা, ক্লাসরুম নোটস ও স্বয়ংক্রিয় ক্লাউড প্ল্যাটফর্ম</p>
-    <button class="enter-btn" onclick="goToPage(2)">Enter ➔</button>
+    <p data-i18n="welcomeDesc">ডিজিটাল পরীক্ষা, ক্লাসরুম নোটস ও স্বয়ংক্রিয় ক্লাউড প্ল্যাটফর্ম</p>
+    <button class="enter-btn" onclick="goToPage(2)" data-i18n="enterBtn">Enter ➔</button>
   </div>
 
   <div id="page2" class="page" style="flex-direction: column;">
     <header>
       <div class="logo">জ্ঞান.কম</div>
       <div class="header-btns">
-        <button id="pwaInstallHeaderBtn" class="install-pwa-btn" onclick="triggerPwaInstall()">📲 অ্যাপ ইনস্টল</button>
-        <button class="admin-gate-btn" onclick="openAdminGate()">🔒 এডমিন</button>
-        <button class="menu-btn" onclick="toggleSidebar()">☰ মেনু</button>
+        <button id="pwaInstallHeaderBtn" class="install-pwa-btn" onclick="triggerPwaInstall()" data-i18n="installApp">📲 অ্যাপ ইনস্টল</button>
+        <button class="admin-gate-btn" onclick="openAdminGate()" data-i18n="adminBtn">🔒 এডমিন</button>
+        <button class="menu-btn" onclick="toggleSidebar()" data-i18n="menuBtn">☰ মেনু</button>
       </div>
     </header>
 
     <div class="main-content">
       <div class="notice-marquee">
-        <span class="notice-badge">💡 অনুপ্রেরণা:</span>
+        <span class="notice-badge" data-i18n="inspiration">💡 অনুপ্রেরণা:</span>
         <div class="marquee-container">
           <div class="marquee-content" id="motivationText">জ্ঞানের সন্ধানে যে পথ চলে, আল্লাহ তার জান্নাতের পথ সহজ করে দেন।</div>
         </div>
@@ -217,61 +241,250 @@
       <div class="feature-grid">
         <div class="card" style="border: 2px solid #0d9488; background: #f0fdfa;">
           <div>
-            <h3 style="color: #0f766e;">📚 ক্লাস রুম (১ম - ১০ম শ্রেণি)</h3>
-            <p>শ্রেণিভিত্তিক লেকচার নোট, টেক্সট, ইমেজ ও PDF ফাইলসমূহ (আজীবন সংরক্ষিত)</p>
+            <h3 style="color: #0f766e;" data-i18n="classroomTitle">📚 ক্লাস রুম (১ম - ১০ম শ্রেণি)</h3>
+            <p data-i18n="classroomDesc">শ্রেণিভিত্তিক লেকচার নোট, টেক্সট, ইমেজ ও PDF ফাইলসমূহ (আজীবন সংরক্ষিত)</p>
           </div>
-          <button class="btn btn-teal" onclick="openModal('classroomModal')">ক্লাস রুমে প্রবেশ করুন</button>
+          <button class="btn btn-teal" onclick="openModal('classroomModal')" data-i18n="enterClassroom">ক্লাস রুমে প্রবেশ করুন</button>
         </div>
 
         <div class="top-news-card">
           <div class="top-news-header">
-            <h3>📢 পরীক্ষা ও নোটিশ বোর্ড</h3>
-            <span style="font-size: 0.72rem; color: #0f766e; font-weight: 700;">সর্বশেষ ৭ দিনের আপডেট</span>
+            <h3 data-i18n="noticeBoardTitle">📢 পরীক্ষা ও নোটিশ বোর্ড</h3>
+            <span style="font-size: 0.72rem; color: #0f766e; font-weight: 700;" data-i18n="sevenDaysTag">সর্বশেষ ৭ দিনের আপডেট</span>
           </div>
           <ul class="top-news-list" id="topNewsListContainer">
-            <li style="text-align: center; color: #94a3b8; padding: 15px;">নোটিশ লোড হচ্ছে...</li>
+            <li style="text-align: center; color: #94a3b8; padding: 15px;" data-i18n="loading">নোটিশ লোড হচ্ছে...</li>
           </ul>
         </div>
 
         <div class="card">
           <div>
-            <h3>📊 ফলাফল ও SSC ট্রান্সক্রিপ্ট</h3>
-            <p>MCQ, CQ মার্কস ও ফলাফল হিস্ট্রি</p>
+            <h3 data-i18n="resultTitle">📊 ফলাফল ও SSC ট্রান্সক্রিপ্ট</h3>
+            <p data-i18n="resultDesc">MCQ, CQ মার্কস ও ফলাফল হিস্ট্রি</p>
           </div>
-          <button class="btn btn-green" onclick="openModal('profileModal')">ফলাফল দেখুন</button>
+          <button class="btn btn-green" onclick="openModal('profileModal')" data-i18n="viewResult">ফলাফল দেখুন</button>
         </div>
 
         <div class="big-exam-card">
           <div>
-            <h2 style="color: #1e1b4b; font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 800;">✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)</h2>
-            <p style="color: #475569; margin-top: 4px; font-size: 0.85rem;">এডমিন নির্ধারিত শিডিউল অনুযায়ী পরীক্ষা, অটো-টাইমার ও CQ ফাইল আপলোড।</p>
+            <h2 style="color: #1e1b4b; font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 800;" data-i18n="examPortalTitle">✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)</h2>
+            <p style="color: #475569; margin-top: 4px; font-size: 0.85rem;" data-i18n="examPortalDesc">এডমিন নির্ধারিত শিডিউল অনুযায়ী পরীক্ষা, অটো-টাইমার ও CQ ফাইল আপলোড।</p>
           </div>
-          <button class="btn btn-blue" style="width: auto; padding: 10px 20px;" onclick="openModal('examInitModal')">পরীক্ষা শুরু করুন</button>
+          <button class="btn btn-blue" style="width: auto; padding: 10px 20px;" onclick="openModal('examInitModal')" data-i18n="startExamBtn">পরীক্ষা শুরু করুন</button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- সম্পূর্ণ সমৃদ্ধশালী মেনু বার -->
   <aside id="sidebar" class="sidebar">
     <div>
       <div class="sidebar-header">
-        <h3>মেনু বার</h3>
+        <h3 data-i18n="menuBar">মেনু বার</h3>
         <button onclick="toggleSidebar()" class="close-icon-btn">×</button>
       </div>
-      <div style="margin-top: 15px;">
-        <button id="pwaInstallMenuBtn" class="menu-item highlight" style="display:none;" onclick="triggerPwaInstall()">📲 সরাসরি অ্যাপ ইনস্টল করুন</button>
-        <button class="menu-item highlight" onclick="toggleSidebar(); openModal('regModal');">📝 শিক্ষার্থী রেজিস্ট্রেশন</button>
-        <button class="menu-item highlight" onclick="toggleSidebar(); openModal('loginModal');">🔑 শিক্ষার্থী লগইন</button>
-        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #e2e8f0;">
-        <button class="menu-item" onclick="toggleSidebar(); openModal('classroomModal');">📚 ক্লাস রুম স্টাডি নোটস</button>
-        <button class="menu-item" onclick="toggleSidebar(); openAdminGate();">🔒 এডমিন ড্যাশবোর্ড</button>
-        <button class="menu-item" onclick="toggleSidebar(); openModal('profileModal');">👤 স্টুডেন্ট প্রোফাইল ও হিস্ট্রি</button>
-        <button class="menu-item" onclick="toggleSidebar(); openModal('feedbackModal');">💬 আপনার মতামত লিখুন</button>
+      <div style="margin-top: 10px;">
+        <button id="pwaInstallMenuBtn" class="menu-item highlight" style="display:none;" onclick="triggerPwaInstall()" data-i18n="installAppMenu">📲 সরাসরি অ্যাপ ইনস্টল করুন</button>
+        
+        <!-- ভাষা পরিবর্তন ও নাইট মোড দ্রুত টগল -->
+        <div style="display: flex; gap: 6px; margin: 8px 0;">
+          <button class="menu-item" style="flex:1; justify-content:center; background:#e0e7ff; color:#3730a3; font-weight:700;" onclick="toggleLanguage()">🌐 <span id="langBtnText">English</span></button>
+          <button class="menu-item" style="flex:1; justify-content:center; background:#f1f5f9; font-weight:700;" onclick="toggleDarkMode()">🌙 নাইট মোড</button>
+        </div>
+
+        <button class="menu-item highlight" onclick="toggleSidebar(); openModal('regModal');" data-i18n="regMenu">📝 শিক্ষার্থী রেজিস্ট্রেশন</button>
+        <button class="menu-item highlight" onclick="toggleSidebar(); openModal('loginModal');" data-i18n="loginMenu">🔑 শিক্ষার্থী লগইন</button>
+        
+        <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
+        
+        <!-- শিক্ষণীয় টুলস -->
+        <button class="menu-item tool-btn" onclick="toggleSidebar(); openModal('dictionaryModal');">📖 বাংলা ⇄ ইংলিশ ডিকশনারি</button>
+        <button class="menu-item tool-btn" style="background:#eff6ff; border-color:#93c5fd; color:#1e40af;" onclick="toggleSidebar(); openDuolingoInApp();">🦉 ডুওলিঙ্গো (ভাষা শেখা)</button>
+        <button class="menu-item tool-btn" style="background:#fefce8; border-color:#fef08a; color:#854d0e;" onclick="toggleSidebar(); openModal('calculatorModal');">🧮 স্টাডি ক্যালকুলেটর</button>
+        <button class="menu-item tool-btn" style="background:#fef2f2; border-color:#fecaca; color:#991b1b;" onclick="toggleSidebar(); openModal('pomodoroModal');">⏱️ পমোডোরো ফোকাস টাইমার</button>
+        <button class="menu-item tool-btn" style="background:#fdf2f8; border-color:#fbcfe8; color:#9d174d;" onclick="toggleSidebar(); openModal('scratchpadModal');">📝 কুইক স্টাডি নোটপ্যাড</button>
+        <button class="menu-item tool-btn" style="background:#f0fdfa; border-color:#99f6e4; color:#115e59;" onclick="toggleSidebar(); openModal('gpaCalcModal');">🎯 GPA / গ্রেড ক্যালকুলেটর</button>
+        <button class="menu-item tool-btn" style="background:#f5f3ff; border-color:#ddd6fe; color:#5b21b6;" onclick="toggleSidebar(); openModal('formulaModal');">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার</button>
+        
+        <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
+        <button class="menu-item" onclick="toggleSidebar(); openModal('profileModal');" data-i18n="profileHistory">👤 স্টুডেন্ট প্রোফাইল ও হিস্ট্রি</button>
+        <button class="menu-item" onclick="toggleSidebar(); openModal('feedbackModal');" data-i18n="feedbackMenu">💬 আপনার মতামত লিখুন</button>
       </div>
     </div>
-    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center;">জ্ঞান.com © 2026</div>
+    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; margin-top:10px;">জ্ঞান.com © 2026</div>
   </aside>
 
+  <!-- নতুন ফিচার ১: ক্যালকুলেটর মডাল -->
+  <div id="calculatorModal" class="modal">
+    <div class="modal-box" style="max-width: 360px;">
+      <div class="modal-header">
+        <h3 style="color: #854d0e;">🧮 স্টাডি ক্যালকুলেটর</h3>
+        <button class="close-icon-btn" onclick="closeModal('calculatorModal')">×</button>
+      </div>
+      <input type="text" id="calcDisplay" readonly style="text-align: right; font-size: 1.4rem; font-weight: 700; height: 50px; background: #f8fafc;">
+      <div class="calc-grid">
+        <button class="calc-btn clear" onclick="clearCalc()">C</button>
+        <button class="calc-btn op" onclick="calcInput('(')">(</button>
+        <button class="calc-btn op" onclick="calcInput(')')">)</button>
+        <button class="calc-btn op" onclick="calcInput('/')">÷</button>
+        
+        <button class="calc-btn" onclick="calcInput('7')">7</button>
+        <button class="calc-btn" onclick="calcInput('8')">8</button>
+        <button class="calc-btn" onclick="calcInput('9')">9</button>
+        <button class="calc-btn op" onclick="calcInput('*')">×</button>
+        
+        <button class="calc-btn" onclick="calcInput('4')">4</button>
+        <button class="calc-btn" onclick="calcInput('5')">5</button>
+        <button class="calc-btn" onclick="calcInput('6')">6</button>
+        <button class="calc-btn op" onclick="calcInput('-')">-</button>
+        
+        <button class="calc-btn" onclick="calcInput('1')">1</button>
+        <button class="calc-btn" onclick="calcInput('2')">2</button>
+        <button class="calc-btn" onclick="calcInput('3')">3</button>
+        <button class="calc-btn op" onclick="calcInput('+')">+</button>
+        
+        <button class="calc-btn" onclick="calcInput('0')">0</button>
+        <button class="calc-btn" onclick="calcInput('.')">.</button>
+        <button class="calc-btn eq" onclick="calcResult()">=</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- নতুন ফিচার ২: পমোডোরো টাইমার মডাল -->
+  <div id="pomodoroModal" class="modal">
+    <div class="modal-box" style="max-width: 380px; text-align:center;">
+      <div class="modal-header">
+        <h3 style="color: #991b1b;">⏱️ পমোডোরো ফোকাস টাইমার</h3>
+        <button class="close-icon-btn" onclick="closeModal('pomodoroModal')">×</button>
+      </div>
+      <div style="margin: 15px 0;">
+        <span id="pomoStatus" style="font-size: 1rem; font-weight: 700; color: #dc2626;">📚 পড়াশোনার সময় (Study Time)</span>
+        <h1 id="pomoTimeDisplay" style="font-size: 3.5rem; color: #1e1b4b; margin: 10px 0; font-family: monospace;">25:00</h1>
+      </div>
+      <div style="display: flex; gap: 8px; justify-content: center;">
+        <button class="btn btn-green" style="width: auto; padding: 10px 24px;" onclick="startPomodoro()">শুরু করুন</button>
+        <button class="btn btn-amber" style="width: auto; padding: 10px 20px;" onclick="pausePomodoro()">পজ</button>
+        <button class="btn btn-cancel" onclick="resetPomodoro()">রিসেট</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- নতুন ফিচার ৩: কুইক নোটপ্যাড মডাল -->
+  <div id="scratchpadModal" class="modal">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 style="color: #9d174d;">📝 ব্যক্তিগত স্টাডি নোটপ্যাড</h3>
+        <button class="close-icon-btn" onclick="closeModal('scratchpadModal')">×</button>
+      </div>
+      <textarea id="scratchpadArea" rows="10" placeholder="ক্লাসের পড়া বা গুরুত্বপূর্ণ তথ্য এখানে লিখে রাখুন... এটি আপনার ফোনে স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকবে।" oninput="saveScratchpad()"></textarea>
+      <div style="font-size: 0.75rem; color: #15803d; font-weight: 700;" id="scratchSaveMsg">✅ ফোনে সেভ হয়েছে</div>
+    </div>
+  </div>
+
+  <!-- নতুন ফিচার ৪: GPA ক্যালকুলেটর মডাল -->
+  <div id="gpaCalcModal" class="modal">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 style="color: #115e59;">🎯 GPA ও গ্রেড ক্যালকুলেটর</h3>
+        <button class="close-icon-btn" onclick="closeModal('gpaCalcModal')">×</button>
+      </div>
+      <p style="font-size:0.85rem; color:#64748b;">নম্বর বসালে স্বয়ংক্রিয়ভাবে গ্রেড ও পয়েন্ট হিসাব হবে:</p>
+      <div id="gpaSubjectInputs" style="display:flex; flex-direction:column; gap:6px; margin: 8px 0;">
+        <input type="number" placeholder="বাংলা নম্বর (যেমন: 75)" class="gpa-score-input" oninput="calculateGpa()">
+        <input type="number" placeholder="ইংরেজি নম্বর (যেমন: 68)" class="gpa-score-input" oninput="calculateGpa()">
+        <input type="number" placeholder="গণিত নম্বর (যেমন: 85)" class="gpa-score-input" oninput="calculateGpa()">
+        <input type="number" placeholder="বিজ্ঞান নম্বর (যেমন: 80)" class="gpa-score-input" oninput="calculateGpa()">
+      </div>
+      <div style="background:#f0fdfa; border:1px solid #99f6e4; padding:12px; border-radius:8px; text-align:center;">
+        <h4>সম্ভাব্য ফলাফল:</h4>
+        <h2 id="gpaResultDisplay" style="color:#0f766e; margin-top:4px;">GPA: 0.00 (F)</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- নতুন ফিচার ৫: গণিত ও বিজ্ঞান সূত্র ভান্ডার -->
+  <div id="formulaModal" class="modal">
+    <div class="modal-box" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3 style="color: #5b21b6;">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার</h3>
+        <button class="close-icon-btn" onclick="closeModal('formulaModal')">×</button>
+      </div>
+      <div style="max-height:360px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
+        <div style="background:#f5f3ff; border-left:4px solid #7c3aed; padding:10px; border-radius:4px;">
+          <h4 style="color:#5b21b6;">বীজগণিত (Algebra)</h4>
+          <p style="font-size:0.88rem; margin-top:4px; font-family: monospace;">• (a + b)² = a² + 2ab + b²</p>
+          <p style="font-size:0.88rem; font-family: monospace;">• (a - b)² = a² - 2ab + b²</p>
+          <p style="font-size:0.88rem; font-family: monospace;">• a² - b² = (a + b)(a - b)</p>
+          <p style="font-size:0.88rem; font-family: monospace;">• (a + b)³ = a³ + 3a²b + 3ab² + b³</p>
+        </div>
+        <div style="background:#eff6ff; border-left:4px solid #2563eb; padding:10px; border-radius:4px;">
+          <h4 style="color:#1e40af;">জ্যামিতি ও পরিমিতি</h4>
+          <p style="font-size:0.88rem; margin-top:4px;">• ত্রিভুজের ক্ষেত্রফল = ½ × ভূমি × উচ্চতা</p>
+          <p style="font-size:0.88rem;">• বৃত্তের ক্ষেত্রফল = πr² (π ≈ 3.1416)</p>
+          <p style="font-size:0.88rem;">• বৃত্তের পরিধি = 2πr</p>
+        </div>
+        <div style="background:#f0fdf4; border-left:4px solid #16a34a; padding:10px; border-radius:4px;">
+          <h4 style="color:#15803d;">পদার্থবিজ্ঞান (Physics)</h4>
+          <p style="font-size:0.88rem; margin-top:4px; font-family: monospace;">• বল (F) = m × a</p>
+          <p style="font-size:0.88rem; font-family: monospace;">• গতিবেগ (v) = u + at</p>
+          <p style="font-size:0.88rem; font-family: monospace;">• কাজ (W) = F × s</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ডিকশনারি মডাল -->
+  <div id="dictionaryModal" class="modal">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 style="color: #059669;">📖 ডিজিটাল ডিকশনারি</h3>
+        <button class="close-icon-btn" onclick="closeModal('dictionaryModal')">×</button>
+      </div>
+
+      <div class="dict-mode-switch">
+        <button id="dictModeEnBn" class="dict-mode-btn active" onclick="setDictMode('en-bn')">English ➔ বাংলা</button>
+        <button id="dictModeBnEn" class="dict-mode-btn" onclick="setDictMode('bn-en')">বাংলা ➔ English</button>
+      </div>
+
+      <div style="display:flex; gap:6px;">
+        <input type="text" id="dictInput" placeholder="শব্দ লিখুন (যেমন: Education / শিক্ষা)..." onkeypress="if(event.key==='Enter') searchDictionary()">
+        <button class="btn btn-green" style="width:auto; padding:0 18px;" onclick="searchDictionary()">অনুসন্ধান</button>
+      </div>
+
+      <div id="dictLoading" style="display:none; text-align:center; padding:15px; color:#059669; font-weight:700;">অর্থ খোঁজা হচ্ছে...</div>
+
+      <div id="dictResultCard" class="dict-result-card">
+        <div class="dict-word-title">
+          <span id="dictWordDisplay">Word</span>
+          <button style="background:none; border:none; cursor:pointer; font-size:1.2rem;" onclick="speakWord()" title="উচ্চারণ শুনুন">🔊</button>
+        </div>
+        <div id="dictPhonetic" style="font-size:0.85rem; color:#64748b; margin-top:2px;"></div>
+        <div style="margin-top:8px; border-top:1px dashed #cbd5e1; padding-top:8px;">
+          <h4 style="font-size:0.9rem; color:#059669;">অর্থ / অনুবাদ:</h4>
+          <p id="dictMeaningDisplay" style="font-size:1rem; font-weight:700; color:#1e293b; margin-top:2px;"></p>
+        </div>
+        <div id="dictExampleBox" style="margin-top:6px; font-size:0.85rem; color:#475569; font-style:italic;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ডুওলিঙ্গো ইন-অ্যাপ মডাল -->
+  <div id="duolingoModal" class="modal">
+    <div class="modal-box" style="max-width: 900px; width:95%; height:90vh; padding:10px; display:flex; flex-direction:column;">
+      <div class="modal-header" style="padding-bottom:6px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.4rem;">🦉</span>
+          <h3 style="color:#58cc02;">Duolingo Language Learning</h3>
+        </div>
+        <button class="close-icon-btn" onclick="closeModal('duolingoModal')">×</button>
+      </div>
+      <div style="flex-grow:1; width:100%; border-radius:8px; overflow:hidden; border:1px solid #cbd5e1; margin-top:6px; position:relative;">
+        <iframe id="duolingoFrame" src="" style="width:100%; height:100%; border:none;" allow="autoplay; microphone; camera"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ক্লাসরুম মডাল -->
   <div id="classroomModal" class="modal">
     <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
@@ -292,6 +505,7 @@
     </div>
   </div>
 
+  <!-- এডমিন গেট -->
   <div id="adminGateModal" class="modal">
     <div class="modal-box" style="max-width: 380px;">
       <div class="modal-header">
@@ -306,6 +520,7 @@
     </div>
   </div>
 
+  <!-- এডমিন কন্ট্রোল প্যানেল -->
   <div id="adminPanelModal" class="modal">
     <div class="modal-box admin-panel">
       <div class="modal-header">
@@ -436,7 +651,7 @@
   <div id="examInitModal" class="modal">
     <div class="modal-box" style="max-width: 420px;">
       <div class="modal-header">
-        <h3>পরীক্ষা যাচাইকরণ</h3>
+        <h3 data-i18n="examVerifyTitle">পরীক্ষা যাচাইকরণ</h3>
         <button class="close-icon-btn" onclick="closeModal('examInitModal')">×</button>
       </div>
       <input type="number" id="stExReg" placeholder="রেজিস্ট্রেশন নম্বর">
@@ -650,7 +865,7 @@
 
       <div style="margin-top: 20px; display: flex; justify-content: space-between; font-size: 0.8rem; padding-top: 15px; border-top: 1px dashed #64748b;">
         <span>Controller of Examinations</span>
-        <span>Date: 05/09/2026</span>
+        <span>Date: 06/09/2026</span>
       </div>
 
       <div class="no-print" style="margin-top: 12px; display: flex; justify-content: flex-end; gap: 6px;">
@@ -682,8 +897,214 @@
     let smartParsedMcq = [];
     let currentStudentProfile = null;
     let deferredPrompt = null;
+    let currentDictMode = 'en-bn';
+    let currentLang = 'bn';
 
-    // বিশ্বজনীন PWA ইনস্টল ইভেন্ট (যেকোনো নেটওয়ার্কে অটো-ট্রিগার হবে)
+    // ভাষা পরিবর্তন ডিকশনারি
+    const i18nData = {
+      bn: {
+        welcomeSub: "স্বাগতম আপনাকে",
+        welcomeDesc: "ডিজিটাল পরীক্ষা, ক্লাসরুম নোটস ও স্বয়ংক্রিয় ক্লাউড প্ল্যাটফর্ম",
+        enterBtn: "Enter ➔",
+        installApp: "📲 অ্যাপ ইনস্টল",
+        adminBtn: "🔒 এডমিন",
+        menuBtn: "☰ মেনু",
+        inspiration: "💡 অনুপ্রেরণা:",
+        classroomTitle: "📚 ক্লাস রুম (১ম - ১০ম শ্রেণি)",
+        classroomDesc: "শ্রেণিভিত্তিক লেকচার নোট, টেক্সট, ইমেজ ও PDF ফাইলসমূহ (আজীবন সংরক্ষিত)",
+        enterClassroom: "ক্লাস রুমে প্রবেশ করুন",
+        noticeBoardTitle: "📢 পরীক্ষা ও নোটিশ বোর্ড",
+        sevenDaysTag: "সর্বশেষ ৭ দিনের আপডেট",
+        loading: "লোড হচ্ছে...",
+        resultTitle: "📊 ফলাফল ও SSC ট্রান্সক্রিপ্ট",
+        resultDesc: "MCQ, CQ মার্কস ও ফলাফল হিস্ট্রি",
+        viewResult: "ফলাফল দেখুন",
+        examPortalTitle: "✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)",
+        examPortalDesc: "এডমিন নির্ধারিত শিডিউল অনুযায়ী পরীক্ষা, অটো-টাইমার ও CQ ফাইল আপলোড।",
+        startExamBtn: "পরীক্ষা শুরু করুন",
+        menuBar: "মেনু বার",
+        installAppMenu: "📲 সরাসরি অ্যাপ ইনস্টল করুন",
+        regMenu: "📝 শিক্ষার্থী রেজিস্ট্রেশন",
+        loginMenu: "🔑 শিক্ষার্থী লগইন",
+        profileHistory: "👤 স্টুডেন্ট প্রোফাইল ও হিস্ট্রি",
+        feedbackMenu: "💬 আপনার মতামত লিখুন",
+        examVerifyTitle: "পরীক্ষা যাচাইকরণ"
+      },
+      en: {
+        welcomeSub: "Welcome to",
+        welcomeDesc: "Digital Examinations, Classroom Notes & Automated Cloud Platform",
+        enterBtn: "Enter ➔",
+        installApp: "📲 Install App",
+        adminBtn: "🔒 Admin",
+        menuBtn: "☰ Menu",
+        inspiration: "💡 Inspiration:",
+        classroomTitle: "📚 Class Room (Class 1 - 10)",
+        classroomDesc: "Class-wise lecture notes, text, images & PDF files (Permanent)",
+        enterClassroom: "Enter Class Room",
+        noticeBoardTitle: "📢 Exam & Notice Board",
+        sevenDaysTag: "Last 7 Days Updates",
+        loading: "Loading...",
+        resultTitle: "📊 Results & SSC Transcript",
+        resultDesc: "MCQ, CQ marks & result history",
+        viewResult: "View Results",
+        examPortalTitle: "✍️ Online Exam Portal (Class 1 - 10)",
+        examPortalDesc: "Admin scheduled exams with auto-timer and CQ submission.",
+        startExamBtn: "Start Exam",
+        menuBar: "Menu Bar",
+        installAppMenu: "📲 Install App Directly",
+        regMenu: "📝 Student Registration",
+        loginMenu: "🔑 Student Login",
+        profileHistory: "👤 Student Profile & History",
+        feedbackMenu: "💬 Send Feedback",
+        examVerifyTitle: "Exam Verification"
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = (currentLang === 'bn') ? 'en' : 'bn';
+      document.getElementById('langBtnText').innerText = (currentLang === 'bn') ? 'English' : 'বাংলা';
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18nData[currentLang][key]) {
+          el.innerText = i18nData[currentLang][key];
+        }
+      });
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('gyan_dark_mode', document.body.classList.contains('dark-mode'));
+    }
+    if (localStorage.getItem('gyan_dark_mode') === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+
+    // ক্যালকুলেটর লজিক
+    function calcInput(val) {
+      document.getElementById('calcDisplay').value += val;
+    }
+    function clearCalc() {
+      document.getElementById('calcDisplay').value = '';
+    }
+    function calcResult() {
+      try {
+        const res = eval(document.getElementById('calcDisplay').value);
+        document.getElementById('calcDisplay').value = res !== undefined ? res : '';
+      } catch(e) {
+        document.getElementById('calcDisplay').value = 'Error';
+      }
+    }
+
+    // পমোডোরো টাইমার লজিক
+    let pomoInterval = null;
+    let pomoTime = 25 * 60;
+    let isPomoBreak = false;
+
+    function updatePomoDisplay() {
+      const m = Math.floor(pomoTime / 60);
+      const s = pomoTime % 60;
+      document.getElementById('pomoTimeDisplay').innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function startPomodoro() {
+      if (pomoInterval) return;
+      pomoInterval = setInterval(() => {
+        if (--pomoTime < 0) {
+          clearInterval(pomoInterval);
+          pomoInterval = null;
+          isPomoBreak = !isPomoBreak;
+          if (isPomoBreak) {
+            alert("অভিনন্দন! আপনার পড়ার সেশন সম্পন্ন। ৫ মিনিটের বিরতি নিন।");
+            pomoTime = 5 * 60;
+            document.getElementById('pomoStatus').innerText = "☕ ৫ মিনিটের বিশ্রাম (Break Time)";
+            document.getElementById('pomoStatus').style.color = "#059669";
+          } else {
+            alert("বিরতি শেষ! পুনরায় পড়াশোনায় মনোযোগ দিন।");
+            pomoTime = 25 * 60;
+            document.getElementById('pomoStatus').innerText = "📚 পড়াশোনার সময় (Study Time)";
+            document.getElementById('pomoStatus').style.color = "#dc2626";
+          }
+          startPomodoro();
+        }
+        updatePomoDisplay();
+      }, 1000);
+    }
+
+    function pausePomodoro() {
+      clearInterval(pomoInterval);
+      pomoInterval = null;
+    }
+
+    function resetPomodoro() {
+      pausePomodoro();
+      isPomoBreak = false;
+      pomoTime = 25 * 60;
+      document.getElementById('pomoStatus').innerText = "📚 পড়াশোনার সময় (Study Time)";
+      document.getElementById('pomoStatus').style.color = "#dc2626";
+      updatePomoDisplay();
+    }
+
+    // ব্যক্তিগত নোটপ্যাড লজিক
+    function saveScratchpad() {
+      const text = document.getElementById('scratchpadArea').value;
+      localStorage.setItem('gyan_scratchpad', text);
+      const msg = document.getElementById('scratchSaveMsg');
+      msg.style.display = 'block';
+      setTimeout(() => { msg.style.display = 'none'; }, 2000);
+    }
+    window.addEventListener('load', () => {
+      const savedNote = localStorage.getItem('gyan_scratchpad');
+      if (savedNote && document.getElementById('scratchpadArea')) {
+        document.getElementById('scratchpadArea').value = savedNote;
+      }
+    });
+
+    // GPA ক্যালকুলেটর লজিক
+    function calculateGpa() {
+      const inputs = document.querySelectorAll('.gpa-score-input');
+      let totalPoints = 0;
+      let count = 0;
+      let hasFailed = false;
+
+      inputs.forEach(inp => {
+        const val = parseFloat(inp.value);
+        if (!isNaN(val)) {
+          count++;
+          let p = 0;
+          if (val >= 80) p = 5.0;
+          else if (val >= 70) p = 4.0;
+          else if (val >= 60) p = 3.5;
+          else if (val >= 50) p = 3.0;
+          else if (val >= 40) p = 2.0;
+          else if (val >= 33) p = 1.0;
+          else { p = 0.0; hasFailed = true; }
+          totalPoints += p;
+        }
+      });
+
+      if (count === 0) {
+        document.getElementById('gpaResultDisplay').innerText = "GPA: 0.00";
+        return;
+      }
+
+      if (hasFailed) {
+        document.getElementById('gpaResultDisplay').innerText = "GPA: 0.00 (F - অকৃতকার্য)";
+        return;
+      }
+
+      const gpa = (totalPoints / count).toFixed(2);
+      let grade = "F";
+      if (gpa >= 5) grade = "A+";
+      else if (gpa >= 4) grade = "A";
+      else if (gpa >= 3.5) grade = "A-";
+      else if (gpa >= 3) grade = "B";
+      else if (gpa >= 2) grade = "C";
+      else if (gpa >= 1) grade = "D";
+
+      document.getElementById('gpaResultDisplay').innerText = `GPA: ${gpa} (${grade})`;
+    }
+
+    // PWA ইনস্টল হ্যান্ডলার
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -708,7 +1129,6 @@
       }
     }
 
-    // অ্যাপ ইনস্টল হয়ে গেলে বাটন নিজে থেকেই লুকিয়ে যাবে
     window.addEventListener('appinstalled', () => {
       const hBtn = document.getElementById('pwaInstallHeaderBtn');
       const mBtn = document.getElementById('pwaInstallMenuBtn');
@@ -716,6 +1136,63 @@
       if (mBtn) mBtn.style.display = 'none';
       deferredPrompt = null;
     });
+
+    // ডিকশনারি কন্ট্রোলার লজিক
+    function setDictMode(mode) {
+      currentDictMode = mode;
+      document.getElementById('dictModeEnBn').classList.toggle('active', mode === 'en-bn');
+      document.getElementById('dictModeBnEn').classList.toggle('active', mode === 'bn-en');
+      document.getElementById('dictInput').placeholder = mode === 'en-bn' ? 'ইংরেজি শব্দ লিখুন (যেমন: School)...' : 'বাংলা শব্দ লিখুন (যেমন: বিদ্যালয়)...';
+      document.getElementById('dictResultCard').style.display = 'none';
+      document.getElementById('dictInput').value = '';
+    }
+
+    function searchDictionary() {
+      const input = document.getElementById('dictInput').value.trim();
+      if (!input) return alert("অনুগ্রহ করে একটি শব্দ লিখুন!");
+
+      const loader = document.getElementById('dictLoading');
+      const resultCard = document.getElementById('dictResultCard');
+      loader.style.display = 'block';
+      resultCard.style.display = 'none';
+
+      const pair = currentDictMode === 'en-bn' ? 'en|bn' : 'bn|en';
+      const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(input)}&langpair=${pair}`;
+
+      fetch(apiUrl)
+        .then(r => r.json())
+        .then(data => {
+          loader.style.display = 'none';
+          if (data && data.responseData && data.responseData.translatedText) {
+            const translated = data.responseData.translatedText;
+            document.getElementById('dictWordDisplay').innerText = input;
+            document.getElementById('dictMeaningDisplay').innerText = translated;
+            document.getElementById('dictPhonetic').innerText = currentDictMode === 'en-bn' ? 'Language: English to Bengali' : 'ভাষা: বাংলা থেকে ইংরেজি';
+            document.getElementById('dictExampleBox').innerText = `Matches: ${data.matches && data.matches.length ? data.matches[0].segment : ''}`;
+            resultCard.style.display = 'block';
+          } else {
+            alert("শব্দটির অর্থ পাওয়া যায়নি। সঠিক বানান দিয়ে চেষ্টা করুন।");
+          }
+        })
+        .catch(err => {
+          loader.style.display = 'none';
+          alert("ডিকশনারি সংযোগে সমস্যা হয়েছে: " + err);
+        });
+    }
+
+    function speakWord() {
+      const text = document.getElementById('dictWordDisplay').innerText;
+      if (!text) return;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = currentDictMode === 'en-bn' ? 'en-US' : 'bn-BD';
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function openDuolingoInApp() {
+      const frame = document.getElementById('duolingoFrame');
+      frame.src = "https://www.duolingo.com/learn";
+      openModal('duolingoModal');
+    }
 
     function goToPage(n) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -725,7 +1202,12 @@
 
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
     function openModal(id) { document.getElementById(id).classList.add('show'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+    function closeModal(id) { 
+      document.getElementById(id).classList.remove('show'); 
+      if (id === 'duolingoModal') {
+        document.getElementById('duolingoFrame').src = '';
+      }
+    }
 
     function setBtnLoading(btn, text = "অপেক্ষা করুন...") {
       if (!btn) return null;
@@ -885,7 +1367,7 @@
           cleanOptions.push(text.substring(m0, m1).trim());
           cleanOptions.push(text.substring(m1, m2).trim());
           if (optMarkers[2] !== -1) cleanOptions.push(text.substring(m2, m3).trim());
-          if (optMarkers[3] !== -1) cleanOptions.push(text.substring(m3).trim());
+          if (optMarkers[3] !== -1) cleanOptions.push(text.substring(m3, m4).trim());
         } else {
           const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
           qText = lines[0].replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
@@ -1461,7 +1943,7 @@
       }, btn);
     }
 
-    // বিশ্বস্ত ও নিরাপদ সার্ভিস ওয়ার্কার (ক্রস-নেটওয়ার্কে ক্যাশিং ও PWA ইন্সটল আনলক)
+    // বিশ্বস্ত ও ক্রস-নেটওয়ার্ক PWA সার্ভিস ওয়ার্কার
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         const swBlob = new Blob([`
