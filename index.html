@@ -3,63 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="google" content="notranslate">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>জ্ঞান.com</title>
   
+  <meta name="theme-color" content="#1e1b4b">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="জ্ঞান.com">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8.com%22%2C%22short_name%22%3A%22%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231e1b4b%22%2C%22theme_color%22%3A%22%231e1b4b%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fapi.iconify.design%2Ffluent-emoji-flat%3Agraduation-cap.svg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
+
+  <link rel="icon" type="image/svg+xml" href="https://api.iconify.design/fluent-emoji-flat:graduation-cap.svg">
+  <link rel="apple-touch-icon" href="https://api.iconify.design/fluent-emoji-flat:graduation-cap.svg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Serif Bengali', 'Kalpurush', serif; }
-    body { background-color: #f8fafc; color: #0f172a; min-height: 100vh; overflow-x: hidden; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Serif Bengali', 'Kalpurush', serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #f8fafc; color: #0f172a; min-height: 100vh; overflow-x: hidden; user-select: none; }
 
     .page { display: none; min-height: 100vh; width: 100%; }
     .page.active { display: flex; }
 
-    /* ১ম পেজ: ওয়েলকাম ইন্টারফেস */
+    /* ওয়েলকাম স্ক্রিন */
     #page1 {
       flex-direction: column; align-items: center; justify-content: center;
       background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 60%, #020617 100%);
-      color: #ffffff; text-align: center; padding: 20px; position: relative;
+      color: #ffffff; text-align: center; padding: 20px;
     }
     #page1 h1 {
-      font-size: clamp(3.2rem, 9vw, 5.5rem); color: #fbbf24; font-weight: 800; margin: 10px 0;
+      font-size: clamp(2.8rem, 8vw, 5.2rem); color: #fbbf24; font-weight: 800; margin: 12px 0;
       text-shadow: 0 0 25px rgba(251, 191, 36, 0.5), 0 4px 15px rgba(0, 0, 0, 0.8);
     }
+    #page1 p { font-size: clamp(0.95rem, 3.5vw, 1.25rem); color: #cbd5e1; max-width: 600px; }
     .enter-btn {
-      margin-top: 32px; padding: 14px 52px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-      color: #090d16; border: none; border-radius: 50px; font-size: clamp(1.2rem, 3.5vw, 1.5rem);
-      font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.45); transition: all 0.2s ease;
+      margin-top: 30px; padding: 12px 48px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: #090d16; border: none; border-radius: 50px; font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+      font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.45); transition: transform 0.2s ease;
     }
-    .enter-btn:hover { transform: scale(1.05); }
+    .enter-btn:hover { transform: scale(1.04); }
 
-    /* ২য় পেজ: ড্যাশবোর্ড হেডার */
+    /* হেডার */
     header {
-      background: #1e1b4b; color: white; padding: 14px 20px; display: flex; justify-content: space-between;
+      background: #1e1b4b; color: white; padding: 12px 16px; display: flex; justify-content: space-between;
       align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 30;
     }
-    .logo { font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 800; color: #fbbf24; }
-    .header-btns { display: flex; gap: 8px; }
-    .menu-btn { background: #312e81; color: white; border: 1px solid rgba(255,255,255,0.15); padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; }
-    .admin-gate-btn { background: #d97706; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    .logo { font-size: clamp(1.25rem, 4vw, 1.8rem); font-weight: 800; color: #fbbf24; }
+    .header-btns { display: flex; gap: 6px; align-items: center; }
+    
+    .install-pwa-btn {
+      display: none; background: #10b981; color: white; border: none; padding: 7px 12px;
+      border-radius: 8px; font-weight: 700; font-size: clamp(0.75rem, 2.5vw, 0.9rem); cursor: pointer;
+      animation: pulseBtn 2s infinite;
+    }
+    @keyframes pulseBtn { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
 
-    .main-content { max-width: 1100px; margin: 15px auto; padding: 0 12px; display: flex; flex-direction: column; gap: 15px; }
+    .menu-btn { background: #312e81; color: white; border: 1px solid rgba(255,255,255,0.15); padding: 7px 12px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
+    .admin-gate-btn { background: #d97706; color: white; border: none; padding: 7px 12px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
 
-    /* ১০০% কার্যকর মারকিউ অ্যানিমেশন (CSS Keyframes) */
+    .main-content { width: 100%; max-width: 1150px; margin: 12px auto; padding: 0 12px; display: flex; flex-direction: column; gap: 14px; }
+
+    /* ধীরগতির ও মোবাইল ফ্রেন্ডলি মোটিভেশনাল স্ক্রলিং বার */
     .notice-marquee {
-      background: #fef3c7; border-left: 5px solid #f59e0b; padding: 10px 14px;
-      border-radius: 8px; display: flex; align-items: center; gap: 12px; overflow: hidden; position: relative;
+      background: #fef3c7; border-left: 5px solid #f59e0b; padding: 8px 12px;
+      border-radius: 8px; display: flex; align-items: center; gap: 10px; overflow: hidden; position: relative;
     }
     .notice-badge {
-      background: #f59e0b; color: white; padding: 4px 12px; border-radius: 4px;
-      font-weight: 700; font-size: 0.85rem; white-space: nowrap; z-index: 2;
-      box-shadow: 2px 0 8px rgba(254, 243, 199, 0.9);
+      background: #f59e0b; color: white; padding: 4px 10px; border-radius: 4px;
+      font-weight: 700; font-size: 0.8rem; white-space: nowrap; z-index: 2;
     }
     .marquee-container { flex-grow: 1; overflow: hidden; white-space: nowrap; position: relative; }
     .marquee-content {
       display: inline-block; white-space: nowrap; padding-left: 100%;
-      animation: smoothMarquee 22s linear infinite; font-size: 0.95rem; font-weight: 600; color: #1e293b;
+      animation: smoothMarquee 45s linear infinite; /* গতি অনেক ধীর করা হয়েছে */
+      font-size: clamp(0.85rem, 2.5vw, 1rem); font-weight: 600; color: #1e293b;
     }
     .marquee-container:hover .marquee-content { animation-play-state: paused; cursor: pointer; }
     @keyframes smoothMarquee {
@@ -67,18 +88,37 @@
       100% { transform: translate3d(-100%, 0, 0); }
     }
 
-    /* ফিচার কার্ড গ্রিড */
-    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
-    .card { background: white; padding: 18px; border-radius: 14px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; }
-    .card h3 { font-size: 1.15rem; color: #1e293b; margin-bottom: 4px; font-weight: 700; }
-    .card p { font-size: 0.85rem; color: #64748b; margin-bottom: 12px; }
+    /* রেসপনসিভ গ্রিড (মোবাইলে ১ কলাম, ট্যাবলেটে ২, পিসিতে ৩ কলাম) */
+    .feature-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); 
+      gap: 12px; 
+    }
+    .card { background: white; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; }
+    .card h3 { font-size: clamp(1rem, 3.2vw, 1.2rem); color: #1e293b; font-weight: 700; }
+    .card p { font-size: clamp(0.8rem, 2.6vw, 0.9rem); color: #64748b; }
 
-    .btn { padding: 10px; border-radius: 6px; border: none; color: white; font-weight: 700; cursor: pointer; width: 100%; font-size: 0.95rem; }
+    /* বক্স নোটিশ বোর্ড */
+    .top-news-card {
+      background: #ffffff; border: 1.5px solid #0d9488; padding: 16px; border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.08); display: flex; flex-direction: column;
+    }
+    .top-news-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ccfbf1; padding-bottom: 8px; margin-bottom: 10px; }
+    .top-news-header h3 { color: #0f766e; font-size: clamp(0.95rem, 3vw, 1.15rem); font-weight: 800; }
+    .top-news-list { list-style: none; max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .top-news-item {
+      padding: 8px 10px; background: #f0fdfa; border-left: 4px solid #0d9488; border-radius: 4px;
+      font-size: 0.85rem; color: #1e293b; display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    }
+    .top-news-item span.date-tag { font-size: 0.72rem; color: #64748b; white-space: nowrap; font-weight: 600; }
+
+    .btn { padding: 10px; border-radius: 6px; border: none; color: white; font-weight: 700; cursor: pointer; width: 100%; font-size: 0.9rem; transition: opacity 0.2s; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .btn-blue { background: #2563eb; } .btn-green { background: #059669; } .btn-purple { background: #7c3aed; } .btn-amber { background: #d97706; } .btn-teal { background: #0d9488; }
 
     .big-exam-card {
       grid-column: 1 / -1; background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
-      border: 1px solid #c7d2fe; padding: 20px; border-radius: 14px; display: flex; justify-content: space-between;
+      border: 1px solid #c7d2fe; padding: 18px; border-radius: 12px; display: flex; justify-content: space-between;
       align-items: center; flex-wrap: wrap; gap: 12px;
     }
 
@@ -90,53 +130,53 @@
     }
     .sidebar.open { right: 0; }
     .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
-    .menu-item { padding: 10px; border: 1px solid #e2e8f0; background: white; border-radius: 8px; font-weight: 600; cursor: pointer; text-align: left; margin-top: 10px; width: 100%; }
+    .menu-item { padding: 10px; border: 1px solid #e2e8f0; background: white; border-radius: 8px; font-weight: 600; cursor: pointer; text-align: left; margin-top: 10px; width: 100%; font-size: 0.9rem; }
+    .menu-item.highlight { background: #fdf4ff; border-color: #d8b4fe; color: #7e22ce; font-weight: 700; }
 
     /* মডাল পপআপ */
-    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 60; align-items: center; justify-content: center; padding: 12px; }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 60; align-items: center; justify-content: center; padding: 10px; }
     .modal.show { display: flex; }
-    .modal-box { background: white; width: 100%; max-width: 560px; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px; max-height: 90vh; overflow-y: auto; }
+    .modal-box { background: white; width: 100%; max-width: 560px; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; max-height: 92vh; overflow-y: auto; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
     .close-icon-btn { background: transparent; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer; }
-    .modal-box input, .modal-box select, .modal-box textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; }
-    .modal-btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
-    .btn-cancel { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .modal-box input, .modal-box select, .modal-box textarea { width: 100%; padding: 9px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; }
+    .modal-btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; }
+    .btn-cancel { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
 
-    /* এডমিন প্যানেল */
     .admin-panel { max-width: 840px; background: #fffdfa; border: 2px solid #f59e0b; }
-    .admin-tabs { display: flex; gap: 8px; border-bottom: 1px solid #fed7aa; padding-bottom: 8px; flex-wrap: wrap; }
-    .admin-tab-btn { padding: 6px 14px; border-radius: 6px; border: 1px solid #f59e0b; background: white; cursor: pointer; font-weight: 700; }
+    .admin-tabs { display: flex; gap: 6px; border-bottom: 1px solid #fed7aa; padding-bottom: 8px; flex-wrap: wrap; }
+    .admin-tab-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid #f59e0b; background: white; cursor: pointer; font-weight: 700; font-size: 0.82rem; }
     .admin-tab-btn.active { background: #f59e0b; color: white; }
 
-    /* অপশন কার্ড স্টাইল (সম্পূর্ণ লেখা দৃশ্যমান রাখার জন্য) */
-    .question-box { border: 1px solid #e2e8f0; padding: 14px; border-radius: 8px; margin-bottom: 12px; background: white; }
+    .admin-alert-banner { display: none; padding: 8px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-align: center; }
+    .admin-alert-success { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+
+    .question-box { border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; margin-bottom: 10px; background: white; }
     .opt-label { 
       display: flex; align-items: center; justify-content: space-between;
-      margin: 8px 0; padding: 10px 14px; border-radius: 6px; cursor: pointer; 
-      font-size: 0.95rem; border: 1px solid #e2e8f0; background: #f8fafc; transition: all 0.15s;
+      margin: 6px 0; padding: 8px 12px; border-radius: 6px; cursor: pointer; 
+      font-size: 0.9rem; border: 1px solid #e2e8f0; background: #f8fafc;
     }
-    .opt-label:hover { background: #eff6ff; border-color: #93c5fd; }
-    .opt-label span { flex-grow: 1; padding-right: 10px; }
+    .opt-label span { flex-grow: 1; padding-right: 8px; }
     .opt-label input { width: 18px; height: 18px; cursor: pointer; }
     
     .review-correct { border-left: 4px solid #16a34a; background: #f0fdf4; }
     .review-wrong { border-left: 4px solid #dc2626; background: #fef2f2; }
-    .expl-box { background: #eff6ff; border: 1px dashed #60a5fa; padding: 8px; border-radius: 6px; margin-top: 6px; font-size: 0.85rem; color: #1e3a8a; }
+    .expl-box { background: #eff6ff; border: 1px dashed #60a5fa; padding: 8px; border-radius: 6px; margin-top: 6px; font-size: 0.82rem; color: #1e3a8a; }
 
     .profile-photo { width: 90px; height: 90px; object-fit: cover; border-radius: 50%; border: 3px solid #6366f1; margin: 0 auto 10px auto; display: block; }
     
-    /* SSC ট্রান্সক্রিপ্ট */
-    .marksheet-modal { max-width: 750px; background: #fffcf5; border: 4px double #1e3a8a; }
-    .marksheet-header { text-align: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 8px; }
-    .marksheet-header h2 { font-size: 1.5rem; color: #1e3a8a; font-weight: 800; }
-    .st-info-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin: 12px 0; font-size: 0.9rem; border: 1px solid #cbd5e1; padding: 8px; background: white; }
-    .ms-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; text-align: center; }
-    .ms-table th, .ms-table td { border: 1px solid #64748b; padding: 6px 8px; }
+    .marksheet-modal { max-width: 750px; background: #fffcf5; border: 3px double #1e3a8a; }
+    .marksheet-header { text-align: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 6px; }
+    .marksheet-header h2 { font-size: 1.3rem; color: #1e3a8a; font-weight: 800; }
+    .st-info-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin: 10px 0; font-size: 0.85rem; border: 1px solid #cbd5e1; padding: 8px; background: white; }
+    .ms-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.85rem; text-align: center; }
+    .ms-table th, .ms-table td { border: 1px solid #64748b; padding: 5px; }
     .ms-table th { background: #e2e8f0; font-weight: 700; }
 
-    .note-item { border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; background: #f8fafc; margin-bottom: 10px; }
-    .note-item h4 { color: #0d9488; margin-bottom: 4px; }
-    .note-item a { display: inline-block; margin-top: 6px; color: #2563eb; font-weight: 700; text-decoration: none; }
+    .note-item { border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; background: #f8fafc; margin-bottom: 8px; }
+    .note-item h4 { color: #0d9488; margin-bottom: 4px; font-size: 0.95rem; }
+    .note-item a { display: inline-block; margin-top: 6px; color: #2563eb; font-weight: 700; text-decoration: none; font-size: 0.85rem; }
 
     @media print {
       body * { visibility: hidden; }
@@ -145,6 +185,13 @@
       .no-print { display: none !important; }
     }
     .hidden { display: none !important; }
+
+    @media (max-width: 600px) {
+      .big-exam-card { flex-direction: column; align-items: stretch; text-align: center; }
+      .big-exam-card button { width: 100% !important; }
+      .admin-tabs { flex-direction: column; }
+      .admin-tab-btn { width: 100%; text-align: center; }
+    }
   </style>
 </head>
 <body class="notranslate">
@@ -152,7 +199,7 @@
   <div id="page1" class="page active">
     <h2>স্বাগতম আপনাকে</h2>
     <h1>"জ্ঞান.com"</h1>
-    <p>ডিজিটাল পরীক্ষা, ক্লাসরুম নোটস ও স্বয়ংক্রিয় ক্লাউড প্ল্যাটফর্ম</p>
+    <p>ডিজিটাল পরীক্ষা, ক্লাসরুম নোটস ও স্বয়ংক্রিয় ক্লাউড প্ল্যাটফর্ম</p>
     <button class="enter-btn" onclick="goToPage(2)">Enter ➔</button>
   </div>
 
@@ -160,44 +207,43 @@
     <header>
       <div class="logo">জ্ঞান.কম</div>
       <div class="header-btns">
-        <button class="admin-gate-btn" onclick="openAdminGate()">🔒 এডমিন প্যানেল</button>
+        <button id="pwaInstallHeaderBtn" class="install-pwa-btn" onclick="triggerPwaInstall()">📲 অ্যাপ ইনস্টল</button>
+        <button class="admin-gate-btn" onclick="openAdminGate()">🔒 এডমিন</button>
         <button class="menu-btn" onclick="toggleSidebar()">☰ মেনু</button>
       </div>
     </header>
 
     <div class="main-content">
+      <!-- মোটিভেশনাল উক্তি স্ক্রলিং বার (ধীরগতির) -->
       <div class="notice-marquee">
-        <span class="notice-badge">জরুরি নোটিশ:</span>
+        <span class="notice-badge">💡 অনুপ্রেরণা:</span>
         <div class="marquee-container">
-          <div class="marquee-content" id="marqueeText">লোড হচ্ছে...</div>
+          <div class="marquee-content" id="motivationText">জ্ঞানের সন্ধানে যে পথ চলে, আল্লাহ তার জান্নাতের পথ সহজ করে দেন।</div>
         </div>
       </div>
 
       <div class="feature-grid">
+        <!-- ডিজিটাল ক্লাসরুম -->
         <div class="card" style="border: 2px solid #0d9488; background: #f0fdfa;">
           <div>
             <h3 style="color: #0f766e;">📚 ক্লাস রুম (১ম - ১০ম শ্রেণি)</h3>
-            <p>শ্রেণিভিত্তিক লেকচার নোট, টেক্সট, ইমেজ ও PDF ফাইলসমূহ</p>
+            <p>শ্রেণিভিত্তিক লেকচার নোট, টেক্সট, ইমেজ ও PDF ফাইলসমূহ (আজীবন সংরক্ষিত)</p>
           </div>
           <button class="btn btn-teal" onclick="openModal('classroomModal')">ক্লাস রুমে প্রবেশ করুন</button>
         </div>
 
-        <div class="card">
-          <div>
-            <h3>📝 শিক্ষার্থী রেজিস্ট্রেশন</h3>
-            <p>ছবি সহ সকল তথ্য সংরক্ষণ করুন</p>
+        <!-- বক্স নোটিশ বোর্ড (৭ দিনের আপডেট) -->
+        <div class="top-news-card">
+          <div class="top-news-header">
+            <h3>📢 পরীক্ষা ও নোটিশ বোর্ড</h3>
+            <span style="font-size: 0.72rem; color: #0f766e; font-weight: 700;">সর্বশেষ ৭ দিনের আপডেট</span>
           </div>
-          <button class="btn btn-purple" onclick="openModal('regModal')">রেজিস্ট্রেশন</button>
+          <ul class="top-news-list" id="topNewsListContainer">
+            <li style="text-align: center; color: #94a3b8; padding: 15px;">নোটিশ লোড হচ্ছে...</li>
+          </ul>
         </div>
 
-        <div class="card">
-          <div>
-            <h3>🔑 শিক্ষার্থী লগইন</h3>
-            <p>পিন দিয়ে লগইন ও প্রোফাইল চেক</p>
-          </div>
-          <button class="btn btn-amber" onclick="openModal('loginModal')">লগইন করুন</button>
-        </div>
-
+        <!-- ফলাফল ও ট্রান্সক্রিপ্ট -->
         <div class="card">
           <div>
             <h3>📊 ফলাফল ও SSC ট্রান্সক্রিপ্ট</h3>
@@ -206,17 +252,19 @@
           <button class="btn btn-green" onclick="openModal('profileModal')">ফলাফল দেখুন</button>
         </div>
 
+        <!-- অনলাইন পরীক্ষা পোর্টাল -->
         <div class="big-exam-card">
           <div>
-            <h2 style="color: #1e1b4b; font-size: clamp(1.2rem, 3.5vw, 1.5rem); font-weight: 800;">✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)</h2>
-            <p style="color: #475569; margin-top: 4px; font-size: 0.9rem;">এডমিন নির্ধারিত শিডিউল অনুযায়ী পরীক্ষা, অটো-টাইমার ও CQ ফাইল আপলোড।</p>
+            <h2 style="color: #1e1b4b; font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 800;">✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)</h2>
+            <p style="color: #475569; margin-top: 4px; font-size: 0.85rem;">এডমিন নির্ধারিত শিডিউল অনুযায়ী পরীক্ষা, অটো-টাইমার ও CQ ফাইল আপলোড।</p>
           </div>
-          <button class="btn btn-blue" style="width: auto; padding: 10px 24px;" onclick="openModal('examInitModal')">পরীক্ষা শুরু করুন</button>
+          <button class="btn btn-blue" style="width: auto; padding: 10px 20px;" onclick="openModal('examInitModal')">পরীক্ষা শুরু করুন</button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- মেনু বার -->
   <aside id="sidebar" class="sidebar">
     <div>
       <div class="sidebar-header">
@@ -224,37 +272,41 @@
         <button onclick="toggleSidebar()" class="close-icon-btn">×</button>
       </div>
       <div style="margin-top: 15px;">
-        <button class="menu-item" onclick="openModal('classroomModal')">📚 ক্লাস রুম স্টাডি নোটস</button>
-        <button class="menu-item" onclick="openAdminGate()">🔒 এডমিন ড্যাশবোর্ড</button>
-        <button class="menu-item" onclick="openModal('profileModal')">👤 স্টুডেন্ট প্রোফাইল ও হিস্ট্রি</button>
-        <button class="menu-item" onclick="openModal('feedbackModal')">💬 আপনার মতামত লিখুন</button>
+        <button id="pwaInstallMenuBtn" class="menu-item highlight" style="display:none;" onclick="triggerPwaInstall()">📲 সরাসরি অ্যাপ ইনস্টল করুন</button>
+        <button class="menu-item highlight" onclick="toggleSidebar(); openModal('regModal');">📝 শিক্ষার্থী রেজিস্ট্রেশন</button>
+        <button class="menu-item highlight" onclick="toggleSidebar(); openModal('loginModal');">🔑 শিক্ষার্থী লগইন</button>
+        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #e2e8f0;">
+        <button class="menu-item" onclick="toggleSidebar(); openModal('classroomModal');">📚 ক্লাস রুম স্টাডি নোটস</button>
+        <button class="menu-item" onclick="toggleSidebar(); openAdminGate();">🔒 এডমিন ড্যাশবোর্ড</button>
+        <button class="menu-item" onclick="toggleSidebar(); openModal('profileModal');">👤 স্টুডেন্ট প্রোফাইল ও হিস্ট্রি</button>
+        <button class="menu-item" onclick="toggleSidebar(); openModal('feedbackModal');">💬 আপনার মতামত লিখুন</button>
       </div>
     </div>
     <div style="font-size: 0.8rem; color: #94a3b8; text-align: center;">জ্ঞান.com © 2026</div>
   </aside>
 
+  <!-- ক্লাসরুম মডাল -->
   <div id="classroomModal" class="modal">
     <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
         <h3 style="color: #0f766e;">📚 ডিজিটাল ক্লাস রুম (নোটস ও শিট)</h3>
         <button class="close-icon-btn" onclick="closeModal('classroomModal')">×</button>
       </div>
-      <div style="display: flex; gap: 8px;">
-        <select id="crFilterClass" onchange="loadClassNotes()">
-          <option value="">শ্রেণি নির্বাচন করুন</option>
-          <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-          <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-          <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-          <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-          <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
-        </select>
-      </div>
-      <div id="notesContainer" style="max-height: 380px; overflow-y: auto; margin-top: 10px;">
+      <select id="crFilterClass" onchange="loadClassNotes()">
+        <option value="">শ্রেণি নির্বাচন করুন</option>
+        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
+        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
+        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
+      </select>
+      <div id="notesContainer" style="max-height: 380px; overflow-y: auto; margin-top: 8px;">
         <p style="text-align: center; color: #94a3b8; padding: 20px;">শ্রেণি নির্বাচন করলে স্টাডি নোটস দেখা যাবে।</p>
       </div>
     </div>
   </div>
 
+  <!-- এডমিন গেট -->
   <div id="adminGateModal" class="modal">
     <div class="modal-box" style="max-width: 380px;">
       <div class="modal-header">
@@ -269,6 +321,7 @@
     </div>
   </div>
 
+  <!-- এডমিন কন্ট্রোল প্যানেল -->
   <div id="adminPanelModal" class="modal">
     <div class="modal-box admin-panel">
       <div class="modal-header">
@@ -276,88 +329,110 @@
         <button class="close-icon-btn" onclick="closeModal('adminPanelModal')">×</button>
       </div>
 
+      <div id="adminSuccessAlert" class="admin-alert-banner admin-alert-success"></div>
+
       <div class="admin-tabs">
-        <button class="admin-tab-btn active" onclick="switchAdminTab('mcqTab')">MCQ & CQ পরীক্ষা শিডিউল</button>
-        <button class="admin-tab-btn" onclick="switchAdminTab('classroomAdminTab')">ক্লাসরুম নোট পাবলিশ</button>
-        <button class="admin-tab-btn" onclick="switchAdminTab('noticeTab')">নোটিশ আপডেট</button>
-        <button class="admin-tab-btn" onclick="switchAdminTab('pinTab')">পিন পরিবর্তন</button>
+        <button class="admin-tab-btn active" onclick="switchAdminTab(event, 'mcqTab')">MCQ & CQ শিডিউল</button>
+        <button class="admin-tab-btn" onclick="switchAdminTab(event, 'classroomAdminTab')">ক্লাসরুম নোট পাবলিশ</button>
+        <button class="admin-tab-btn" onclick="switchAdminTab(event, 'motivationTab')">মোটিভেশনাল উক্তি</button>
+        <button class="admin-tab-btn" onclick="switchAdminTab(event, 'noticeTab')">নোটিশ ও রুটিন</button>
+        <button class="admin-tab-btn" onclick="switchAdminTab(event, 'pinTab')">পিন পরিবর্তন</button>
       </div>
 
-      <div id="mcqTab" class="admin-tab-content" style="display:flex; flex-direction:column; gap:10px;">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+      <!-- MCQ & CQ শিডিউল -->
+      <div id="mcqTab" class="admin-tab-content" style="display:flex; flex-direction:column; gap:8px;">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:8px;">
           <div>
-            <label style="font-size:0.85rem; font-weight:700;">শ্রেণি নির্বাচন:</label>
+            <label style="font-size:0.82rem; font-weight:700;">শ্রেণি নির্বাচন:</label>
             <select id="admClass">
-              <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-              <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+              <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+              <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
               <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
               <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
               <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
             </select>
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:700;">বিষয়ের নাম:</label>
+            <label style="font-size:0.82rem; font-weight:700;">বিষয়ের নাম:</label>
             <input type="text" id="admSubject" placeholder="যেমন: বাংলা">
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:700;">পরীক্ষা প্রকাশের তারিখ:</label>
+            <label style="font-size:0.82rem; font-weight:700;">প্রকাশের তারিখ:</label>
             <input type="date" id="admPublishDate">
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:700;">প্রকাশের সময়:</label>
+            <label style="font-size:0.82rem; font-weight:700;">প্রকাশের সময়:</label>
             <input type="time" id="admPublishTime">
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:700;">MCQ সময় (মিনিট):</label>
-            <input type="number" id="admMcqDuration" placeholder="অটো সেট হবে (১ প্রশ্ন = ১ মিনিট)">
+            <label style="font-size:0.82rem; font-weight:700;">MCQ সময় (মিনিট):</label>
+            <input type="number" id="admMcqDuration" placeholder="অটো সেট (১ প্রশ্ন = ১ মিনিট)">
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:700;">CQ সময় (মিনিট - কাস্টম):</label>
+            <label style="font-size:0.82rem; font-weight:700;">CQ সময় (মিনিট):</label>
             <input type="number" id="admCqDuration" value="30">
           </div>
         </div>
 
-        <div style="background:#fff7ed; border:1px solid #fed7aa; padding:10px; border-radius:6px;">
-          <label style="font-size:0.9rem; font-weight:700; color:#9a3412;">কপিকৃত MCQ টেক্সট পেস্ট করুন:</label>
-          <textarea id="rawMcqPaste" rows="5" placeholder="যেমন: ১. প্রশ্ন? ক) উত্তর ১ খ) উত্তর ২ গ) উত্তর ৩ ঘ) উত্তর ৪ | উত্তর: ক"></textarea>
-          <button class="btn btn-amber" style="margin-top:6px;" onclick="autoParseMCQSmart()">⚡ অপশন নির্ভুলভাবে প্রস্তুত করুন</button>
+        <div style="background:#fff7ed; border:1px solid #fed7aa; padding:8px; border-radius:6px;">
+          <label style="font-size:0.85rem; font-weight:700; color:#9a3412;">কপিকৃত MCQ টেক্সট পেস্ট করুন:</label>
+          <textarea id="rawMcqPaste" rows="4" placeholder="১. প্রশ্ন? ক) উত্তর ১ খ) উত্তর ২ গ) উত্তর ৩ ঘ) উত্তর ৪ | উত্তর: ক"></textarea>
+          <button class="btn btn-amber" style="margin-top:4px;" onclick="autoParseMCQSmart()">⚡ অপশন নির্ভুলভাবে প্রস্তুত করুন</button>
         </div>
 
-        <div id="mcqParsedPreview" class="hidden" style="max-height:180px; overflow-y:auto; border:1px solid #cbd5e1; padding:8px; border-radius:6px; background:white;"></div>
+        <div id="mcqParsedPreview" class="hidden" style="max-height:160px; overflow-y:auto; border:1px solid #cbd5e1; padding:8px; border-radius:6px; background:white;"></div>
 
-        <div style="border:1px dashed #94a3b8; padding:10px; border-radius:6px; background:#f8fafc;">
-          <label style="font-size:0.85rem; font-weight:700;">CQ প্রশ্ন ও ফাইল আপলোড (PDF/Image):</label>
+        <div style="border:1px dashed #94a3b8; padding:8px; border-radius:6px; background:#f8fafc;">
+          <label style="font-size:0.82rem; font-weight:700;">CQ প্রশ্ন ও ফাইল আপলোড (PDF/Image):</label>
           <textarea id="admCqDesc" rows="2" placeholder="CQ প্রশ্ন লিখুন..."></textarea>
-          <input type="file" id="admCqFile" style="margin-top:5px; border:none; padding:4px;">
+          <input type="file" id="admCqFile" style="margin-top:4px; border:none; padding:4px;">
         </div>
 
-        <button class="btn btn-green" onclick="saveScheduledExam()">পরীক্ষা শিডিউল ও প্রকাশ করুন</button>
+        <div style="display:flex; gap:6px;">
+          <button class="btn btn-purple" style="width:35%;" onclick="previewExamBeforePublish()">👁️ প্রিভিউ</button>
+          <button class="btn btn-green" style="width:65%;" onclick="saveScheduledExam()">শিডিউল ও প্রকাশ</button>
+        </div>
       </div>
 
+      <!-- ক্লাসরুম নোট ট্যাব -->
       <div id="classroomAdminTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
         <select id="admNoteClass">
-          <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-          <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+          <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+          <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
           <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
           <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
           <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
         </select>
-        <input type="text" id="admNoteSubject" placeholder="বিষয়ের নাম (যেমন: গণিত / বাংলা)">
-        <input type="text" id="admNoteTitle" placeholder="নোটের শিরোনাম / অধ্যায়">
+        <input type="text" id="admNoteSubject" placeholder="বিষয়ের নাম (যেমন: গণিত / বাংলা)">
+        <input type="text" id="admNoteTitle" placeholder="নোটের শিরোনাম / অধ্যায়">
         <textarea id="admNoteText" rows="4" placeholder="নোটের বিস্তারিত টেক্সট এখানে লিখুন..."></textarea>
         
-        <div style="border: 1px dashed #0d9488; padding: 10px; border-radius: 6px; background: #f0fdfa;">
-          <label style="font-size:0.85rem; font-weight:700; color:#0f766e;">📎 ফাইল আপলোড করুন (PDF, Image, Word, ইত্যাদি):</label>
+        <div style="border: 1px dashed #0d9488; padding: 8px; border-radius: 6px; background: #f0fdfa;">
+          <label style="font-size:0.82rem; font-weight:700; color:#0f766e;">📎 ফাইল আপলোড করুন (PDF, Image, ইত্যাদি):</label>
           <input type="file" id="admNoteFile" style="border:none; padding:4px; margin-top:4px;">
         </div>
-        <button class="btn btn-teal" onclick="publishClassroomNote()">নোট পাবলিশ করুন</button>
+        
+        <div style="display:flex; gap:6px;">
+          <button class="btn btn-purple" style="width:35%;" onclick="previewNoteBeforePublish()">👁️ প্রিভিউ</button>
+          <button class="btn btn-teal" style="width:65%;" onclick="publishClassroomNote()">নোট পাবলিশ করুন</button>
+        </div>
       </div>
 
+      <!-- মোটিভেশনাল উক্তি ট্যাব -->
+      <div id="motivationTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
+        <label style="font-size:0.82rem; font-weight:700; color:#4338ca;">উপরে স্ক্রল হওয়ার জন্য মোটিভেশনাল বাণী দিন:</label>
+        <textarea id="admMotivationInput" rows="3" placeholder="যেমন: যে ব্যক্তি জ্ঞান অর্জনের উদ্দেশ্যে কোনো পথে চলে, আল্লাহ তার জন্য জান্নাতের পথ সহজ করে দেন।"></textarea>
+        <button class="btn btn-blue" onclick="updateMotivationText()">বাণী আপডেট করুন</button>
+      </div>
+
+      <!-- নোটিশ ও রুটিন ট্যাব -->
       <div id="noticeTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
-        <textarea id="admNoticeText" rows="3" placeholder="জরুরি নোটিশ লিখুন..."></textarea>
-        <button class="btn btn-purple" onclick="postNoticeFromAdmin()">নোটিশ লাইভ করুন</button>
+        <label style="font-size:0.82rem; font-weight:700; color:#b45309;">জরুরি নোটিশ / রুটিন (বক্সে ৭ দিন থাকবে):</label>
+        <textarea id="admNoticeText" rows="3" placeholder="পরীক্ষার রুটিন বা জরুরি নোটিশ লিখুন..."></textarea>
+        <button class="btn btn-amber" onclick="postNoticeFromAdmin()">নোটিশ লাইভ করুন</button>
       </div>
 
+      <!-- পিন ট্যাব -->
       <div id="pinTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
         <input type="password" id="oldPinInput" placeholder="বর্তমান পিন">
         <input type="password" id="newPinInput" placeholder="নতুন পিন">
@@ -366,8 +441,23 @@
     </div>
   </div>
 
+  <!-- প্রিভিউ মডাল -->
+  <div id="adminPreviewModal" class="modal">
+    <div class="modal-box" style="max-width: 600px; border: 2px solid #7c3aed;">
+      <div class="modal-header">
+        <h3 style="color: #7c3aed;">👁️ পাবলিশ পূর্বরূপ (Preview)</h3>
+        <button class="close-icon-btn" onclick="closeModal('adminPreviewModal')">×</button>
+      </div>
+      <div id="previewContentContainer" style="max-height: 400px; overflow-y: auto; padding: 6px 0;"></div>
+      <div class="modal-btns">
+        <button class="btn btn-blue" style="width: auto;" onclick="closeModal('adminPreviewModal')">ঠিক আছে</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- পরীক্ষা যাচাইকরণ মডাল -->
   <div id="examInitModal" class="modal">
-    <div class="modal-box" style="max-width: 450px;">
+    <div class="modal-box" style="max-width: 420px;">
       <div class="modal-header">
         <h3>পরীক্ষা যাচাইকরণ</h3>
         <button class="close-icon-btn" onclick="closeModal('examInitModal')">×</button>
@@ -375,13 +465,13 @@
       <input type="number" id="stExReg" placeholder="রেজিস্ট্রেশন নম্বর">
       <select id="stExClass">
         <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
         <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
         <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
         <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
       </select>
-      <input type="text" id="stExSubject" placeholder="বিষয়ের নাম (যেমন: বাংলা)">
+      <input type="text" id="stExSubject" placeholder="বিষয়ের নাম (যেমন: বাংলা)">
       <div class="modal-btns">
         <button class="btn-cancel" onclick="closeModal('examInitModal')">ক্যানসেল</button>
         <button class="btn btn-blue" style="width:auto;" onclick="loadAndStartExam()">পরীক্ষা শুরু করুন</button>
@@ -389,25 +479,26 @@
     </div>
   </div>
 
+  <!-- লাইভ পরীক্ষা মডাল -->
   <div id="liveExamModal" class="modal">
     <div class="modal-box" style="max-width: 680px;">
       <div class="modal-header">
         <div>
           <h3 id="liveSubjectTitle">পরীক্ষা</h3>
-          <span style="font-size:0.85rem; color:#64748b;">শিক্ষার্থী: <b id="liveStudentName"></b> | মোট নম্বর: <b id="liveTotalMarks"></b></span>
+          <span style="font-size:0.8rem; color:#64748b;">শিক্ষার্থী: <b id="liveStudentName"></b> | মোট নম্বর: <b id="liveTotalMarks"></b></span>
         </div>
-        <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1.1rem;">সময় বাকি: <span id="timerDisplay">00:00</span></span>
+        <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1rem;">সময়: <span id="timerDisplay">00:00</span></span>
       </div>
 
-      <div id="questionsRenderContainer" style="display:flex; flex-direction:column; gap:10px; margin:10px 0;"></div>
+      <div id="questionsRenderContainer" style="display:flex; flex-direction:column; gap:8px; margin:8px 0;"></div>
 
-      <div id="cqLiveSection" style="border:1px dashed #6366f1; padding:12px; border-radius:8px; background:#f5f3ff;">
-        <h4 style="font-size:0.95rem; color:#4338ca;">📝 CQ লিখিত অংশ:</h4>
+      <div id="cqLiveSection" style="border:1px dashed #6366f1; padding:10px; border-radius:8px; background:#f5f3ff;">
+        <h4 style="font-size:0.9rem; color:#4338ca;">📝 CQ লিখিত অংশ:</h4>
         <p id="cqDescPrompt" style="font-size:0.85rem; color:#334155; margin:4px 0;"></p>
-        <div id="cqQuestionFileLink" style="margin:6px 0;"></div>
-        <hr style="margin:8px 0;">
-        <label style="font-size:0.85rem; font-weight:700;">উত্তরপত্র আপলোড করুন (PDF/Image/Docx):</label>
-        <input type="file" id="cqUploadFile" style="margin-top:5px; border:none; padding:4px;">
+        <div id="cqQuestionFileLink" style="margin:4px 0;"></div>
+        <hr style="margin:6px 0;">
+        <label style="font-size:0.8rem; font-weight:700;">উত্তরপত্র আপলোড (PDF/Image):</label>
+        <input type="file" id="cqUploadFile" style="margin-top:4px; border:none; padding:4px;">
       </div>
 
       <div class="modal-btns">
@@ -416,39 +507,39 @@
     </div>
   </div>
 
+  <!-- পরীক্ষা মূল্যায়ন মডাল -->
   <div id="examReviewModal" class="modal">
     <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
-        <h3 style="color:#16a34a;">পরীক্ষার ফলাফল মূল্যায়ন</h3>
+        <h3 style="color:#16a34a;">পরীক্ষার ফলাফল মূল্যায়ন</h3>
         <button class="close-icon-btn" onclick="closeModal('examReviewModal')">×</button>
       </div>
 
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; text-align:center; margin:10px 0;">
-        <div style="background:#f0fdf4; padding:10px; border-radius:8px; border:1px solid #bbf7d0;">
-          <span style="font-size:0.8rem; color:#166534;">সঠিক হয়েছে</span>
-          <h3 id="resCorrect" style="color:#15803d;">0</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; text-align:center; margin:8px 0;">
+        <div style="background:#f0fdf4; padding:8px; border-radius:8px; border:1px solid #bbf7d0;">
+          <span style="font-size:0.75rem; color:#166534;">সঠিক</span>
+          <h3 id="resCorrect" style="color:#15803d; font-size:1.2rem;">0</h3>
         </div>
-        <div style="background:#fef2f2; padding:10px; border-radius:8px; border:1px solid #fecaca;">
-          <span style="font-size:0.8rem; color:#991b1b;">ভুল হয়েছে</span>
-          <h3 id="resWrong" style="color:#b91c1c;">0</h3>
+        <div style="background:#fef2f2; padding:8px; border-radius:8px; border:1px solid #fecaca;">
+          <span style="font-size:0.75rem; color:#991b1b;">ভুল</span>
+          <h3 id="resWrong" style="color:#b91c1c; font-size:1.2rem;">0</h3>
         </div>
-        <div style="background:#eff6ff; padding:10px; border-radius:8px; border:1px solid #bfdbfe;">
-          <span style="font-size:0.8rem; color:#1e40af;">মোট প্রাপ্ত নম্বর</span>
-          <h3 id="resTotal" style="color:#1d4ed8;">0</h3>
+        <div style="background:#eff6ff; padding:8px; border-radius:8px; border:1px solid #bfdbfe;">
+          <span style="font-size:0.75rem; color:#1e40af;">মোট নম্বর</span>
+          <h3 id="resTotal" style="color:#1d4ed8; font-size:1.2rem;">0</h3>
         </div>
       </div>
 
-      <h4 style="font-size:0.95rem; margin-top:8px;">প্রশ্নের সঠিক উত্তর ও সংক্ষিপ্ত ব্যাখ্যা:</h4>
-      <div id="reviewQuestionsContainer" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
-
-      <button class="btn btn-blue" style="margin-top:10px;" onclick="closeModal('examReviewModal')">সম্পন্ন করুন</button>
+      <div id="reviewQuestionsContainer" style="max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
+      <button class="btn btn-blue" style="margin-top:8px;" onclick="closeModal('examReviewModal')">সম্পন্ন করুন</button>
     </div>
   </div>
 
+  <!-- রেজিস্ট্রেশন মডাল -->
   <div id="regModal" class="modal">
     <div class="modal-box">
       <div class="modal-header">
-        <h3>শিক্ষার্থী রেজিস্ট্রেশন</h3>
+        <h3>শিক্ষার্থী রেজিস্ট্রেশন (একবার প্রযোজ্য)</h3>
         <button class="close-icon-btn" onclick="closeModal('regModal')">×</button>
       </div>
       <input type="text" id="regName" placeholder="শিক্ষার্থীর নাম">
@@ -456,8 +547,8 @@
       <input type="text" id="regMother" placeholder="মাতার নাম">
       <select id="regClass">
         <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
         <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
         <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
         <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
@@ -466,7 +557,7 @@
       <input type="tel" id="regMobile" placeholder="মোবাইল নম্বর">
       <input type="password" id="regPin" placeholder="লগইন পিন সেট করুন">
       <div style="border:1px dashed #94a3b8; padding:8px; border-radius:6px; text-align:center;">
-        <label style="font-size:0.85rem;">📷 শিক্ষার্থীর ছবি আপলোড:</label>
+        <label style="font-size:0.8rem;">📷 শিক্ষার্থীর ছবি আপলোড:</label>
         <input type="file" id="regPhoto" accept="image/*" style="border:none;">
       </div>
       <div class="modal-btns">
@@ -476,6 +567,7 @@
     </div>
   </div>
 
+  <!-- লগইন মডাল -->
   <div id="loginModal" class="modal">
     <div class="modal-box" style="max-width:380px;">
       <div class="modal-header">
@@ -484,6 +576,9 @@
       </div>
       <input type="number" id="logReg" placeholder="রেজিস্ট্রেশন নম্বর">
       <input type="password" id="logPin" placeholder="পিন কোড">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+        <button type="button" style="background:none; border:none; color:#2563eb; cursor:pointer; font-size:0.8rem; text-decoration:underline;" onclick="openForgotPinModal()">পিন ভুলে গেছেন?</button>
+      </div>
       <div class="modal-btns">
         <button class="btn-cancel" onclick="closeModal('loginModal')">ক্যানসেল</button>
         <button class="btn btn-amber" style="width:auto;" onclick="studentLogin()">লগইন</button>
@@ -491,6 +586,24 @@
     </div>
   </div>
 
+  <!-- ফরগেট পিন মডাল -->
+  <div id="forgotPinModal" class="modal">
+    <div class="modal-box" style="max-width:380px;">
+      <div class="modal-header">
+        <h3>পিন রিসেট করুন</h3>
+        <button class="close-icon-btn" onclick="closeModal('forgotPinModal')">×</button>
+      </div>
+      <input type="number" id="fpReg" placeholder="রেজিস্ট্রেশন নম্বর">
+      <input type="tel" id="fpMobile" placeholder="রেজিস্টার্ড মোবাইল নম্বর">
+      <input type="password" id="fpNewPin" placeholder="নতুন পিন কোড">
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('forgotPinModal')">ক্যানসেল</button>
+        <button class="btn btn-blue" style="width:auto;" onclick="submitForgotPin()">পিন পরিবর্তন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- প্রোফাইল ও মার্কশিট মডাল -->
   <div id="profileModal" class="modal">
     <div class="modal-box">
       <div class="modal-header">
@@ -500,8 +613,8 @@
       <input type="number" id="pReg" placeholder="রেজিস্ট্রেশন নম্বর দিন">
       <select id="pClass">
         <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
         <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
         <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
         <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
@@ -511,10 +624,16 @@
         <button class="btn btn-purple" style="width:auto;" onclick="loadFullProfile()">প্রোফাইল দেখুন</button>
       </div>
       <div id="profileDisplay" class="hidden" style="margin-top:10px;">
-        <div id="photoContainer"></div>
-        <div id="studentDetails" style="font-size:0.95rem; line-height:1.6;"></div>
-        <h4 style="margin-top:10px;">📜 পূর্ববর্তী পরীক্ষার ফলাফল:</h4>
-        <ul id="examHistoryList" style="list-style:none; font-size:0.85rem; max-height:140px; overflow-y:auto; border:1px solid #e2e8f0; padding:8px; border-radius:6px;"></ul>
+        <div style="text-align:center;">
+          <img id="profileAvatar" src="" class="profile-photo" alt="Profile Photo">
+          <div>
+            <label for="changePhotoInput" style="font-size:0.8rem; color:#2563eb; cursor:pointer; text-decoration:underline;">📷 নতুন ছবি আপলোড করুন</label>
+            <input type="file" id="changePhotoInput" accept="image/*" style="display:none;" onchange="uploadNewProfilePhoto()">
+          </div>
+        </div>
+        <div id="studentDetails" style="font-size:0.88rem; line-height:1.5; margin-top:8px;"></div>
+        <h4 style="margin-top:8px; font-size:0.9rem;">📜 পূর্ববর্তী পরীক্ষার ফলাফল:</h4>
+        <ul id="examHistoryList" style="list-style:none; font-size:0.82rem; max-height:120px; overflow-y:auto; border:1px solid #e2e8f0; padding:6px; border-radius:6px;"></ul>
         <button class="btn btn-green" style="margin-top:8px;" onclick="generateSscMarksheet()">📄 SSC Mark Sheet (PDF Print)</button>
       </div>
     </div>
@@ -541,7 +660,7 @@
           <p><b>Class:</b> <span id="msClass"></span></p>
         </div>
         <div style="text-align: right;">
-          <img id="msPhoto" class="profile-photo" style="margin: 0 0 0 auto; width: 75px; height: 75px;" alt="Photo">
+          <img id="msPhoto" class="profile-photo" style="margin: 0 0 0 auto; width: 65px; height: 65px;" alt="Photo">
         </div>
       </div>
 
@@ -558,14 +677,14 @@
         <tbody id="msTableBody"></tbody>
       </table>
 
-      <div style="margin-top: 30px; display: flex; justify-content: space-between; font-size: 0.85rem; padding-top: 20px; border-top: 1px dashed #64748b;">
+      <div style="margin-top: 20px; display: flex; justify-content: space-between; font-size: 0.8rem; padding-top: 15px; border-top: 1px dashed #64748b;">
         <span>Controller of Examinations</span>
-        <span>Date: 04/09/2026</span>
+        <span>Date: 05/09/2026</span>
       </div>
 
-      <div class="no-print" style="margin-top: 15px; display: flex; justify-content: flex-end; gap: 8px;">
+      <div class="no-print" style="margin-top: 12px; display: flex; justify-content: flex-end; gap: 6px;">
         <button class="btn" style="background:#cbd5e1; color:#334155; width:auto;" onclick="closeModal('marksheetModal')">বন্ধ করুন</button>
-        <button class="btn btn-blue" style="width:auto;" onclick="window.print()">🖨️ Print / Save as PDF</button>
+        <button class="btn btn-blue" style="width:auto;" onclick="window.print()">🖨️ Print / PDF</button>
       </div>
     </div>
   </div>
@@ -580,7 +699,7 @@
       <textarea id="fbMsg" rows="4" placeholder="আপনার বার্তা..."></textarea>
       <div class="modal-btns">
         <button class="btn-cancel" onclick="closeModal('feedbackModal')">ক্যানসেল</button>
-        <button class="btn btn-blue" style="width:auto;" onclick="submitFeedback()">পাঠিয়ে দিন</button>
+        <button class="btn btn-blue" style="width:auto;" onclick="submitFeedback()">পাঠিয়ে দিন</button>
       </div>
     </div>
   </div>
@@ -591,18 +710,43 @@
     let examTimerInterval = null;
     let smartParsedMcq = [];
     let currentStudentProfile = null;
+    let deferredPrompt = null;
+
+    // সরাসরি অ্যাপ ইনস্টল হ্যান্ডলার (PWA)
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const hBtn = document.getElementById('pwaInstallHeaderBtn');
+      const mBtn = document.getElementById('pwaInstallMenuBtn');
+      if (hBtn) hBtn.style.display = 'block';
+      if (mBtn) mBtn.style.display = 'block';
+    });
+
+    function triggerPwaInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choice) => {
+          if (choice.outcome === 'accepted') {
+            document.getElementById('pwaInstallHeaderBtn').style.display = 'none';
+            document.getElementById('pwaInstallMenuBtn').style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        alert("আপনার ব্রাউজারের ৩-ডট (⋮) মেনুতে চাপ দিয়ে 'Install App' বা 'Add to Home screen' নির্বাচন করুন।");
+      }
+    }
 
     function goToPage(n) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page' + n).classList.add('active');
-      if (n === 2) loadNotices();
+      if (n === 2) loadNoticesAndMotivation();
     }
 
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
     function openModal(id) { document.getElementById(id).classList.add('show'); }
     function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-    // বাটন লক ও "অপেক্ষা করুন..." হ্যান্ডলার
     function setBtnLoading(btn, text = "অপেক্ষা করুন...") {
       if (!btn) return null;
       const originalText = btn.innerHTML;
@@ -617,6 +761,13 @@
         btn.style.cursor = "pointer";
         btn.style.opacity = "1";
       };
+    }
+
+    function showAdminMessage(msg) {
+      const banner = document.getElementById('adminSuccessAlert');
+      banner.innerText = msg;
+      banner.style.display = "block";
+      setTimeout(() => { banner.style.display = "none"; }, 4000);
     }
 
     function postData(data, callback, btn = null) {
@@ -635,7 +786,7 @@
       .catch(err => {
         if (resetBtn) resetBtn();
         console.error("Server Error:", err);
-        alert("সার্ভার সংযোগে ত্রুটি বা সময় বেশি লাগছে: " + err);
+        alert("সার্ভার সংযোগে সমস্যা: " + err);
       });
     }
 
@@ -786,14 +937,60 @@
 
       const p = document.getElementById('mcqParsedPreview');
       p.classList.remove('hidden');
-      p.innerHTML = `<h5 style="color:#15803d; margin-bottom:8px;">মোট প্রস্তুতকৃত প্রশ্ন: ${smartParsedMcq.length} টি (মোট মার্কস: ${smartParsedMcq.length})</h5>` +
+      p.innerHTML = `<h5 style="color:#15803d; margin-bottom:6px;">মোট প্রস্তুতকৃত প্রশ্ন: ${smartParsedMcq.length} টি</h5>` +
         smartParsedMcq.map((q, i) => `
-          <div style="border-bottom:1px solid #e2e8f0; padding:8px 0; font-size:0.85rem;">
+          <div style="border-bottom:1px solid #e2e8f0; padding:6px 0; font-size:0.82rem;">
             <b>${i+1}. ${q.question}</b><br>
-            ${q.options.map(o => `<div style="padding-left:12px; color:#334155;">• ${o}</div>`).join('')}
-            <div style="margin-top:4px;"><span style="color:#15803d; font-weight:700;">উত্তর: ${q.correctAnswer}</span> | <span style="color:#2563eb;">ব্যাখ্যা: ${q.explanation}</span></div>
+            ${q.options.map(o => `<div style="padding-left:10px; color:#334155;">• ${o}</div>`).join('')}
+            <div style="margin-top:3px;"><span style="color:#15803d; font-weight:700;">উত্তর: ${q.correctAnswer}</span></div>
           </div>
         `).join('');
+    }
+
+    function previewExamBeforePublish() {
+      const cls = document.getElementById('admClass').value;
+      const sub = document.getElementById('admSubject').value;
+      const pDate = document.getElementById('admPublishDate').value;
+      const pTime = document.getElementById('admPublishTime').value;
+      const cqDesc = document.getElementById('admCqDesc').value;
+
+      if (!smartParsedMcq.length) return alert("MCQ প্রস্তুত করুন!");
+      
+      const container = document.getElementById('previewContentContainer');
+      container.innerHTML = `
+        <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:8px; margin-bottom:8px;">
+          <h4 style="color:#1e3a8a;">পরীক্ষা: ${sub || 'বিষয় নেই'} (${cls}ম শ্রেণি)</h4>
+          <p style="font-size:0.82rem; color:#475569;">সময়: ${pDate || ''} | ${pTime || ''} | মোট MCQ: ${smartParsedMcq.length}</p>
+        </div>
+        <div>
+          ${smartParsedMcq.map((q, i) => `
+            <div style="font-size:0.82rem; border-bottom:1px solid #e2e8f0; padding:4px 0;">
+              <b>${i+1}. ${q.question}</b>
+              <div style="padding-left:8px; color:#475569;">${q.options.join(' | ')}</div>
+            </div>
+          `).join('')}
+        </div>
+        ${cqDesc ? `<div style="background:#faf5ff; padding:8px; border-radius:6px; font-size:0.82rem; margin-top:8px;"><b>CQ:</b> ${cqDesc}</div>` : ''}
+      `;
+      openModal('adminPreviewModal');
+    }
+
+    function previewNoteBeforePublish() {
+      const cls = document.getElementById('admNoteClass').value;
+      const sub = document.getElementById('admNoteSubject').value;
+      const title = document.getElementById('admNoteTitle').value;
+      const text = document.getElementById('admNoteText').value;
+
+      if (!title || !sub) return alert("বিষয় ও শিরোনাম লিখুন!");
+
+      const container = document.getElementById('previewContentContainer');
+      container.innerHTML = `
+        <div class="note-item" style="border:1px solid #0d9488;">
+          <h4 style="color:#0d9488;">${title} (${sub} - ${cls}ম শ্রেণি)</h4>
+          <p style="font-size:0.85rem; color:#334155; white-space:pre-wrap; margin-top:6px;">${text || 'কোনো টেক্সট নেই'}</p>
+        </div>
+      `;
+      openModal('adminPreviewModal');
     }
 
     function saveScheduledExam() {
@@ -819,8 +1016,11 @@
 
         postData(payload, res => {
           if (res && res.success) {
-            alert("পরীক্ষা সফলভাবে শিডিউল ও প্রকাশ করা হয়েছে!");
-            closeModal('adminPanelModal');
+            showAdminMessage("✅ পরীক্ষা সফলভাবে শিডিউল ও প্রকাশ করা হয়েছে!");
+            document.getElementById('rawMcqPaste').value = "";
+            document.getElementById('admCqDesc').value = "";
+            document.getElementById('mcqParsedPreview').classList.add('hidden');
+            loadNoticesAndMotivation();
           }
         }, btn);
       };
@@ -849,9 +1049,12 @@
           textContent: textContent, fileBase64: b64, mimeType: mime, fileName: fname
         }, res => {
           if (res && res.success) {
-            alert("ক্লাসরুম নোট সফলভাবে পাবলিশ করা হয়েছে!");
+            showAdminMessage("✅ ক্লাসরুম নোট আজীবনের জন্য সুরক্ষিত হয়েছে!");
+            document.getElementById('admNoteTitle').value = "";
+            document.getElementById('admNoteText').value = "";
+            document.getElementById('admNoteFile').value = "";
             localStorage.removeItem("gyan_notes_" + classVal);
-            closeModal('adminPanelModal');
+            loadNoticesAndMotivation();
           }
         }, btn);
       };
@@ -889,13 +1092,13 @@
         container.innerHTML = notes.map(n => `
           <div class="note-item">
             <h4>${n[3]} (${n[2]})</h4>
-            <p style="font-size:0.9rem; color:#334155; white-space:pre-wrap;">${n[4]}</p>
-            ${n[5] ? `<a href="${n[5]}" target="_blank">📥 সংযুক্ত ফাইলটি দেখুন/ডাউনলোড করুন</a>` : ''}
-            <div style="font-size:0.75rem; color:#94a3b8; margin-top:6px;">তারিখ: ${n[6]}</div>
+            <p style="font-size:0.85rem; color:#334155; white-space:pre-wrap;">${n[4]}</p>
+            ${n[5] ? `<a href="${n[5]}" target="_blank">📥 ফাইল দেখুন/ডাউনলোড</a>` : ''}
+            <div style="font-size:0.7rem; color:#94a3b8; margin-top:4px;">তারিখ: ${n[6]}</div>
           </div>
         `).join('');
       } else {
-        container.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:20px;'>এই শ্রেণির জন্য এখনো কোনো নোট পাবলিশ করা হয়নি।</p>";
+        container.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:20px;'>কোনো নোট পাওয়া যায়নি।</p>";
       }
     }
 
@@ -934,7 +1137,7 @@
       document.getElementById('cqDescPrompt').innerText = activeExamData.cqDescription || "লিখিত উত্তরপত্র খাতায় লিখে ফাইল আপলোড করুন।";
       
       if (activeExamData.cqQuestionFileUrl) {
-        document.getElementById('cqQuestionFileLink').innerHTML = `<a href="${activeExamData.cqQuestionFileUrl}" target="_blank" style="color:#2563eb; font-weight:700;">📄 CQ প্রশ্ন ফাইলটি ডাউনলোড/দেখুন</a>`;
+        document.getElementById('cqQuestionFileLink').innerHTML = `<a href="${activeExamData.cqQuestionFileUrl}" target="_blank" style="color:#2563eb; font-weight:700;">📄 CQ প্রশ্ন ফাইল ডাউনলোড</a>`;
       } else {
         document.getElementById('cqQuestionFileLink').innerHTML = "";
       }
@@ -942,7 +1145,7 @@
       const container = document.getElementById('questionsRenderContainer');
       container.innerHTML = activeExamData.mcq.map((q, idx) => `
         <div class="question-box">
-          <p style="font-weight:700; font-size:1.05rem; margin-bottom:10px;">${idx + 1}. ${q.question}</p>
+          <p style="font-weight:700; font-size:0.95rem; margin-bottom:8px;">${idx + 1}. ${q.question}</p>
           ${q.options.map(opt => `
             <label class="opt-label">
               <span>${opt}</span>
@@ -1017,9 +1220,9 @@
       container.innerHTML = res.reviewDetails.map((item, idx) => `
         <div class="question-box ${item.isCorrect ? 'review-correct' : 'review-wrong'}">
           <p><b>${idx + 1}. ${item.question}</b></p>
-          <p style="font-size:0.85rem;">আপনার দেওয়া উত্তর: <b>${item.userAnswer}</b> ${item.isCorrect ? '✅ (সঠিক)' : '❌ (ভুল)'}</p>
-          ${!item.isCorrect ? `<p style="font-size:0.85rem; color:#15803d;">সঠিক উত্তর: <b>${item.correctAnswer}</b></p>` : ''}
-          <div class="expl-box"><b>সংক্ষিপ্ত ব্যাখ্যা:</b> ${item.explanation}</div>
+          <p style="font-size:0.8rem;">আপনার উত্তর: <b>${item.userAnswer}</b> ${item.isCorrect ? '✅ (সঠিক)' : '❌ (ভুল)'}</p>
+          ${!item.isCorrect ? `<p style="font-size:0.8rem; color:#15803d;">সঠিক উত্তর: <b>${item.correctAnswer}</b></p>` : ''}
+          <div class="expl-box"><b>ব্যাখ্যা:</b> ${item.explanation}</div>
         </div>
       `).join('');
 
@@ -1036,15 +1239,15 @@
         if (res && res.success) {
           currentStudentProfile = res;
           document.getElementById('profileDisplay').classList.remove('hidden');
-          document.getElementById('profileAvatar').src = res.student[7] || "https://via.placeholder.com/100?text=Student";
+          document.getElementById('profileAvatar').src = res.student[7] || "https://api.iconify.design/fluent-emoji-flat:graduation-cap.svg";
           document.getElementById('studentDetails').innerHTML = `
             <p><b>নাম:</b> ${res.student[1]}</p>
             <p><b>পিতা:</b> ${res.student[2]}</p>
             <p><b>শ্রেণি:</b> ${res.student[4]} | <b>মোবাইল:</b> ${res.student[5]}</p>
           `;
           document.getElementById('examHistoryList').innerHTML = res.results.length ? 
-            res.results.map((r, i) => `<li><b>${i+1}. ${r[3]}</b>: MCQ- ${r[4]} | Total: ${r[6]} (${r[7]}) - <i>${r[0]}</i></li>`).join('') :
-            '<li>কোনো ফলাফল পাওয়া যায়নি।</li>';
+            res.results.map((r, i) => `<li><b>${i+1}. ${r[3]}</b>: MCQ- ${r[4]} | Total: ${r[6]} (${r[7]})</li>`).join('') :
+            '<li>কোনো ফলাফল নেই।</li>';
         } else {
           alert("শিক্ষার্থীর তথ্য মেলেনি!");
         }
@@ -1056,7 +1259,7 @@
       if (!file || !currentStudentProfile) return;
 
       const avatar = document.getElementById('profileAvatar');
-      avatar.style.opacity = "0.3";
+      avatar.style.opacity = "0.4";
 
       try {
         const compressed = await compressImage(file, 500, 0.7);
@@ -1110,7 +1313,6 @@
       const reg = document.getElementById('regNo').value;
       if (!reg) return alert("রেজিস্ট্রেশন নম্বর দিন!");
 
-      // ছবি কম্প্রেস চলাকালীনই বাটন লক
       const releaseBtn = setBtnLoading(btn, "ছবি প্রসেস হচ্ছে...");
 
       let photoBase64 = "";
@@ -1204,27 +1406,52 @@
 
       postData({ action: "changeAdminPin", oldPin: oldPin, newPin: newPin }, res => {
         if (res && res.success) {
-          alert("পিন পরিবর্তন হয়েছে!");
-          closeModal('adminPanelModal');
+          showAdminMessage("✅ পিন সফলভাবে পরিবর্তন হয়েছে!");
+          document.getElementById('oldPinInput').value = "";
+          document.getElementById('newPinInput').value = "";
         } else alert("বর্তমান পিন সঠিক নয়!");
       }, btn);
     }
 
-    function loadNotices() {
-      const cachedNotice = localStorage.getItem("gyan_notice");
-      if (cachedNotice) {
-        const marqueeElem = document.getElementById('marqueeText');
-        if (marqueeElem) marqueeElem.innerText = cachedNotice;
+    function updateMotivationText() {
+      const btn = event?.currentTarget || event?.target;
+      const text = document.getElementById('admMotivationInput').value.trim();
+      if (!text) return alert("মোটিভেশনাল বাণী লিখুন!");
+
+      postData({ action: "updateMotivation", text: text }, res => {
+        if (res && res.success) {
+          showAdminMessage("✅ অনুপ্রেরণামূলক বাণী সফলভাবে আপডেট হয়েছে!");
+          document.getElementById('motivationText').innerText = text;
+          localStorage.setItem("gyan_motivation", text);
+        }
+      }, btn);
+    }
+
+    function loadNoticesAndMotivation() {
+      const cachedMot = localStorage.getItem("gyan_motivation");
+      if (cachedMot) {
+        document.getElementById('motivationText').innerText = cachedMot;
       }
 
-      postData({ action: "getNotices" }, res => {
+      postData({ action: "getNoticesAndMotivation" }, res => {
         if (res && res.success) {
-          const marqueeElem = document.getElementById('marqueeText');
-          if (marqueeElem) {
-            marqueeElem.innerText = res.current || "জ্ঞান.কম এ স্বাগতম!";
-            localStorage.setItem("gyan_notice", res.current || "জ্ঞান.কম এ স্বাগতম!");
-            const duration = Math.max(15, (res.current || "").length * 0.25);
-            marqueeElem.style.animationDuration = duration + "s";
+          if (res.motivation) {
+            document.getElementById('motivationText').innerText = res.motivation;
+            localStorage.setItem("gyan_motivation", res.motivation);
+          }
+
+          const topList = document.getElementById('topNewsListContainer');
+          if (topList && res.notices) {
+            if (res.notices.length === 0) {
+              topList.innerHTML = `<li style="text-align:center; color:#94a3b8; padding:15px;">গত ৭ দিনে কোনো নতুন পরীক্ষা বা নোটিশ নেই।</li>`;
+            } else {
+              topList.innerHTML = res.notices.map(n => `
+                <li class="top-news-item">
+                  <span>${n.text}</span>
+                  <span class="date-tag">${n.date}</span>
+                </li>
+              `).join('');
+            }
           }
         }
       });
@@ -1236,9 +1463,9 @@
       if (!text) return alert("নোটিশ লিখুন!");
 
       postData({ action: "addNotice", text: text }, () => {
-        alert("নোটিশ লাইভ হয়েছে!");
-        localStorage.setItem("gyan_notice", text);
-        loadNotices();
+        showAdminMessage("✅ জরুরি নোটিশ বক্সে যুক্ত হয়েছে (৭ দিন থাকবে)!");
+        document.getElementById('admNoticeText').value = "";
+        loadNoticesAndMotivation();
       }, btn);
     }
 
@@ -1254,6 +1481,7 @@
       }, btn);
     }
 
+    // PWA Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('data:application/javascript;charset=utf-8,' + encodeURIComponent(`
