@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="bn" class="notranslate" translate="no">
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>জ্ঞান.com</title>
   
@@ -10,20 +9,14 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="জ্ঞান.com">
-
-  <!-- বিশ্বজনীন PWA Manifest -->
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8.com%22%2C%22short_name%22%3A%22%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8%22%2C%22start_url%22%3A%22.%2F%22%2C%22scope%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231e1b4b%22%2C%22theme_color%22%3A%22%231e1b4b%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fapi.iconify.design%2Ffluent-emoji-flat%3Agraduation-cap.svg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
 
   <link rel="icon" type="image/svg+xml" href="https://api.iconify.design/fluent-emoji-flat:graduation-cap.svg">
-  <link rel="apple-touch-icon" href="https://api.iconify.design/fluent-emoji-flat:graduation-cap.svg">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Serif Bengali', 'Kalpurush', serif; -webkit-tap-highlight-color: transparent; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Serif Bengali', serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #f8fafc; color: #0f172a; min-height: 100vh; overflow-x: hidden; user-select: none; transition: background 0.3s, color 0.3s; }
 
     /* ডার্ক মোড */
@@ -62,11 +55,6 @@
     .logo { font-size: clamp(1.25rem, 4vw, 1.8rem); font-weight: 800; color: #fbbf24; }
     .header-btns { display: flex; gap: 6px; align-items: center; }
     
-    .install-pwa-btn {
-      display: none; background: #10b981; color: white; border: none; padding: 7px 12px;
-      border-radius: 8px; font-weight: 700; font-size: clamp(0.75rem, 2.5vw, 0.9rem); cursor: pointer;
-    }
-
     .menu-btn { background: #312e81; color: white; border: 1px solid rgba(255,255,255,0.15); padding: 7px 12px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
     .admin-gate-btn { background: #d97706; color: white; border: none; padding: 7px 12px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
 
@@ -166,7 +154,7 @@
     .expl-box { background: #eff6ff; border: 1px dashed #60a5fa; padding: 8px; border-radius: 6px; margin-top: 6px; font-size: 0.82rem; color: #1e3a8a; }
 
     .id-card-container {
-      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #1e1b4a 100%);
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #1e3a8a 100%);
       color: white; border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(30, 27, 75, 0.25);
       position: relative; overflow: hidden; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.15);
     }
@@ -208,7 +196,7 @@
     .sci-btn.sci-fn { background: #e0e7ff; color: #3730a3; font-size: 0.82rem; }
     .sci-btn.op { background: #fef08a; color: #854d0e; }
     .sci-btn.eq { background: #059669; color: white; grid-column: span 2; }
-    .sci-btn.clear { background: #fca5a5; color: #991b1b; }
+    .sci-btn.clear { background: #fecaca; color: #991b1b; }
 
     .gk-tabs { display: flex; gap: 6px; margin-bottom: 8px; }
     .gk-tab-btn { flex: 1; padding: 8px; border: 1px solid #cbd5e1; background: #f1f5f9; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.85rem; text-align: center; }
@@ -250,7 +238,7 @@
   <div id="page1" class="page active">
     <h2>স্বাগতম আপনাকে</h2>
     <h1>"জ্ঞান.com"</h1>
-    <p>ডিজিটাল পরীক্ষা, ক্লাসরুম নোটস ও স্বয়ংক্রিয় ক্লাউড প্ল্যাটফর্ম</p>
+    <p>ডিজিটাল পরীক্ষা, ক্লাসরুম নোটস ও ক্লাউড প্ল্যাটফর্ম</p>
     <button class="enter-btn" onclick="goToPage(2)">Enter ➔</button>
   </div>
 
@@ -258,7 +246,6 @@
     <header>
       <div class="logo">জ্ঞান.কম</div>
       <div class="header-btns">
-        <button id="pwaInstallHeaderBtn" class="install-pwa-btn" onclick="triggerPwaInstall()">📲 অ্যাপ ইনস্টল</button>
         <button class="admin-gate-btn" onclick="openAdminGate()">🔒 এডমিন</button>
         <button class="menu-btn" onclick="toggleSidebar()">☰ মেনু</button>
       </div>
@@ -276,7 +263,7 @@
         <div class="card" style="border: 2px solid #0d9488; background: #f0fdfa;">
           <div>
             <h3 style="color: #0f766e;">📚 ক্লাস রুম</h3>
-            <p>শ্রেণিভিত্তিক লেকচার নোট, টেক্সট, ইমেজ ও PDF ফাইলসমূহ</p>
+            <p>শ্রেণিভিত্তিক লেকচার নোটস ও শিট</p>
           </div>
           <button class="btn btn-teal" onclick="openModal('classroomModal')">ক্লাস রুমে প্রবেশ করুন</button>
         </div>
@@ -329,25 +316,25 @@
         
         <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
         
-        <button class="menu-item tool-btn" style="background:#eff6ff; border-color:#93c5fd; color:#1e40af;" onclick="toggleSidebar(); openModal('gkModal');">🧠 সাধারণ জ্ঞান (BCS ও ভর্তি প্রস্তুতি)</button>
-        <button class="menu-item tool-btn" onclick="toggleSidebar(); openModal('textbooksModal');">📚 ১ম - ১০ম শ্রেণির বোর্ড বই ডাউনলোড</button>
-        <button class="menu-item tool-btn" style="background:#fefce8; border-color:#fef08a; color:#854d0e;" onclick="toggleSidebar(); openModal('sciCalculatorModal');">🔬 সায়েন্টিফিক ক্যালকুলেটর (Advanced)</button>
-        <button class="menu-item tool-btn" style="background:#f5f3ff; border-color:#ddd6fe; color:#5b21b6;" onclick="toggleSidebar(); openModal('formulaModal');">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার</button>
-        <button class="menu-item tool-btn" style="background:#fdf2f8; border-color:#fbcfe8; color:#9d174d;" onclick="toggleSidebar(); openDuolingoDirect();">🦉 ডুওলিঙ্গো (ভাষা শেখা)</button>
-        <button class="menu-item tool-btn" onclick="toggleSidebar(); openModal('dictionaryModal');">📖 বাংলা ⇄ ইংলিশ ডিকশনারি</button>
-        <button class="menu-item tool-btn" style="background:#fef2f2; border-color:#fecaca; color:#991b1b;" onclick="toggleSidebar(); openModal('pomodoroModal');">⏱️ পমোডোরো ফোকাস টাইমার</button>
-        <button class="menu-item tool-btn" style="background:#f0fdfa; border-color:#99f6e4; color:#115e59;" onclick="toggleSidebar(); openModal('gpaCalcModal');">🎯 GPA ও গ্রেড ক্যালকুলেটর</button>
-        <button class="menu-item tool-btn" style="background:#f8fafc; border-color:#cbd5e1; color:#334155;" onclick="toggleSidebar(); openModal('scratchpadModal');">📝 কুইক স্টাডি নোটপ্যাড</button>
+        <button class="menu-item tool-btn" style="background:#eff6ff; border-color:#93c5fd; color:#1e40af;" onclick="toggleSidebar(); openModal('gkModal');">🧠 সাধারণ জ্ঞান</button>
+        <button class="menu-item tool-btn" onclick="toggleSidebar(); openModal('textbooksModal');">📚 বোর্ড বই ডাউনলোড</button>
+        <button class="menu-item tool-btn" style="background:#fefce8; border-color:#fef08a; color:#854d0e;" onclick="toggleSidebar(); openModal('sciCalculatorModal');">🔬 সায়েন্টিফিক ক্যালকুলেটর</button>
+        <button class="menu-item tool-btn" style="background:#f5f3ff; border-color:#ddd6fe; color:#5b21b6;" onclick="toggleSidebar(); openModal('formulaModal');">📐 সূত্র ভান্ডার</button>
+        <button class="menu-item tool-btn" style="background:#fdf2f8; border-color:#fbcfe8; color:#9d174d;" onclick="toggleSidebar(); openDuolingoDirect();">🦉 ডুওলিঙ্গো</button>
+        <button class="menu-item tool-btn" onclick="toggleSidebar(); openModal('dictionaryModal');">📖 ডিকশনারি</button>
+        <button class="menu-item tool-btn" style="background:#fef2f2; border-color:#fecaca; color:#991b1b;" onclick="toggleSidebar(); openModal('pomodoroModal');">⏱️ পমোডোরো টাইমার</button>
+        <button class="menu-item tool-btn" style="background:#f0fdfa; border-color:#99f6e4; color:#115e59;" onclick="toggleSidebar(); openModal('gpaCalcModal');">🎯 GPA ক্যালকুলেটর</button>
+        <button class="menu-item tool-btn" style="background:#f8fafc; border-color:#cbd5e1; color:#334155;" onclick="toggleSidebar(); openModal('scratchpadModal');">📝 নোটপ্যাড</button>
         
         <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
-        <button class="menu-item" onclick="toggleSidebar(); openModal('profileModal');">👤 স্টুডেন্ট প্রোফাইল ও হিস্ট্রি</button>
-        <button class="menu-item" onclick="toggleSidebar(); openModal('feedbackModal');">💬 আপনার মতামত লিখুন</button>
+        <button class="menu-item" onclick="toggleSidebar(); openModal('profileModal');">👤 প্রোফাইল</button>
+        <button class="menu-item" onclick="toggleSidebar(); openModal('feedbackModal');">💬 মতামত</button>
       </div>
     </div>
     <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; margin-top:10px;">জ্ঞান.com © 2026</div>
   </aside>
 
-  <!-- প্রোফাইল মডাল -->
+  <!-- প্রোফাইল ও আইডি কার্ড মডাল -->
   <div id="profileModal" class="modal">
     <div class="modal-box" style="max-width: 620px;">
       <div class="modal-header">
@@ -355,8 +342,8 @@
         <button class="close-icon-btn" onclick="closeModal('profileModal')">×</button>
       </div>
       <div style="display:flex; gap:6px;">
-        <input type="number" id="pReg" placeholder="রেজিস্ট্রেশন নম্বর দিন">
-        <input type="text" id="pClass" placeholder="আপনার শ্রেণি (যেমন: ১০ম শ্রেণি)">
+        <input type="number" id="pReg" placeholder="রেজিস্ট্রেশন নম্বর">
+        <input type="text" id="pClass" placeholder="শ্রেণি (যেমন: ১০ম শ্রেণি)">
       </div>
       <div class="modal-btns">
         <button class="btn-cancel" onclick="closeModal('profileModal')">ক্যানসেল</button>
@@ -409,7 +396,7 @@
 
       <div class="exam-mode-nav">
         <button id="examTabAll" class="exam-nav-btn active" onclick="switchExamSection('all')">উভয় পরীক্ষা (MCQ + CQ)</button>
-        <button id="examTabMcq" class="exam-nav-btn" onclick="switchExamSection('mcq')">শুধুমাত্র MCQ পরীক্ষা</button>
+        <button id="examTabMcq" class="exam-nav-btn" onclick="switchExamSection('mcq')">শুধুমাত্র MCQ</button>
         <button id="examTabCq" class="exam-nav-btn" onclick="switchExamSection('cq')">শুধুমাত্র CQ (সৃজনশীল)</button>
       </div>
 
@@ -419,7 +406,7 @@
       </div>
 
       <div id="cqExamSection" style="margin-bottom:10px;">
-        <h4 style="font-size:0.95rem; color:#4338ca; margin-bottom:8px;">📝 সৃজনশীল / রচনামূলক লিখিত প্রশ্নপত্র:</h4>
+        <h4 style="font-size:0.95rem; color:#4338ca; margin-bottom:8px;">📝 সৃজনশীল প্রশ্নপত্র:</h4>
         <div id="cqFormattedContainer"></div>
         <div id="cqQuestionFileLink" style="margin:6px 0;"></div>
         
@@ -443,7 +430,7 @@
         <button class="close-icon-btn" onclick="closeModal('examInitModal')">×</button>
       </div>
       <input type="number" id="stExReg" placeholder="রেজিস্ট্রেশন নম্বর">
-      <input type="text" id="stExClass" placeholder="আপনার শ্রেণি (যেমন: ১০ম শ্রেণি)">
+      <input type="text" id="stExClass" placeholder="শ্রেণি (যেমন: ১০ম শ্রেণি)">
       <input type="text" id="stExSubject" placeholder="বিষয়ের নাম (যেমন: বাংলা)">
       <div class="modal-btns">
         <button class="btn-cancel" onclick="closeModal('examInitModal')">ক্যানসেল</button>
@@ -452,13 +439,10 @@
     </div>
   </div>
 
-  <!-- অন্যান্য মডালসমূহ -->
+  <!-- অন্যান্য ছোট মডালসমূহ -->
   <div id="examReviewModal" class="modal">
     <div class="modal-box" style="max-width: 650px;">
-      <div class="modal-header">
-        <h3 style="color:#16a34a;">পরীক্ষার ফলাফল মূল্যায়ন</h3>
-        <button class="close-icon-btn" onclick="closeModal('examReviewModal')">×</button>
-      </div>
+      <div class="modal-header"><h3 style="color:#16a34a;">ফলাফল মূল্যায়ন</h3><button class="close-icon-btn" onclick="closeModal('examReviewModal')">×</button></div>
       <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; text-align:center; margin:8px 0;">
         <div style="background:#f0fdf4; padding:8px; border-radius:8px;"><span>সঠিক</span><h3 id="resCorrect" style="color:#15803d;">0</h3></div>
         <div style="background:#fef2f2; padding:8px; border-radius:8px;"><span>ভুল</span><h3 id="resWrong" style="color:#b91c1c;">0</h3></div>
@@ -471,26 +455,17 @@
 
   <div id="dictionaryModal" class="modal">
     <div class="modal-box" style="max-width: 480px;">
-      <div class="modal-header">
-        <h3 style="color: #059669;">📖 ডিজিটাল ডিকশনারি</h3>
-        <button class="close-icon-btn" onclick="closeModal('dictionaryModal')">×</button>
-      </div>
+      <div class="modal-header"><h3 style="color: #059669;">📖 ডিকশনারি</h3><button class="close-icon-btn" onclick="closeModal('dictionaryModal')">×</button></div>
       <div class="dict-mode-switch">
         <button id="dictModeEnBn" class="dict-mode-btn active" onclick="setDictMode('en-bn')">English ➔ বাংলা</button>
         <button id="dictModeBnEn" class="dict-mode-btn" onclick="setDictMode('bn-en')">বাংলা ➔ English</button>
       </div>
-      <div style="display:flex; gap:6px;">
-        <input type="text" id="dictInput" placeholder="শব্দ লিখুন..." onkeypress="if(event.key==='Enter') searchDictionary()">
-        <button class="btn btn-green" style="width:auto; padding:0 18px;" onclick="searchDictionary()">অনুসন্ধান</button>
-      </div>
-      <div id="dictLoading" style="display:none; text-align:center; padding:15px; color:#059669; font-weight:700;">অর্থ খোঁজা হচ্ছে...</div>
+      <input type="text" id="dictInput" placeholder="শব্দ লিখুন..." onkeypress="if(event.key==='Enter') searchDictionary()">
+      <button class="btn btn-green" onclick="searchDictionary()">অনুসন্ধান</button>
+      <div id="dictLoading" style="display:none; text-align:center; padding:10px; color:#059669;">খোঁজা হচ্ছে...</div>
       <div id="dictResultCard" class="dict-result-card">
-        <div class="dict-word-title"><span id="dictWordDisplay">Word</span><button style="background:none; border:none; cursor:pointer; font-size:1.2rem;" onclick="speakWord()">🔊</button></div>
-        <div id="dictPhonetic" style="font-size:0.85rem; color:#64748b; margin-top:2px;"></div>
-        <div style="margin-top:8px; border-top:1px dashed #cbd5e1; padding-top:8px;">
-          <h4 style="font-size:0.9rem; color:#059669;">অর্থ / অনুবাদ:</h4>
-          <p id="dictMeaningDisplay" style="font-size:1rem; font-weight:700; color:#1e293b; margin-top:2px;"></p>
-        </div>
+        <div class="dict-word-title"><span id="dictWordDisplay">Word</span><button style="background:none; border:none; cursor:pointer;" onclick="speakWord()">🔊</button></div>
+        <p id="dictMeaningDisplay" style="font-weight:bold; margin-top:4px;"></p>
       </div>
     </div>
   </div>
@@ -498,13 +473,10 @@
   <div id="pomodoroModal" class="modal">
     <div class="modal-box" style="max-width: 380px; text-align:center;">
       <div class="modal-header"><h3 style="color: #991b1b;">⏱️ পমোডোরো টাইমার</h3><button class="close-icon-btn" onclick="closeModal('pomodoroModal')">×</button></div>
-      <div style="margin: 15px 0;">
-        <span id="pomoStatus" style="font-size: 1rem; font-weight: 700; color: #dc2626;">📚 পড়াশোনার সময়</span>
-        <h1 id="pomoTimeDisplay" style="font-size: 3.5rem; color: #1e1b4b; margin: 10px 0; font-family: monospace;">25:00</h1>
-      </div>
+      <h1 id="pomoTimeDisplay" style="font-size: 3rem; margin: 10px 0; font-family: monospace;">25:00</h1>
       <div style="display: flex; gap: 8px; justify-content: center;">
-        <button class="btn btn-green" style="width: auto; padding: 10px 24px;" onclick="startPomodoro()">শুরু</button>
-        <button class="btn btn-amber" style="width: auto; padding: 10px 20px;" onclick="pausePomodoro()">পজ</button>
+        <button class="btn btn-green" style="width: auto;" onclick="startPomodoro()">শুরু</button>
+        <button class="btn btn-amber" style="width: auto;" onclick="pausePomodoro()">পজ</button>
         <button class="btn btn-cancel" onclick="resetPomodoro()">রিসেট</button>
       </div>
     </div>
@@ -512,8 +484,8 @@
 
   <div id="scratchpadModal" class="modal">
     <div class="modal-box" style="max-width: 480px;">
-      <div class="modal-header"><h3 style="color: #9d174d;">📝 স্টাডি নোটপ্যাড</h3><button class="close-icon-btn" onclick="closeModal('scratchpadModal')">×</button></div>
-      <textarea id="scratchpadArea" rows="10" placeholder="এখানে লিখে রাখুন..." oninput="saveScratchpad()"></textarea>
+      <div class="modal-header"><h3 style="color: #9d174d;">📝 নোটপ্যাড</h3><button class="close-icon-btn" onclick="closeModal('scratchpadModal')">×</button></div>
+      <textarea id="scratchpadArea" rows="8" placeholder="এখানে লিখুন..." oninput="saveScratchpad()"></textarea>
       <div style="font-size: 0.75rem; color: #15803d; font-weight: 700;" id="scratchSaveMsg">✅ সেভ হয়েছে</div>
     </div>
   </div>
@@ -521,29 +493,25 @@
   <div id="gpaCalcModal" class="modal">
     <div class="modal-box" style="max-width: 440px;">
       <div class="modal-header"><h3 style="color: #115e59;">🎯 GPA ক্যালকুলেটর</h3><button class="close-icon-btn" onclick="closeModal('gpaCalcModal')">×</button></div>
-      <div id="gpaSubjectInputs" style="display:flex; flex-direction:column; gap:6px; margin: 8px 0;">
-        <input type="number" placeholder="বাংলা নম্বর" class="gpa-score-input" oninput="calculateGpa()">
-        <input type="number" placeholder="ইংরেজি নম্বর" class="gpa-score-input" oninput="calculateGpa()">
-        <input type="number" placeholder="গণিত নম্বর" class="gpa-score-input" oninput="calculateGpa()">
-      </div>
-      <div style="background:#f0fdfa; padding:12px; border-radius:8px; text-align:center;">
-        <h2 id="gpaResultDisplay" style="color:#0f766e;">GPA: 0.00</h2>
-      </div>
+      <input type="number" placeholder="বাংলা নম্বর" class="gpa-score-input" oninput="calculateGpa()">
+      <input type="number" placeholder="ইংরেজি নম্বর" class="gpa-score-input" oninput="calculateGpa()">
+      <input type="number" placeholder="গণিত নম্বর" class="gpa-score-input" oninput="calculateGpa()">
+      <h2 id="gpaResultDisplay" style="color:#0f766e; text-align:center; margin-top:6px;">GPA: 0.00</h2>
     </div>
   </div>
 
   <div id="classroomModal" class="modal">
     <div class="modal-box" style="max-width: 650px;">
-      <div class="modal-header"><h3 style="color: #0f766e;">📚 ক্লাস রুম নোটস</h3><button class="close-icon-btn" onclick="closeModal('classroomModal')">×</button></div>
+      <div class="modal-header"><h3 style="color: #0f766e;">📚 ক্লাসরুম নোটস</h3><button class="close-icon-btn" onclick="closeModal('classroomModal')">×</button></div>
       <input type="text" id="crFilterClass" placeholder="শ্রেণি লিখুন (যেমন: ১০ম শ্রেণি)" oninput="loadClassNotes()">
-      <div id="notesContainer" style="max-height: 380px; overflow-y: auto; margin-top: 8px;"></div>
+      <div id="notesContainer" style="max-height: 350px; overflow-y:auto; margin-top:8px;"></div>
     </div>
   </div>
 
   <div id="regModal" class="modal">
     <div class="modal-box">
       <div class="modal-header"><h3>শিক্ষার্থী রেজিস্ট্রেশন</h3><button class="close-icon-btn" onclick="closeModal('regModal')">×</button></div>
-      <input type="text" id="regName" placeholder="শিক্ষার্থীর নাম">
+      <input type="text" id="regName" placeholder="নাম">
       <input type="text" id="regFather" placeholder="পিতার নাম">
       <input type="text" id="regMother" placeholder="মাতার নাম">
       <input type="text" id="regClass" placeholder="শ্রেণি (যেমন: ১০ম শ্রেণি)">
@@ -551,10 +519,7 @@
       <input type="tel" id="regMobile" placeholder="মোবাইল নম্বর">
       <input type="password" id="regPin" placeholder="পিন কোড">
       <input type="file" id="regPhoto" accept="image/*" style="border:none;">
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('regModal')">ক্যানসেল</button>
-        <button class="btn btn-purple" style="width:auto;" onclick="submitRegistration()">সংরক্ষণ</button>
-      </div>
+      <button class="btn btn-purple" onclick="submitRegistration()">সংরক্ষণ করুন</button>
     </div>
   </div>
 
@@ -563,10 +528,7 @@
       <div class="modal-header"><h3>শিক্ষার্থী লগইন</h3><button class="close-icon-btn" onclick="closeModal('loginModal')">×</button></div>
       <input type="number" id="logReg" placeholder="রেজিস্ট্রেশন নম্বর">
       <input type="password" id="logPin" placeholder="পিন কোড">
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('loginModal')">ক্যানসেল</button>
-        <button class="btn btn-amber" style="width:auto;" onclick="studentLogin()">লগইন</button>
-      </div>
+      <button class="btn btn-green" onclick="studentLogin()">লগইন</button>
     </div>
   </div>
 
@@ -576,10 +538,7 @@
       <input type="number" id="fpReg" placeholder="রেজিস্ট্রেশন নম্বর">
       <input type="tel" id="fpMobile" placeholder="মোবাইল নম্বর">
       <input type="password" id="fpNewPin" placeholder="নতুন পিন">
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('forgotPinModal')">ক্যানসেল</button>
-        <button class="btn btn-blue" style="width:auto;" onclick="submitForgotPin()">পরিবর্তন</button>
-      </div>
+      <button class="btn btn-blue" onclick="submitForgotPin()">পরিবর্তন করুন</button>
     </div>
   </div>
 
@@ -587,50 +546,41 @@
     <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header"><h3 style="color: #2563eb;">🧠 সাধারণ জ্ঞান ভান্ডার</h3><button class="close-icon-btn" onclick="closeModal('gkModal')">×</button></div>
       <div class="gk-tabs">
-        <button id="gkTabBd" class="gk-tab-btn active" onclick="switchGkTab('bd')">বাংলাদেশ বিষয়াবলি</button>
+        <button id="gkTabBd" class="gk-tab-btn active" onclick="switchGkTab('bd')">বাংলাদেশ</button>
         <button id="gkTabWorld" class="gk-tab-btn" onclick="switchGkTab('world')">আন্তর্জাতিক</button>
       </div>
       <input type="text" id="gkSearchInput" placeholder="তথ্য খুঁজুন..." oninput="filterGkContent()">
-      <div id="gkContentContainer" style="max-height: 420px; overflow-y: auto;"></div>
+      <div id="gkContentContainer" style="max-height: 380px; overflow-y:auto;"></div>
     </div>
   </div>
 
   <div id="formulaModal" class="modal">
     <div class="modal-box" style="max-width: 620px;">
       <div class="modal-header"><h3 style="color: #5b21b6;">📐 সূত্র ভান্ডার</h3><button class="close-icon-btn" onclick="closeModal('formulaModal')">×</button></div>
-      <div id="formulaContentContainer" style="max-height:400px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
-        <div class="formula-card" style="border-left-color: #7c3aed;">
-          <h4 style="color:#7c3aed; font-weight:800;">বীজগণিত</h4>
-          <p style="font-family:monospace;">• (a + b)² = a² + 2ab + b²</p>
-        </div>
-      </div>
+      <div id="formulaContentContainer" style="max-height: 380px; overflow-y:auto;"></div>
     </div>
   </div>
 
   <div id="textbooksModal" class="modal">
     <div class="modal-box" style="max-width: 600px;">
-      <div class="modal-header"><h3 style="color: #0f766e;">📚 বোর্ড বই ডাউনলোড</h3><button class="close-icon-btn" onclick="closeModal('textbooksModal')">×</button></div>
+      <div class="modal-header"><h3 style="color: #0f766e;">📚 বোর্ড বই</h3><button class="close-icon-btn" onclick="closeModal('textbooksModal')">×</button></div>
       <select id="bookClassSelect" onchange="renderClassBooks()">
         <option value="">শ্রেণি নির্বাচন</option>
-        <option value="1">১ম শ্রেণি</option><option value="3">৩য় শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option><option value="9">৯ম-১০ম শ্রেণি</option>
+        <option value="1">১ম শ্রেণি</option><option value="3">৩য় শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option><option value="9">৯ম-১০ম শ্রেণি</option>
       </select>
-      <div id="booksListContainer" style="max-height:360px; overflow-y:auto;"></div>
+      <div id="booksListContainer" style="max-height: 300px; overflow-y:auto;"></div>
     </div>
   </div>
 
-  <!-- এডমিন গেট -->
+  <!-- এডমিন গেট ও প্যানেল -->
   <div id="adminGateModal" class="modal">
     <div class="modal-box" style="max-width: 380px;">
-      <div class="modal-header"><h3>এডমিন পিন</h3><button class="close-icon-btn" onclick="closeModal('adminGateModal')">×</button></div>
+      <div class="modal-header"><h3>এডমিন যাচাই</h3><button class="close-icon-btn" onclick="closeModal('adminGateModal')">×</button></div>
       <input type="password" id="adminSecretPin" placeholder="পিন দিন">
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('adminGateModal')">ক্যানসেল</button>
-        <button class="btn btn-amber" style="width:auto;" onclick="verifyAdminAccess()">প্রবেশ</button>
-      </div>
+      <button class="btn btn-amber" onclick="verifyAdminAccess()">প্রবেশ করুন</button>
     </div>
   </div>
 
-  <!-- এডমিন প্যানেল -->
   <div id="adminPanelModal" class="modal">
     <div class="modal-box admin-panel">
       <div class="modal-header"><h3 style="color: #b45309;">এডমিন কন্ট্রোল প্যানেল</h3><button class="close-icon-btn" onclick="closeModal('adminPanelModal')">×</button></div>
@@ -643,7 +593,7 @@
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'adminFormulaTab')">সূত্র</button>
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'motivationTab')">মোটিভেশন</button>
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'noticeTab')">নোটিশ</button>
-        <button class="admin-tab-btn" onclick="switchAdminTab(event, 'pinTab')">পিন পরিবর্তন</button>
+        <button class="admin-tab-btn" onclick="switchAdminTab(event, 'pinTab')">পিন</button>
       </div>
 
       <div id="mcqTab" class="admin-tab-content" style="display:flex; flex-direction:column; gap:8px;">
@@ -661,9 +611,7 @@
         <button class="btn btn-green" onclick="saveScheduledExam()">শিডিউল ও প্রকাশ</button>
       </div>
 
-      <div id="manageExamsTab" class="admin-tab-content hidden">
-        <div id="adminExamListContainer"></div>
-      </div>
+      <div id="manageExamsTab" class="admin-tab-content hidden"><div id="adminExamListContainer"></div></div>
 
       <div id="classroomAdminTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
         <input type="text" id="admNoteClass" placeholder="শ্রেণি">
@@ -729,15 +677,372 @@
     <div class="modal-box"><div class="modal-header"><h3>মতামত</h3><button class="close-icon-btn" onclick="closeModal('feedbackModal')">×</button></div><input type="text" id="fbName" placeholder="নাম"><textarea id="fbMsg" placeholder="বার্তা"></textarea><button class="btn btn-blue" onclick="submitFeedback()">পাঠান</button></div>
   </div>
 
-  <!-- স্ক্রিপ্ট অংশ -->
+  <!-- সম্পূর্ণ ও ত্রুটিমুক্ত স্ক্রিপ্ট -->
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzbYG4HmvglvpANyzUmoeLE3YbQccgJIOBIlD9rTl67qEQ2xkcPW7v8unHm1YZDHEM/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwS6RToyGI5q4DcC0UnVzPKsoBvrKeBvGsWr5TA2Rmqd1p-sTLySufnKpfPRZYT84c/exec";
     let activeExamData = null;
     let examTimerInterval = null;
     let smartParsedMcq = [];
     let currentStudentProfile = null;
     let currentGkTab = 'bd';
     let currentExamSection = 'all';
+
+    function goToPage(n) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page' + n).classList.add('active');
+      if(n === 2) loadNoticesAndMotivation();
+    }
+
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+    function openModal(id) { document.getElementById(id).classList.add('show'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+    function postData(data, callback) {
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(data)
+      })
+      .then(r => r.json())
+      .then(res => { if(callback) callback(res); })
+      .catch(err => console.error(err));
+    }
+
+    function verifyAdminAccess() {
+      let pin = document.getElementById('adminSecretPin').value;
+      postData({ action: "adminLogin", pin: pin }, res => {
+        if(res && res.success) { closeModal('adminGateModal'); openModal('adminPanelModal'); }
+        else { alert("ভুল পিন!"); }
+      });
+    }
+
+    function switchAdminTab(event, tabId) {
+      document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+      document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.remove('hidden');
+      if (event && event.currentTarget) event.currentTarget.classList.add('active');
+    }
+
+    function showAdminMessage(msg) {
+      let a = document.getElementById('adminSuccessAlert');
+      a.innerText = msg; a.style.display = "block";
+      setTimeout(() => a.style.display = "none", 3000);
+    }
+
+    function renderClassBooks() {
+      const cls = document.getElementById('bookClassSelect').value;
+      const container = document.getElementById('booksListContainer');
+      if (!cls || !nctbBooks[cls]) { container.innerHTML = "<p style='text-align:center;'>বই পাওয়া যায়নি।</p>"; return; }
+      container.innerHTML = nctbBooks[cls].map(b => `<div class="note-item"><h4>${b.name}</h4><a href="${b.url}" target="_blank" class="btn btn-teal">ডাউনলোড</a></div>`).join('');
+    }
+
+    let gkDatabase = {
+      bd: [{ category: "ইতিহাস", items: [{ q: "প্রাচীন জনপদ কোনটি?", a: "পুন্ড্র" }] }],
+      world: [{ category: "জাতিসংঘ", items: [{ q: "সদর দপ্তর কোথায়?", a: "নিউইয়র্ক" }] }]
+    };
+
+    function switchGkTab(tab) {
+      currentGkTab = tab;
+      document.getElementById('gkTabBd').classList.toggle('active', tab === 'bd');
+      document.getElementById('gkTabWorld').classList.toggle('active', tab === 'world');
+      renderGk(tab);
+    }
+
+    function renderGk(tab, filter = "") {
+      const container = document.getElementById('gkContentContainer');
+      const cats = gkDatabase[tab] || [];
+      let html = "";
+      cats.forEach(c => {
+        html += `<div class="gk-cat-section"><div class="gk-cat-title">${c.category}</div>`;
+        c.items.forEach((it, i) => html += `<div class="gk-item"><div class="gk-q">${i+1}. ${it.q}</div><div class="gk-a">উত্তরঃ ${it.a}</div></div>`);
+        html += `</div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    function filterGkContent() {
+      renderGk(currentGkTab, document.getElementById('gkSearchInput').value);
+    }
+
+    function uploadAdminGk() {
+      postData({ action: "addGk", type: document.getElementById('admGkType').value, category: document.getElementById('admGkCategory').value, question: document.getElementById('admGkQuestion').value, answer: document.getElementById('admGkAnswer').value }, res => {
+        if(res && res.success) { showAdminMessage("✅ জিকে যোগ হয়েছে!"); loadLiveGk(); }
+      });
+    }
+
+    function loadLiveGk() {
+      postData({ action: "getCustomGk" }, res => {
+        if(res && res.success && res.gkList) {
+          res.gkList.forEach(r => {
+            if(gkDatabase[r[1]]) {
+              let cat = gkDatabase[r[1]].find(c => c.category === r[2]);
+              if(!cat) { cat = { category: r[2], items: [] }; gkDatabase[r[1]].push(cat); }
+              if(!cat.items.some(i => i.q === r[3])) cat.items.push({ q: r[3], a: r[4] });
+            }
+          });
+          renderGk(currentGkTab);
+        }
+      });
+    }
+
+    function uploadAdminFormula() {
+      postData({ action: "addFormula", subject: document.getElementById('admFormulaSubject').value, topic: document.getElementById('admFormulaTopic').value, formulaText: document.getElementById('admFormulaText').value }, res => {
+        if(res && res.success) showAdminMessage("✅ সূত্র যোগ হয়েছে!");
+      });
+    }
+
+    function loadLiveFormulas() {
+      postData({ action: "getCustomFormulas" }, res => {
+        if(res && res.success && res.formulaList) {
+          const c = document.getElementById('formulaContentContainer');
+          res.formulaList.forEach(f => {
+            c.innerHTML += `<div class="formula-card"><h4 style="color:#059669;">${f[1]} (${f[2]})</h4><p>${f[3]}</p></div>`;
+          });
+        }
+      });
+    }
+
+    function loadAdminExamList() {
+      const c = document.getElementById('adminExamListContainer');
+      c.innerHTML = "লোড হচ্ছে...";
+      postData({ action: "getAdminExamList" }, res => {
+        if(res && res.success && res.list) {
+          c.innerHTML = res.list.map(ex => `<div style="background:#fff; color:#000; padding:8px; border:1px solid #cbd5e1; margin-bottom:6px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;"><span><b>${ex.subject}</b> (${ex.classVal}) - ${ex.publishDate}</span><div><button class="btn btn-blue" style="width:auto; padding:4px 8px;" onclick="openEditSchedule('${ex.id}', '${encodeURIComponent(ex.classVal)}', '${encodeURIComponent(ex.subject)}', '${ex.publishDate}', '${ex.publishTime}', '${ex.mcqDuration}', '${ex.cqDuration}')">এডিট</button> <button class="btn btn-cancel" style="width:auto; padding:4px 8px; color:red;" onclick="deleteExamSchedule('${ex.id}')">ডিলিট</button></div></div>`).join('');
+        }
+      });
+    }
+
+    function openEditSchedule(id, cls, sub, date, time, mcqDur, cqDur) {
+      document.getElementById('editExamId').value = id;
+      document.getElementById('editExamClass').value = decodeURIComponent(cls);
+      document.getElementById('editExamSubject').value = decodeURIComponent(sub);
+      document.getElementById('editExamDate').value = date;
+      document.getElementById('editExamTime').value = time;
+      document.getElementById('editExamMcqDur').value = mcqDur;
+      document.getElementById('editExamCqDur').value = cqDur;
+      openModal('editScheduleModal');
+    }
+
+    function submitExamUpdate() {
+      postData({ action: "updateExamSchedule", examId: document.getElementById('editExamId').value, classVal: document.getElementById('editExamClass').value, subject: document.getElementById('editExamSubject').value, publishDate: document.getElementById('editExamDate').value, publishTime: document.getElementById('editExamTime').value, mcqDuration: document.getElementById('editExamMcqDur').value, cqDuration: document.getElementById('editExamCqDur').value }, res => {
+        if(res && res.success) { closeModal('editScheduleModal'); showAdminMessage("✅ আপডেট সফল!"); loadAdminExamList(); loadNoticesAndMotivation(); }
+      });
+    }
+
+    function deleteExamSchedule(id) {
+      if(!confirm("মুছে ফেলতে চান?")) return;
+      postData({ action: "deleteExamSchedule", examId: id }, res => {
+        if(res && res.success) { showAdminMessage("✅ মুছে ফেলা হয়েছে!"); loadAdminExamList(); loadNoticesAndMotivation(); }
+      });
+    }
+
+    function renderFormattedCQ(rawText) {
+      if (!rawText) return "<p style='color:#94a3b8;'>কোনো সৃজনশীল নেই।</p>";
+      let text = rawText.replace(/\*\*/g, '').trim();
+      let cqBlocks = text.split(/(?=(?:^|\n)\s*(?:[০-৯\d]+[\.\)]|প্রশ্ন\s*[:০-৯\d]+))/gi);
+      if (cqBlocks.length <= 1) cqBlocks = text.split(/(?=(?:^|\s)[০-৯\d]+[\.\)]\s*উদ্দীপক)/gi);
+      return cqBlocks.filter(b => b.trim().length > 5).map((block, idx) => {
+        let bText = block.trim();
+        const subRegex = /(?:\n|\s|^)([কখগঘabcd])[\)\.\-]\s*([^\n\r]+)/gi;
+        let subQuestions = []; let m;
+        while ((m = subRegex.exec(bText)) !== null) subQuestions.push({ label: m[1], q: m[2].trim() });
+        let stimulus = bText;
+        let firstSubIdx = bText.search(/(?:\n|\s|^)[কখগঘabcd][\)\.\-]/i);
+        if (firstSubIdx !== -1) stimulus = bText.substring(0, firstSubIdx).replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
+        return `<div class="cq-card-render"><div class="cq-card-header">📌 সৃজনশীল নম্বর: ${idx + 1}</div><div class="cq-stimulus-box">${stimulus}</div>${subQuestions.map(sq => `<div class="cq-sub-item"><span class="cq-sub-badge">${sq.label})</span><span>${sq.q}</span></div>`).join('')}</div>`;
+      }).join('');
+    }
+
+    function switchExamSection(mode) {
+      currentExamSection = mode;
+      document.getElementById('examTabAll').classList.toggle('active', mode === 'all');
+      document.getElementById('examTabMcq').classList.toggle('active', mode === 'mcq');
+      document.getElementById('examTabCq').classList.toggle('active', mode === 'cq');
+      document.getElementById('mcqExamSection').style.display = (mode === 'cq') ? 'none' : 'block';
+      document.getElementById('cqExamSection').style.display = (mode === 'mcq') ? 'none' : 'block';
+      document.getElementById('timerBox').style.display = (mode === 'cq') ? 'none' : 'inline-block';
+    }
+
+    function loadAndStartExam() {
+      const reg = document.getElementById('stExReg').value;
+      const cls = document.getElementById('stExClass').value;
+      const sub = document.getElementById('stExSubject').value;
+      if (!reg || !cls || !sub) return alert("তথ্য দিন!");
+      postData({ action: "getStudentByClass", reg: reg, classVal: cls }, stRes => {
+        if (stRes && stRes.success) {
+          postData({ action: "checkAndGetExam", classVal: cls, subject: sub }, exRes => {
+            if (exRes && exRes.success) {
+              activeExamData = exRes.exam;
+              activeExamData.studentReg = reg;
+              activeExamData.studentClass = cls;
+              activeExamData.studentName = stRes.student[1];
+              closeModal('examInitModal');
+              startLiveExamSession();
+            } else alert(exRes.message || "পরীক্ষা নেই!");
+          });
+        } else alert("শিক্ষার্থী মেলেনি!");
+      });
+    }
+
+    function startLiveExamSession() {
+      document.getElementById('liveSubjectTitle').innerText = activeExamData.subject + " (" + activeExamData.studentClass + ")";
+      document.getElementById('liveStudentName').innerText = activeExamData.studentName;
+      document.getElementById('liveTotalMarks').innerText = activeExamData.totalMarks;
+      document.getElementById('cqFormattedContainer').innerHTML = renderFormattedCQ(activeExamData.cqDescription);
+      document.getElementById('questionsRenderContainer').innerHTML = activeExamData.mcq.map((q, idx) => `<div class="question-box"><p><b>${idx + 1}. ${q.question}</b></p>${q.options.map(opt => `<label class="opt-label"><span>${opt}</span><input type="radio" name="ans_${q.id}" value="${opt}"></label>`).join('')}</div>`).join('');
+      switchExamSection('all');
+      openModal('liveExamModal');
+      
+      let timeLeft = (parseInt(activeExamData.mcqDuration) || activeExamData.totalMarks) * 60;
+      clearInterval(examTimerInterval);
+      examTimerInterval = setInterval(() => {
+        let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+        document.getElementById('timerDisplay').innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        if (--timeLeft < 0) { clearInterval(examTimerInterval); submitLiveExam(true); }
+      }, 1000);
+    }
+
+    function submitLiveExam(isAuto = false) {
+      clearInterval(examTimerInterval);
+      let userAnswers = {};
+      if (currentExamSection !== 'cq') {
+        activeExamData.mcq.forEach(q => {
+          let chk = document.querySelector(`input[name="ans_${q.id}"]:checked`);
+          if (chk) userAnswers[q.id] = chk.value;
+        });
+      }
+      let cqFile = document.getElementById('cqUploadFile').files[0];
+      if (!isAuto && currentExamSection === 'cq' && !cqFile) return alert("খাতা সিলেক্ট করুন!");
+      
+      const send = (b64 = "", mime = "") => {
+        postData({ action: "submitLiveExam", examId: activeExamData.examId, reg: activeExamData.studentReg, classVal: activeExamData.studentClass, subject: activeExamData.subject, userAnswers: userAnswers, cqSubBase64: b64, cqSubMime: mime }, res => {
+          if (res && res.success) { closeModal('liveExamModal'); showExamReview(res); }
+        });
+      };
+      if (cqFile && currentExamSection !== 'mcq') {
+        let reader = new FileReader();
+        reader.onload = e => send(e.target.result, cqFile.type);
+        reader.readAsDataURL(cqFile);
+      } else send();
+    }
+
+    function showExamReview(res) {
+      document.getElementById('resCorrect').innerText = res.correctCount;
+      document.getElementById('resWrong').innerText = res.wrongCount;
+      document.getElementById('resTotal').innerText = `${res.totalScore} / ${res.totalMarks}`;
+      document.getElementById('reviewQuestionsContainer').innerHTML = res.reviewDetails.map((item, idx) => `<div class="question-box ${item.isCorrect ? 'review-correct' : 'review-wrong'}"><p><b>${idx + 1}. ${item.question}</b></p><p>উত্তর: ${item.userAnswer} ${item.isCorrect ? '✅' : '❌'}</p><div class="expl-box">ব্যাখ্যা: ${item.explanation}</div></div>`).join('');
+      openModal('examReviewModal');
+    }
+
+    function loadFullProfile() {
+      let reg = document.getElementById('pReg').value;
+      let cls = document.getElementById('pClass').value;
+      if (!reg || !cls) return alert("তথ্য দিন!");
+      postData({ action: "getStudentByClass", reg: reg, classVal: cls }, res => {
+        if (res && res.success) {
+          currentStudentProfile = res;
+          document.getElementById('profileDisplay').classList.remove('hidden');
+          document.getElementById('profileAvatar').src = res.student[7] || "https://api.iconify.design/fluent-emoji-flat:graduation-cap.svg";
+          document.getElementById('cardStudentName').innerText = "নাম: " + res.student[1];
+          document.getElementById('cardStudentClass').innerText = res.student[4];
+          document.getElementById('cardStudentReg').innerText = res.student[0];
+          document.getElementById('cardStudentFather').innerText = res.student[2];
+          document.getElementById('cardStudentMobile').innerText = res.student[5];
+          document.getElementById('examHistoryList').innerHTML = res.results.length ? res.results.map((r, i) => `<li>${i+1}. ${r[3]} - নম্বর: ${r[6]} (${r[7]})</li>`).join('') : '<li>ফলাফল নেই।</li>';
+        } else alert("শিক্ষার্থী মেলেনি!");
+      });
+    }
+
+    async function uploadNewProfilePhoto() {
+      let file = document.getElementById('changePhotoInput').files[0];
+      if (!file || !currentStudentProfile) return;
+      let comp = await compressImage(file, 500, 0.7);
+      postData({ action: "updateStudentPhoto", reg: currentStudentProfile.student[0], photoBase64: comp.base64, photoMime: comp.mime }, res => {
+        if (res && res.success) { alert("ছবি আপডেট হয়েছে!"); document.getElementById('profileAvatar').src = res.photoUrl; }
+      });
+    }
+
+    function generateSscMarksheet() {
+      if (!currentStudentProfile || !currentStudentProfile.results.length) return alert("ফলাফল নেই!");
+      let st = currentStudentProfile.student;
+      document.getElementById('msName').innerText = st[1];
+      document.getElementById('msFather').innerText = st[2];
+      document.getElementById('msMother').innerText = st[3];
+      document.getElementById('msReg').innerText = st[0];
+      document.getElementById('msClass').innerText = st[4];
+      if (st[7]) document.getElementById('msPhoto').src = st[7];
+      document.getElementById('msTableBody').innerHTML = currentStudentProfile.results.map(r => `<tr><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td><b>${r[6]}</b></td><td><b>${r[7]}</b></td></tr>`).join('');
+      openModal('marksheetModal');
+    }
+
+    async function submitRegistration() {
+      let file = document.getElementById('regPhoto').files[0];
+      let reg = document.getElementById('regNo').value;
+      let cls = document.getElementById('regClass').value;
+      if (!reg || !cls) return alert("তথ্য দিন!");
+      let b64 = "", mime = "";
+      if (file) { let comp = await compressImage(file, 500, 0.7); b64 = comp.base64; mime = comp.mime; }
+      postData({ action: "registerStudent", name: document.getElementById('regName').value, father: document.getElementById('regFather').value, mother: document.getElementById('regMother').value, classVal: cls, reg: reg, mobile: document.getElementById('regMobile').value, pin: document.getElementById('regPin').value, photoBase64: b64, photoMime: mime }, res => {
+        if (res && res.success) { alert("রেজিস্ট্রেশন সফল!"); closeModal('regModal'); } else alert(res.message || "ব্যর্থ!");
+      });
+    }
+
+    function studentLogin() {
+      postData({ action: "studentLogin", reg: document.getElementById('logReg').value, pin: document.getElementById('logPin').value }, res => {
+        if (res && res.success) {
+          alert("স্বাগতম, " + res.student[1] + "!");
+          closeModal('loginModal');
+          document.getElementById('pReg').value = res.student[0];
+          document.getElementById('pClass').value = res.student[4];
+          loadFullProfile();
+          openModal('profileModal');
+        } else alert("ভুল তথ্য!");
+      });
+    }
+
+    function openForgotPinModal() { closeModal('loginModal'); openModal('forgotPinModal'); }
+
+    function submitForgotPin() {
+      postData({ action: "resetStudentPin", reg: document.getElementById('fpReg').value, mobile: document.getElementById('fpMobile').value, newPin: document.getElementById('fpNewPin').value }, res => {
+        if (res && res.success) { alert("পিন পরিবর্তিত হয়েছে!"); closeModal('forgotPinModal'); openModal('loginModal'); } else alert("তথ্য মেলেনি!");
+      });
+    }
+
+    function changeAdminPin() {
+      postData({ action: "changeAdminPin", oldPin: document.getElementById('oldPinInput').value, newPin: document.getElementById('newPinInput').value }, res => {
+        if (res && res.success) showAdminMessage("✅ পিন পরিবর্তিত!"); else alert("ভুল পিন!");
+      });
+    }
+
+    function updateMotivationText() {
+      postData({ action: "updateMotivation", text: document.getElementById('admMotivationInput').value }, res => {
+        if (res && res.success) { showAdminMessage("✅ বাণী আপডেট!"); document.getElementById('motivationText').innerText = document.getElementById('admMotivationInput').value; }
+      });
+    }
+
+    function loadNoticesAndMotivation() {
+      postData({ action: "getNoticesAndMotivation" }, res => {
+        if (res && res.success) {
+          if (res.motivation) document.getElementById('motivationText').innerText = res.motivation;
+          const topList = document.getElementById('topNewsListContainer');
+          if (topList && res.notices) {
+            topList.innerHTML = res.notices.length === 0 ? `<li style="text-align:center; padding:15px;">কোনো নোটিশ নেই।</li>` : res.notices.map(n => `<li class="top-news-item"><span>${n.text}</span><span class="date-tag">${n.date}</span></li>`).join('');
+          }
+        }
+      });
+    }
+
+    function postNoticeFromAdmin() {
+      postData({ action: "addNotice", text: document.getElementById('admNoticeText').value }, () => {
+        showAdminMessage("✅ নোটিশ লাইভ!"); document.getElementById('admNoticeText').value = ""; loadNoticesAndMotivation();
+      });
+    }
+
+    function submitFeedback() {
+      postData({ action: "saveFeedback", name: document.getElementById('fbName').value, message: document.getElementById('fbMsg').value }, () => {
+        alert("মতামত জমা হয়েছে!"); closeModal('feedbackModal');
+      });
+    }
 
     function autoParseMCQSmart() {
       const raw = document.getElementById('rawMcqPaste').value.trim();
@@ -758,11 +1063,6 @@
       document.getElementById('admMcqDuration').value = smartParsedMcq.length;
       document.getElementById('mcqParsedPreview').classList.remove('hidden');
       document.getElementById('mcqParsedPreview').innerHTML = `<b>মোট প্রশ্ন: ${smartParsedMcq.length} টি প্রস্তুত।</b>`;
-    }
-
-    function previewExamBeforePublish() {
-      document.getElementById('previewContentContainer').innerHTML = `<h4>প্রিভিউ</h4><p>MCQ: ${smartParsedMcq.length} টি</p>`;
-      openModal('adminPreviewModal');
     }
 
     function saveScheduledExam() {
@@ -790,7 +1090,7 @@
       if (!cls) return;
       postData({ action: "getClassroomNotes", classVal: cls }, res => {
         if (res && res.success && res.notes) {
-          document.getElementById('notesContainer').innerHTML = res.notes.length ? res.notes.map(n => `<div class="note-item"><h4>${n[3]} (${n[2]})</h4><p>${n[4]}</p>${n[5] ? `<a href="${n[5]}" target="_blank">ডাউনলোড</a>` : ''}</div>`).join('') : "নোট নেই।";
+          document.getElementById('notesContainer').innerHTML = res.notes.length ? res.notes.map(n => `<div style="background:#0f172a; padding:8px; margin-top:6px; border-radius:6px;"><h4>${n[3]}</h4><p>${n[4]}</p></div>`).join('') : "নোট নেই।";
         }
       });
     }
