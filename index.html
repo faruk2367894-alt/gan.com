@@ -26,7 +26,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Serif Bengali', 'Kalpurush', serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #f8fafc; color: #0f172a; min-height: 100vh; overflow-x: hidden; user-select: none; transition: background 0.3s, color 0.3s; }
 
-    /* ডার্ক মোড কালার ফিক্স */
+    /* ডার্ক মোড */
     body.dark-mode { background-color: #0b0f19; color: #f1f5f9; }
     body.dark-mode .card, body.dark-mode .modal-box, body.dark-mode .sidebar, body.dark-mode .top-news-card { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
     body.dark-mode .menu-item { background: #1e293b; color: #f1f5f9; border-color: #334155; }
@@ -236,25 +236,25 @@
 <body class="notranslate">
 
   <div id="page1" class="page active">
-    <h2 data-i18n="welcomeSub">স্বাগতম আপনাকে</h2>
+    <h2>স্বাগতম আপনাকে</h2>
     <h1>"জ্ঞান.com"</h1>
-    <p data-i18n="welcomeDesc">ডিজিটাল পরীক্ষা, ক্লাসরুম নোটস ও স্বয়ংক্রিয় ক্লাউড প্ল্যাটফর্ম</p>
-    <button class="enter-btn" onclick="goToPage(2)" data-i18n="enterBtn">Enter ➔</button>
+    <p>ডিজিটাল পরীক্ষা, ক্লাসরুম নোটস ও স্বয়ংক্রিয় ক্লাউড প্ল্যাটফর্ম</p>
+    <button class="enter-btn" onclick="goToPage(2)">Enter ➔</button>
   </div>
 
   <div id="page2" class="page" style="flex-direction: column;">
     <header>
       <div class="logo">জ্ঞান.কম</div>
       <div class="header-btns">
-        <button id="pwaInstallHeaderBtn" class="install-pwa-btn" onclick="triggerPwaInstall()" data-i18n="installApp">📲 অ্যাপ ইনস্টল</button>
-        <button class="admin-gate-btn" onclick="openAdminGate()" data-i18n="adminBtn">🔒 এডমিন</button>
-        <button class="menu-btn" onclick="toggleSidebar()" data-i18n="menuBtn">☰ মেনু</button>
+        <button id="pwaInstallHeaderBtn" class="install-pwa-btn" onclick="triggerPwaInstall()">📲 অ্যাপ ইনস্টল</button>
+        <button class="admin-gate-btn" onclick="openAdminGate()">🔒 এডমিন</button>
+        <button class="menu-btn" onclick="toggleSidebar()">☰ মেনু</button>
       </div>
     </header>
 
     <div class="main-content">
       <div class="notice-marquee">
-        <span class="notice-badge" data-i18n="inspiration">💡 অনুপ্রেরণা:</span>
+        <span class="notice-badge">💡 অনুপ্রেরণা:</span>
         <div class="marquee-container">
           <div class="marquee-content" id="motivationText">জ্ঞানের সন্ধানে যে পথ চলে, আল্লাহ তার জান্নাতের পথ সহজ করে দেন।</div>
         </div>
@@ -263,36 +263,36 @@
       <div class="feature-grid">
         <div class="card" style="border: 2px solid #0d9488; background: #f0fdfa;">
           <div>
-            <h3 style="color: #0f766e;" data-i18n="classroomTitle">📚 ক্লাস রুম (১ম - ১০ম শ্রেণি)</h3>
-            <p data-i18n="classroomDesc">শ্রেণিভিত্তিক লেকচার নোট, টেক্সট, ইমেজ ও PDF ফাইলসমূহ (আজীবন সংরক্ষিত)</p>
+            <h3 style="color: #0f766e;">📚 ক্লাস রুম (১ম - ১০ম শ্রেণি)</h3>
+            <p>শ্রেণিভিত্তিক লেকচার নোট, টেক্সট, ইমেজ ও PDF ফাইলসমূহ (আজীবন সংরক্ষিত)</p>
           </div>
-          <button class="btn btn-teal" onclick="openModal('classroomModal')" data-i18n="enterClassroom">ক্লাস রুমে প্রবেশ করুন</button>
+          <button class="btn btn-teal" onclick="openModal('classroomModal')">ক্লাস রুমে প্রবেশ করুন</button>
         </div>
 
         <div class="top-news-card">
           <div class="top-news-header">
-            <h3 data-i18n="noticeBoardTitle">📢 পরীক্ষা ও নোটিশ বোর্ড</h3>
-            <span style="font-size: 0.72rem; color: #0f766e; font-weight: 700;" data-i18n="sevenDaysTag">সর্বশেষ ৭ দিনের আপডেট</span>
+            <h3>📢 পরীক্ষা ও নোটিশ বোর্ড</h3>
+            <span style="font-size: 0.72rem; color: #0f766e; font-weight: 700;">সর্বশেষ ৭ দিনের আপডেট</span>
           </div>
           <ul class="top-news-list" id="topNewsListContainer">
-            <li style="text-align: center; color: #94a3b8; padding: 15px;" data-i18n="loading">নোটিশ লোড হচ্ছে...</li>
+            <li style="text-align: center; color: #94a3b8; padding: 15px;">নোটিশ লোড হচ্ছে...</li>
           </ul>
         </div>
 
         <div class="card">
           <div>
-            <h3 data-i18n="resultTitle">📊 ফলাফল ও SSC ট্রান্সক্রিপ্ট</h3>
-            <p data-i18n="resultDesc">MCQ, CQ মার্কস ও ফলাফল হিস্ট্রি</p>
+            <h3>📊 ফলাফল ও SSC ট্রান্সক্রিপ্ট</h3>
+            <p>MCQ, CQ মার্কস ও ফলাফল হিস্ট্রি</p>
           </div>
-          <button class="btn btn-green" onclick="openModal('profileModal')" data-i18n="viewResult">ফলাফল দেখুন</button>
+          <button class="btn btn-green" onclick="openModal('profileModal')">ফলাফল দেখুন</button>
         </div>
 
         <div class="big-exam-card">
           <div>
-            <h2 style="color: #1e1b4b; font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 800;" data-i18n="examPortalTitle">✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)</h2>
-            <p style="color: #475569; margin-top: 4px; font-size: 0.85rem;" data-i18n="examPortalDesc">এডমিন নির্ধারিত শিডিউল অনুযায়ী MCQ বা CQ পরীক্ষা দিন (যেকোনো একটি দিয়েও জমা দেওয়া যাবে)।</p>
+            <h2 style="color: #1e1b4b; font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 800;">✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)</h2>
+            <p style="color: #475569; margin-top: 4px; font-size: 0.85rem;">এডমিন নির্ধারিত শিডিউল অনুযায়ী MCQ বা CQ পরীক্ষা দিন (যেকোনো একটি দিয়েও জমা দেওয়া যাবে)।</p>
           </div>
-          <button class="btn btn-blue" style="width: auto; padding: 10px 20px;" onclick="openModal('examInitModal')" data-i18n="startExamBtn">পরীক্ষা শুরু করুন</button>
+          <button class="btn btn-blue" style="width: auto; padding: 10px 20px;" onclick="openModal('examInitModal')">পরীক্ষা শুরু করুন</button>
         </div>
       </div>
     </div>
@@ -302,19 +302,18 @@
   <aside id="sidebar" class="sidebar">
     <div>
       <div class="sidebar-header">
-        <h3 data-i18n="menuBar">মেনু বার</h3>
+        <h3>মেনু বার</h3>
         <button onclick="toggleSidebar()" class="close-icon-btn">×</button>
       </div>
       <div style="margin-top: 8px;">
-        <button id="pwaInstallMenuBtn" class="menu-item highlight" style="display:none;" onclick="triggerPwaInstall()" data-i18n="installAppMenu">📲 সরাসরি অ্যাপ ইনস্টল করুন</button>
+        <button id="pwaInstallMenuBtn" class="menu-item highlight" style="display:none;" onclick="triggerPwaInstall()">📲 সরাসরি অ্যাপ ইনস্টল করুন</button>
         
         <div style="display: flex; gap: 6px; margin: 6px 0;">
-          <button class="menu-item" style="flex:1; justify-content:center; background:#e0e7ff; color:#3730a3; font-weight:700;" onclick="toggleLanguage()">🌐 <span id="langBtnText">English</span></button>
           <button class="menu-item" style="flex:1; justify-content:center; background:#f1f5f9; font-weight:700;" onclick="toggleDarkMode()">🌙 নাইট মোড</button>
         </div>
 
-        <button class="menu-item highlight" onclick="toggleSidebar(); openModal('regModal');" data-i18n="regMenu">📝 শিক্ষার্থী রেজিস্ট্রেশন</button>
-        <button class="menu-item highlight" onclick="toggleSidebar(); openModal('loginModal');" data-i18n="loginMenu">🔑 শিক্ষার্থী লগইন</button>
+        <button class="menu-item highlight" onclick="toggleSidebar(); openModal('regModal');">📝 শিক্ষার্থী রেজিস্ট্রেশন</button>
+        <button class="menu-item highlight" onclick="toggleSidebar(); openModal('loginModal');">🔑 শিক্ষার্থী লগইন</button>
         
         <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
         
@@ -330,14 +329,14 @@
         <button class="menu-item tool-btn" style="background:#f8fafc; border-color:#cbd5e1; color:#334155;" onclick="toggleSidebar(); openModal('scratchpadModal');">📝 কুইক স্টাডি নোটপ্যাড</button>
         
         <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
-        <button class="menu-item" onclick="toggleSidebar(); openModal('profileModal');" data-i18n="profileHistory">👤 স্টুডেন্ট প্রোফাইল ও হিস্ট্রি</button>
-        <button class="menu-item" onclick="toggleSidebar(); openModal('feedbackModal');" data-i18n="feedbackMenu">💬 আপনার মতামত লিখুন</button>
+        <button class="menu-item" onclick="toggleSidebar(); openModal('profileModal');">👤 স্টুডেন্ট প্রোফাইল ও হিস্ট্রি</button>
+        <button class="menu-item" onclick="toggleSidebar(); openModal('feedbackModal');">💬 আপনার মতামত লিখুন</button>
       </div>
     </div>
     <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; margin-top:10px;">জ্ঞান.com © 2026</div>
   </aside>
 
-  <!-- ১. সাধারণ জ্ঞান ভান্ডার মডাল (১০০% ফিক্সড) -->
+  <!-- ১. সাধারণ জ্ঞান ভান্ডার মডাল -->
   <div id="gkModal" class="modal">
     <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
@@ -358,14 +357,14 @@
     </div>
   </div>
 
-  <!-- ২. গণিত ও বিজ্ঞান সূত্র ভান্ডার (লেখা ও কালার ১০০% ফিক্সড) -->
+  <!-- ২. গণিত ও বিজ্ঞান সূত্র ভান্ডার -->
   <div id="formulaModal" class="modal">
     <div class="modal-box" style="max-width: 620px;">
       <div class="modal-header">
         <h3 style="color: #5b21b6;">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার (Formula Hub)</h3>
         <button class="close-icon-btn" onclick="closeModal('formulaModal')">×</button>
       </div>
-      <div style="max-height:400px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
+      <div id="formulaContentContainer" style="max-height:400px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
         <div class="formula-card" style="border-left-color: #7c3aed;">
           <h4 style="color:#7c3aed; font-weight:800;">বীজগণিত (Algebra)</h4>
           <p style="font-family:monospace; margin-top:4px;">• (a + b)² = a² + 2ab + b²</p>
@@ -491,7 +490,7 @@
     </div>
   </div>
 
-  <!-- লাইভ পরীক্ষা মডাল (MCQ বা CQ আলাদা বা একসাথে সাবমিট) -->
+  <!-- লাইভ পরীক্ষা মডাল -->
   <div id="liveExamModal" class="modal">
     <div class="modal-box" style="max-width: 720px;">
       <div class="modal-header">
@@ -533,7 +532,7 @@
   <div id="examInitModal" class="modal">
     <div class="modal-box" style="max-width: 420px;">
       <div class="modal-header">
-        <h3 data-i18n="examVerifyTitle">পরীক্ষা যাচাইকরণ</h3>
+        <h3>পরীক্ষা যাচাইকরণ</h3>
         <button class="close-icon-btn" onclick="closeModal('examInitModal')">×</button>
       </div>
       <input type="number" id="stExReg" placeholder="রেজিস্ট্রেশন নম্বর">
@@ -858,7 +857,7 @@
     </div>
   </div>
 
-  <!-- এডমিন কন্ট্রোল প্যানেল (পূর্বের সম্পূর্ণ ফাংশন অপরিবর্তিত) -->
+  <!-- এডমিন কন্ট্রোল প্যানেল (নতুন সাধারণ জ্ঞান ও সূত্র নিয়ন্ত্রণ ট্যাব সহ) -->
   <div id="adminPanelModal" class="modal">
     <div class="modal-box admin-panel">
       <div class="modal-header">
@@ -871,11 +870,14 @@
       <div class="admin-tabs">
         <button class="admin-tab-btn active" onclick="switchAdminTab(event, 'mcqTab')">MCQ & CQ শিডিউল</button>
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'classroomAdminTab')">ক্লাসরুম নোট পাবলিশ</button>
+        <button class="admin-tab-btn" onclick="switchAdminTab(event, 'adminGkTab')">সাধারণ জ্ঞান আপলোড</button>
+        <button class="admin-tab-btn" onclick="switchAdminTab(event, 'adminFormulaTab')">সূত্র আপলোড</button>
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'motivationTab')">মোটিভেশনাল উক্তি</button>
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'noticeTab')">নোটিশ ও রুটিন</button>
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'pinTab')">পিন পরিবর্তন</button>
       </div>
 
+      <!-- MCQ & CQ শিডিউল -->
       <div id="mcqTab" class="admin-tab-content" style="display:flex; flex-direction:column; gap:8px;">
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:8px;">
           <div>
@@ -911,9 +913,16 @@
         </div>
 
         <div style="background:#fff7ed; border:1px solid #fed7aa; padding:8px; border-radius:6px;">
-          <label style="font-size:0.85rem; font-weight:700; color:#9a3412;">কপিকৃত MCQ টেক্সট পেস্ট করুন:</label>
-          <textarea id="rawMcqPaste" rows="4" placeholder="১. প্রশ্ন? ক) উত্তর ১ খ) উত্তর ২ গ) উত্তর ৩ ঘ) উত্তর ৪ | উত্তর: ক"></textarea>
-          <button class="btn btn-amber" style="margin-top:4px;" onclick="autoParseMCQSmart()">⚡ অপশন নির্ভুলভাবে প্রস্তুত করুন</button>
+          <label style="font-size:0.85rem; font-weight:700; color:#9a3412;">কপিকৃত MCQ টেক্সট পেস্ট করুন (চ্যাটজিপিটি/জেমিনি/ইন্টারনেট থেকে সরাসরি):</label>
+          <textarea id="rawMcqPaste" rows="5" placeholder="যেমন:
+১. বাংলাদেশের রাজধানী কোথায়?
+ক) ঢাকা
+খ) খুলনা
+গ) রাজশাহী
+ঘ) সিলেট
+উত্তর: ক
+ব্যাখ্যা: ঢাকা বাংলাদেশের প্রাচীন ও বর্তমান রাজধানী।"></textarea>
+          <button class="btn btn-amber" style="margin-top:4px;" onclick="autoParseMCQSmart()">⚡ ১০০% নির্ভুল অপশন ও ব্যাখ্যা প্রস্তুত করুন</button>
         </div>
 
         <div id="mcqParsedPreview" class="hidden" style="max-height:160px; overflow-y:auto; border:1px solid #cbd5e1; padding:8px; border-radius:6px; background:white;"></div>
@@ -930,6 +939,7 @@
         </div>
       </div>
 
+      <!-- ক্লাসরুম নোট ট্যাব -->
       <div id="classroomAdminTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
         <select id="admNoteClass">
           <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
@@ -951,6 +961,26 @@
           <button class="btn btn-purple" style="width:35%;" onclick="previewNoteBeforePublish()">👁️ প্রিভিউ</button>
           <button class="btn btn-teal" style="width:65%;" onclick="publishClassroomNote()">নোট পাবলিশ করুন</button>
         </div>
+      </div>
+
+      <!-- নতুন: সাধারণ জ্ঞান আপলোড ট্যাব -->
+      <div id="adminGkTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
+        <select id="admGkType">
+          <option value="bd">বাংলাদেশ বিষয়াবলি</option>
+          <option value="world">আন্তর্জাতিক বিষয়াবলি</option>
+        </select>
+        <input type="text" id="admGkCategory" placeholder="ক্যাটাগরি (যেমন: মুক্তিযুদ্ধ / ভৌগোলিক তথ্য / জাতিসংঘ)">
+        <input type="text" id="admGkQuestion" placeholder="প্রশ্ন লিখুন">
+        <textarea id="admGkAnswer" rows="2" placeholder="সঠিক উত্তর লিখুন..."></textarea>
+        <button class="btn btn-blue" onclick="uploadAdminGk()">সাধারণ জ্ঞান লাইভ যোগ করুন</button>
+      </div>
+
+      <!-- নতুন: সূত্র আপলোড ট্যাব -->
+      <div id="adminFormulaTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
+        <input type="text" id="admFormulaSubject" placeholder="বিষয় (যেমন: পদার্থবিজ্ঞান / উচ্চতর গণিত / রসায়ন)">
+        <input type="text" id="admFormulaTopic" placeholder="টপিক বা অধ্যায় (যেমন: গতি / ত্রিকোণমিতি)">
+        <textarea id="admFormulaText" rows="3" placeholder="সূত্রটি লিখুন (যেমন: • v = u + at)"></textarea>
+        <button class="btn btn-purple" onclick="uploadAdminFormula()">সূত্র লাইভ যোগ করুন</button>
       </div>
 
       <div id="motivationTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
@@ -1001,7 +1031,7 @@
     </div>
   </div>
 
-  <!-- স্ক্রিপ্ট অংশ (১০০% ক্লিন ও ডুপ্লিকেশন মুক্ত) -->
+  <!-- সম্পূর্ণ স্ক্রিপ্ট অংশ -->
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzbYG4HmvglvpANyzUmoeLE3YbQccgJIOBIlD9rTl67qEQ2xkcPW7v8unHm1YZDHEM/exec";
     let activeExamData = null;
@@ -1010,7 +1040,6 @@
     let currentStudentProfile = null;
     let deferredPrompt = null;
     let currentDictMode = 'en-bn';
-    let currentLang = 'bn';
     let currentGkTab = 'bd';
     let currentExamSection = 'all';
 
@@ -1102,7 +1131,7 @@
     }
 
     // ২. সাধারণ জ্ঞান ডাটাবেজ
-    const gkDatabase = {
+    let gkDatabase = {
       bd: [
         {
           category: "প্রাচীন কাল ও ঐতিহাসিক পটভূমি",
@@ -1110,51 +1139,29 @@
             { q: "বাংলার প্রাচীনতম জনপদ কোনটি?", a: "পুন্ড্র (রাজধানী: পুন্ড্রনগর, বর্তমান বগুড়ার মহাস্থানগড়)" },
             { q: "প্রাচীন বাংলার প্রথম স্বাধীন ও সার্বভৌম রাজা কে ছিলেন?", a: "শশাঙ্ক (গৌড়ের রাজা)" },
             { q: "বাংলার প্রথম বংশানুক্রমিক রাজবংশ কোনটি?", a: "পাল বংশ (প্রতিষ্ঠাতা: গোপাল, ৭৮ বছর রাজত্ব)" },
-            { q: "বাংলায় মুসলিম শাসনের সূচনা করেন কে?", a: "ইখতিয়ার উদ্দিন মুহম্মদ বখতিয়ার খলজী (১২০৪ সালে লক্ষ্মণ সেনকে পরাজিত করে)" },
-            { q: "পলাশীর যুদ্ধ কবে এবং কার কার মধ্যে সংঘটিত হয়?", a: "২৩ জুন ১৭৫৭; নবাব সিরাজউদ্দৌলা এবং লর্ড ক্লাইভের ব্রিটিশ কোম্পানির মধ্যে" }
+            { q: "বাংলায় মুসলিম শাসনের সূচনা করেন কে?", a: "ইখতিয়ার উদ্দিন মুহম্মদ বখতিয়ার খলজী (১২০৪ সালে)" },
+            { q: "পলাশীর যুদ্ধ কবে সংঘটিত হয়?", a: "২৩ জুন ১৭৫৭; নবাব সিরাজউদ্দৌলা এবং লর্ড ক্লাইভের মধ্যে" }
           ]
         },
         {
           category: "ভাষা আন্দোলন ও স্বাধীনতা সংগ্রাম",
           items: [
             { q: "তমুদ্দুন মজলিস কার নেতৃত্বে কবে গঠিত হয়েছিল?", a: "অধ্যাপক আবুল কাসেমের নেতৃত্বে ২ সেপ্টেম্বর ১৯৪৭" },
-            { q: "ইউনেস্কো ২১শে ফেব্রুয়ারিকে 'আন্তর্জাতিক মাতৃভাষা দিবস' হিসেবে স্বীকৃতি দেয় কবে?", a: "১৭ নভেম্বর ১৯৯৯ (কার্যকর ২০০০ সাল থেকে)" },
-            { q: "ঐতিহাসিক ৬-দফা দাবি কোথায় এবং কবে উত্থাপন করা হয়?", a: "৫-৬ ফেব্রুয়ারি ১৯৬৬ সালে লাহোরে বঙ্গবন্ধু শেখ মুজিবুর রহমান উত্থাপন করেন" },
-            { q: "আগরতলা ষড়যন্ত্র মামলার অফিসিয়াল নাম কী ছিল?", a: "রাষ্ট্র বনাম শেখ মুজিবুর রহমান ও অন্যান্য (মোট আসামি ৩৫ জন)" },
-            { q: "শেখ মুজিবুর রহমানকে 'বঙ্গবন্ধু' উপাধি দেওয়া হয় কবে?", a: "২৩ ফেব্রুয়ারি ১৯৬৯ (রেসকোর্স ময়দানে তোফায়েল আহমেদ কর্তৃক)" }
+            { q: "ইউনেস্কো ২১শে ফেব্রুয়ারিকে 'আন্তর্জাতিক মাতৃভাষা দিবস' স্বীকৃতি দেয় কবে?", a: "১৭ নভেম্বর ১৯৯৯ (কার্যকর ২০০০ সাল থেকে)" },
+            { q: "ঐতিহাসিক ৬-দফা দাবি কোথায় ও কবে উত্থাপন করা হয়?", a: "৫-৬ ফেব্রুয়ারি ১৯৬৬ সালে লাহোরে বঙ্গবন্ধু শেখ মুজিবুর রহমান উত্থাপন করেন" },
+            { q: "আগরতলা ষড়যন্ত্র মামলার অফিসিয়াল নাম কী ছিল?", a: "রাষ্ট্র বনাম শেখ মুজিবুর রহমান ও অন্যান্য" },
+            { q: "শেখ মুজিবুর রহমানকে 'বঙ্গবন্ধু' উপাধি দেওয়া হয় কবে?", a: "২৩ ফেব্রুয়ারি ১৯৬৯ (তোফায়েল আহমেদ কর্তৃক)" }
           ]
         },
         {
           category: "মহান মুক্তিযুদ্ধ ও সেক্টর কমান্ড",
           items: [
-            { q: "মুজিবনগর সরকার কবে গঠিত ও শপথ গ্রহণ করে?", a: "গঠিত: ১০ এপ্রিল ১৯৭১; শপথ গ্রহণ: ১৭ এপ্রিল ১৯৭১ (মেহেরপুরের বৈদ্যনাথতলায়)" },
+            { q: "মুজিবনগর সরকার কবে গঠিত ও শপথ গ্রহণ করে?", a: "গঠিত: ১০ এপ্রিল ১৯৭১; শপথ গ্রহণ: ১৭ এপ্রিল ১৯৭১" },
             { q: "মুজিবনগর সরকারের প্রধানমন্ত্রী কে ছিলেন?", a: "তাজউদ্দীন আহমদ (রাষ্ট্রপতি: বঙ্গবন্ধু শেখ মুজিবুর রহমান)" },
-            { q: "মুক্তিযুদ্ধে বাংলাদেশকে কয়টি সেক্টরে ভাগ করা হয়েছিল?", a: "১১টি সেক্টর এবং ৬৪টি সাব-সেক্টর (১০ নম্বর সেক্টর ছিল নৌ সেক্টর)" },
+            { q: "মুক্তিযুদ্ধে বাংলাদেশকে কয়টি সেক্টরে ভাগ করা হয়েছিল?", a: "১১টি সেক্টর এবং ৬৪টি সাব-সেক্টর" },
             { q: "মুক্তিযুদ্ধে বীরত্বসূচক রাষ্ট্রীয় খেতাব কয়টি?", a: "৪টি (বীরশ্রেষ্ঠ ৭ জন, বীরউত্তম ৬৮ জন, বীরবিক্রম ১৭৫ জন, বীরপ্রতীক ৪২৬ জন)" },
             { q: "বীরশ্রেষ্ঠদের মধ্যে সর্বপ্রথম ও সর্বশেষ শহীদ হন কে?", a: "প্রথম শহীদ: মুন্সী আবদুর রউফ; শেষ শহীদ: ক্যাপ্টেন মহিউদ্দীন জাহাঙ্গীর" },
-            { q: "বাংলাদেশকে প্রথম স্বীকৃতি দানকারী দেশ কোনটি?", a: "ভুটান (৬ ডিসেম্বর ১৯৭১ সকালে, ভারত বিকেলে)" }
-          ]
-        },
-        {
-          category: "সংবিধান ও রাষ্ট্রব্যবস্থা",
-          items: [
-            { q: "বাংলাদেশের সংবিধান কবে গৃহীত এবং কার্যকর হয়?", a: "গৃহীত: ৪ নভেম্বর ১৯৭২; কার্যকর: ১৬ ডিসেম্বর ১৯৭২" },
-            { q: "সংবিধানের মূলনীতি কয়টি?", a: "৪টি (জাতীয়তাবাদ, সমাজতন্ত্র, গণতন্ত্র এবং ধর্মনিরপেক্ষতা)" },
-            { q: "সংবিধানে মোট কতটি অনুচ্ছেদ, ভাগ ও তফসিল রয়েছে?", a: "১৫৩টি অনুচ্ছেদ, ১১টি ভাগ এবং ৭টি তফসিল" },
-            { q: "সংবিধানের অভিভাবক ও ব্যাখ্যাকারক কে?", a: "বাংলাদেশ সুপ্রিম কোর্ট" },
-            { q: "জাতীয় সংসদের সংরক্ষিত নারী আসন সংখ্যা কতটি?", a: "৫০টি (সাধারণ আসন ৩০০টি, মোট আসন ৩৫০টি)" }
-          ]
-        },
-        {
-          category: "ভৌগোলিক তথ্য ও জাতীয় অর্জন",
-          items: [
-            { q: "বাংলাদেশের আয়তন এবং সমুদ্রসীমা কত?", a: "আয়তন: ১,৪৭,৫৭০ বর্গ কিমি; সমুদ্রসীমা: ১,১৮,৮১৩ বর্গ কিমি" },
-            { q: "বাংলাদেশের একমাত্র পাহাড়ি দ্বীপ এবং প্রবাল দ্বীপ কোনটি?", a: "পাহাড়ি দ্বীপ: মহেশখালী; প্রবাল দ্বীপ: সেন্ট মার্টিন" },
-            { q: "পদ্মা, মেঘনা ও যমুনা নদী কোথায় মিলিত হয়েছে?", a: "পদ্মা ও যমুনা গোয়ালন্দে; পদ্মা ও মেঘনা চাঁদপুরে" },
-            { q: "বঙ্গবন্ধু স্যাটেলাইট-১ কবে উৎক্ষেপণ করা হয়?", a: "১১ মে ২০১৮ (ফ্লোরিডা থেকে, বাংলাদেশ ৫৭তম দেশ)" },
-            { q: "পদ্মা সেতুর দৈর্ঘ্য কত এবং কবে উদ্বোধন করা হয়?", a: "দৈর্ঘ্য ৬.১৫ কিমি (স্প্যান ৪১টি, পিলার ৪২টি); উদ্বোধন: ২৫ জুন ২০২২" },
-            { q: "বাংলাদেশের প্রথম মেট্রোরেল (MRT Line-6) কবে চালু হয়?", a: "২৮ ডিসেম্বর ২০২২ (উত্তরা থেকে আগারগাঁও অংশ)" },
-            { q: "কর্ণফুলী টানেল (বঙ্গবন্ধু টানেল) এর দৈর্ঘ্য কত?", a: "৩.৩২ কিলোমিটার (নদীর তলদেশে দক্ষিণ এশিয়ার প্রথম টানেল)" }
+            { q: "বাংলাদেশকে প্রথম স্বীকৃতি দানকারী দেশ কোনটি?", a: "ভুটান (৬ ডিসেম্বর ১৯৭১ সকালে)" }
           ]
         }
       ],
@@ -1162,12 +1169,10 @@
         {
           category: "আন্তর্জাতিক সংস্থা ও জাতিসংঘ",
           items: [
-            { q: "জাতিসংঘ (UN) কবে প্রতিষ্ঠিত হয় এবং এর সদর দপ্তর কোথায়?", a: "২৪ অক্টোবর ১৯৪৫; সদর দপ্তর: নিউইয়র্ক, যুক্তরাষ্ট্র" },
+            { q: "জাতিসংঘ (UN) কবে প্রতিষ্ঠিত হয় এবং সদর দপ্তর কোথায়?", a: "২৪ অক্টোবর ১৯৪৫; সদর দপ্তর: নিউইয়র্ক, যুক্তরাষ্ট্র" },
             { q: "নিরাপত্তা পরিষদের স্থায়ী সদস্য দেশ কয়টি?", a: "৫টি (যুক্তরাষ্ট্র, যুক্তরাজ্য, রাশিয়া, চীন ও ফ্রান্স - ভেটো ক্ষমতাসম্পন্ন)" },
-            { q: "আন্তর্জাতিক বিচারালয় (ICJ) এর সদর দপ্তর কোথায়?", a: "হেগ, নেদারল্যান্ডস (মোট বিচারক ১৫ জন, মেয়াদ ৯ বছর)" },
-            { q: "সার্ক (SAARC) এর স্থায়ী সচিবালয় কোথায়?", a: "কাঠমান্ডু, নেপাল (গঠন: ৮ ডিসেম্বর ১৯৮৫ ঢাকায়)" },
-            { q: "বিশ্ব স্বাস্থ্য সংস্থা (WHO) এবং ইউনেস্কো (UNESCO) এর সদর দপ্তর কোথায়?", a: "WHO: জেনেভা, সুইজারল্যান্ড; UNESCO: প্যারিস, ফ্রান্স" },
-            { q: "ন্যাটো (NATO) কী ধরণের জোট এবং বর্তমান সদস্য কত?", a: "সামরিক জোট (প্রতিষ্ঠা: ১৯৪৯); বর্তমান সদস্য ৩২টি" }
+            { q: "আন্তর্জাতিক বিচারালয় (ICJ) এর সদর দপ্তর কোথায়?", a: "হেগ, নেদারল্যান্ডস" },
+            { q: "সার্ক (SAARC) এর স্থায়ী সচিবালয় কোথায়?", a: "কাঠমান্ডু, নেপাল (গঠন: ৮ ডিসেম্বর ১৯৮৫ ঢাকায়)" }
           ]
         },
         {
@@ -1175,27 +1180,7 @@
           items: [
             { q: "প্রথম ও দ্বিতীয় বিশ্বযুদ্ধ কবে সংঘটিত হয়?", a: "১ম বিশ্বযুদ্ধ: ১৯১৪ - ১৯১৮; ২য় বিশ্বযুদ্ধ: ১৯৩৯ - ১৯৪৫" },
             { q: "ফরাসি বিপ্লব কবে সংঘটিত হয়েছিল?", a: "১৭৮৯ সালে (স্লোগান: সাম্য, মৈত্রী ও স্বাধীনতা)" },
-            { q: "আমেরিকার স্বাধীনতা দিবস কবে?", a: "৪ জুলাই ১৭৭৬ (ঘোষক: টমাস জেফারসন)" },
             { q: "হিরোশিমা ও নাগাসাকিতে পারমাণবিক বোমা ফেলা হয়েছিল কবে?", a: "হিরোশিমা: ৬ আগস্ট ১৯৪৫; নাগাসাকি: ৯ আগস্ট ১৯৪৫" }
-          ]
-        },
-        {
-          category: "ভৌগোলিক সীমানা ও মহাদেশ",
-          items: [
-            { q: "বিশ্বের বৃহত্তম এবং ক্ষুদ্রতম দেশ কোনটি?", a: "বৃহত্তম: রাশিয়া (আয়তনে), ক্ষুদ্রতম: ভ্যাটিকান সিটি" },
-            { q: "বিশ্বের দীর্ঘতম নদী এবং গভীরতম হ্রদ কোনটি?", a: "দীর্ঘতম নদী: নীলনদ (৬,৬৫০ কিমি); গভীরতম হ্রদ: বৈকাল হ্রদ" },
-            { q: "ম্যাকমোহন লাইন এবং ডুরান্ড লাইন কোন কোন দেশের সীমানা?", a: "ম্যাকমোহন লাইন: ভারত-চীন; ডুরান্ড লাইন: পাকিস্তান-আফগানিস্তান" },
-            { q: "বিশ্বের সর্বোচ্চ পর্বতশৃঙ্গ মাউন্ট এভারেস্ট কোথায় অবস্থিত?", a: "নেপাল ও তিব্বত সীমান্তে (উচ্চতা: ৮,৮৪৮.৮৬ মিটার)" }
-          ]
-        },
-        {
-          category: "পুরস্কার, বিজ্ঞান ও প্রযুক্তি",
-          items: [
-            { q: "নোবেল পুরস্কার কয়টি বিষয়ে দেওয়া হয়?", a: "৬টি বিষয়ে (পদার্থ, রসায়ন, চিকিৎসা, সাহিত্য, শান্তি ও অর্থনীতি)" },
-            { q: "শান্তিতে নোবেল কোথা থেকে দেওয়া হয়?", a: "নরওয়ের অসলো থেকে (বাকি ৫টি স্টকহোম, সুইডেন থেকে)" },
-            { q: "কম্পিউটারের জনক এবং আধুনিক কম্পিউটারের জনক কে?", a: "জনক: চার্লস ব্যাবেজ; আধুনিক জনক: অ্যালান টুরিং" },
-            { q: "কৃত্রিম বুদ্ধিমত্তা (AI) এর জনক কে?", a: "জন ম্যাককার্থি (John McCarthy)" },
-            { q: "সূর্য থেকে পৃথিবীতে আলো আসতে কত সময় লাগে?", a: "৮ মিনিট ২০ সেকেন্ড" }
           ]
         }
       ]
@@ -1239,7 +1224,7 @@
       });
 
       if (foundCount === 0) {
-        container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:30px;">কোনো তথ্য পাওয়া যায়নি। অন্য শব্দ দিয়ে খুঁজুন।</p>`;
+        container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:30px;">কোনো তথ্য পাওয়া যায়নি।</p>`;
       } else {
         container.innerHTML = html;
       }
@@ -1250,7 +1235,94 @@
       renderGk(currentGkTab, q);
     }
 
-    // ৩. সায়েন্টিফিক ক্যালকুলেটর ইঞ্জিন
+    // এডমিন থেকে সাধারণ জ্ঞান আপলোড
+    function uploadAdminGk() {
+      const type = document.getElementById('admGkType').value;
+      const category = document.getElementById('admGkCategory').value.trim();
+      const question = document.getElementById('admGkQuestion').value.trim();
+      const answer = document.getElementById('admGkAnswer').value.trim();
+
+      if (!category || !question || !answer) return alert("সকল তথ্য পূরণ করুন!");
+
+      postData({
+        action: "addGk",
+        type: type,
+        category: category,
+        question: question,
+        answer: answer
+      }, res => {
+        if (res && res.success) {
+          showAdminMessage("✅ নতুন সাধারণ জ্ঞান সফলভাবে যোগ করা হয়েছে!");
+          document.getElementById('admGkQuestion').value = "";
+          document.getElementById('admGkAnswer').value = "";
+          loadLiveGk();
+        }
+      });
+    }
+
+    function loadLiveGk() {
+      postData({ action: "getCustomGk" }, res => {
+        if (res && res.success && res.gkList) {
+          res.gkList.forEach(r => {
+            const t = r[1];
+            const cat = r[2];
+            const q = r[3];
+            const a = r[4];
+            if (gkDatabase[t]) {
+              let targetCat = gkDatabase[t].find(c => c.category === cat);
+              if (!targetCat) {
+                targetCat = { category: cat, items: [] };
+                gkDatabase[t].push(targetCat);
+              }
+              if (!targetCat.items.some(i => i.q === q)) {
+                targetCat.items.push({ q: q, a: a });
+              }
+            }
+          });
+          renderGk(currentGkTab);
+        }
+      });
+    }
+
+    // এডমিন থেকে সূত্র আপলোড
+    function uploadAdminFormula() {
+      const sub = document.getElementById('admFormulaSubject').value.trim();
+      const topic = document.getElementById('admFormulaTopic').value.trim();
+      const text = document.getElementById('admFormulaText').value.trim();
+
+      if (!sub || !topic || !text) return alert("বিষয়, টপিক ও সূত্র লিখুন!");
+
+      postData({
+        action: "addFormula",
+        subject: sub,
+        topic: topic,
+        formulaText: text
+      }, res => {
+        if (res && res.success) {
+          showAdminMessage("✅ নতুন সূত্র সফলভাবে যোগ করা হয়েছে!");
+          document.getElementById('admFormulaTopic').value = "";
+          document.getElementById('admFormulaText').value = "";
+          loadLiveFormulas();
+        }
+      });
+    }
+
+    function loadLiveFormulas() {
+      postData({ action: "getCustomFormulas" }, res => {
+        if (res && res.success && res.formulaList) {
+          const container = document.getElementById('formulaContentContainer');
+          res.formulaList.forEach(f => {
+            const card = document.createElement('div');
+            card.className = "formula-card";
+            card.style.borderLeftColor = "#059669";
+            card.innerHTML = `<h4 style="color:#059669; font-weight:800;">${f[1]} (${f[2]})</h4><p style="white-space:pre-wrap;">${f[3]}</p>`;
+            container.appendChild(card);
+          });
+        }
+      });
+    }
+
+    // ৩. সায়েন্টিফিক ক্যালকুলেটর
     function sciInput(val) {
       const d = document.getElementById('sciCalcDisplay');
       if (d.value === "0" || d.value === "Error") d.value = "";
@@ -1467,83 +1539,12 @@
       openModal('examReviewModal');
     }
 
-    // ৫. ভাষা ও ডার্ক মোড
-    const i18nData = {
-      bn: {
-        welcomeSub: "স্বাগতম আপনাকে",
-        welcomeDesc: "ডিজিটাল পরীক্ষা, ক্লাসরুম নোটস ও স্বয়ংক্রিয় ক্লাউড প্ল্যাটফর্ম",
-        enterBtn: "Enter ➔",
-        installApp: "📲 অ্যাপ ইনস্টল",
-        adminBtn: "🔒 এডমিন",
-        menuBtn: "☰ মেনু",
-        inspiration: "💡 অনুপ্রেরণা:",
-        classroomTitle: "📚 ক্লাস রুম (১ম - ১০ম শ্রেণি)",
-        classroomDesc: "শ্রেণিভিত্তিক লেকচার নোট, টেক্সট, ইমেজ ও PDF ফাইলসমূহ (আজীবন সংরক্ষিত)",
-        enterClassroom: "ক্লাস রুমে প্রবেশ করুন",
-        noticeBoardTitle: "📢 পরীক্ষা ও নোটিশ বোর্ড",
-        sevenDaysTag: "সর্বশেষ ৭ দিনের আপডেট",
-        loading: "লোড হচ্ছে...",
-        resultTitle: "📊 ফলাফল ও SSC ট্রান্সক্রিপ্ট",
-        resultDesc: "MCQ, CQ মার্কস ও ফলাফল হিস্ট্রি",
-        viewResult: "ফলাফল দেখুন",
-        examPortalTitle: "✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)",
-        examPortalDesc: "এডমিন নির্ধারিত শিডিউল অনুযায়ী MCQ বা CQ পরীক্ষা দিন (যেকোনো একটি দিয়েও জমা দেওয়া যাবে)।",
-        startExamBtn: "পরীক্ষা শুরু করুন",
-        menuBar: "মেনু বার",
-        installAppMenu: "📲 সরাসরি অ্যাপ ইনস্টল করুন",
-        regMenu: "📝 শিক্ষার্থী রেজিস্ট্রেশন",
-        loginMenu: "🔑 শিক্ষার্থী লগইন",
-        profileHistory: "👤 স্টুডেন্ট প্রোফাইল ও হিস্ট্রি",
-        feedbackMenu: "💬 আপনার মতামত লিখুন",
-        examVerifyTitle: "পরীক্ষা যাচাইকরণ"
-      },
-      en: {
-        welcomeSub: "Welcome to",
-        welcomeDesc: "Digital Examinations, Classroom Notes & Automated Cloud Platform",
-        enterBtn: "Enter ➔",
-        installApp: "📲 Install App",
-        adminBtn: "🔒 Admin",
-        menuBtn: "☰ Menu",
-        inspiration: "💡 Inspiration:",
-        classroomTitle: "📚 Class Room (Class 1 - 10)",
-        classroomDesc: "Class-wise lecture notes, text, images & PDF files (Permanent)",
-        enterClassroom: "Enter Class Room",
-        noticeBoardTitle: "📢 Exam & Notice Board",
-        sevenDaysTag: "Last 7 Days Updates",
-        loading: "Loading...",
-        resultTitle: "📊 Results & SSC Transcript",
-        resultDesc: "MCQ, CQ marks & result history",
-        viewResult: "View Results",
-        examPortalTitle: "✍️ Online Exam Portal (Class 1 - 10)",
-        examPortalDesc: "Take MCQ or CQ exam (either can be submitted independently).",
-        startExamBtn: "Start Exam",
-        menuBar: "Menu Bar",
-        installAppMenu: "📲 Install App Directly",
-        regMenu: "📝 Student Registration",
-        loginMenu: "🔑 Student Login",
-        profileHistory: "👤 Student Profile & History",
-        feedbackMenu: "💬 Send Feedback",
-        examVerifyTitle: "Exam Verification"
-      }
-    };
-
-    function toggleLanguage() {
-      currentLang = (currentLang === 'bn') ? 'en' : 'bn';
-      document.getElementById('langBtnText').innerText = (currentLang === 'bn') ? 'English' : 'বাংলা';
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (i18nData[currentLang] && i18nData[currentLang][key]) {
-          el.innerText = i18nData[currentLang][key];
-        }
-      });
-    }
-
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
       localStorage.setItem('gyan_dark_mode', document.body.classList.contains('dark-mode'));
     }
 
-    // ৬. পমোডোরো টাইমার
+    // ৫. পমোডোরো টাইমার
     let pomoInterval = null;
     let pomoTime = 25 * 60;
     let isPomoBreak = false;
@@ -1592,7 +1593,7 @@
       updatePomoDisplay();
     }
 
-    // ৭. ব্যক্তিগত নোটপ্যাড
+    // ৬. ব্যক্তিগত নোটপ্যাড
     function saveScratchpad() {
       const text = document.getElementById('scratchpadArea').value;
       localStorage.setItem('gyan_scratchpad', text);
@@ -1601,7 +1602,7 @@
       setTimeout(() => { msg.style.display = 'none'; }, 2000);
     }
 
-    // ৮. GPA ক্যালকুলেটর
+    // ৭. GPA ক্যালকুলেটর
     function calculateGpa() {
       const inputs = document.querySelectorAll('.gpa-score-input');
       let totalPoints = 0;
@@ -1646,7 +1647,7 @@
       document.getElementById('gpaResultDisplay').innerText = `GPA: ${gpa} (${grade})`;
     }
 
-    // ৯. ডিকশনারি
+    // ৮. ডিকশনারি
     function setDictMode(mode) {
       currentDictMode = mode;
       document.getElementById('dictModeEnBn').classList.toggle('active', mode === 'en-bn');
@@ -1697,7 +1698,7 @@
       window.speechSynthesis.speak(utterance);
     }
 
-    // ১০. সিস্টেম নেভিগেশন ও কমন ইউটিলিটি
+    // ৯. সিস্টেম নেভিগেশন ও কমন ইউটিলিটি
     function goToPage(n) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page' + n).classList.add('active');
@@ -1820,77 +1821,86 @@
       }
     }
 
+    // ১০০% নির্ভুল AI ও সাধারণ MCQ পার্সিং অ্যালগরিদম
     function autoParseMCQSmart() {
       const raw = document.getElementById('rawMcqPaste').value.trim();
       if (!raw) return alert("MCQ পেস্ট করুন!");
 
       smartParsedMcq = [];
-      const blocks = raw.split(/(?=\n\s*[০-৯\d]+[\.\)])/g);
+      // প্রশ্ন বিভাজন
+      const blocks = raw.split(/(?=\n\s*(?:[০-৯\d]+[\.\)]|\(\d+\)|Q\d+[:\.]))/g);
 
       blocks.forEach((block, index) => {
         let text = block.trim();
         if (!text) return;
 
-        let ans = "";
-        const ansMatch = text.match(/(?:ans|উত্তর|সঠিক উত্তর)\s*[:=]\s*([^\n|]+)/i);
-        if (ansMatch) {
-          ans = ansMatch[1].trim();
-          text = text.replace(ansMatch[0], "");
-        }
+        let ansChar = "";
+        let explanation = "কোনো সংক্ষিপ্ত ব্যাখ্যা দেওয়া হয়নি।";
 
-        let expl = "কোনো সংক্ষিপ্ত ব্যাখ্যা নেই।";
-        const explMatch = text.match(/(?:expl|ব্যাখ্যা)\s*[:=]\s*([^\n]+)/i);
+        // ১. ব্যাখ্যা খোঁজা
+        const explMatch = text.match(/(?:ব্যাখ্যা|explanation|expl)[\s:=]+([^\n]+)/i);
         if (explMatch) {
-          expl = explMatch[1].trim();
+          explanation = explMatch[1].trim();
           text = text.replace(explMatch[0], "");
         }
 
-        const optMarkers = [
-          text.search(/[কA][\)\.\-]/),
-          text.search(/[খB][\)\.\-]/),
-          text.search(/[গC][\)\.\-]/),
-          text.search(/[ঘD][\)\.\-]/)
-        ];
+        // ২. উত্তর খোঁজা
+        const ansMatch = text.match(/(?:উত্তর|সঠিক উত্তর|ans(?:wer)?)[\s:=]+([^\n\r\|]+)/i);
+        if (ansMatch) {
+          ansChar = ansMatch[1].trim();
+          text = text.replace(ansMatch[0], "");
+        }
+
+        // ৩. অপশন সূচক বের করা
+        const regexOpt = /(?:\n|\s|^)([কখগঘABCD])[\)\.\-:\s]/gi;
+        let matches = [];
+        let m;
+        while ((m = regexOpt.exec(text)) !== null) {
+          matches.push({ char: m[1], index: m.index });
+        }
 
         let qText = "";
-        let cleanOptions = [];
+        let options = [];
 
-        if (optMarkers[0] !== -1 && optMarkers[1] !== -1) {
-          qText = text.substring(0, optMarkers[0]).replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
-
-          const m0 = optMarkers[0];
-          const m1 = optMarkers[1];
-          const m2 = optMarkers[2] !== -1 ? optMarkers[2] : text.length;
-          const m3 = optMarkers[3] !== -1 ? optMarkers[3] : text.length;
-
-          cleanOptions.push(text.substring(m0, m1).trim());
-          cleanOptions.push(text.substring(m1, m2).trim());
-          if (optMarkers[2] !== -1) cleanOptions.push(text.substring(m2, m3).trim());
-          if (optMarkers[3] !== -1) cleanOptions.push(text.substring(m3).trim());
+        if (matches.length >= 2) {
+          qText = text.substring(0, matches[0].index).replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
+          for (let i = 0; i < matches.length; i++) {
+            let start = matches[i].index;
+            let end = (i + 1 < matches.length) ? matches[i + 1].index : text.length;
+            let optStr = text.substring(start, end).trim();
+            if (optStr) options.push(optStr);
+          }
         } else {
+          // লাইন বাই লাইন ব্যাকআপ
           const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
           qText = lines[0].replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
-          for (let i = 1; i < lines.length && cleanOptions.length < 4; i++) {
-            cleanOptions.push(lines[i]);
+          for (let i = 1; i < lines.length && options.length < 4; i++) {
+            options.push(lines[i]);
           }
         }
 
-        while (cleanOptions.length < 4) {
-          cleanOptions.push(`বিকল্প ${cleanOptions.length + 1}`);
+        while (options.length < 4) {
+          options.push(`বিকল্প ${options.length + 1}`);
         }
 
-        let finalAns = cleanOptions[0];
-        if (ans) {
-          const found = cleanOptions.find(o => o.includes(ans) || o.startsWith(ans));
-          if (found) finalAns = found;
+        // সঠিক উত্তর ম্যাচিং
+        let finalCorrectAns = options[0];
+        if (ansChar) {
+          let found = options.find(o => {
+            const cleanO = o.replace(/^[কখগঘABCD\)\.\-\s]+/i, '').trim();
+            return o.toLowerCase().startsWith(ansChar.toLowerCase()) || 
+                   o.includes(ansChar) || 
+                   cleanO === ansChar;
+          });
+          if (found) finalCorrectAns = found;
         }
 
         smartParsedMcq.push({
           id: "q_" + (index + 1),
-          question: qText,
-          options: cleanOptions,
-          correctAnswer: finalAns,
-          explanation: expl
+          question: qText || "প্রশ্ন পাওয়া যায়নি",
+          options: options,
+          correctAnswer: finalCorrectAns,
+          explanation: explanation
         });
       });
 
@@ -1904,6 +1914,7 @@
             <b>${i+1}. ${q.question}</b><br>
             ${q.options.map(o => `<div style="padding-left:10px; color:#334155;">• ${o}</div>`).join('')}
             <div style="margin-top:3px;"><span style="color:#15803d; font-weight:700;">উত্তর: ${q.correctAnswer}</span></div>
+            <div style="color:#2563eb; font-size:0.75rem;">ব্যাখ্যা: ${q.explanation}</div>
           </div>
         `).join('');
     }
@@ -2351,6 +2362,8 @@
     // পেজ লোড ইনিশিয়ালাইজার
     window.addEventListener('load', () => {
       renderGk('bd');
+      loadLiveGk();
+      loadLiveFormulas();
       if (localStorage.getItem('gyan_dark_mode') === 'true') {
         document.body.classList.add('dark-mode');
       }
