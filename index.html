@@ -298,7 +298,7 @@
     </div>
   </div>
 
-  <!-- পরিমার্জিত মেনু বার -->
+  <!-- মেনু বার -->
   <aside id="sidebar" class="sidebar">
     <div>
       <div class="sidebar-header">
@@ -857,7 +857,7 @@
     </div>
   </div>
 
-  <!-- এডমিন কন্ট্রোল প্যানেল (নতুন সাধারণ জ্ঞান ও সূত্র নিয়ন্ত্রণ ট্যাব সহ) -->
+  <!-- এডমিন কন্ট্রোল প্যানেল (কাস্টম সাধারণ জ্ঞান ও সূত্র আপলোড সহ) -->
   <div id="adminPanelModal" class="modal">
     <div class="modal-box admin-panel">
       <div class="modal-header">
@@ -925,7 +925,7 @@
           <button class="btn btn-amber" style="margin-top:4px;" onclick="autoParseMCQSmart()">⚡ ১০০% নির্ভুল অপশন ও ব্যাখ্যা প্রস্তুত করুন</button>
         </div>
 
-        <div id="mcqParsedPreview" class="hidden" style="max-height:160px; overflow-y:auto; border:1px solid #cbd5e1; padding:8px; border-radius:6px; background:white;"></div>
+        <div id="mcqParsedPreview" class="hidden" style="max-height:220px; overflow-y:auto; border:1px solid #cbd5e1; padding:8px; border-radius:6px; background:white;"></div>
 
         <div style="border:1px dashed #94a3b8; padding:8px; border-radius:6px; background:#f8fafc;">
           <label style="font-size:0.82rem; font-weight:700;">CQ প্রশ্ন ও ফাইল আপলোড (PDF/Image):</label>
@@ -963,7 +963,7 @@
         </div>
       </div>
 
-      <!-- নতুন: সাধারণ জ্ঞান আপলোড ট্যাব -->
+      <!-- সাধারণ জ্ঞান আপলোড ট্যাব -->
       <div id="adminGkTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
         <select id="admGkType">
           <option value="bd">বাংলাদেশ বিষয়াবলি</option>
@@ -975,7 +975,7 @@
         <button class="btn btn-blue" onclick="uploadAdminGk()">সাধারণ জ্ঞান লাইভ যোগ করুন</button>
       </div>
 
-      <!-- নতুন: সূত্র আপলোড ট্যাব -->
+      <!-- সূত্র আপলোড ট্যাব -->
       <div id="adminFormulaTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
         <input type="text" id="admFormulaSubject" placeholder="বিষয় (যেমন: পদার্থবিজ্ঞান / উচ্চতর গণিত / রসায়ন)">
         <input type="text" id="admFormulaTopic" placeholder="টপিক বা অধ্যায় (যেমন: গতি / ত্রিকোণমিতি)">
@@ -1031,7 +1031,7 @@
     </div>
   </div>
 
-  <!-- সম্পূর্ণ স্ক্রিপ্ট অংশ -->
+  <!-- স্ক্রিপ্ট অংশ -->
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzbYG4HmvglvpANyzUmoeLE3YbQccgJIOBIlD9rTl67qEQ2xkcPW7v8unHm1YZDHEM/exec";
     let activeExamData = null;
@@ -1235,7 +1235,6 @@
       renderGk(currentGkTab, q);
     }
 
-    // এডমিন থেকে সাধারণ জ্ঞান আপলোড
     function uploadAdminGk() {
       const type = document.getElementById('admGkType').value;
       const category = document.getElementById('admGkCategory').value.trim();
@@ -1284,7 +1283,6 @@
       });
     }
 
-    // এডমিন থেকে সূত্র আপলোড
     function uploadAdminFormula() {
       const sub = document.getElementById('admFormulaSubject').value.trim();
       const topic = document.getElementById('admFormulaTopic').value.trim();
@@ -1322,7 +1320,7 @@
       });
     }
 
-    // ৩. সায়েন্টিফিক ক্যালকুলেটর
+    // ৩. সায়েন্টিফিক ক্যালকুলেটর ইঞ্জিন
     function sciInput(val) {
       const d = document.getElementById('sciCalcDisplay');
       if (d.value === "0" || d.value === "Error") d.value = "";
@@ -1821,42 +1819,41 @@
       }
     }
 
-    // ১০০% নির্ভুল AI ও সাধারণ MCQ পার্সিং অ্যালগরিদম
+    // ১০০% নির্ভুল ও ইন্টেলিজেন্ট MCQ পার্সিং অ্যালগরিদম
     function autoParseMCQSmart() {
       const raw = document.getElementById('rawMcqPaste').value.trim();
-      if (!raw) return alert("MCQ পেস্ট করুন!");
+      if (!raw) return alert("অনুগ্রহ করে MCQ টেক্সট পেস্ট করুন!");
 
       smartParsedMcq = [];
-      // প্রশ্ন বিভাজন
       const blocks = raw.split(/(?=\n\s*(?:[০-৯\d]+[\.\)]|\(\d+\)|Q\d+[:\.]))/g);
 
       blocks.forEach((block, index) => {
         let text = block.trim();
         if (!text) return;
 
-        let ansChar = "";
+        let rawAns = "";
         let explanation = "কোনো সংক্ষিপ্ত ব্যাখ্যা দেওয়া হয়নি।";
 
-        // ১. ব্যাখ্যা খোঁজা
-        const explMatch = text.match(/(?:ব্যাখ্যা|explanation|expl)[\s:=]+([^\n]+)/i);
+        // ১. ব্যাখ্যা ফিল্টার
+        const explMatch = text.match(/(?:ব্যাখ্যা|explanation|expl)[\s:=]+([^\n\r]+)/i);
         if (explMatch) {
           explanation = explMatch[1].trim();
           text = text.replace(explMatch[0], "");
         }
 
-        // ২. উত্তর খোঁজা
+        // ২. উত্তর ফিল্টার
         const ansMatch = text.match(/(?:উত্তর|সঠিক উত্তর|ans(?:wer)?)[\s:=]+([^\n\r\|]+)/i);
         if (ansMatch) {
-          ansChar = ansMatch[1].trim();
+          rawAns = ansMatch[1].trim();
           text = text.replace(ansMatch[0], "");
         }
 
         // ৩. অপশন সূচক বের করা
-        const regexOpt = /(?:\n|\s|^)([কখগঘABCD])[\)\.\-:\s]/gi;
+        const regexOpt = /(?:\n|\s|^)([কখগঘABCDabcd])[\)\.\-:\s]/g;
         let matches = [];
         let m;
         while ((m = regexOpt.exec(text)) !== null) {
-          matches.push({ char: m[1], index: m.index });
+          matches.push({ char: m[1].toUpperCase(), index: m.index });
         }
 
         let qText = "";
@@ -1867,15 +1864,14 @@
           for (let i = 0; i < matches.length; i++) {
             let start = matches[i].index;
             let end = (i + 1 < matches.length) ? matches[i + 1].index : text.length;
-            let optStr = text.substring(start, end).trim();
+            let optStr = text.substring(start, end).replace(/^[কখগঘABCDabcd\)\.\-:\s]+/i, '').trim();
             if (optStr) options.push(optStr);
           }
         } else {
-          // লাইন বাই লাইন ব্যাকআপ
           const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
           qText = lines[0].replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
           for (let i = 1; i < lines.length && options.length < 4; i++) {
-            options.push(lines[i]);
+            options.push(lines[i].replace(/^[কখগঘABCDabcd\)\.\-:\s]+/i, '').trim());
           }
         }
 
@@ -1883,40 +1879,57 @@
           options.push(`বিকল্প ${options.length + 1}`);
         }
 
-        // সঠিক উত্তর ম্যাচিং
-        let finalCorrectAns = options[0];
-        if (ansChar) {
-          let found = options.find(o => {
-            const cleanO = o.replace(/^[কখগঘABCD\)\.\-\s]+/i, '').trim();
-            return o.toLowerCase().startsWith(ansChar.toLowerCase()) || 
-                   o.includes(ansChar) || 
-                   cleanO === ansChar;
-          });
-          if (found) finalCorrectAns = found;
+        // ৪. সঠিক উত্তর ম্যাপিং
+        let targetIndex = 0;
+        const charMap = { 'ক': 0, 'খ': 1, 'গ': 2, 'ঘ': 3, 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
+        
+        let firstChar = rawAns ? rawAns.charAt(0).toUpperCase() : '';
+        if (charMap[firstChar] !== undefined && charMap[firstChar] < options.length) {
+          targetIndex = charMap[firstChar];
+        } else if (rawAns) {
+          let matchIdx = options.findIndex(o => o.toLowerCase().includes(rawAns.toLowerCase()) || rawAns.toLowerCase().includes(o.toLowerCase()));
+          if (matchIdx !== -1) targetIndex = matchIdx;
         }
 
         smartParsedMcq.push({
           id: "q_" + (index + 1),
-          question: qText || "প্রশ্ন পাওয়া যায়নি",
+          question: qText || "প্রশ্ন পাওয়া যায়নি",
           options: options,
-          correctAnswer: finalCorrectAns,
+          correctAnswer: options[targetIndex],
           explanation: explanation
         });
       });
 
       document.getElementById('admMcqDuration').value = smartParsedMcq.length;
+      renderAdminMcqPreview();
+    }
 
+    // এডমিন প্যানেলে লাইভ প্রিভিউ ও রেডিও বাটন
+    function renderAdminMcqPreview() {
       const p = document.getElementById('mcqParsedPreview');
       p.classList.remove('hidden');
-      p.innerHTML = `<h5 style="color:#15803d; margin-bottom:6px;">মোট প্রস্তুতকৃত প্রশ্ন: ${smartParsedMcq.length} টি</h5>` +
+      p.innerHTML = `<h5 style="color:#15803d; margin-bottom:8px;">মোট প্রশ্ন: ${smartParsedMcq.length} টি (সঠিক উত্তরে গোল বোতামে টিক দিন যদি পরিবর্তন করতে চান):</h5>` +
         smartParsedMcq.map((q, i) => `
-          <div style="border-bottom:1px solid #e2e8f0; padding:6px 0; font-size:0.82rem;">
+          <div style="border-bottom:2px solid #e2e8f0; padding:10px 0; font-size:0.85rem; background:#fff;">
             <b>${i+1}. ${q.question}</b><br>
-            ${q.options.map(o => `<div style="padding-left:10px; color:#334155;">• ${o}</div>`).join('')}
-            <div style="margin-top:3px;"><span style="color:#15803d; font-weight:700;">উত্তর: ${q.correctAnswer}</span></div>
-            <div style="color:#2563eb; font-size:0.75rem;">ব্যাখ্যা: ${q.explanation}</div>
+            <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+              ${q.options.map((opt, optIdx) => `
+                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:#f8fafc; padding:4px 8px; border-radius:4px; border:1px solid #e2e8f0;">
+                  <input type="radio" name="preview_ans_${i}" value="${optIdx}" ${opt === q.correctAnswer ? 'checked' : ''} onchange="updateCorrectAnswerManual(${i}, ${optIdx})">
+                  <span style="${opt === q.correctAnswer ? 'color:#15803d; font-weight:bold;' : 'color:#334155;'}">${['ক', 'খ', 'গ', 'ঘ'][optIdx] || (optIdx+1)}) ${opt}</span>
+                </label>
+              `).join('')}
+            </div>
+            <div style="color:#2563eb; font-size:0.78rem; margin-top:6px;"><b>ব্যাখ্যা:</b> ${q.explanation}</div>
           </div>
         `).join('');
+    }
+
+    function updateCorrectAnswerManual(qIdx, optIdx) {
+      if (smartParsedMcq[qIdx]) {
+        smartParsedMcq[qIdx].correctAnswer = smartParsedMcq[qIdx].options[optIdx];
+        renderAdminMcqPreview();
+      }
     }
 
     function previewExamBeforePublish() {
@@ -1939,6 +1952,7 @@
             <div style="font-size:0.82rem; border-bottom:1px solid #e2e8f0; padding:4px 0;">
               <b>${i+1}. ${q.question}</b>
               <div style="padding-left:8px; color:#475569;">${q.options.join(' | ')}</div>
+              <div style="color:#15803d; font-size:0.78rem;">সঠিক উত্তর: <b>${q.correctAnswer}</b></div>
             </div>
           `).join('')}
         </div>
