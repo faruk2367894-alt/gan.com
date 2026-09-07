@@ -26,7 +26,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Serif Bengali', 'Kalpurush', serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #f8fafc; color: #0f172a; min-height: 100vh; overflow-x: hidden; user-select: none; transition: background 0.3s, color 0.3s; }
 
-    /* ডার্ক মোড কালার রুলস */
+    /* ডার্ক মোড */
     body.dark-mode { background-color: #0b0f19; color: #f1f5f9; }
     body.dark-mode .card, body.dark-mode .modal-box, body.dark-mode .sidebar, body.dark-mode .top-news-card { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
     body.dark-mode .menu-item { background: #1e293b; color: #f1f5f9; border-color: #334155; }
@@ -169,19 +169,22 @@
     .review-wrong { border-left: 4px solid #dc2626; background: #fef2f2; }
     .expl-box { background: #eff6ff; border: 1px dashed #60a5fa; padding: 8px; border-radius: 6px; margin-top: 6px; font-size: 0.82rem; color: #1e3a8a; }
 
-    .profile-photo { width: 90px; height: 90px; object-fit: cover; border-radius: 50%; border: 3px solid #6366f1; margin: 0 auto 10px auto; display: block; }
-    
-    .marksheet-modal { max-width: 750px; background: #fffcf5; border: 3px double #1e3a8a; }
-    .marksheet-header { text-align: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 6px; }
-    .marksheet-header h2 { font-size: 1.3rem; color: #1e3a8a; font-weight: 800; }
-    .st-info-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin: 10px 0; font-size: 0.85rem; border: 1px solid #cbd5e1; padding: 8px; background: white; }
-    .ms-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.85rem; text-align: center; }
-    .ms-table th, .ms-table td { border: 1px solid #64748b; padding: 5px; }
-    .ms-table th { background: #e2e8f0; font-weight: 700; }
-
-    .note-item { border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; background: #f8fafc; margin-bottom: 8px; }
-    .note-item h4 { color: #0d9488; margin-bottom: 4px; font-size: 0.95rem; }
-    .note-item a { display: inline-block; margin-top: 6px; color: #2563eb; font-weight: 700; text-decoration: none; font-size: 0.85rem; }
+    /* আল্ট্রা-প্রিমিয়াম স্টুডেন্ট আইডি কার্ড ডিজাইন */
+    .id-card-container {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #1e3a8a 100%);
+      color: white; border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(30, 27, 75, 0.25);
+      position: relative; overflow: hidden; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.15);
+    }
+    .id-card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; margin-bottom: 12px; }
+    .id-card-body { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .id-photo-frame {
+      width: 100px; height: 100px; border-radius: 50%; border: 3px solid #fbbf24;
+      overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.3); flex-shrink: 0; background: white;
+    }
+    .id-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .id-details { flex-grow: 1; line-height: 1.6; font-size: 0.9rem; }
+    .id-details b { color: #fbbf24; }
+    .id-badge { background: #10b981; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; display: inline-block; margin-top: 4px; }
 
     /* আধুনিক সৃজনশীল (CQ) কার্ড ডিজাইন */
     .cq-card-render {
@@ -281,7 +284,7 @@
       <div class="feature-grid">
         <div class="card" style="border: 2px solid #0d9488; background: #f0fdfa;">
           <div>
-            <h3 style="color: #0f766e;">📚 ক্লাস রুম (১ম - ১০ম শ্রেণি)</h3>
+            <h3 style="color: #0f766e;">📚 ক্লাস রুম</h3>
             <p>শ্রেণিভিত্তিক লেকচার নোট, টেক্সট, ইমেজ ও PDF ফাইলসমূহ (আজীবন সংরক্ষিত)</p>
           </div>
           <button class="btn btn-teal" onclick="openModal('classroomModal')">ক্লাস রুমে প্রবেশ করুন</button>
@@ -299,15 +302,15 @@
 
         <div class="card">
           <div>
-            <h3>📊 ফলাফল ও SSC ট্রান্সক্রিপ্ট</h3>
-            <p>MCQ, CQ মার্কস ও ফলাফল হিস্ট্রি</p>
+            <h3>📊 ডিজিটাল প্রোফাইল ও রেজাল্ট</h3>
+            <p>আধুনিক স্টুডেন্ট আইডি কার্ড ও পরীক্ষার রেজাল্ট হিস্ট্রি</p>
           </div>
-          <button class="btn btn-green" onclick="openModal('profileModal')">ফলাফল দেখুন</button>
+          <button class="btn btn-green" onclick="openModal('profileModal')">প্রোফাইল দেখুন</button>
         </div>
 
         <div class="big-exam-card">
           <div>
-            <h2 style="color: #1e1b4b; font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 800;">✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)</h2>
+            <h2 style="color: #1e1b4b; font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 800;">✍️ অনলাইন পরীক্ষা পোর্টাল</h2>
             <p style="color: #475569; margin-top: 4px; font-size: 0.85rem;">এডমিন নির্ধারিত শিডিউল অনুযায়ী MCQ বা CQ পরীক্ষা দিন (যেকোনো একটি দিয়েও জমা দেওয়া যাবে)।</p>
           </div>
           <button class="btn btn-blue" style="width: auto; padding: 10px 20px;" onclick="openModal('examInitModal')">পরীক্ষা শুরু করুন</button>
@@ -353,156 +356,52 @@
     <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; margin-top:10px;">জ্ঞান.com © 2026</div>
   </aside>
 
-  <!-- সাধারণ জ্ঞান ভান্ডার -->
-  <div id="gkModal" class="modal">
-    <div class="modal-box" style="max-width: 650px;">
-      <div class="modal-header">
-        <h3 style="color: #2563eb;">🧠 সাধারণ জ্ঞান ভান্ডার (BCS & Admission)</h3>
-        <button class="close-icon-btn" onclick="closeModal('gkModal')">×</button>
-      </div>
-
-      <div class="gk-tabs">
-        <button id="gkTabBd" class="gk-tab-btn active" onclick="switchGkTab('bd')">🇧🇩 বাংলাদেশ বিষয়াবলি</button>
-        <button id="gkTabWorld" class="gk-tab-btn" onclick="switchGkTab('world')">🌍 আন্তর্জাতিক বিষয়াবলি</button>
-      </div>
-
-      <div style="margin-bottom: 8px;">
-        <input type="text" id="gkSearchInput" placeholder="যেকোনো তথ্য খুঁজুন (যেমন: মুক্তিযুদ্ধ, নদী, জাতিসংঘ, নোবেল)..." oninput="filterGkContent()">
-      </div>
-
-      <div id="gkContentContainer" style="max-height: 420px; overflow-y: auto;"></div>
-    </div>
-  </div>
-
-  <!-- গণিত ও বিজ্ঞান সূত্র ভান্ডার -->
-  <div id="formulaModal" class="modal">
+  <!-- প্রোফাইল ও আল্ট্রা-প্রিমিয়াম স্টুডেন্ট আইডি কার্ড মডাল -->
+  <div id="profileModal" class="modal">
     <div class="modal-box" style="max-width: 620px;">
       <div class="modal-header">
-        <h3 style="color: #5b21b6;">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার (Formula Hub)</h3>
-        <button class="close-icon-btn" onclick="closeModal('formulaModal')">×</button>
+        <h3 style="color: #1e3a8a;">🎓 ডিজিটাল স্টুডেন্ট প্রোফাইল</h3>
+        <button class="close-icon-btn" onclick="closeModal('profileModal')">×</button>
       </div>
-      <div id="formulaContentContainer" style="max-height:400px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
-        <div class="formula-card" style="border-left-color: #7c3aed;">
-          <h4 style="color:#7c3aed; font-weight:800;">বীজগণিত (Algebra)</h4>
-          <p style="font-family:monospace; margin-top:4px;">• (a + b)² = a² + 2ab + b²</p>
-          <p style="font-family:monospace;">• (a - b)² = a² - 2ab + b²</p>
-          <p style="font-family:monospace;">• a² - b² = (a + b)(a - b)</p>
-          <p style="font-family:monospace;">• (a + b + c)² = a² + b² + c² + 2(ab + bc + ca)</p>
-          <p style="font-family:monospace;">• a³ + b³ = (a + b)(a² - ab + b²)</p>
-          <p style="font-family:monospace;">• a³ - b³ = (a - b)(a² + ab + b²)</p>
+      <div style="display:flex; gap:6px;">
+        <input type="number" id="pReg" placeholder="রেজিস্ট্রেশন নম্বর দিন">
+        <input type="text" id="pClass" placeholder="আপনার শ্রেণি (যেমন: ১০ম শ্রেণি বা Class 10)">
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('profileModal')">ক্যানসেল</button>
+        <button class="btn btn-purple" style="width:auto;" onclick="loadFullProfile()">প্রোফাইল লোড করুন</button>
+      </div>
+
+      <div id="profileDisplay" class="hidden" style="margin-top:12px;">
+        <!-- স্টাইলিশ আইডি কার্ড -->
+        <div class="id-card-container">
+          <div class="id-card-header">
+            <span style="font-weight: 800; font-size: 1.1rem; color: #fbbf24;">জ্ঞান.com ডিজিটাল স্টুডেন্ট কার্ড</span>
+            <span style="font-size: 0.75rem; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px;">ID VERIFIED</span>
+          </div>
+          <div class="id-card-body">
+            <div class="id-photo-frame">
+              <img id="profileAvatar" src="" alt="Student Photo">
+            </div>
+            <div class="id-details">
+              <h3 id="cardStudentName" style="color:#ffffff; font-size:1.15rem; margin-bottom:2px;">নাম: </h3>
+              <p><b>শ্রেণি:</b> <span id="cardStudentClass"></span></p>
+              <p><b>রেজিস্ট্রেশন নং:</b> <span id="cardStudentReg"></span></p>
+              <p><b>পিতার নাম:</b> <span id="cardStudentFather"></span></p>
+              <p><b>মোবাইল:</b> <span id="cardStudentMobile"></span></p>
+              <span class="id-badge">নিয়মিত শিক্ষার্থী</span>
+            </div>
+          </div>
         </div>
-        <div class="formula-card" style="border-left-color: #d97706;">
-          <h4 style="color:#d97706; font-weight:800;">ত্রিকোণমিতি (Trigonometry)</h4>
-          <p>• sin²θ + cos²θ = 1</p>
-          <p>• sec²θ - tan²θ = 1 &nbsp;|&nbsp; cosec²θ - cot²θ = 1</p>
-          <p>• tanθ = sinθ / cosθ &nbsp;|&nbsp; cotθ = cosθ / sinθ</p>
-          <p>• sin(90° - θ) = cosθ &nbsp;|&nbsp; cos(90° - θ) = sinθ</p>
+
+        <div style="text-align: center; margin-bottom: 10px;">
+          <label for="changePhotoInput" style="font-size:0.82rem; color:#2563eb; cursor:pointer; text-decoration:underline;">📷 প্রোফাইল ছবি পরিবর্তন করুন</label>
+          <input type="file" id="changePhotoInput" accept="image/*" style="display:none;" onchange="uploadNewProfilePhoto()">
         </div>
-        <div class="formula-card" style="border-left-color: #2563eb;">
-          <h4 style="color:#2563eb; font-weight:800;">জ্যামিতি ও পরিমিতি (Mensuration)</h4>
-          <p>• ত্রিভুজের ক্ষেত্রফল = ½ × ভূমি × উচ্চতা</p>
-          <p>• বিষমবাহু ত্রিভুজ = √[s(s-a)(s-b)(s-c)], যেখানে s = (a+b+c)/2</p>
-          <p>• সমবাহু ত্রিভুজের ক্ষেত্রফল = (√3 / 4) × a²</p>
-          <p>• বৃত্তের ক্ষেত্রফল = πr² &nbsp;|&nbsp; পরিধি = 2πr (π ≈ 3.1416)</p>
-          <p>• সিলিন্ডারের আয়তন = πr²h &nbsp;|&nbsp; বক্রতলের ক্ষেত্রফল = 2πrh</p>
-        </div>
-        <div class="formula-card" style="border-left-color: #16a34a;">
-          <h4 style="color:#16a34a; font-weight:800;">পদার্থবিজ্ঞান (Physics)</h4>
-          <p style="font-family:monospace;">• গতি: v = u + at &nbsp;|&nbsp; s = ut + ½at² &nbsp;|&nbsp; v² = u² + 2as</p>
-          <p style="font-family:monospace;">• নিউটনের গতিসূত্র: F = ma &nbsp;|&nbsp; ওজন: W = mg (g = 9.8 m/s²)</p>
-          <p style="font-family:monospace;">• গতিশক্তি: Ek = ½mv² &nbsp;|&nbsp; বিভব শক্তি: Ep = mgh</p>
-          <p style="font-family:monospace;">• কাজ: W = Fs &nbsp;|&nbsp; ক্ষমতা: P = W / t</p>
-          <p style="font-family:monospace;">• ওহমের সূত্র: V = IR &nbsp;|&nbsp; রোধের ক্ষমতা: P = VI = I²R</p>
-        </div>
-        <div class="formula-card" style="border-left-color: #db2777;">
-          <h4 style="color:#db2777; font-weight:800;">রসায়ন (Chemistry)</h4>
-          <p style="font-family:monospace;">• মোল সংখ্যা: n = w / M = V / 22.4L = N / NA (NA = 6.023 × 10²³)</p>
-          <p style="font-family:monospace;">• মোলারিটি: S = (1000 × w) / (M × V(mL))</p>
-          <p style="font-family:monospace;">• বয়েলের সূত্র: P₁V₁ = P₂V₂ &nbsp;|&nbsp; চার্লসের সূত্র: V₁/T₁ = V₂/T₂</p>
-          <p style="font-family:monospace;">• আদর্শ গ্যাস সমীকরণ: PV = nRT (R = 0.0821 L·atm/mol·K)</p>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ১ম - ১০ম শ্রেণির বোর্ড বই ডাউনলোড কর্নার -->
-  <div id="textbooksModal" class="modal">
-    <div class="modal-box" style="max-width: 600px;">
-      <div class="modal-header">
-        <h3 style="color: #0f766e;">📚 ১ম - ১০ম শ্রেণির সরকারি পাঠ্যবই ডাউনলোড</h3>
-        <button class="close-icon-btn" onclick="closeModal('textbooksModal')">×</button>
-      </div>
-      <p style="font-size:0.85rem; color:#64748b;">জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) অনুমোদিত সকল বিষয়ের মূল বই সরাসরি ডাউনলোড করুন:</p>
-      
-      <div style="margin: 8px 0;">
-        <select id="bookClassSelect" onchange="renderClassBooks()">
-          <option value="">শ্রেণি নির্বাচন করুন</option>
-          <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-          <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-          <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-          <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-          <option value="9">৯ম-১০ম শ্রেণি (SSC)</option>
-        </select>
-      </div>
-
-      <div id="booksListContainer" style="max-height:360px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
-        <p style="text-align:center; color:#94a3b8; padding:20px;">শ্রেণি নির্বাচন করলে পাঠ্যবইয়ের তালিকা ও ডাউনলোড লিংক দেখা যাবে।</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- সায়েন্টিফিক ক্যালকুলেটর মডাল -->
-  <div id="sciCalculatorModal" class="modal">
-    <div class="modal-box" style="max-width: 440px;">
-      <div class="modal-header">
-        <h3 style="color: #4338ca;">🔬 সায়েন্টিফিক ক্যালকুলেটর</h3>
-        <button class="close-icon-btn" onclick="closeModal('sciCalculatorModal')">×</button>
-      </div>
-      <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:8px;">
-        <div id="sciHistoryDisplay" style="text-align:right; font-size:0.85rem; color:#64748b; height:20px; overflow:hidden;"></div>
-        <input type="text" id="sciCalcDisplay" readonly style="text-align: right; font-size: 1.5rem; font-weight: 800; border: none; background: transparent; width:100%; color:#1e1b4b;" value="0">
-      </div>
-      <div class="sci-calc-grid">
-        <button class="sci-btn sci-fn" onclick="sciFn('sin')">sin</button>
-        <button class="sci-btn sci-fn" onclick="sciFn('cos')">cos</button>
-        <button class="sci-btn sci-fn" onclick="sciFn('tan')">tan</button>
-        <button class="sci-btn sci-fn" onclick="sciFn('log')">log</button>
-        <button class="sci-btn sci-fn" onclick="sciFn('ln')">ln</button>
-
-        <button class="sci-btn sci-fn" onclick="sciFn('sqrt')">√x</button>
-        <button class="sci-btn sci-fn" onclick="sciInput('**')">xʸ</button>
-        <button class="sci-btn sci-fn" onclick="sciFn('fact')">n!</button>
-        <button class="sci-btn sci-fn" onclick="sciInput('(')">(</button>
-        <button class="sci-btn sci-fn" onclick="sciInput(')')">)</button>
-
-        <button class="sci-btn sci-fn" onclick="sciInput('Math.PI')">π</button>
-        <button class="sci-btn sci-fn" onclick="sciInput('Math.E')">e</button>
-        <button class="sci-btn clear" onclick="clearSciCalc()">AC</button>
-        <button class="sci-btn clear" onclick="delSciCalc()">DEL</button>
-        <button class="sci-btn op" onclick="sciInput('/')">÷</button>
-
-        <button class="sci-btn" onclick="sciInput('7')">7</button>
-        <button class="sci-btn" onclick="sciInput('8')">8</button>
-        <button class="sci-btn" onclick="sciInput('9')">9</button>
-        <button class="sci-btn op" onclick="sciInput('*')">×</button>
-        <button class="sci-btn sci-fn" onclick="sciFn('square')">x²</button>
-
-        <button class="sci-btn" onclick="sciInput('4')">4</button>
-        <button class="sci-btn" onclick="sciInput('5')">5</button>
-        <button class="sci-btn" onclick="sciInput('6')">6</button>
-        <button class="sci-btn op" onclick="sciInput('-')">-</button>
-        <button class="sci-btn sci-fn" onclick="sciFn('cube')">x³</button>
-
-        <button class="sci-btn" onclick="sciInput('1')">1</button>
-        <button class="sci-btn" onclick="sciInput('2')">2</button>
-        <button class="sci-btn" onclick="sciInput('3')">3</button>
-        <button class="sci-btn op" onclick="sciInput('+')">+</button>
-        <button class="sci-btn sci-fn" onclick="sciInput('%')">%</button>
-
-        <button class="sci-btn" onclick="sciInput('0')">0</button>
-        <button class="sci-btn" onclick="sciInput('.')">.</button>
-        <button class="sci-btn sci-fn" onclick="sciInput('00')">00</button>
-        <button class="sci-btn eq" onclick="calcSciResult()">=</button>
+        <h4 style="margin-top:10px; font-size:0.95rem; color:#1e3a8a;">📜 পরীক্ষার ফলাফল হিস্ট্রি:</h4>
+        <ul id="examHistoryList" style="list-style:none; font-size:0.85rem; max-height:140px; overflow-y:auto; border:1px solid #e2e8f0; padding:8px; border-radius:8px; margin-top:6px; display:flex; flex-direction:column; gap:4px;"></ul>
+        <button class="btn btn-green" style="margin-top:10px;" onclick="generateSscMarksheet()">📄 একাডেমিক মার্কশিট (PDF Print)</button>
       </div>
     </div>
   </div>
@@ -555,15 +454,8 @@
         <button class="close-icon-btn" onclick="closeModal('examInitModal')">×</button>
       </div>
       <input type="number" id="stExReg" placeholder="রেজিস্ট্রেশন নম্বর">
-      <select id="stExClass">
-        <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
-      </select>
-      <input type="text" id="stExSubject" placeholder="বিষয়ের নাম (যেমন: বাংলা)">
+      <input type="text" id="stExClass" placeholder="আপনার শ্রেণি (যেমন: ১০ম শ্রেণি বা Class 10)">
+      <input type="text" id="stExSubject" placeholder="বিষয়ের নাম (যেমন: বাংলা ১ম পত্র)">
       <div class="modal-btns">
         <button class="btn-cancel" onclick="closeModal('examInitModal')">ক্যানসেল</button>
         <button class="btn btn-blue" style="width:auto;" onclick="loadAndStartExam()">পরীক্ষা শুরু করুন</button>
@@ -693,16 +585,9 @@
         <h3 style="color: #0f766e;">📚 ডিজিটাল ক্লাস রুম (নোটস ও শিট)</h3>
         <button class="close-icon-btn" onclick="closeModal('classroomModal')">×</button>
       </div>
-      <select id="crFilterClass" onchange="loadClassNotes()">
-        <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
-      </select>
+      <input type="text" id="crFilterClass" placeholder="শ্রেণি লিখুন (যেমন: ১০ম শ্রেণি বা Class 10)" oninput="loadClassNotes()">
       <div id="notesContainer" style="max-height: 380px; overflow-y: auto; margin-top: 8px;">
-        <p style="text-align: center; color: #94a3b8; padding: 20px;">শ্রেণি নির্বাচন করলে স্টাডি নোটস দেখা যাবে।</p>
+        <p style="text-align: center; color: #94a3b8; padding: 20px;">শ্রেণি লিখলে স্টাডি নোটস দেখা যাবে।</p>
       </div>
     </div>
   </div>
@@ -717,16 +602,9 @@
       <input type="text" id="regName" placeholder="শিক্ষার্থীর নাম">
       <input type="text" id="regFather" placeholder="পিতার নাম">
       <input type="text" id="regMother" placeholder="মাতার নাম">
-      <select id="regClass">
-        <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
-      </select>
+      <input type="text" id="regClass" placeholder="শ্রেণি (বাংলা/ইংরেজি যেকোনোভাবে লিখুন, যেমন: ১০ম শ্রেণি বা Class 10)">
       <input type="number" id="regNo" placeholder="রেজিস্ট্রেশন নম্বর">
-      <input type="tel" id="regMobile" placeholder="মোবাইল নম্বর">
+      <input type="tel" id="regMobile" placeholder="মোবাইল নম্বর (SMS এ নোটিফিকেশন যাবে)">
       <input type="password" id="regPin" placeholder="লগইন পিন সেট করুন">
       <div style="border:1px dashed #94a3b8; padding:8px; border-radius:6px; text-align:center;">
         <label style="font-size:0.8rem;">📷 শিক্ষার্থীর ছবি আপলোড:</label>
@@ -775,88 +653,126 @@
     </div>
   </div>
 
-  <!-- প্রোফাইল ও ট্রান্সক্রিপ্ট মডাল -->
-  <div id="profileModal" class="modal">
-    <div class="modal-box">
+  <!-- সাধারণ জ্ঞান ভান্ডার -->
+  <div id="gkModal" class="modal">
+    <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
-        <h3>প্রোফাইল ও ফলাফল ট্রান্সক্রিপ্ট</h3>
-        <button class="close-icon-btn" onclick="closeModal('profileModal')">×</button>
+        <h3 style="color: #2563eb;">🧠 সাধারণ জ্ঞান ভান্ডার (BCS & Admission)</h3>
+        <button class="close-icon-btn" onclick="closeModal('gkModal')">×</button>
       </div>
-      <input type="number" id="pReg" placeholder="রেজিস্ট্রেশন নম্বর দিন">
-      <select id="pClass">
-        <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-        <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-        <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-        <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-        <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
-      </select>
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('profileModal')">ক্যানসেল</button>
-        <button class="btn btn-purple" style="width:auto;" onclick="loadFullProfile()">প্রোফাইল দেখুন</button>
+
+      <div class="gk-tabs">
+        <button id="gkTabBd" class="gk-tab-btn active" onclick="switchGkTab('bd')">🇧🇩 বাংলাদেশ বিষয়াবলি</button>
+        <button id="gkTabWorld" class="gk-tab-btn" onclick="switchGkTab('world')">🌍 আন্তর্জাতিক বিষয়াবলি</button>
       </div>
-      <div id="profileDisplay" class="hidden" style="margin-top:10px;">
-        <div style="text-align:center;">
-          <img id="profileAvatar" src="" class="profile-photo" alt="Profile Photo">
-          <div>
-            <label for="changePhotoInput" style="font-size:0.8rem; color:#2563eb; cursor:pointer; text-decoration:underline;">📷 নতুন ছবি আপলোড করুন</label>
-            <input type="file" id="changePhotoInput" accept="image/*" style="display:none;" onchange="uploadNewProfilePhoto()">
-          </div>
+
+      <div style="margin-bottom: 8px;">
+        <input type="text" id="gkSearchInput" placeholder="যেকোনো তথ্য খুঁজুন (যেমন: মুক্তিযুদ্ধ, নদী, জাতিসংঘ, নোবেল)..." oninput="filterGkContent()">
+      </div>
+
+      <div id="gkContentContainer" style="max-height: 420px; overflow-y: auto;"></div>
+    </div>
+  </div>
+
+  <!-- গণিত ও বিজ্ঞান সূত্র ভান্ডার -->
+  <div id="formulaModal" class="modal">
+    <div class="modal-box" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3 style="color: #5b21b6;">📐 গণিত ও বিজ্ঞান সূত্র ভান্ডার (Formula Hub)</h3>
+        <button class="close-icon-btn" onclick="closeModal('formulaModal')">×</button>
+      </div>
+      <div id="formulaContentContainer" style="max-height:400px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
+        <div class="formula-card" style="border-left-color: #7c3aed;">
+          <h4 style="color:#7c3aed; font-weight:800;">বীজগণিত (Algebra)</h4>
+          <p style="font-family:monospace; margin-top:4px;">• (a + b)² = a² + 2ab + b²</p>
+          <p style="font-family:monospace;">• (a - b)² = a² - 2ab + b²</p>
+          <p style="font-family:monospace;">• a² - b² = (a + b)(a - b)</p>
+          <p style="font-family:monospace;">• (a + b + c)² = a² + b² + c² + 2(ab + bc + ca)</p>
+          <p style="font-family:monospace;">• a³ + b³ = (a + b)(a² - ab + b²)</p>
+          <p style="font-family:monospace;">• a³ - b³ = (a - b)(a² + ab + b²)</p>
         </div>
-        <div id="studentDetails" style="font-size:0.88rem; line-height:1.5; margin-top:8px;"></div>
-        <h4 style="margin-top:8px; font-size:0.9rem;">📜 পূর্ববর্তী পরীক্ষার ফলাফল:</h4>
-        <ul id="examHistoryList" style="list-style:none; font-size:0.82rem; max-height:120px; overflow-y:auto; border:1px solid #e2e8f0; padding:6px; border-radius:6px;"></ul>
-        <button class="btn btn-green" style="margin-top:8px;" onclick="generateSscMarksheet()">📄 SSC Mark Sheet (PDF Print)</button>
       </div>
     </div>
   </div>
 
-  <div id="marksheetModal" class="modal">
-    <div class="modal-box marksheet-modal" id="marksheetContainer">
-      <div class="modal-header no-print">
-        <span style="font-weight: 700; color: #1e3a8a;">Academic Transcript</span>
-        <button class="close-icon-btn" onclick="closeModal('marksheetModal')">×</button>
+  <!-- ১ম - ১০ম শ্রেণির বোর্ড বই ডাউনলোড কর্নার -->
+  <div id="textbooksModal" class="modal">
+    <div class="modal-box" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="color: #0f766e;">📚 ১ম - ১০ম শ্রেণির সরকারি পাঠ্যবই ডাউনলোড</h3>
+        <button class="close-icon-btn" onclick="closeModal('textbooksModal')">×</button>
+      </div>
+      <p style="font-size:0.85rem; color:#64748b;">জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) অনুমোদিত সকল বিষয়ের মূল বই সরাসরি ডাউনলোড করুন:</p>
+      
+      <div style="margin: 8px 0;">
+        <select id="bookClassSelect" onchange="renderClassBooks()">
+          <option value="">শ্রেণি নির্বাচন করুন</option>
+          <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
+          <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
+          <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
+          <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
+          <option value="9">৯ম-১০ম শ্রেণি (SSC)</option>
+        </select>
       </div>
 
-      <div class="marksheet-header">
-        <h2>জ্ঞান.com শিক্ষা বোর্ড</h2>
-        <p>SECONDARY SCHOOL ACADEMIC TRANSCRIPT</p>
+      <div id="booksListContainer" style="max-height:360px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+        <p style="text-align:center; color:#94a3b8; padding:20px;">শ্রেণি নির্বাচন করলে পাঠ্যবইয়ের তালিকা ও ডাউনলোড লিংক দেখা যাবে।</p>
       </div>
+    </div>
+  </div>
 
-      <div class="st-info-grid">
-        <div>
-          <p><b>Student Name:</b> <span id="msName"></span></p>
-          <p><b>Father's Name:</b> <span id="msFather"></span></p>
-          <p><b>Mother's Name:</b> <span id="msMother"></span></p>
-          <p><b>Registration No:</b> <span id="msReg"></span></p>
-          <p><b>Class:</b> <span id="msClass"></span></p>
-        </div>
-        <div style="text-align: right;">
-          <img id="msPhoto" class="profile-photo" style="margin: 0 0 0 auto; width: 65px; height: 65px;" alt="Photo">
-        </div>
+  <!-- সায়েন্টিফিক ক্যালকুলেটর মডাল -->
+  <div id="sciCalculatorModal" class="modal">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 style="color: #4338ca;">🔬 সায়েন্টিফিক ক্যালকুলেটর</h3>
+        <button class="close-icon-btn" onclick="closeModal('sciCalculatorModal')">×</button>
       </div>
-
-      <table class="ms-table">
-        <thead>
-          <tr>
-            <th>Subject</th>
-            <th>MCQ Score</th>
-            <th>CQ Mark</th>
-            <th>Total Score</th>
-            <th>Grade</th>
-          </tr>
-        </thead>
-        <tbody id="msTableBody"></tbody>
-      </table>
-
-      <div style="margin-top: 20px; display: flex; justify-content: space-between; font-size: 0.8rem; padding-top: 15px; border-top: 1px dashed #64748b;">
-        <span>Controller of Examinations</span>
-        <span>Date: 08/09/2026</span>
+      <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:8px;">
+        <div id="sciHistoryDisplay" style="text-align:right; font-size:0.85rem; color:#64748b; height:20px; overflow:hidden;"></div>
+        <input type="text" id="sciCalcDisplay" readonly style="text-align: right; font-size: 1.5rem; font-weight: 800; border: none; background: transparent; width:100%; color:#1e1b4b;" value="0">
       </div>
+      <div class="sci-calc-grid">
+        <button class="sci-btn sci-fn" onclick="sciFn('sin')">sin</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('cos')">cos</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('tan')">tan</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('log')">log</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('ln')">ln</button>
 
-      <div class="no-print" style="margin-top: 12px; display: flex; justify-content: flex-end; gap: 6px;">
-        <button class="btn" style="background:#cbd5e1; color:#334155; width:auto;" onclick="closeModal('marksheetModal')">বন্ধ করুন</button>
-        <button class="btn btn-blue" style="width:auto;" onclick="window.print()">🖨️ Print / PDF</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('sqrt')">√x</button>
+        <button class="sci-btn sci-fn" onclick="sciInput('**')">xʸ</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('fact')">n!</button>
+        <button class="sci-btn sci-fn" onclick="sciInput('(')">(</button>
+        <button class="sci-btn sci-fn" onclick="sciInput(')')">)</button>
+
+        <button class="sci-btn sci-fn" onclick="sciInput('Math.PI')">π</button>
+        <button class="sci-btn sci-fn" onclick="sciInput('Math.E')">e</button>
+        <button class="sci-btn clear" onclick="clearSciCalc()">AC</button>
+        <button class="sci-btn clear" onclick="delSciCalc()">DEL</button>
+        <button class="sci-btn op" onclick="sciInput('/')">÷</button>
+
+        <button class="sci-btn" onclick="sciInput('7')">7</button>
+        <button class="sci-btn" onclick="sciInput('8')">8</button>
+        <button class="sci-btn" onclick="sciInput('9')">9</button>
+        <button class="sci-btn op" onclick="sciInput('*')">×</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('square')">x²</button>
+
+        <button class="sci-btn" onclick="sciInput('4')">4</button>
+        <button class="sci-btn" onclick="sciInput('5')">5</button>
+        <button class="sci-btn" onclick="sciInput('6')">6</button>
+        <button class="sci-btn op" onclick="sciInput('-')">-</button>
+        <button class="sci-btn sci-fn" onclick="sciFn('cube')">x³</button>
+
+        <button class="sci-btn" onclick="sciInput('1')">1</button>
+        <button class="sci-btn" onclick="sciInput('2')">2</button>
+        <button class="sci-btn" onclick="sciInput('3')">3</button>
+        <button class="sci-btn op" onclick="sciInput('+')">+</button>
+        <button class="sci-btn sci-fn" onclick="sciInput('%')">%</button>
+
+        <button class="sci-btn" onclick="sciInput('0')">0</button>
+        <button class="sci-btn" onclick="sciInput('.')">.</button>
+        <button class="sci-btn sci-fn" onclick="sciInput('00')">00</button>
+        <button class="sci-btn eq" onclick="calcSciResult()">=</button>
       </div>
     </div>
   </div>
@@ -876,7 +792,7 @@
     </div>
   </div>
 
-  <!-- এডমিন কন্ট্রোল প্যানেল (কাস্টম সাধারণ জ্ঞান, সূত্র ও আনলিমিটেড CQ) -->
+  <!-- এডমিন কন্ট্রোল প্যানেল (শিডিউল এডিট ও ডিলেট সুবিধা সহ) -->
   <div id="adminPanelModal" class="modal">
     <div class="modal-box admin-panel">
       <div class="modal-header">
@@ -887,7 +803,8 @@
       <div id="adminSuccessAlert" class="admin-alert-banner admin-alert-success"></div>
 
       <div class="admin-tabs">
-        <button class="admin-tab-btn active" onclick="switchAdminTab(event, 'mcqTab')">MCQ & CQ শিডিউল</button>
+        <button class="admin-tab-btn active" onclick="switchAdminTab(event, 'mcqTab')">নতুন পরীক্ষা তৈরি</button>
+        <button class="admin-tab-btn" onclick="switchAdminTab(event, 'manageExamsTab'); loadAdminExamList();">শিডিউল তালিকা ও এডিট</button>
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'classroomAdminTab')">ক্লাসরুম নোট পাবলিশ</button>
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'adminGkTab')">সাধারণ জ্ঞান আপলোড</button>
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'adminFormulaTab')">সূত্র আপলোড</button>
@@ -896,22 +813,16 @@
         <button class="admin-tab-btn" onclick="switchAdminTab(event, 'pinTab')">পিন পরিবর্তন</button>
       </div>
 
-      <!-- MCQ & CQ শিডিউল ট্যাব -->
+      <!-- নতুন পরীক্ষা তৈরি ট্যাব -->
       <div id="mcqTab" class="admin-tab-content" style="display:flex; flex-direction:column; gap:8px;">
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:8px;">
           <div>
-            <label style="font-size:0.82rem; font-weight:700;">শ্রেণি নির্বাচন:</label>
-            <select id="admClass">
-              <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-              <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-              <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-              <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-              <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
-            </select>
+            <label style="font-size:0.82rem; font-weight:700;">শ্রেণির নাম (বাংলা/ইংরেজি যেকোনোভাবে লিখুন):</label>
+            <input type="text" id="admClass" placeholder="যেমন: ১০ম শ্রেণি বা Class 10">
           </div>
           <div>
             <label style="font-size:0.82rem; font-weight:700;">বিষয়ের নাম:</label>
-            <input type="text" id="admSubject" placeholder="যেমন: বাংলা / English">
+            <input type="text" id="admSubject" placeholder="যেমন: বাংলা ১ম পত্র">
           </div>
           <div>
             <label style="font-size:0.82rem; font-weight:700;">প্রকাশের তারিখ:</label>
@@ -962,15 +873,17 @@
         </div>
       </div>
 
+      <!-- শিডিউল তালিকা, এডিট ও ডিলিট ট্যাব -->
+      <div id="manageExamsTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
+        <h4 style="color:#1e3a8a; font-size:0.95rem;">📋 বর্তমান পরীক্ষার শিডিউল তালিকা (সংশোধন বা মুছে ফেলা):</h4>
+        <div id="adminExamListContainer" style="max-height:360px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+          <p style="text-align:center; color:#94a3b8; padding:20px;">শিডিউল লোড হচ্ছে...</p>
+        </div>
+      </div>
+
       <!-- ক্লাসরুম নোট ট্যাব -->
       <div id="classroomAdminTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:8px;">
-        <select id="admNoteClass">
-          <option value="1">১ম শ্রেণি</option><option value="2">২য় শ্রেণি</option>
-          <option value="3">৩য় শ্রেণি</option><option value="4">৪র্থ শ্রেণি</option>
-          <option value="5">৫ম শ্রেণি</option><option value="6">৬ষ্ঠ শ্রেণি</option>
-          <option value="7">৭ম শ্রেণি</option><option value="8">৮ম শ্রেণি</option>
-          <option value="9">৯ম শ্রেণি</option><option value="10">১০ম শ্রেণি</option>
-        </select>
+        <input type="text" id="admNoteClass" placeholder="শ্রেণির নাম (যেমন: ১০ম শ্রেণি বা Class 10)">
         <input type="text" id="admNoteSubject" placeholder="বিষয়ের নাম (যেমন: গণিত / বাংলা)">
         <input type="text" id="admNoteTitle" placeholder="নোটের শিরোনাম / অধ্যায়">
         <textarea id="admNoteText" rows="4" placeholder="নোটের বিস্তারিত টেক্সট এখানে লিখুন..."></textarea>
@@ -1022,6 +935,39 @@
         <input type="password" id="oldPinInput" placeholder="বর্তমান পিন">
         <input type="password" id="newPinInput" placeholder="নতুন পিন">
         <button class="btn btn-blue" onclick="changeAdminPin()">পিন আপডেট করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- শিডিউল এডিট মডাল -->
+  <div id="editScheduleModal" class="modal">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 style="color: #2563eb;">✏️ পরীক্ষা শিডিউল এডিট</h3>
+        <button class="close-icon-btn" onclick="closeModal('editScheduleModal')">×</button>
+      </div>
+      <input type="hidden" id="editExamId">
+      <label style="font-size:0.8rem; font-weight:700;">শ্রেণি:</label>
+      <input type="text" id="editExamClass">
+      <label style="font-size:0.8rem; font-weight:700;">বিষয়:</label>
+      <input type="text" id="editExamSubject">
+      <label style="font-size:0.8rem; font-weight:700;">তারিখ:</label>
+      <input type="date" id="editExamDate">
+      <label style="font-size:0.8rem; font-weight:700;">সময়:</label>
+      <input type="time" id="editExamTime">
+      <div style="display:flex; gap:6px;">
+        <div style="flex:1;">
+          <label style="font-size:0.8rem; font-weight:700;">MCQ সময় (মিনিট):</label>
+          <input type="number" id="editExamMcqDur">
+        </div>
+        <div style="flex:1;">
+          <label style="font-size:0.8rem; font-weight:700;">CQ সময় (মিনিট):</label>
+          <input type="number" id="editExamCqDur">
+        </div>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('editScheduleModal')">ক্যানসেল</button>
+        <button class="btn btn-blue" style="width:auto;" onclick="submitExamUpdate()">আপডেট সংরক্ষণ</button>
       </div>
     </div>
   </div>
@@ -1084,54 +1030,14 @@
         { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
         { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
         { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "ইসলাম ও নৈতিক শিক্ষা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "4": [
-        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
         { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "5": [
-        { name: "আমার বাংলা বই", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English for Today", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "প্রাথমিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "6": [
-        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "বিজ্ঞান (অনুসন্ধানী ও অনুশীলন)", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "ইতিহাস ও সামাজিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "ডিজিটাল প্রযুক্তি", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "7": [
-        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "ডিজিটাল প্রযুক্তি", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
-      ],
-      "8": [
-        { name: "বাংলা", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "English", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" },
-        { name: "ইতিহাস ও সামাজিক বিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922dd8a933eb65569e15641" }
       ],
       "9": [
         { name: "বাংলা সাহিত্য ও সহপাঠ", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "English For Today & Grammar", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "সাধারণ গণিত (General Math)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "উচ্চতর গণিত (Higher Math)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "পদার্থবিজ্ঞান (Physics)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "রসায়ন (Chemistry)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "জীববিজ্ঞান (Biology)", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
-        { name: "বাংলাদেশ ও বিশ্বপরিচয়", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" }
+        { name: "English For Today", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "সাধারণ গণিত", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "পদার্থবিজ্ঞান", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" },
+        { name: "রসায়ন", url: "https://nctb.gov.bd/pages/static-pages/6922e0c0933eb65569e28767" }
       ]
     };
 
@@ -1168,23 +1074,11 @@
           ]
         },
         {
-          category: "ভাষা আন্দোলন ও স্বাধীনতা সংগ্রাম",
-          items: [
-            { q: "তমুদ্দুন মজলিস কার নেতৃত্বে কবে গঠিত হয়েছিল?", a: "অধ্যাপক আবুল কাসেমের নেতৃত্বে ২ সেপ্টেম্বর ১৯৪৭" },
-            { q: "ইউনেস্কো ২১শে ফেব্রুয়ারিকে 'আন্তর্জাতিক মাতৃভাষা দিবস' স্বীকৃতি দেয় কবে?", a: "১৭ নভেম্বর ১৯৯৯ (কার্যকর ২০০০ সাল থেকে)" },
-            { q: "ঐতিহাসিক ৬-দফা দাবি কোথায় ও কবে উত্থাপন করা হয়?", a: "৫-৬ ফেব্রুয়ারি ১৯৬৬ সালে লাহোরে বঙ্গবন্ধু শেখ মুজিবুর রহমান উত্থাপন করেন" },
-            { q: "আগরতলা ষড়যন্ত্র মামলার অফিসিয়াল নাম কী ছিল?", a: "রাষ্ট্র বনাম শেখ মুজিবুর রহমান ও অন্যান্য" },
-            { q: "শেখ মুজিবুর রহমানকে 'বঙ্গবন্ধু' উপাধি দেওয়া হয় কবে?", a: "২৩ ফেব্রুয়ারি ১৯৬৯ (তোফায়েল আহমেদ কর্তৃক)" }
-          ]
-        },
-        {
           category: "মহান মুক্তিযুদ্ধ ও সেক্টর কমান্ড",
           items: [
             { q: "মুজিবনগর সরকার কবে গঠিত ও শপথ গ্রহণ করে?", a: "গঠিত: ১০ এপ্রিল ১৯৭১; শপথ গ্রহণ: ১৭ এপ্রিল ১৯৭১" },
             { q: "মুজিবনগর সরকারের প্রধানমন্ত্রী কে ছিলেন?", a: "তাজউদ্দীন আহমদ (রাষ্ট্রপতি: বঙ্গবন্ধু শেখ মুজিবুর রহমান)" },
-            { q: "মুক্তিযুদ্ধে বাংলাদেশকে কয়টি সেক্টরে ভাগ করা হয়েছিল?", a: "১১টি সেক্টর এবং ৬৪টি সাব-সেক্টর" },
             { q: "মুক্তিযুদ্ধে বীরত্বসূচক রাষ্ট্রীয় খেতাব কয়টি?", a: "৪টি (বীরশ্রেষ্ঠ ৭ জন, বীরউত্তম ৬৮ জন, বীরবিক্রম ১৭৫ জন, বীরপ্রতীক ৪২৬ জন)" },
-            { q: "বীরশ্রেষ্ঠদের মধ্যে সর্বপ্রথম ও সর্বশেষ শহীদ হন কে?", a: "প্রথম শহীদ: মুন্সী আবদুর রউফ; শেষ শহীদ: ক্যাপ্টেন মহিউদ্দীন জাহাঙ্গীর" },
             { q: "বাংলাদেশকে প্রথম স্বীকৃতি দানকারী দেশ কোনটি?", a: "ভুটান (৬ ডিসেম্বর ১৯৭১ সকালে)" }
           ]
         }
@@ -1195,16 +1089,7 @@
           items: [
             { q: "জাতিসংঘ (UN) কবে প্রতিষ্ঠিত হয় এবং সদর দপ্তর কোথায়?", a: "২৪ অক্টোবর ১৯৪৫; সদর দপ্তর: নিউইয়র্ক, যুক্তরাষ্ট্র" },
             { q: "নিরাপত্তা পরিষদের স্থায়ী সদস্য দেশ কয়টি?", a: "৫টি (যুক্তরাষ্ট্র, যুক্তরাজ্য, রাশিয়া, চীন ও ফ্রান্স - ভেটো ক্ষমতাসম্পন্ন)" },
-            { q: "আন্তর্জাতিক বিচারালয় (ICJ) এর সদর দপ্তর কোথায়?", a: "হেগ, নেদারল্যান্ডস" },
-            { q: "সার্ক (SAARC) এর স্থায়ী সচিবালয় কোথায়?", a: "কাঠমান্ডু, নেপাল (গঠন: ৮ ডিসেম্বর ১৯৮৫ ঢাকায়)" }
-          ]
-        },
-        {
-          category: "বিশ্ব ইতিহাস ও যুগান্তকারী ঘটনা",
-          items: [
-            { q: "প্রথম ও দ্বিতীয় বিশ্বযুদ্ধ কবে সংঘটিত হয়?", a: "১ম বিশ্বযুদ্ধ: ১৯১৪ - ১৯১৮; ২য় বিশ্বযুদ্ধ: ১৯৩৯ - ১৯৪৫" },
-            { q: "ফরাসি বিপ্লব কবে সংঘটিত হয়েছিল?", a: "১৭৮৯ সালে (স্লোগান: সাম্য, মৈত্রী ও স্বাধীনতা)" },
-            { q: "হিরোশিমা ও নাগাসাকিতে পারমাণবিক বোমা ফেলা হয়েছিল কবে?", a: "হিরোশিমা: ৬ আগস্ট ১৯৪৫; নাগাসাকি: ৯ আগস্ট ১৯৪৫" }
+            { q: "আন্তর্জাতিক বিচারালয় (ICJ) এর সদর দপ্তর কোথায়?", a: "হেগ, নেদারল্যান্ডস" }
           ]
         }
       ]
@@ -1267,13 +1152,7 @@
 
       if (!category || !question || !answer) return alert("সকল তথ্য পূরণ করুন!");
 
-      postData({
-        action: "addGk",
-        type: type,
-        category: category,
-        question: question,
-        answer: answer
-      }, res => {
+      postData({ action: "addGk", type: type, category: category, question: question, answer: answer }, res => {
         if (res && res.success) {
           showAdminMessage("✅ নতুন সাধারণ জ্ঞান সফলভাবে যোগ করা হয়েছে!");
           document.getElementById('admGkQuestion').value = "";
@@ -1314,12 +1193,7 @@
 
       if (!sub || !topic || !text) return alert("বিষয়, টপিক ও সূত্র লিখুন!");
 
-      postData({
-        action: "addFormula",
-        subject: sub,
-        topic: topic,
-        formulaText: text
-      }, res => {
+      postData({ action: "addFormula", subject: sub, topic: topic, formulaText: text }, res => {
         if (res && res.success) {
           showAdminMessage("✅ নতুন সূত্র সফলভাবে যোগ করা হয়েছে!");
           document.getElementById('admFormulaTopic').value = "";
@@ -1344,87 +1218,111 @@
       });
     }
 
-    // ৩. সায়েন্টিফিক ক্যালকুলেটর ইঞ্জিন
-    function sciInput(val) {
-      const d = document.getElementById('sciCalcDisplay');
-      if (d.value === "0" || d.value === "Error") d.value = "";
-      d.value += val;
-    }
-    function clearSciCalc() {
-      document.getElementById('sciCalcDisplay').value = "0";
-      document.getElementById('sciHistoryDisplay').innerText = "";
-    }
-    function delSciCalc() {
-      const d = document.getElementById('sciCalcDisplay');
-      d.value = d.value.slice(0, -1);
-      if (!d.value) d.value = "0";
-    }
-    function sciFn(fn) {
-      const d = document.getElementById('sciCalcDisplay');
-      let val = parseFloat(d.value);
-      if (isNaN(val)) return;
+    // ৩. শিডিউল ম্যানেজমেন্ট (Load, Edit, Delete)
+    function loadAdminExamList() {
+      const container = document.getElementById('adminExamListContainer');
+      container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:20px;">শিডিউল লোড হচ্ছে...</p>`;
 
-      document.getElementById('sciHistoryDisplay').innerText = `${fn}(${val})`;
-      if (fn === 'sin') d.value = Math.sin(val * Math.PI / 180).toFixed(6);
-      else if (fn === 'cos') d.value = Math.cos(val * Math.PI / 180).toFixed(6);
-      else if (fn === 'tan') d.value = Math.tan(val * Math.PI / 180).toFixed(6);
-      else if (fn === 'log') d.value = Math.log10(val).toFixed(6);
-      else if (fn === 'ln') d.value = Math.log(val).toFixed(6);
-      else if (fn === 'sqrt') d.value = Math.sqrt(val).toFixed(6);
-      else if (fn === 'square') d.value = Math.pow(val, 2);
-      else if (fn === 'cube') d.value = Math.pow(val, 3);
-      else if (fn === 'fact') {
-        let f = 1;
-        for (let i = 2; i <= val; i++) f *= i;
-        d.value = f;
+      postData({ action: "getAdminExamList" }, res => {
+        if (res && res.success && res.list) {
+          if (res.list.length === 0) {
+            container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:20px;">কোনো শিডিউল পাওয়া যায়নি।</p>`;
+            return;
+          }
+          container.innerHTML = res.list.map(ex => `
+            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+              <div>
+                <h4 style="color:#1e3a8a; font-size:0.95rem;">${ex.subject} (${ex.classVal})</h4>
+                <p style="font-size:0.8rem; color:#64748b;">তারিখ: ${ex.publishDate} | সময়: ${ex.publishTime} | MCQ: ${ex.mcqDuration} মি. | CQ: ${ex.cqDuration} মি.</p>
+              </div>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:0.8rem;" onclick="openEditSchedule('${ex.id}', '${encodeURIComponent(ex.classVal)}', '${encodeURIComponent(ex.subject)}', '${ex.publishDate}', '${ex.publishTime}', '${ex.mcqDuration}', '${ex.cqDuration}')">✏️ এডিট</button>
+                <button class="btn btn-cancel" style="width:auto; padding:6px 12px; font-size:0.8rem; color:#dc2626; border-color:#fca5a5;" onclick="deleteExamSchedule('${ex.id}')">🗑️ ডিলিট</button>
+              </div>
+            </div>
+          `).join('');
+        }
+      });
+    }
+
+    function openEditSchedule(id, cls, sub, date, time, mcqDur, cqDur) {
+      document.getElementById('editExamId').value = id;
+      document.getElementById('editExamClass').value = decodeURIComponent(cls);
+      document.getElementById('editExamSubject').value = decodeURIComponent(sub);
+      document.getElementById('editExamDate').value = date;
+      document.getElementById('editExamTime').value = time;
+      document.getElementById('editExamMcqDur').value = mcqDur;
+      document.getElementById('editExamCqDur').value = cqDur;
+      openModal('editScheduleModal');
+    }
+
+    function submitExamUpdate() {
+      const payload = {
+        action: "updateExamSchedule",
+        examId: document.getElementById('editExamId').value,
+        classVal: document.getElementById('editExamClass').value.trim(),
+        subject: document.getElementById('editExamSubject').value.trim(),
+        publishDate: document.getElementById('editExamDate').value,
+        publishTime: document.getElementById('editExamTime').value,
+        mcqDuration: document.getElementById('editExamMcqDur').value,
+        cqDuration: document.getElementById('editExamCqDur').value
+      };
+
+      if (!payload.classVal || !payload.subject || !payload.publishDate) {
+        return alert("সকল তথ্য পূরণ করুন!");
       }
-    }
-    function calcSciResult() {
-      const d = document.getElementById('sciCalcDisplay');
-      try {
-        document.getElementById('sciHistoryDisplay').innerText = d.value + " =";
-        let expr = d.value.replace(/Math\.PI/g, Math.PI).replace(/Math\.E/g, Math.E);
-        let res = eval(expr);
-        d.value = res !== undefined ? res : "0";
-      } catch (e) {
-        d.value = "Error";
-      }
+
+      postData(payload, res => {
+        if (res && res.success) {
+          closeModal('editScheduleModal');
+          showAdminMessage("✅ শিডিউল সফলভাবে সংশোধন করা হয়েছে!");
+          loadAdminExamList();
+          loadNoticesAndMotivation();
+        }
+      });
     }
 
-    function openDuolingoDirect() {
-      window.open("https://www.duolingo.com/learn", "_blank");
+    function deleteExamSchedule(examId) {
+      if (!confirm("আপনি কি নিশ্চিতভাবে এই পরীক্ষার শিডিউলটি মুছে ফেলতে চান?")) return;
+
+      postData({ action: "deleteExamSchedule", examId: examId }, res => {
+        if (res && res.success) {
+          showAdminMessage("✅ শিডিউল মুছে ফেলা হয়েছে!");
+          loadAdminExamList();
+          loadNoticesAndMotivation();
+        }
+      });
     }
 
-    // ৪. স্মার্ট সৃজনশীল (CQ) পার্সার ও ডিসপ্লে লজিক (ফোন ও পিসিতে সাজানো)
+    // ৪. স্মার্ট সৃজনশীল (CQ) পার্সার ও ডিসপ্লে লজিক
     function renderFormattedCQ(rawText) {
       if (!rawText) return "<p style='color:#94a3b8;'>কোনো সৃজনশীল প্রশ্ন দেওয়া হয়নি।</p>";
       
-      // অবাঞ্ছিত চিহ্ন ও অতিরিক্ত চিহ্ন ক্লিন
       let text = rawText.replace(/\*\*/g, '').replace(/CQ\s*:\s*/gi, '').trim();
+      let cqBlocks = text.split(/(?=(?:^|\n)\s*(?:[০-৯\d]+[\.\)]|প্রশ্ন\s*[:০-৯\d]+)\s*(?:উদ্দীপক|নিচের|\n|[^\n]+))/gi);
 
-      // উদ্দীপক ও প্রশ্ন আলাদা করার রেজেক্স
-      const cqBlocks = text.split(/(?=\n\s*(?:[০-৯\d]+[\.\)]|\(\d+\)))/g);
+      if (cqBlocks.length <= 1) {
+        cqBlocks = text.split(/(?=(?:^|\s)[০-৯\d]+[\.\)]\s*(?:উদ্দীপক|নিচের))/gi);
+      }
 
-      return cqBlocks.map((block, idx) => {
+      let validBlocks = cqBlocks.filter(b => b.trim().length > 10);
+
+      return validBlocks.map((block, idx) => {
         let bText = block.trim();
         if (!bText) return '';
 
-        // ক, খ, গ, ঘ বা a, b, c, d প্রশ্ন আলাদা করা
-        const subQuestionRegex = /(?:\n|\s|^)([কখগঘabcd])[\.\)]\s*([^\n\r]+)/gi;
+        const subRegex = /(?:\n|\s|^)([কখগঘabcd])[\)\.\-]\s*([^\n\r]+)/gi;
         let subQuestions = [];
-        let stimulus = bText;
+        let m;
 
-        let match;
-        while ((match = subQuestionRegex.exec(bText)) !== null) {
-          subQuestions.push({ label: match[1], q: match[2].trim() });
+        while ((m = subRegex.exec(bText)) !== null) {
+          subQuestions.push({ label: m[1], q: m[2].trim() });
         }
 
-        // যদি ক, খ, গ, ঘ পাওয়া যায়, উদ্দীপক থেকে সেগুলো বাদ দিয়ে শুধু উদ্দীপক আলাদা করা
-        if (subQuestions.length > 0) {
-          let firstSubIndex = bText.search(/(?:\n|\s|^)[কখগঘabcd][\.\)]/i);
-          if (firstSubIndex !== -1) {
-            stimulus = bText.substring(0, firstSubIndex).trim();
-          }
+        let stimulus = bText;
+        let firstSubIdx = bText.search(/(?:\n|\s|^)[কখগঘabcd][\)\.\-]/i);
+        if (firstSubIdx !== -1) {
+          stimulus = bText.substring(0, firstSubIdx).replace(/^[০-৯\d]+[\.\)]\s*(?:উদ্দীপক\s*[:\-]?)?/i, '').trim();
         }
 
         return `
@@ -1446,7 +1344,7 @@
       }).join('');
     }
 
-    // ৫. পরীক্ষা সেকশন ও স্বতন্ত্র সাবমিশন (MCQ or CQ or Both)
+    // ৫. পরীক্ষা সেকশন
     function switchExamSection(mode) {
       currentExamSection = mode;
       document.getElementById('examTabAll').classList.toggle('active', mode === 'all');
@@ -1504,11 +1402,10 @@
     }
 
     function startLiveExamSession() {
-      document.getElementById('liveSubjectTitle').innerText = activeExamData.subject + " (" + activeExamData.classVal + " শ্রেণি)";
+      document.getElementById('liveSubjectTitle').innerText = activeExamData.subject + " (" + activeExamData.classVal + ")";
       document.getElementById('liveStudentName').innerText = activeExamData.studentName;
       document.getElementById('liveTotalMarks').innerText = activeExamData.totalMarks;
       
-      // সৃজনশীল প্রশ্ন সুন্দর করে সাজানো ফরমেটে রেন্ডার
       document.getElementById('cqFormattedContainer').innerHTML = renderFormattedCQ(activeExamData.cqDescription);
       
       if (activeExamData.cqQuestionFileUrl) {
@@ -1614,12 +1511,314 @@
       openModal('examReviewModal');
     }
 
+    // ৬. প্রোফাইল ও আইডি কার্ড লোড
+    function loadFullProfile() {
+      const btn = event?.currentTarget || event?.target;
+      const reg = document.getElementById('pReg').value;
+      const classVal = document.getElementById('pClass').value;
+      if (!reg || !classVal) return alert("রেজিস্ট্রেশন ও শ্রেণি দিন!");
+
+      postData({ action: "getStudentByClass", reg: reg, classVal: classVal }, res => {
+        if (res && res.success) {
+          currentStudentProfile = res;
+          document.getElementById('profileDisplay').classList.remove('hidden');
+          document.getElementById('profileAvatar').src = res.student[7] || "https://api.iconify.design/fluent-emoji-flat:graduation-cap.svg";
+          
+          // আইডি কার্ড ভরাট
+          document.getElementById('cardStudentName').innerText = "নাম: " + res.student[1];
+          document.getElementById('cardStudentClass').innerText = res.student[4];
+          document.getElementById('cardStudentReg').innerText = res.student[0];
+          document.getElementById('cardStudentFather').innerText = res.student[2];
+          document.getElementById('cardStudentMobile').innerText = res.student[5];
+
+          document.getElementById('examHistoryList').innerHTML = res.results.length ? 
+            res.results.map((r, i) => `<li style="background:#f8fafc; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;"><b>${i+1}. ${r[3]}</b>: প্রাপ্ত নম্বর- ${r[6]} (গ্রেড: <span style="color:#059669; font-weight:bold;">${r[7]}</span>) - <i>${r[0]}</i></li>`).join('') :
+            '<li>কোনো পরীক্ষার ফলাফল নেই।</li>';
+        } else {
+          alert("শিক্ষার্থীর তথ্য মেলেনি!");
+        }
+      }, btn);
+    }
+
+    async function uploadNewProfilePhoto() {
+      const file = document.getElementById('changePhotoInput').files[0];
+      if (!file || !currentStudentProfile) return;
+
+      const avatar = document.getElementById('profileAvatar');
+      avatar.style.opacity = "0.4";
+
+      try {
+        const compressed = await compressImage(file, 500, 0.7);
+        postData({
+          action: "updateStudentPhoto",
+          reg: currentStudentProfile.student[0],
+          photoBase64: compressed.base64,
+          photoMime: compressed.mime
+        }, res => {
+          avatar.style.opacity = "1";
+          if (res && res.success) {
+            alert("প্রোফাইল ছবি সফলভাবে আপডেট হয়েছে!");
+            avatar.src = res.photoUrl;
+            currentStudentProfile.student[7] = res.photoUrl;
+          } else {
+            alert(res.message || "ছবি আপলোডে ব্যর্থ!");
+          }
+        });
+      } catch (err) {
+        avatar.style.opacity = "1";
+        alert("ছবি প্রসেসিং করতে সমস্যা হয়েছে: " + err);
+      }
+    }
+
+    function generateSscMarksheet() {
+      if (!currentStudentProfile || !currentStudentProfile.results.length) return alert("কোনো ফলাফল নেই!");
+      const st = currentStudentProfile.student;
+      document.getElementById('msName').innerText = st[1];
+      document.getElementById('msFather').innerText = st[2];
+      document.getElementById('msMother').innerText = st[3];
+      document.getElementById('msReg').innerText = st[0];
+      document.getElementById('msClass').innerText = st[4];
+      if (st[7]) document.getElementById('msPhoto').src = st[7];
+
+      document.getElementById('msTableBody').innerHTML = currentStudentProfile.results.map(r => `
+        <tr>
+          <td>${r[3]}</td>
+          <td>${r[4]}</td>
+          <td>${r[5]}</td>
+          <td><b>${r[6]}</b></td>
+          <td><b>${r[7]}</b></td>
+        </tr>
+      `).join('');
+
+      openModal('marksheetModal');
+    }
+
+    async function submitRegistration() {
+      const btn = event?.currentTarget || event?.target;
+      const photoFile = document.getElementById('regPhoto').files[0];
+      const reg = document.getElementById('regNo').value;
+      const cls = document.getElementById('regClass').value;
+      if (!reg || !cls) return alert("রেজিস্ট্রেশন নম্বর ও শ্রেণি দিন!");
+
+      const releaseBtn = setBtnLoading(btn, "ছবি প্রসেস হচ্ছে...");
+
+      let photoBase64 = "";
+      let photoMime = "";
+
+      if (photoFile) {
+        try {
+          const comp = await compressImage(photoFile, 500, 0.7);
+          photoBase64 = comp.base64;
+          photoMime = comp.mime;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      if (releaseBtn) releaseBtn();
+
+      postData({
+        action: "registerStudent",
+        name: document.getElementById('regName').value,
+        father: document.getElementById('regFather').value,
+        mother: document.getElementById('regMother').value,
+        classVal: cls,
+        reg: reg,
+        mobile: document.getElementById('regMobile').value,
+        pin: document.getElementById('regPin').value,
+        photoBase64: photoBase64,
+        photoMime: photoMime
+      }, res => { 
+        if (res && res.success) {
+          alert("রেজিস্ট্রেশন সম্পূর্ণ হয়েছে! মোবাইলে SMS পাঠানো হয়েছে।"); 
+          closeModal('regModal'); 
+        } else {
+          alert(res.message || "রেজিস্ট্রেশন ব্যর্থ হয়েছে!");
+        }
+      }, btn);
+    }
+
+    function studentLogin() {
+      const btn = event?.currentTarget || event?.target;
+      const reg = document.getElementById('logReg').value;
+      const pin = document.getElementById('logPin').value;
+      if (!reg || !pin) return alert("সকল তথ্য দিন!");
+
+      postData({ action: "studentLogin", reg: reg, pin: pin }, res => {
+        if (res && res.success) {
+          alert("স্বাগতম, " + res.student[1] + "!");
+          closeModal('loginModal');
+          document.getElementById('pReg').value = reg;
+          document.getElementById('pClass').value = res.student[4];
+          loadFullProfile();
+          openModal('profileModal');
+        } else alert("ভুল তথ্য!");
+      }, btn);
+    }
+
+    function openForgotPinModal() {
+      closeModal('loginModal');
+      openModal('forgotPinModal');
+    }
+
+    function submitForgotPin() {
+      const btn = event?.currentTarget || event?.target;
+      const reg = document.getElementById('fpReg').value;
+      const mobile = document.getElementById('fpMobile').value;
+      const newPin = document.getElementById('fpNewPin').value;
+
+      if (!reg || !mobile || !newPin) return alert("সকল তথ্য দিন!");
+
+      postData({ action: "resetStudentPin", reg: reg, mobile: mobile, newPin: newPin }, res => {
+        if (res && res.success) {
+          alert("পিন সফলভাবে পরিবর্তন হয়েছে! নতুন পিন দিয়ে লগইন করুন।");
+          closeModal('forgotPinModal');
+          openModal('loginModal');
+        } else {
+          alert(res.message || "তথ্য মেলেনি!");
+        }
+      }, btn);
+    }
+
+    function changeAdminPin() {
+      const btn = event?.currentTarget || event?.target;
+      const oldPin = document.getElementById('oldPinInput').value;
+      const newPin = document.getElementById('newPinInput').value;
+      if (!oldPin || !newPin) return alert("পিন দিন!");
+
+      postData({ action: "changeAdminPin", oldPin: oldPin, newPin: newPin }, res => {
+        if (res && res.success) {
+          showAdminMessage("✅ পিন সফলভাবে পরিবর্তন হয়েছে!");
+          document.getElementById('oldPinInput').value = "";
+          document.getElementById('newPinInput').value = "";
+        } else alert("বর্তমান পিন সঠিক নয়!");
+      }, btn);
+    }
+
+    function updateMotivationText() {
+      const btn = event?.currentTarget || event?.target;
+      const text = document.getElementById('admMotivationInput').value.trim();
+      if (!text) return alert("মোটিভেশনাল বাণী লিখুন!");
+
+      postData({ action: "updateMotivation", text: text }, res => {
+        if (res && res.success) {
+          showAdminMessage("✅ অনুপ্রেরণামূলক বাণী সফলভাবে আপডেট হয়েছে!");
+          document.getElementById('motivationText').innerText = text;
+          localStorage.setItem("gyan_motivation", text);
+        }
+      }, btn);
+    }
+
+    function loadNoticesAndMotivation() {
+      const cachedMot = localStorage.getItem("gyan_motivation");
+      if (cachedMot) {
+        document.getElementById('motivationText').innerText = cachedMot;
+      }
+
+      postData({ action: "getNoticesAndMotivation" }, res => {
+        if (res && res.success) {
+          if (res.motivation) {
+            document.getElementById('motivationText').innerText = res.motivation;
+            localStorage.setItem("gyan_motivation", res.motivation);
+          }
+
+          const topList = document.getElementById('topNewsListContainer');
+          if (topList && res.notices) {
+            if (res.notices.length === 0) {
+              topList.innerHTML = `<li style="text-align:center; color:#94a3b8; padding:15px;">গত ৭ দিনে কোনো নতুন পরীক্ষা বা নোটিশ নেই।</li>`;
+            } else {
+              topList.innerHTML = res.notices.map(n => `
+                <li class="top-news-item">
+                  <span>${n.text}</span>
+                  <span class="date-tag">${n.date}</span>
+                </li>
+              `).join('');
+            }
+          }
+        }
+      });
+    }
+
+    function postNoticeFromAdmin() {
+      const btn = event?.currentTarget || event?.target;
+      const text = document.getElementById('admNoticeText').value;
+      if (!text) return alert("নোটিশ লিখুন!");
+
+      postData({ action: "addNotice", text: text }, () => {
+        showAdminMessage("✅ জরুরি নোটিশ বক্সে যুক্ত হয়েছে (৭ দিন থাকবে)!");
+        document.getElementById('admNoticeText').value = "";
+        loadNoticesAndMotivation();
+      }, btn);
+    }
+
+    function submitFeedback() {
+      const btn = event?.currentTarget || event?.target;
+      const name = document.getElementById('fbName').value;
+      const msg = document.getElementById('fbMsg').value;
+      if (!name || !msg) return alert("নাম ও বার্তা দিন!");
+
+      postData({ action: "saveFeedback", name: name, message: msg }, () => {
+        alert("মতামত জমা হয়েছে!");
+        closeModal('feedbackModal');
+      }, btn);
+    }
+
+    // ৭. সাধারণ ক্যালকুলেটর ও অন্যান্য টুলস
+    function sciInput(val) {
+      const d = document.getElementById('sciCalcDisplay');
+      if (d.value === "0" || d.value === "Error") d.value = "";
+      d.value += val;
+    }
+    function clearSciCalc() {
+      document.getElementById('sciCalcDisplay').value = "0";
+      document.getElementById('sciHistoryDisplay').innerText = "";
+    }
+    function delSciCalc() {
+      const d = document.getElementById('sciCalcDisplay');
+      d.value = d.value.slice(0, -1);
+      if (!d.value) d.value = "0";
+    }
+    function sciFn(fn) {
+      const d = document.getElementById('sciCalcDisplay');
+      let val = parseFloat(d.value);
+      if (isNaN(val)) return;
+
+      document.getElementById('sciHistoryDisplay').innerText = `${fn}(${val})`;
+      if (fn === 'sin') d.value = Math.sin(val * Math.PI / 180).toFixed(6);
+      else if (fn === 'cos') d.value = Math.cos(val * Math.PI / 180).toFixed(6);
+      else if (fn === 'tan') d.value = Math.tan(val * Math.PI / 180).toFixed(6);
+      else if (fn === 'log') d.value = Math.log10(val).toFixed(6);
+      else if (fn === 'ln') d.value = Math.log(val).toFixed(6);
+      else if (fn === 'sqrt') d.value = Math.sqrt(val).toFixed(6);
+      else if (fn === 'square') d.value = Math.pow(val, 2);
+      else if (fn === 'cube') d.value = Math.pow(val, 3);
+      else if (fn === 'fact') {
+        let f = 1;
+        for (let i = 2; i <= val; i++) f *= i;
+        d.value = f;
+      }
+    }
+    function calcSciResult() {
+      const d = document.getElementById('sciCalcDisplay');
+      try {
+        document.getElementById('sciHistoryDisplay').innerText = d.value + " =";
+        let expr = d.value.replace(/Math\.PI/g, Math.PI).replace(/Math\.E/g, Math.E);
+        let res = eval(expr);
+        d.value = res !== undefined ? res : "0";
+      } catch (e) {
+        d.value = "Error";
+      }
+    }
+
+    function openDuolingoDirect() {
+      window.open("https://www.duolingo.com/learn", "_blank");
+    }
+
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
       localStorage.setItem('gyan_dark_mode', document.body.classList.contains('dark-mode'));
     }
 
-    // ৬. পমোডোরো টাইমার
     let pomoInterval = null;
     let pomoTime = 25 * 60;
     let isPomoBreak = false;
@@ -1638,14 +1837,14 @@
           pomoInterval = null;
           isPomoBreak = !isPomoBreak;
           if (isPomoBreak) {
-            alert("অভিনন্দন! আপনার পড়ার সেশন সম্পন্ন। ৫ মিনিটের বিরতি নিন।");
+            alert("পড়ার সেশন সম্পন্ন! ৫ মিনিটের বিরতি নিন।");
             pomoTime = 5 * 60;
-            document.getElementById('pomoStatus').innerText = "☕ ৫ মিনিটের বিশ্রাম (Break Time)";
+            document.getElementById('pomoStatus').innerText = "☕ ৫ মিনিটের বিশ্রাম";
             document.getElementById('pomoStatus').style.color = "#059669";
           } else {
             alert("বিরতি শেষ! পুনরায় পড়াশোনায় মনোযোগ দিন।");
             pomoTime = 25 * 60;
-            document.getElementById('pomoStatus').innerText = "📚 পড়াশোনার সময় (Study Time)";
+            document.getElementById('pomoStatus').innerText = "📚 পড়াশোনার সময়";
             document.getElementById('pomoStatus').style.color = "#dc2626";
           }
           startPomodoro();
@@ -1663,12 +1862,11 @@
       pausePomodoro();
       isPomoBreak = false;
       pomoTime = 25 * 60;
-      document.getElementById('pomoStatus').innerText = "📚 পড়াশোনার সময় (Study Time)";
+      document.getElementById('pomoStatus').innerText = "📚 পড়াশোনার সময়";
       document.getElementById('pomoStatus').style.color = "#dc2626";
       updatePomoDisplay();
     }
 
-    // ৭. ব্যক্তিগত নোটপ্যাড
     function saveScratchpad() {
       const text = document.getElementById('scratchpadArea').value;
       localStorage.setItem('gyan_scratchpad', text);
@@ -1677,7 +1875,6 @@
       setTimeout(() => { msg.style.display = 'none'; }, 2000);
     }
 
-    // ৮. GPA ক্যালকুলেটর
     function calculateGpa() {
       const inputs = document.querySelectorAll('.gpa-score-input');
       let totalPoints = 0;
@@ -1722,12 +1919,11 @@
       document.getElementById('gpaResultDisplay').innerText = `GPA: ${gpa} (${grade})`;
     }
 
-    // ৯. ডিকশনারি
     function setDictMode(mode) {
       currentDictMode = mode;
       document.getElementById('dictModeEnBn').classList.toggle('active', mode === 'en-bn');
       document.getElementById('dictModeBnEn').classList.toggle('active', mode === 'bn-en');
-      document.getElementById('dictInput').placeholder = mode === 'en-bn' ? 'ইংরেজি শব্দ লিখুন (যেমন: School)...' : 'বাংলা শব্দ লিখুন (যেমন: বিদ্যালয়)...';
+      document.getElementById('dictInput').placeholder = mode === 'en-bn' ? 'ইংরেজি শব্দ লিখুন...' : 'বাংলা শব্দ লিখুন...';
       document.getElementById('dictResultCard').style.display = 'none';
       document.getElementById('dictInput').value = '';
     }
@@ -1749,19 +1945,17 @@
         .then(data => {
           loader.style.display = 'none';
           if (data && data.responseData && data.responseData.translatedText) {
-            const translated = data.responseData.translatedText;
             document.getElementById('dictWordDisplay').innerText = input;
-            document.getElementById('dictMeaningDisplay').innerText = translated;
-            document.getElementById('dictPhonetic').innerText = currentDictMode === 'en-bn' ? 'Language: English to Bengali' : 'ভাষা: বাংলা থেকে ইংরেজি';
-            document.getElementById('dictExampleBox').innerText = `Matches: ${data.matches && data.matches.length ? data.matches[0].segment : ''}`;
+            document.getElementById('dictMeaningDisplay').innerText = data.responseData.translatedText;
+            document.getElementById('dictPhonetic').innerText = currentDictMode === 'en-bn' ? 'English to Bengali' : 'বাংলা থেকে ইংরেজি';
             resultCard.style.display = 'block';
           } else {
-            alert("শব্দটির অর্থ পাওয়া যায়নি। সঠিক বানান দিয়ে চেষ্টা করুন।");
+            alert("অর্থ পাওয়া যায়নি।");
           }
         })
         .catch(err => {
           loader.style.display = 'none';
-          alert("ডিকশনারি সংযোগে সমস্যা হয়েছে: " + err);
+          alert("ডিকশনারি সংযোগে সমস্যা: " + err);
         });
     }
 
@@ -1773,7 +1967,6 @@
       window.speechSynthesis.speak(utterance);
     }
 
-    // ১০. সিস্টেম নেভিগেশন ও কমন ইউটিলিটি
     function goToPage(n) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page' + n).classList.add('active');
@@ -1901,7 +2094,6 @@
       const raw = document.getElementById('rawMcqPaste').value.trim();
       if (!raw) return alert("অনুগ্রহ করে MCQ টেক্সট পেস্ট করুন!");
 
-      // বোল্ড চিহ্ন বা অতিরিক্ত স্টার চিহ্ন পরিষ্কার
       let cleanRaw = raw.replace(/\*\*/g, '').replace(/###/g, '');
 
       smartParsedMcq = [];
@@ -1914,21 +2106,18 @@
         let rawAns = "";
         let explanation = "কোনো সংক্ষিপ্ত ব্যাখ্যা দেওয়া হয়নি।";
 
-        // ১. ব্যাখ্যা ফিল্টার
         const explMatch = text.match(/(?:ব্যাখ্যা|explanation|expl)[\s:=]+([^\n\r]+)/i);
         if (explMatch) {
           explanation = explMatch[1].trim();
           text = text.replace(explMatch[0], "");
         }
 
-        // ২. উত্তর ফিল্টার
         const ansMatch = text.match(/(?:উত্তর|সঠিক উত্তর|ans(?:wer)?)[\s:=]+([^\n\r\|]+)/i);
         if (ansMatch) {
           rawAns = ansMatch[1].trim();
           text = text.replace(ansMatch[0], "");
         }
 
-        // ৩. অপশন সূচক বের করা (ক, খ, গ, ঘ অথবা A, B, C, D)
         const regexOpt = /(?:\n|\s|^)([কখগঘABCDabcd])[\)\.\-:\s]/g;
         let matches = [];
         let m;
@@ -1948,7 +2137,6 @@
             if (optStr) options.push(optStr);
           }
         } else {
-          // লাইনভিত্তিক অপশন ব্যাকআপ
           const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
           qText = lines[0].replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
           for (let i = 1; i < lines.length && options.length < 4; i++) {
@@ -1960,7 +2148,6 @@
           options.push(`বিকল্প ${options.length + 1}`);
         }
 
-        // ৪. সঠিক উত্তর ম্যাপিং
         let targetIndex = 0;
         const charMap = { 'ক': 0, 'খ': 1, 'গ': 2, 'ঘ': 3, 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
         
@@ -2012,7 +2199,6 @@
       }
     }
 
-    // প্রিভিউতে সৃজনশীল ও MCQ সাজানো ডিসপ্লে
     function previewExamBeforePublish() {
       const cls = document.getElementById('admClass').value;
       const sub = document.getElementById('admSubject').value;
@@ -2023,7 +2209,7 @@
       const container = document.getElementById('previewContentContainer');
       container.innerHTML = `
         <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:8px; margin-bottom:12px;">
-          <h4 style="color:#1e3a8a;">পরীক্ষা: ${sub || 'বিষয় নেই'} (${cls}ম শ্রেণি)</h4>
+          <h4 style="color:#1e3a8a;">পরীক্ষা: ${sub || 'বিষয় নেই'} (${cls})</h4>
           <p style="font-size:0.82rem; color:#475569;">সময়: ${pDate || ''} | ${pTime || ''} | মোট MCQ: ${smartParsedMcq.length}</p>
         </div>
         
@@ -2041,7 +2227,7 @@
         ` : ''}
 
         ${cqDesc ? `
-          <h5 style="color:#4338ca; margin:14px 0 6px 0;">📝 সৃজনশীল (CQ) প্রশ্নমালা (ছাত্র-ছাত্রীরা যেমন দেখবে):</h5>
+          <h5 style="color:#4338ca; margin:14px 0 6px 0;">📝 সৃজনশীল (CQ) প্রশ্নমালা:</h5>
           <div>${renderFormattedCQ(cqDesc)}</div>
         ` : ''}
       `;
@@ -2059,7 +2245,7 @@
       const container = document.getElementById('previewContentContainer');
       container.innerHTML = `
         <div class="note-item" style="border:1px solid #0d9488;">
-          <h4 style="color:#0d9488;">${title} (${sub} - ${cls}ম শ্রেণি)</h4>
+          <h4 style="color:#0d9488;">${title} (${sub} - ${cls})</h4>
           <p style="font-size:0.85rem; color:#334155; white-space:pre-wrap; margin-top:6px;">${text || 'কোনো টেক্সট নেই'}</p>
         </div>
       `;
@@ -2070,7 +2256,9 @@
       const btn = event?.currentTarget || event?.target;
       const cqFile = document.getElementById('admCqFile').files[0];
       const cqDesc = document.getElementById('admCqDesc').value;
+      const cls = document.getElementById('admClass').value.trim();
 
+      if (!cls) return alert("শ্রেণির নাম লিখুন!");
       if (!smartParsedMcq.length && !cqDesc.trim()) {
         return alert("কমপক্ষে একটি MCQ অথবা CQ সৃজনশীল প্রশ্ন প্রদান করুন!");
       }
@@ -2078,7 +2266,7 @@
       const send = (b64 = "", mime = "") => {
         const payload = {
           action: "saveExamSchedule",
-          classVal: document.getElementById('admClass').value,
+          classVal: cls,
           subject: document.getElementById('admSubject').value,
           publishDate: document.getElementById('admPublishDate').value,
           publishTime: document.getElementById('admPublishTime').value,
@@ -2093,7 +2281,7 @@
 
         postData(payload, res => {
           if (res && res.success) {
-            showAdminMessage("✅ পরীক্ষা সফলভাবে শিডিউল ও প্রকাশ করা হয়েছে!");
+            showAdminMessage("✅ পরীক্ষা সফলভাবে শিডিউল, নোটিশ বোর্ড আপডেট ও SMS পাঠানো হয়েছে!");
             document.getElementById('rawMcqPaste').value = "";
             document.getElementById('admCqDesc').value = "";
             document.getElementById('mcqParsedPreview').classList.add('hidden');
@@ -2117,7 +2305,7 @@
       const textContent = document.getElementById('admNoteText').value;
       const noteFile = document.getElementById('admNoteFile').files[0];
 
-      if (!subject || !title) return alert("বিষয় ও শিরোনাম দিন!");
+      if (!subject || !title || !classVal) return alert("শ্রেণি, বিষয় ও শিরোনাম দিন!");
 
       const send = (b64 = "", mime = "", fname = "") => {
         postData({
@@ -2130,7 +2318,6 @@
             document.getElementById('admNoteTitle').value = "";
             document.getElementById('admNoteText').value = "";
             document.getElementById('admNoteFile').value = "";
-            localStorage.removeItem("gyan_notes_" + classVal);
             loadNoticesAndMotivation();
           }
         }, btn);
@@ -2144,331 +2331,33 @@
     }
 
     function loadClassNotes() {
-      const classVal = document.getElementById('crFilterClass').value;
+      const classVal = document.getElementById('crFilterClass').value.trim();
       if (!classVal) return;
       const container = document.getElementById('notesContainer');
 
-      const cached = localStorage.getItem("gyan_notes_" + classVal);
-      if (cached) {
-        renderNotes(JSON.parse(cached));
-      } else {
-        container.innerHTML = "<p style='text-align:center;'>নোটস লোড হচ্ছে...</p>";
-      }
-
       postData({ action: "getClassroomNotes", classVal: classVal }, res => {
         if (res && res.success) {
-          localStorage.setItem("gyan_notes_" + classVal, JSON.stringify(res.notes));
-          renderNotes(res.notes);
-        }
-      });
-    }
-
-    function renderNotes(notes) {
-      const container = document.getElementById('notesContainer');
-      if (notes && notes.length) {
-        container.innerHTML = notes.map(n => `
-          <div class="note-item">
-            <h4>${n[3]} (${n[2]})</h4>
-            <p style="font-size:0.85rem; color:#334155; white-space:pre-wrap;">${n[4]}</p>
-            ${n[5] ? `<a href="${n[5]}" target="_blank">📥 ফাইল দেখুন/ডাউনলোড</a>` : ''}
-            <div style="font-size:0.7rem; color:#94a3b8; margin-top:4px;">তারিখ: ${n[6]}</div>
-          </div>
-        `).join('');
-      } else {
-        container.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:20px;'>কোনো নোট পাওয়া যায়নি।</p>";
-      }
-    }
-
-    function loadFullProfile() {
-      const btn = event?.currentTarget || event?.target;
-      const reg = document.getElementById('pReg').value;
-      const classVal = document.getElementById('pClass').value;
-      if (!reg || !classVal) return alert("রেজিস্ট্রেশন ও শ্রেণি দিন!");
-
-      postData({ action: "getStudentByClass", reg: reg, classVal: classVal }, res => {
-        if (res && res.success) {
-          currentStudentProfile = res;
-          document.getElementById('profileDisplay').classList.remove('hidden');
-          document.getElementById('profileAvatar').src = res.student[7] || "https://api.iconify.design/fluent-emoji-flat:graduation-cap.svg";
-          document.getElementById('studentDetails').innerHTML = `
-            <p><b>নাম:</b> ${res.student[1]}</p>
-            <p><b>পিতা:</b> ${res.student[2]}</p>
-            <p><b>শ্রেণি:</b> ${res.student[4]} | <b>মোবাইল:</b> ${res.student[5]}</p>
-          `;
-          document.getElementById('examHistoryList').innerHTML = res.results.length ? 
-            res.results.map((r, i) => `<li><b>${i+1}. ${r[3]}</b>: MCQ- ${r[4]} | Total: ${r[6]} (${r[7]})</li>`).join('') :
-            '<li>কোনো ফলাফল নেই।</li>';
-        } else {
-          alert("শিক্ষার্থীর তথ্য মেলেনি!");
-        }
-      }, btn);
-    }
-
-    async function uploadNewProfilePhoto() {
-      const file = document.getElementById('changePhotoInput').files[0];
-      if (!file || !currentStudentProfile) return;
-
-      const avatar = document.getElementById('profileAvatar');
-      avatar.style.opacity = "0.4";
-
-      try {
-        const compressed = await compressImage(file, 500, 0.7);
-        postData({
-          action: "updateStudentPhoto",
-          reg: currentStudentProfile.student[0],
-          photoBase64: compressed.base64,
-          photoMime: compressed.mime
-        }, res => {
-          avatar.style.opacity = "1";
-          if (res && res.success) {
-            alert("প্রোফাইল ছবি সফলভাবে আপডেট হয়েছে!");
-            avatar.src = res.photoUrl;
-            currentStudentProfile.student[7] = res.photoUrl;
+          if (res.notes && res.notes.length) {
+            container.innerHTML = res.notes.map(n => `
+              <div class="note-item">
+                <h4>${n[3]} (${n[2]})</h4>
+                <p style="font-size:0.85rem; color:#334155; white-space:pre-wrap;">${n[4]}</p>
+                ${n[5] ? `<a href="${n[5]}" target="_blank">📥 ফাইল দেখুন/ডাউনলোড</a>` : ''}
+                <div style="font-size:0.7rem; color:#94a3b8; margin-top:4px;">তারিখ: ${n[6]}</div>
+              </div>
+            `).join('');
           } else {
-            alert(res.message || "ছবি আপলোডে ব্যর্থ!");
-          }
-        });
-      } catch (err) {
-        avatar.style.opacity = "1";
-        alert("ছবি প্রসেসিং করতে সমস্যা হয়েছে: " + err);
-      }
-    }
-
-    function generateSscMarksheet() {
-      if (!currentStudentProfile || !currentStudentProfile.results.length) return alert("কোনো ফলাফল নেই!");
-      const st = currentStudentProfile.student;
-      document.getElementById('msName').innerText = st[1];
-      document.getElementById('msFather').innerText = st[2];
-      document.getElementById('msMother').innerText = st[3];
-      document.getElementById('msReg').innerText = st[0];
-      document.getElementById('msClass').innerText = st[4];
-      if (st[7]) document.getElementById('msPhoto').src = st[7];
-
-      document.getElementById('msTableBody').innerHTML = currentStudentProfile.results.map(r => `
-        <tr>
-          <td>${r[3]}</td>
-          <td>${r[4]}</td>
-          <td>${r[5]}</td>
-          <td><b>${r[6]}</b></td>
-          <td><b>${r[7]}</b></td>
-        </tr>
-      `).join('');
-
-      openModal('marksheetModal');
-    }
-
-    async function submitRegistration() {
-      const btn = event?.currentTarget || event?.target;
-      const photoFile = document.getElementById('regPhoto').files[0];
-      const reg = document.getElementById('regNo').value;
-      if (!reg) return alert("রেজিস্ট্রেশন নম্বর দিন!");
-
-      const releaseBtn = setBtnLoading(btn, "ছবি প্রসেস হচ্ছে...");
-
-      let photoBase64 = "";
-      let photoMime = "";
-
-      if (photoFile) {
-        try {
-          const comp = await compressImage(photoFile, 500, 0.7);
-          photoBase64 = comp.base64;
-          photoMime = comp.mime;
-        } catch (e) {
-          console.error(e);
-        }
-      }
-
-      if (releaseBtn) releaseBtn();
-
-      postData({
-        action: "registerStudent",
-        name: document.getElementById('regName').value,
-        father: document.getElementById('regFather').value,
-        mother: document.getElementById('regMother').value,
-        classVal: document.getElementById('regClass').value,
-        reg: reg,
-        mobile: document.getElementById('regMobile').value,
-        pin: document.getElementById('regPin').value,
-        photoBase64: photoBase64,
-        photoMime: photoMime
-      }, res => { 
-        if (res && res.success) {
-          alert("রেজিস্ট্রেশন সম্পূর্ণ হয়েছে!"); 
-          closeModal('regModal'); 
-        } else {
-          alert(res.message || "রেজিস্ট্রেশন ব্যর্থ হয়েছে!");
-        }
-      }, btn);
-    }
-
-    function studentLogin() {
-      const btn = event?.currentTarget || event?.target;
-      const reg = document.getElementById('logReg').value;
-      const pin = document.getElementById('logPin').value;
-      if (!reg || !pin) return alert("সকল তথ্য দিন!");
-
-      postData({ action: "studentLogin", reg: reg, pin: pin }, res => {
-        if (res && res.success) {
-          alert("স্বাগতম, " + res.student[1] + "!");
-          closeModal('loginModal');
-          document.getElementById('pReg').value = reg;
-          document.getElementById('pClass').value = res.student[4];
-          loadFullProfile();
-          openModal('profileModal');
-        } else alert("ভুল তথ্য!");
-      }, btn);
-    }
-
-    function openForgotPinModal() {
-      closeModal('loginModal');
-      openModal('forgotPinModal');
-    }
-
-    function submitForgotPin() {
-      const btn = event?.currentTarget || event?.target;
-      const reg = document.getElementById('fpReg').value;
-      const mobile = document.getElementById('fpMobile').value;
-      const newPin = document.getElementById('fpNewPin').value;
-
-      if (!reg || !mobile || !newPin) return alert("সকল তথ্য দিন!");
-
-      postData({
-        action: "resetStudentPin",
-        reg: reg,
-        mobile: mobile,
-        newPin: newPin
-      }, res => {
-        if (res && res.success) {
-          alert("পিন সফলভাবে পরিবর্তন হয়েছে! নতুন পিন দিয়ে লগইন করুন।");
-          closeModal('forgotPinModal');
-          openModal('loginModal');
-        } else {
-          alert(res.message || "তথ্য মেলেনি!");
-        }
-      }, btn);
-    }
-
-    function changeAdminPin() {
-      const btn = event?.currentTarget || event?.target;
-      const oldPin = document.getElementById('oldPinInput').value;
-      const newPin = document.getElementById('newPinInput').value;
-      if (!oldPin || !newPin) return alert("পিন দিন!");
-
-      postData({ action: "changeAdminPin", oldPin: oldPin, newPin: newPin }, res => {
-        if (res && res.success) {
-          showAdminMessage("✅ পিন সফলভাবে পরিবর্তন হয়েছে!");
-          document.getElementById('oldPinInput').value = "";
-          document.getElementById('newPinInput').value = "";
-        } else alert("বর্তমান পিন সঠিক নয়!");
-      }, btn);
-    }
-
-    function updateMotivationText() {
-      const btn = event?.currentTarget || event?.target;
-      const text = document.getElementById('admMotivationInput').value.trim();
-      if (!text) return alert("মোটিভেশনাল বাণী লিখুন!");
-
-      postData({ action: "updateMotivation", text: text }, res => {
-        if (res && res.success) {
-          showAdminMessage("✅ অনুপ্রেরণামূলক বাণী সফলভাবে আপডেট হয়েছে!");
-          document.getElementById('motivationText').innerText = text;
-          localStorage.setItem("gyan_motivation", text);
-        }
-      }, btn);
-    }
-
-    function loadNoticesAndMotivation() {
-      const cachedMot = localStorage.getItem("gyan_motivation");
-      if (cachedMot) {
-        document.getElementById('motivationText').innerText = cachedMot;
-      }
-
-      postData({ action: "getNoticesAndMotivation" }, res => {
-        if (res && res.success) {
-          if (res.motivation) {
-            document.getElementById('motivationText').innerText = res.motivation;
-            localStorage.setItem("gyan_motivation", res.motivation);
-          }
-
-          const topList = document.getElementById('topNewsListContainer');
-          if (topList && res.notices) {
-            if (res.notices.length === 0) {
-              topList.innerHTML = `<li style="text-align:center; color:#94a3b8; padding:15px;">গত ৭ দিনে কোনো নতুন পরীক্ষা বা নোটিশ নেই।</li>`;
-            } else {
-              topList.innerHTML = res.notices.map(n => `
-                <li class="top-news-item">
-                  <span>${n.text}</span>
-                  <span class="date-tag">${n.date}</span>
-                </li>
-              `).join('');
-            }
+            container.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:20px;'>কোনো নোট পাওয়া যায়নি।</p>";
           }
         }
       });
     }
 
-    function postNoticeFromAdmin() {
-      const btn = event?.currentTarget || event?.target;
-      const text = document.getElementById('admNoticeText').value;
-      if (!text) return alert("নোটিশ লিখুন!");
-
-      postData({ action: "addNotice", text: text }, () => {
-        showAdminMessage("✅ জরুরি নোটিশ বক্সে যুক্ত হয়েছে (৭ দিন থাকবে)!");
-        document.getElementById('admNoticeText').value = "";
-        loadNoticesAndMotivation();
-      }, btn);
-    }
-
-    function submitFeedback() {
-      const btn = event?.currentTarget || event?.target;
-      const name = document.getElementById('fbName').value;
-      const msg = document.getElementById('fbMsg').value;
-      if (!name || !msg) return alert("নাম ও বার্তা দিন!");
-
-      postData({ action: "saveFeedback", name: name, message: msg }, () => {
-        alert("মতামত জমা হয়েছে!");
-        closeModal('feedbackModal');
-      }, btn);
-    }
-
-    // PWA অটো-ইনস্টলেশন
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const hBtn = document.getElementById('pwaInstallHeaderBtn');
-      const mBtn = document.getElementById('pwaInstallMenuBtn');
-      if (hBtn) hBtn.style.display = 'block';
-      if (mBtn) mBtn.style.display = 'block';
-    });
-
-    function triggerPwaInstall() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choice) => {
-          if (choice.outcome === 'accepted') {
-            document.getElementById('pwaInstallHeaderBtn').style.display = 'none';
-            document.getElementById('pwaInstallMenuBtn').style.display = 'none';
-          }
-          deferredPrompt = null;
-        });
-      } else {
-        alert("আপনার ব্রাউজারের ৩-ডট (⋮) মেনুতে চাপ দিয়ে 'Install App' বা 'Add to Home screen' নির্বাচন করুন।");
-      }
-    }
-
-    window.addEventListener('appinstalled', () => {
-      const hBtn = document.getElementById('pwaInstallHeaderBtn');
-      const mBtn = document.getElementById('pwaInstallMenuBtn');
-      if (hBtn) hBtn.style.display = 'none';
-      if (mBtn) mBtn.style.display = 'none';
-      deferredPrompt = null;
-    });
-
-    // পেজ লোড ইনিশিয়ালাইজার
     window.addEventListener('load', () => {
       renderGk('bd');
       loadLiveGk();
       loadLiveFormulas();
+      loadNoticesAndMotivation();
       if (localStorage.getItem('gyan_dark_mode') === 'true') {
         document.body.classList.add('dark-mode');
       }
