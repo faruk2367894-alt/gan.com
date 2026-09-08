@@ -1709,8 +1709,8 @@ body.dark-mode .ms-table td {
 </div>
 
 <!-- এডমিন কন্ট্রোল প্যানেল -->
-<div id="adminPanelModal" class="modal">
-  <div class="modal-box admin-panel">
+<div id="adminPanelModal" class="modal" style="padding:0; margin:0;">
+  <div class="modal-box admin-panel" style="width:100vw; height:100vh; max-width:100%; border-radius:0; display:flex; flex-direction:column; padding:15px; box-sizing:border-box;">
     <div class="modal-header">
       <h3 style="color: #b45309;">এডমিন কন্ট্রোল প্যানেল</h3>
       <button class="close-icon-btn" onclick="closeModal('adminPanelModal')">×</button>
@@ -1726,6 +1726,7 @@ body.dark-mode .ms-table td {
       <button class="admin-tab-btn" onclick="switchAdminTab(event, 'motivationTab')">মোটিভেশনাল উক্তি</button>
       <button class="admin-tab-btn" onclick="switchAdminTab(event, 'noticeTab')">নোটিশ ও রুটিন</button>
       <button class="admin-tab-btn" onclick="switchAdminTab(event, 'pinTab')">পিন পরিবর্তন</button>
+	  <button class="admin-tab-btn" onclick="switchAdminTab(event, 'evalTab'); loadSubmissionsForAdmin();">শিক্ষার্থীদের খাতা মূল্যায়ন</button>
     </div>
 
     <!-- MCQ & CQ শিডিউল ট্যাব -->
@@ -1870,6 +1871,33 @@ body.dark-mode .ms-table td {
       <input type="password" id="newPinInput" placeholder="নতুন পিন">
       <button class="btn btn-blue" onclick="changeAdminPin()">পিন আপডেট করুন</button>
     </div>
+	<!-- খাতা মূল্যায়ন ট্যাব -->
+<div id="evalTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:12px; height:100%; overflow-y:auto;">
+  <div style="display:flex; justify-content:space-between; align-items:center; background:#f1f5f9; padding:10px; border-radius:8px; margin-top:10px;">
+    <h4 style="margin:0; font-size:1rem; color:#1e293b;">জমা হওয়া পরীক্ষার উত্তরপত্র ও খাতা</h4>
+    <button class="btn btn-blue" onclick="loadSubmissionsForAdmin()" style="font-size:0.8rem; padding:6px 12px;">রিফ্রেশ</button>
+  </div>
+
+  <div style="overflow-x:auto; margin-top:8px;">
+    <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.85rem;">
+      <thead>
+        <tr style="background:#e2e8f0; color:#334155;">
+          <th style="padding:8px; border:1px solid #cbd5e1;">শিক্ষার্থী নাম</th>
+          <th style="padding:8px; border:1px solid #cbd5e1;">ক্লাস ও রোল</th>
+          <th style="padding:8px; border:1px solid #cbd5e1;">বিষয়</th>
+          <th style="padding:8px; border:1px solid #cbd5e1;">MCQ মার্কস</th>
+          <th style="padding:8px; border:1px solid #cbd5e1;">CQ খাতা/ফাইল</th>
+          <th style="padding:8px; border:1px solid #cbd5e1;">CQ মার্কস দিন</th>
+          <th style="padding:8px; border:1px solid #cbd5e1;">মোট মার্কস</th>
+          <th style="padding:8px; border:1px solid #cbd5e1;">অ্যাকশন</th>
+        </tr>
+      </thead>
+      <tbody id="adminSubmissionTableBody">
+        <tr><td colspan="8" style="text-align:center; padding:15px;">লোড হচ্ছে...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
   </div>
 </div>
 
@@ -3198,6 +3226,72 @@ window.addEventListener('load', () => {
   const savedNote = localStorage.getItem('gyan_scratchpad');
   if (savedNote && document.getElementById('scratchpadArea')) document.getElementById('scratchpadArea').value = savedNote;
 });
+// এডমিনের জন্য সকল জমা হওয়া খাতা লোড করা
+function loadSubmissionsForAdmin() {
+  const tbody = document.getElementById('adminSubmissionTableBody');
+  tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:15px;">লোড হচ্ছে...</td></tr>';
+  
+  postData({ action: "getAllSubmissions" }, res => {
+    if (res && res.success && res.list) {
+      if(res.list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:15px;">কোনো উত্তরপত্র জমা পড়েনি।</td></tr>';
+        return;
+      }
+      tbody.innerHTML = res.list.map(s => {
+        const mcq = Number(s.mcqMarks) || 0;
+        const cq = Number(s.cqMarks) || 0;
+        const total = mcq + cq;
+        const cqFileView = s.cqAnswer 
+          ? (s.cqAnswer.startsWith('http') ? `<a href="${s.cqAnswer}" target="_blank" style="color:#2563eb; text-decoration:underline; font-weight:bold;">খাতা দেখুন</a>` : `<span title="${s.cqAnswer}">টেক্সট উত্তর</span>`) 
+          : 'জমা দেয়নি';
+
+        return `
+          <tr style="border-bottom:1px solid #cbd5e1;">
+            <td style="padding:8px; border:1px solid #cbd5e1;"><b>${s.studentName}</b></td>
+            <td style="padding:8px; border:1px solid #cbd5e1;">${s.studentClass} (রোল: ${s.studentRoll})</td>
+            <td style="padding:8px; border:1px solid #cbd5e1;">${s.subject}</td>
+            <td style="padding:8px; border:1px solid #cbd5e1; font-weight:bold; color:#0284c7;">${mcq}</td>
+            <td style="padding:8px; border:1px solid #cbd5e1;">${cqFileView}</td>
+            <td style="padding:8px; border:1px solid #cbd5e1;">
+              <input type="number" id="cqInput_${s.rowId}" value="${s.cqMarks !== '' ? s.cqMarks : ''}" style="width:65px; padding:4px; border:1px solid #94a3b8; border-radius:4px;" placeholder="CQ">
+            </td>
+            <td style="padding:8px; border:1px solid #cbd5e1; font-weight:bold; color:#16a34a;" id="totalMarkView_${s.rowId}">${total}</td>
+            <td style="padding:8px; border:1px solid #cbd5e1;">
+              <button class="btn btn-blue" style="padding:4px 8px; font-size:0.75rem;" onclick="saveCqMarksAdmin('${s.rowId}', ${mcq})">সংরক্ষণ</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    } else {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:15px; color:red;">তথ্য লোড করা যায়নি!</td></tr>';
+    }
+  });
+}
+
+// CQ নম্বর সংরক্ষণ এবং Total ক্যালকুলেশন
+function saveCqMarksAdmin(rowId, mcqMarks) {
+  const cqVal = document.getElementById('cqInput_' + rowId).value;
+  if(cqVal === '') {
+    alert('দয়া করে CQ নম্বর লিখুন');
+    return;
+  }
+  const cqMarks = Number(cqVal);
+  const total = mcqMarks + cqMarks;
+
+  postData({
+    action: "gradeCqMarks",
+    rowId: rowId,
+    cqMarks: cqMarks,
+    totalMarks: total
+  }, res => {
+    if(res && res.success) {
+      document.getElementById('totalMarkView_' + rowId).innerText = total;
+      alert('সফলভাবে নম্বর সংরক্ষিত ও শিক্ষার্থীর রেজাল্টে যুক্ত হয়েছে!');
+    } else {
+      alert('সংরক্ষণ করা যায়নি, পুনরায় চেষ্টা করুন।');
+    }
+  });
+}
 </script>
 </body>
 </html>
