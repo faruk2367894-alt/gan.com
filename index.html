@@ -1684,7 +1684,7 @@ body.dark-mode .ms-table td {
 
     <div style="margin-top: 20px; display: flex; justify-content: space-between; font-size: 0.8rem; padding-top: 15px; border-top: 1px dashed #64748b;">
       <span>Controller of Examinations</span>
-      <span>Date: 08/09/2026</span>
+      <span>Date: <span id="msCurrentDate"></span></span>
     </div>
     <div class="no-print" style="margin-top: 12px; display: flex; justify-content: flex-end; gap: 6px;">
       <button class="btn" style="background:#cbd5e1; color:#334155; width:auto;" onclick="closeModal('marksheetModal')">বন্ধ করুন</button>
@@ -2996,6 +2996,7 @@ async function uploadNewProfilePhoto() {
 function generateSscMarksheet() {
   if (!currentStudentProfile || !currentStudentProfile.results.length) return alert("ফলাফল নেই!");
   const st = currentStudentProfile.student;
+  document.getElementById('msCurrentDate').innerText = new Date().toLocaleDateString('en-GB');
   document.getElementById('msName').innerText = st[1];
   document.getElementById('msFather').innerText = st[2];
   document.getElementById('msMother').innerText = st[3];
@@ -5804,6 +5805,8 @@ function autoParseMCQSmart() {
   let cleanRaw = raw.replace(/\*\*/g, '').replace(/###/g, '');
   smartParsedMcq = [];
 
+  const cleanPrefix = (str) => str.replace(/^[\s\(\[\{]*[কখগঘabcdABCD০-৯\d][\)\]\}\.\-:\s]*/gi, '').trim();
+
   const blocks = cleanRaw.split(/(?=\n\s*(?:[০-৯\d]+[\.\)]|\(\d+\)|Q\d+[:\.]))/g);
 
   blocks.forEach((block, index) => {
@@ -5822,9 +5825,9 @@ function autoParseMCQSmart() {
       text = text.replace(ansMatch[0], "");
     }
 
-    const regexOpt = /(?:\n|\s|^)([কখগঘabcd])[\)\.\-:\s]/gi;
+    const regexOpt = /(?:\n|\s|^)(?:[\(\[]?[কখগঘabcd][\)\]\.\-:\s])/gi;
     let matches = [], m;
-    while ((m = regexOpt.exec(text)) !== null) matches.push({ char: m[1], index: m.index });
+    while ((m = regexOpt.exec(text)) !== null) matches.push({ char: m[0], index: m.index });
 
     let qText = "", options = [];
     if (matches.length >= 4) {
@@ -5833,18 +5836,18 @@ function autoParseMCQSmart() {
       for (let i = 0; i < 4; i++) {
         let start = optMatches[i].index;
         let end = (i + 1 < 4) ? optMatches[i + 1].index : text.length;
-        let optStr = text.substring(start, end).replace(/^[কখগঘabcdABCD\)\.\-:\s]+/i, '').trim();
+        let optStr = cleanPrefix(text.substring(start, end));
         if (optStr) options.push(optStr);
       }
     } else {
       const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
       if (lines.length >= 5) {
-        options = lines.slice(-4).map(l => l.replace(/^[কখগঘabcdABCD\)\.\-:\s]+/i, '').trim());
+        options = lines.slice(-4).map(l => cleanPrefix(l));
         qText = lines.slice(0, -4).join('<br>').replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
       } else {
         qText = lines[0] ? lines[0].replace(/^[০-৯\d]+[\.\)]\s*/, '').trim() : "প্রশ্ন";
         for (let i = 1; i < lines.length && options.length < 4; i++) {
-          options.push(lines[i].replace(/^[কখগঘabcdABCD\)\.\-:\s]+/i, '').trim());
+          options.push(cleanPrefix(lines[i]));
         }
       }
     }
@@ -5853,7 +5856,7 @@ function autoParseMCQSmart() {
 
     let targetIndex = 0;
     const charMap = { 'ক': 0, 'খ': 1, 'গ': 2, 'ঘ': 3, 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
-    let firstChar = rawAns ? rawAns.charAt(0).toUpperCase() : '';
+    let firstChar = rawAns ? rawAns.replace(/[\(\)\.\s]/g, '').charAt(0).toUpperCase() : '';
 
     if (charMap[firstChar] !== undefined && charMap[firstChar] < options.length) targetIndex = charMap[firstChar];
     else if (rawAns) {
