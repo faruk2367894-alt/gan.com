@@ -1896,6 +1896,14 @@ body.dark-mode .ms-table td {
     <input type="time" id="editExamTime">
     <input type="number" id="editExamMcqDur" placeholder="MCQ মিনিট">
     <input type="number" id="editExamCqDur" placeholder="CQ মিনিট">
+	<div style="margin-top:10px;">
+        <label style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:4px;">MCQ প্রশ্নাবলি (JSON):</label>
+        <textarea id="editExamMcqJson" class="form-control" rows="4" style="font-size:0.8rem; font-family:monospace; width:100%; box-sizing:border-box;" placeholder="MCQ JSON ডেটা..."></textarea>
+      </div>
+      <div style="margin-top:10px; margin-bottom:12px;">
+        <label style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:4px;">সৃজনশীল প্রশ্ন (CQ):</label>
+        <textarea id="editExamCqDesc" class="form-control" rows="4" style="width:100%; box-sizing:border-box;" placeholder="সৃজনশীল প্রশ্ন লিখুন..."></textarea>
+      </div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('editScheduleModal')">ক্যানসেল</button>
       <button class="btn btn-blue" style="width:auto;" onclick="submitExamUpdate()">আপডেট সংরক্ষণ</button>
@@ -2158,6 +2166,7 @@ function loadLiveFormulas() {
       });
     }
   });
+
 }
 
 function loadAdminExamList() {
@@ -2196,6 +2205,9 @@ function openEditSchedule(id, cls, sub, date, time, mcqDur, cqDur) {
   document.getElementById('editExamTime').value = time;
   document.getElementById('editExamMcqDur').value = mcqDur;
   document.getElementById('editExamCqDur').value = cqDur;
+  const currentEx = (typeof allExamsList !== 'undefined' ? allExamsList : (window.examList || [])).find(e => String(e.id) === String(id)) || {};
+  document.getElementById('editExamMcqJson').value = currentEx.mcqList ? (typeof currentEx.mcqList === 'string' ? currentEx.mcqList : JSON.stringify(currentEx.mcqList, null, 2)) : '';
+  document.getElementById('editExamCqDesc').value = currentEx.cqDescription || '';
   openModal('editScheduleModal');
 }
 
@@ -2209,7 +2221,9 @@ function submitExamUpdate() {
     publishDate: document.getElementById('editExamDate').value,
     publishTime: document.getElementById('editExamTime').value,
     mcqDuration: document.getElementById('editExamMcqDur').value,
-    cqDuration: document.getElementById('editExamCqDur').value
+    cqDuration: document.getElementById('editExamCqDur').value,
+	mcqList: document.getElementById('editExamMcqJson').value,
+    cqDescription: document.getElementById('editExamCqDesc').value,
   }, res => {
     if (res && res.success) {
       closeModal('editScheduleModal');
