@@ -3506,6 +3506,75 @@ window.showToast = function(message, type = 'success') {
 window.alert = function(message) {
   window.showToast(message);
 };
+/* ==========================================================
+   পাবলিশ বা ক্লাস পরিবর্তনের পর MCQ ও CQ বক্স সম্পূর্ণ খালি করার সিস্টেম
+========================================================== */
+
+// ১. পুরো ফর্ম ও প্রিভিউ ঝকঝকে পরিষ্কার করার মূল ফাংশন
+function resetAdminExamForm() {
+  // সকল ইনপুট ও টেক্সটবক্স খালি করা
+  const selectors = [
+    'textarea',
+    'input[type="text"]',
+    'input[type="date"]',
+    'input[type="time"]',
+    'input[type="datetime-local"]',
+    'input[type="file"]'
+  ];
+  
+  selectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.value = '';
+      // লোকাল স্টোরেজের অটো-সেভ ক্যাশ মুছে ফেলা
+      if (el.id) {
+        localStorage.removeItem('auto_save_' + el.id);
+      }
+    });
+  });
+
+  // MCQ ও CQ এর নিচের প্রিভিউ বক্সগুলো ফাঁকা করা
+  const previewBoxes = document.querySelectorAll(
+    '#mcqPreviewContainer, #mcqPreview, #cqPreview, .preview-container, #previewArea'
+  );
+  previewBoxes.forEach(box => {
+    if (box) box.innerHTML = '';
+  });
+
+  // গ্লোবাল ভেরিয়েবলে কোনো আগের ডাটা জমে থাকলে তা খালি করা
+  if (window.parsedQuestions) window.parsedQuestions = [];
+  if (window.mcqData) window.mcqData = [];
+  if (window.cqData) window.cqData = [];
+}
+
+// ২. ক্লাস পরিবর্তন করলেই যাতে আগের ক্লাসের MCQ/CQ সাথে সাথে মুছে যায়
+document.addEventListener('DOMContentLoaded', function() {
+  const classDropdowns = document.querySelectorAll('select');
+  classDropdowns.forEach(select => {
+    select.addEventListener('change', function() {
+      // শুধুমাত্র ক্লাস সংক্রান্ত ড্রপডাউন পরিবর্তন হলে বক্সগুলো ফাঁকা হবে
+      const textareas = document.querySelectorAll('textarea');
+      textareas.forEach(ta => {
+        ta.value = '';
+        if (ta.id) localStorage.removeItem('auto_save_' + ta.id);
+      });
+      const previewBoxes = document.querySelectorAll('#mcqPreviewContainer, #mcqPreview, .preview-container');
+      previewBoxes.forEach(box => { if (box) box.innerHTML = ''; });
+    });
+  });
+});
+
+// ৩. 'শিডিউল ও প্রকাশ করুন' বাটনে চাপ সফল হলে স্বয়ংক্রিয়ভাবে মুছে যাওয়ার ট্রিপার
+const originalPublishExam = window.publishExam || window.scheduleAndPublishExam;
+if (typeof originalPublishExam === 'function') {
+  window.publishExam = async function() {
+    const result = await originalPublishExam.apply(this, arguments);
+    resetAdminExamForm();
+    if (typeof showToast === 'function') {
+      showToast('পরীক্ষা সফলভাবে প্রকাশ হয়েছে এবং ফর্ম খালি করা হয়েছে!', 'success');
+    }
+    return result;
+  };
+}
 </script>
 </body>
 </html>
