@@ -3292,6 +3292,181 @@ function saveCqMarksAdmin(rowId, mcqMarks) {
     }
   });
 }
+/* ==========================================================
+   স্ক্রিন অফ/অন হলেও কাজ ও পেজ আগের অবস্থায় ধরে রাখার অটো-সেভ সিস্টেম
+========================================================== */
+
+// ১. ব্যবহারকারী যাই টাইপ বা সিলেক্ট করুক না কেন সাথে সাথে সেভ রাখা
+document.addEventListener('input', function(e) {
+  if (e.target && e.target.id) {
+    try {
+      localStorage.setItem('auto_save_' + e.target.id, e.target.value);
+    } catch(err) {}
+  }
+});
+
+document.addEventListener('change', function(e) {
+  if (e.target && e.target.id) {
+    try {
+      localStorage.setItem('auto_save_' + e.target.id, e.target.value);
+    } catch(err) {}
+  }
+});
+
+// ২. ব্যবহারকারী বর্তমানে কোন ট্যাবে বা মডালে আছেন তা ট্র্যাক করে রাখা
+function recordActiveState(tabId) {
+  if (tabId) {
+    localStorage.setItem('last_active_tab_id', tabId);
+  }
+}
+
+// এডমিন ট্যাব বদলালে তা সংরক্ষণ
+const originalSwitchAdminTab = window.switchAdminTab;
+if (typeof originalSwitchAdminTab === 'function') {
+  window.switchAdminTab = function(event, tabId) {
+    recordActiveState(tabId);
+    return originalSwitchAdminTab.apply(this, arguments);
+  };
+}
+
+// ৩. ফোনের স্ক্রিন অন হলে বা ব্রাউজারে ফিরে আসলে সব ডাটা ও ট্যাব ফিরিয়ে আনা
+function restoreAllUserData() {
+  // সকল ইনপুট বক্স ও টেক্সটএরিয়ার ডাটা ফিরিয়ে আনা
+  const allInputs = document.querySelectorAll('input, textarea, select');
+  allInputs.forEach(el => {
+    if (el.id && !el.type.includes('password')) { // সিকিউরিটির জন্য পাসওয়ার্ড বাদে
+      const savedVal = localStorage.getItem('auto_save_' + el.id);
+      if (savedVal !== null && savedVal !== undefined) {
+        el.value = savedVal;
+      }
+    }
+  });
+
+  // ব্যবহারকারী যে ট্যাবে কাজ করছিলেন সেখানে ফিরিয়ে নেওয়া
+  const lastTab = localStorage.getItem('last_active_tab_id');
+  if (lastTab) {
+    const targetTabEl = document.getElementById(lastTab);
+    if (targetTabEl) {
+      document.querySelectorAll('.admin-tab-content').forEach(t => t.classList.add('hidden'));
+      targetTabEl.classList.remove('hidden');
+      targetTabEl.style.display = 'block';
+    }
+  }
+}
+
+// ফোনের আলো নিভলে/জ্বললে স্বয়ংক্রিয় শনাক্তকরণ (Visibility Listener)
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible') {
+    // স্ক্রিন অন হওয়ার পর ডাটা রিস্টোর
+    restoreAllUserData();
+  }
+});
+
+// পেজ নতুন করে লোড হলে স্বয়ংক্রিয় রিস্টোর চালু
+window.addEventListener('load', function() {
+  restoreAllUserData();
+});
+
+// ৪. পরীক্ষা সফলভাবে জমা দিলে বা লগআউট করলে পুরনো ক্যাশ মুছে ফেলা
+function clearAutoSavedData() {
+  Object.keys(localStorage).forEach(key => {
+    if (key.startsWith('auto_save_')) {
+      localStorage.removeItem(key);
+    }
+  });
+  localStorage.removeItem('last_active_tab_id');
+}
+/* ==========================================================
+   কাস্টম প্রিমিয়াম স্টাইল অ্যালার্ট (সফল / ব্যর্থ মেসেজ পপআপ)
+========================================================== */
+
+// স্টাইল ইনজেক্ট করা (কোনো সিএসএস ফাইলে আলাদা হাত দিতে হবে না)
+(function initToastStyles() {
+  const style = document.createElement('style');
+  style.innerHTML = `
+    #customToastBox {
+      position: fixed;
+      top: 25px;
+      right: 20px;
+      z-index: 999999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .custom-toast {
+      min-width: 260px;
+      max-width: 90vw;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      backdrop-filter: blur(8px);
+      transform: translateY(-20px);
+      opacity: 0;
+      animation: toastIn 0.35s ease forwards;
+      pointer-events: auto;
+      font-family: inherit;
+    }
+    .toast-success {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-left: 5px solid #34d399;
+    }
+    .toast-error {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      border-left: 5px solid #f87171;
+    }
+    .toast-info {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      border-left: 5px solid #60a5fa;
+    }
+    @keyframes toastIn {
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes toastOut {
+      to { transform: translateY(-15px); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const container = document.createElement('div');
+  container.id = 'customToastBox';
+  document.body.appendChild(container);
+})();
+
+// গ্লোবাল অ্যালার্ট ফাংশন ওভাররাইড
+window.showToast = function(message, type = 'success') {
+  const container = document.getElementById('customToastBox');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+  const isErr = type === 'error' || /ভুল|ব্যর্থ|পাওয়া যায়নি|সমস্যা|error|failed/i.test(message);
+  
+  toast.className = `custom-toast ${isErr ? 'toast-error' : 'toast-success'}`;
+  
+  const icon = isErr 
+    ? `<span style="font-size:1.3rem;">⚠️</span>` 
+    : `<span style="font-size:1.3rem;">✅</span>`;
+
+  toast.innerHTML = `${icon} <span>${message}</span>`;
+  container.appendChild(toast);
+
+  // ৩.৫ সেকেন্ড পর স্বয়ংক্রিয়ভাবে মুছে যাবে
+  setTimeout(() => {
+    toast.style.animation = 'toastOut 0.35s ease forwards';
+    setTimeout(() => toast.remove(), 350);
+  }, 3500);
+};
+
+// ব্রাউজারের ডিফল্ট alert() কে কাস্টম নোটিফিকেশনে রূপান্তর
+window.alert = function(message) {
+  window.showToast(message);
+};
 </script>
 </body>
 </html>
