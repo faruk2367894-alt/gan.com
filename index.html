@@ -1155,7 +1155,7 @@ body.dark-mode .ms-table td {
           <h2 style="color: #1e1b4b; font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 800;" data-i18n="examPortalTitle">✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)</h2>
           <p style="color: #475569; margin-top: 4px; font-size: 0.85rem;" data-i18n="examPortalDesc">এডমিন নির্ধারিত শিডিউল অনুযায়ী MCQ বা CQ পরীক্ষা দিন (যেকোনো একটি দিয়েও জমা দেওয়া যাবে)।</p>
         </div>
-        <button class="btn btn-blue" style="width: auto; padding: 10px 20px;" onclick="openModal('examInitModal')" data-i18n="startExamBtn">পরীক্ষা শুরু করুন</button>
+        <<button class="btn btn-blue" style="width: auto; padding: 10px 20px;" onclick="document.getElementById('examInitModal').style.display='flex'" data-i18n="startExamBtn">পরীক্ষা শুরু করুন</button>
       </div>
     </div>
   </div>
@@ -1378,42 +1378,77 @@ body.dark-mode .ms-table td {
         <small style="color:#64748b; font-size:0.75rem; display:block; margin-top:2px;">* শুধু CQ জমা দিতে চাইলে ফাইল সিলেক্ট করে নিচের বাটনে ক্লিক করুন।</small>
       </div>
     </div>
+<!-- ছোট ক্লাসের জন্য বর্ণনামূলক প্রশ্ন ও উত্তরপত্র ফাইল আপলোড সেকশন -->
+    <div id="textExamSection" style="display: none; margin-bottom: 15px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 15px;">
+      <h4 style="font-size: 0.95rem; color: #4338ca; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">
+        📝 সংক্ষিপ্ত / বর্ণনামূলক প্রশ্ন
+      </h4>
+      
+      <!-- শিক্ষকের সাজানো প্রশ্ন এখানে ফন্ট ও কালারসহ প্রদর্শিত হবে -->
+      <div id="studentRichTextQuestionDisplay" style="padding: 12px; background: #f8fafc; border-radius: 6px; border: 1px dashed #cbd5e1; margin-bottom: 12px; font-size: 0.95rem; line-height: 1.6; color: #0f172a;"></div>
 
+      <!-- উত্তরপত্রের ফাইল/ছবি আপলোডার -->
+      <div style="border: 1.5px dashed #6366f1; padding: 12px; border-radius: 8px; text-align: center; background: #f5f7ff;">
+        <label style="font-size: 0.82rem; font-weight: 700; color: #312e81; display: block; margin-bottom: 6px;">
+          উত্তরপত্রের ছবি (Image) বা ফাইল (PDF) নির্বাচন করুন:
+        </label>
+        <input type="file" id="studentTextExamFile" accept="image/*,.pdf,.doc,.docx" style="display: none;" onchange="handleTextAnswerUpload(this)">
+        <button type="button" class="btn btn-purple" onclick="document.getElementById('studentTextExamFile').click()" style="padding: 6px 14px; font-size: 0.85rem; cursor: pointer;">
+          📁 ফাইল নির্বাচন করুন
+        </button>
+        <div id="textUploadStatus" style="font-size: 0.75rem; color: #64748b; margin-top: 6px;">কোনো ফাইল নির্বাচন করা হয়নি</div>
+      </div>
+    </div>
     <div class="modal-btns">
       <button class="btn btn-green" id="examSubmitBtn" onclick="submitLiveExam()">উত্তরপত্র জমা দিন</button>
     </div>
   </div>
 </div>
 
-<!-- পরীক্ষা যাচাইকরণ মডাল -->
-<div id="examInitModal" class="modal">
-  <div class="modal-box" style="max-width: 420px;">
-    <div class="modal-header">
-      <h3>পরীক্ষা যাচাইকরণ</h3>
-      <button class="close-icon-btn" onclick="closeModal('examInitModal')">×</button>
+<div id="examInitModal" class="modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.7); z-index:99999; align-items:center; justify-content:center; padding:15px; backdrop-filter:blur(3px);">
+  <div class="modal-box" style="background:#ffffff; max-width:430px; width:100%; border-radius:14px; padding:22px; box-shadow:0 20px 40px rgba(0,0,0,0.25); border:1px solid #e2e8f0;">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #f1f5f9; padding-bottom:8px;">
+      <h3 style="margin:0; font-size:1.15rem; font-weight:700; color:#0f172a; display:flex; align-items:center; gap:6px;">
+        <span>🎓</span> <span>পরীক্ষা যাচাইকরণ</span>
+      </h3>
+      <button type="button" onclick="document.getElementById('examInitModal').style.display='none'" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:#64748b; line-height:1;">&times;</button>
     </div>
-    <input type="number" id="stExReg" placeholder="রেজিস্ট্রেশন নম্বর">
-    <select id="stExClass">
-      <option value="">শ্রেণি নির্বাচন করুন</option>
-      <option value="১ম শ্রেণি">১ম শ্রেণি</option>
-      <option value="২য় শ্রেণি">২য় শ্রেণি</option>
-      <option value="৩য় শ্রেণি">৩য় শ্রেণি</option>
-      <option value="৪র্থ শ্রেণি">৪র্থ শ্রেণি</option>
-      <option value="৫ম শ্রেণি">৫ম শ্রেণি</option>
-      <option value="৬ষ্ঠ শ্রেণি">৬ষ্ঠ শ্রেণি</option>
-      <option value="৭ম শ্রেণি">৭ম শ্রেণি</option>
-      <option value="৮ম শ্রেণি">৮ম শ্রেণি</option>
-      <option value="৯ম শ্রেণি">৯ম শ্রেণি</option>
-      <option value="১০ম শ্রেণি">১০ম শ্রেণি</option>
-    </select>
-    <input type="text" id="stExSubject" placeholder="বিষয়ের নাম (যেমন: বাংলা)">
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('examInitModal')">ক্যানসেল</button>
-      <button class="btn btn-blue" style="width:auto;" onclick="loadAndStartExam()">পরীক্ষা শুরু করুন</button>
+
+    <!-- রেজিস্ট্রেশন নম্বর ইনপুট -->
+    <div style="margin-bottom:12px;">
+      <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:5px;">রেজিস্ট্রেশন নম্বর দিন:</label>
+      <input type="number" id="stExReg" placeholder="যেমন: 2026701" oninput="autoDetectStudentAndExam(this.value)" style="width:100%; padding:10px 12px; border:1.5px solid #cbd5e1; border-radius:8px; font-size:1rem; outline:none; box-sizing:border-box; transition:border 0.2s;">
+      <div id="regSearchingSpinner" style="display:none; font-size:0.8rem; color:#2563eb; margin-top:4px; font-weight:600;">🔍 যাচাই করা হচ্ছে...</div>
     </div>
+
+    <!-- শ্রেণি (অটো-ফিল ও লক) -->
+    <div style="margin-bottom:12px;">
+      <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:5px;">শ্রেণি (স্বয়ংক্রিয়):</label>
+      <input type="text" id="stExClassDisplay" readonly placeholder="রেজিস্ট্রেশন দিলে শ্রেণি অটো আসবে..." style="width:100%; padding:10px 12px; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; font-weight:700; color:#1e293b; box-sizing:border-box; cursor:not-allowed;">
+    </div>
+
+    <!-- বিষয়ের নাম (অটো-ফিল ও লক) -->
+    <div style="margin-bottom:15px;">
+      <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:5px;">পরীক্ষার বিষয় (স্বয়ংক্রিয়):</label>
+      <input type="text" id="stExSubjectDisplay" readonly placeholder="পাবলিশ হওয়া বিষয়ের নাম আসবে..." style="width:100%; padding:10px 12px; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; font-weight:700; color:#0284c7; box-sizing:border-box; cursor:not-allowed;">
+    </div>
+
+    <!-- 🔒 পরীক্ষা না থাকলে স্মার্ট লক স্টেট ব্যানার -->
+    <div id="examLockBanner" style="display:none; background:#fff1f2; border:1.5px dashed #f43f5e; border-radius:10px; padding:12px; margin-bottom:15px; text-align:center;">
+      <div style="font-size:1.4rem; margin-bottom:2px;">🔒</div>
+      <div style="font-weight:800; color:#be123c; font-size:0.95rem;">পরীক্ষা লক করা আছে</div>
+      <div id="examLockMsg" style="font-size:0.82rem; color:#9f1239; margin-top:4px; line-height:1.4;">বর্তমানে আপনার শ্রেণির কোনো পরীক্ষা উন্মুক্ত নেই।</div>
+    </div>
+
+    <!-- একশন বাটন -->
+    <div style="display:flex; justify-content:flex-end; gap:8px;">
+     <button type="button" onclick="document.getElementById('examInitModal').style.display='none'" style="background:#e2e8f0; color:#475569; padding:8px 16px; border-radius:7px; font-weight:600; cursor:pointer; border:none;">ক্যানসেল</button>
+      <button type="button" id="startExamActiveBtn" onclick="confirmAndLaunchExam()" disabled style="background:#94a3b8; color:#fff; padding:8px 18px; border-radius:7px; font-weight:700; cursor:not-allowed; border:none; transition:all 0.3s;">পরীক্ষা শুরু করুন</button>
+    </div>
+
   </div>
 </div>
-
 <!-- পরীক্ষা মূল্যায়ন মডাল -->
 <div id="examReviewModal" class="modal">
   <div class="modal-box" style="max-width: 650px;">
@@ -1831,6 +1866,29 @@ body.dark-mode .ms-table td {
           <input type="file" id="admCqFile" style="margin-top:2px; border:none; padding:4px;">
         </div>
       </div>
+	  <!-- ছোট ক্লাসের জন্য বর্ণনামূলক/সংক্ষিপ্ত প্রশ্ন তৈরির রিচ টেক্সট বক্স -->
+<div style="margin-top: 15px; margin-bottom: 12px; background: #1e293b; padding: 12px; border-radius: 8px; border: 1.5px solid #475569;">
+  <label style="color: #38bdf8; font-weight: 700; font-size: 0.9rem; display: block; margin-bottom: 8px;">
+    ✍️ ছোট ক্লাসের সংক্ষিপ্ত / বর্ণনামূলক প্রশ্ন লিখুন (ফন্ট কালার ও সাইজ সাজানো যাবে):
+  </label>
+  
+  <!-- টেক্সট ফরম্যাটিং টুলবার -->
+  <div style="background: #334155; padding: 6px 10px; border-radius: 6px 6px 0 0; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+    <button type="button" onclick="formatAdminText('bold')" style="padding: 3px 8px; font-weight: bold; cursor: pointer; border-radius: 4px; border: 1px solid #64748b;">B</button>
+    <button type="button" onclick="formatAdminText('italic')" style="padding: 3px 8px; font-style: italic; cursor: pointer; border-radius: 4px; border: 1px solid #64748b;">I</button>
+    <button type="button" onclick="formatAdminText('underline')" style="padding: 3px 8px; text-decoration: underline; cursor: pointer; border-radius: 4px; border: 1px solid #64748b;">U</button>
+    <input type="color" onchange="formatAdminText('foreColor', this.value)" title="টেক্সট কালার" style="height: 26px; width: 32px; cursor: pointer; padding: 0; border: none; background: transparent;">
+    <select onchange="formatAdminText('fontSize', this.value)" style="padding: 3px 6px; background: #fff; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">
+      <option value="3">স্বাভাবিক সাইজ</option>
+      <option value="4">মাঝারি</option>
+      <option value="5">বড়</option>
+      <option value="6">খুব বড়</option>
+    </select>
+  </div>
+
+  <!-- শিক্ষক এখানে প্রশ্ন লিখবেন -->
+  <div id="adminTextQuestionInput" contenteditable="true" style="min-height: 100px; background: #0f172a; color: #ffffff; padding: 10px; border-radius: 0 0 6px 6px; outline: none; border: 1px solid #475569; font-size: 0.95rem; line-height: 1.5;" placeholder="এখানে প্রশ্ন লিখুন বা পেস্ট করে কালার/ফন্ট সাজিয়ে নিন..."></div>
+</div>
 
       <div style="display:flex; gap:6px;">
         <button class="btn btn-purple" style="width:35%;" onclick="previewExamBeforePublish()">👁️ প্রিভিউ দেখুন</button>
@@ -3575,6 +3633,266 @@ if (typeof originalPublishExam === 'function') {
     return result;
   };
 }
+/* ==========================================================
+   ১. এডমিন টেক্সট প্রশ্ন ফরম্যাটিং টুল
+========================================================== */
+function formatAdminText(command, value = null) {
+  document.execCommand(command, false, value);
+}
+
+/* ==========================================================
+   ২. নিদিষ্ট শ্রেণির জন্য নিখুঁত ডাইনামিক ফিল্টারিং
+   (যে শ্রেণির জন্য যা সেট হবে শিক্ষার্থী শুধু তাই দেখবে)
+========================================================== */
+function filterExamDisplayForClass(examData) {
+  const mcqSection = document.getElementById('mcqExamSection') || document.querySelector('.mcq-container');
+  const cqSection = document.getElementById('cqExamSection') || document.getElementById('cqFormattedContainer')?.closest('div[style*="margin-bottom"]');
+  const textSection = document.getElementById('textExamSection');
+  const textQuestionDisplay = document.getElementById('studentRichTextQuestionDisplay');
+
+  // ডেটা আছে কি না নিখুঁতভাবে চেক করা
+  const hasMcq = examData.mcqQuestions && examData.mcqQuestions.length > 0;
+  const hasCq = (examData.cqQuestionText && examData.cqQuestionText.trim().length > 0) || examData.cqFileUrl;
+  const hasText = examData.textQuestionContent && examData.textQuestionContent.trim().length > 0;
+
+  // ১. শুধু MCQ থাকলে দেখাবে, না থাকলে একদম লুকাবে
+  if (mcqSection) {
+    mcqSection.style.display = hasMcq ? 'block' : 'none';
+  }
+
+  // ২. শুধু CQ থাকলে দেখাবে, না থাকলে একদম লুকাবে
+  if (cqSection) {
+    cqSection.style.display = hasCq ? 'block' : 'none';
+  }
+
+  // ৩. শুধু টেক্সট প্রশ্ন থাকলে দেখাবে, না থাকলে একদম লুকাবে
+  if (textSection) {
+    if (hasText) {
+      textSection.style.display = 'block';
+      if (textQuestionDisplay) {
+        textQuestionDisplay.innerHTML = examData.textQuestionContent; // শিক্ষকের কালার ও ফন্ট হুবহু থাকবে
+      }
+    } else {
+      textSection.style.display = 'none';
+    }
+  }
+
+  if (typeof showToast === 'function') {
+    showToast('আপনার শ্রেণির জন্য নির্ধারিত প্রশ্ন লোড হয়েছে!', 'success');
+  }
+}
+
+/* ==========================================================
+   ৩. উত্তরপত্রের ফাইল আপলোড ও সাইটের ভেতর সরাসরি খাতা দেখা
+========================================================== */
+let studentUploadedFileBase64 = "";
+
+function handleTextAnswerUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const statusEl = document.getElementById('textUploadStatus');
+  statusEl.innerText = `নির্বাচিত ফাইল: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+  statusEl.style.color = '#059669';
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    studentUploadedFileBase64 = e.target.result;
+    
+    // শিক্ষার্থীর ব্রাউজারে ড্রাফট সেভ রাখা যেন প্রোফাইলে দেখতে পারে
+    localStorage.setItem('student_uploaded_doc', studentUploadedFileBase64);
+    localStorage.setItem('student_uploaded_doc_name', file.name);
+
+    if (typeof showToast === 'function') {
+      showToast('উত্তরপত্রের ফাইল সফলভাবে যুক্ত হয়েছে!', 'success');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+// সাইটের ভেতরে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার ফাংশন
+function openStudentUploadedDoc(targetUrlOrBase64) {
+  const fileData = targetUrlOrBase64 || localStorage.getItem('student_uploaded_doc');
+  const modal = document.getElementById('studentDocViewerModal');
+  const viewerBody = document.getElementById('studentDocViewerBody');
+
+  if (!fileData) {
+    if (typeof showToast === 'function') {
+      showToast('আপলোডকৃত কোনো উত্তরপত্র পাওয়া যায়নি!', 'error');
+    }
+    return;
+  }
+
+  viewerBody.innerHTML = '';
+
+  // ১. গুগল ড্রাইভ লিংক হলে এম্বেড প্রিভিউ
+  if (fileData.includes('drive.google.com')) {
+    const embedUrl = fileData.replace('/view?usp=drivesdk', '/preview').replace('/view', '/preview');
+    viewerBody.innerHTML = `<iframe src="${embedUrl}" style="width:100%; height:100%; border:none; background:#fff; border-radius:8px;"></iframe>`;
+  }
+  // ২. ছবি হলে (JPG, PNG ইত্যাদি)
+  else if (fileData.startsWith('data:image/') || fileData.match(/\.(jpeg|jpg|gif|png|webp)/i)) {
+    viewerBody.innerHTML = `<img src="${fileData}" alt="উত্তরপত্র" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:8px;">`;
+  }
+  // ৩. পিডিএফ ফাইল হলে
+  else if (fileData.startsWith('data:application/pdf')) {
+    viewerBody.innerHTML = `<iframe src="${fileData}" style="width:100%; height:100%; border:none; border-radius:8px;"></iframe>`;
+  }
+  // ৪. অন্য কোনো ডকুমেন্ট ফরম্যাট হলে ডাউনলোড অপশন
+  else {
+    viewerBody.innerHTML = `
+      <div style="color:#ffffff; text-align:center;">
+        <p>ফাইলটি সরাসরি প্রিভিউ করা যাচ্ছে না।</p>
+        <a href="${fileData}" download="answer_script" style="background:#38bdf8; color:#0f172a; padding:8px 16px; border-radius:6px; font-weight:bold; text-decoration:none; display:inline-block; margin-top:8px;">
+          ডাউনলোড করে দেখুন
+        </a>
+      </div>
+    `;
+  }
+
+  modal.style.display = 'flex';
+}
+
+function closeStudentDocViewer() {
+  const modal = document.getElementById('studentDocViewerModal');
+  if (modal) modal.style.display = 'none';
+  document.getElementById('studentDocViewerBody').innerHTML = '';
+}
+/* ==========================================================
+   ১. অটো ক্লাস ও বিষয় ডিটেকশন + স্মার্ট লক লজিক
+========================================================== */
+let activeExamSessionData = null;
+let typingDebounceTimer = null;
+
+function autoDetectStudentAndExam(regValue) {
+  clearTimeout(typingDebounceTimer);
+  const reg = regValue.toString().trim();
+  const classInput = document.getElementById('stExClassDisplay');
+  const subjectInput = document.getElementById('stExSubjectDisplay');
+  const lockBanner = document.getElementById('examLockBanner');
+  const lockMsg = document.getElementById('examLockMsg');
+  const startBtn = document.getElementById('startExamActiveBtn');
+  const spinner = document.getElementById('regSearchingSpinner');
+
+  // ফিল্ড খালি হলে রিসেট
+  if (!reg || reg.length < 3) {
+    if (classInput) classInput.value = '';
+    if (subjectInput) subjectInput.value = '';
+    if (lockBanner) lockBanner.style.display = 'none';
+    if (spinner) spinner.style.display = 'none';
+    if (startBtn) {
+      startBtn.disabled = true;
+      startBtn.style.background = '#94a3b8';
+      startBtn.style.cursor = 'not-allowed';
+    }
+    activeExamSessionData = null;
+    return;
+  }
+
+  if (spinner) spinner.style.display = 'block';
+
+  // টাইপ করার ৫০০ms পর ব্যাকএন্ডে সার্চ যাবে
+  typingDebounceTimer = setTimeout(async () => {
+    try {
+      const payload = {
+        action: "checkStudentActiveExam",
+        regNo: reg
+      };
+
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: JSON.stringify(payload)
+      });
+      const res = await response.json();
+      if (spinner) spinner.style.display = 'none';
+
+      if (res && res.success && res.studentFound) {
+        if (classInput) classInput.value = res.studentClass;
+
+        if (res.hasActiveExam) {
+          // পরীক্ষা চালু আছে
+          if (subjectInput) subjectInput.value = res.examSubject;
+          if (lockBanner) lockBanner.style.display = 'none';
+          if (startBtn) {
+            startBtn.disabled = false;
+            startBtn.style.background = '#2563eb';
+            startBtn.style.cursor = 'pointer';
+          }
+          activeExamSessionData = res.examData;
+        } else {
+          // শিক্ষার্থী আছে কিন্তু কোনো পরীক্ষা পাবলিশ নেই (লক স্টেট)
+          if (subjectInput) subjectInput.value = 'কোনো পরীক্ষা নেই';
+          if (lockBanner) lockBanner.style.display = 'block';
+          if (lockMsg) lockMsg.innerHTML = `আপনার শ্রেণি: <b>${res.studentClass}</b>।<br>🔒 বর্তমানে আপনার শ্রেণির কোনো পরীক্ষা শিডিউল বা উন্মুক্ত নেই।`;
+          if (startBtn) {
+            startBtn.disabled = true;
+            startBtn.style.background = '#94a3b8';
+            startBtn.style.cursor = 'not-allowed';
+          }
+          activeExamSessionData = null;
+        }
+      } else {
+        // শিক্ষার্থী খুঁজে পাওয়া যায়নি
+        if (classInput) classInput.value = 'শিক্ষার্থী পাওয়া যায়নি';
+        if (subjectInput) subjectInput.value = '';
+        if (lockBanner) lockBanner.style.display = 'block';
+        if (lockMsg) lockMsg.innerText = 'এই রেজিস্ট্রেশন নম্বরের কোনো শিক্ষার্থী পাওয়া যায়নি!';
+        if (startBtn) {
+          startBtn.disabled = true;
+          startBtn.style.background = '#94a3b8';
+          startBtn.style.cursor = 'not-allowed';
+        }
+        activeExamSessionData = null;
+      }
+    } catch(err) {
+      if (spinner) spinner.style.display = 'none';
+      console.error("Exam Verification Error:", err);
+    }
+  }, 500);
+}
+
+/* ==========================================================
+   ২. পরীক্ষা শুরু করা এবং সেকশন ফিল্টারিং চালু করা
+========================================================== */
+function confirmAndLaunchExam() {
+  if (!activeExamSessionData) return;
+  
+  const regNo = document.getElementById('stExReg').value.trim();
+  const subject = document.getElementById('stExSubjectDisplay').value;
+
+  closeModal('examInitModal');
+
+  // ১. ডাইনামিক ফিল্টারিং চালু (MCQ / CQ / Text Question)
+  if (typeof filterExamDisplayForClass === 'function') {
+    filterExamDisplayForClass(activeExamSessionData);
+  }
+
+  // ২. শিক্ষার্থীর আগের জমা দেওয়া কোনো অংশ থাকলে তা লক করা
+  if (typeof applySectionLocks === 'function') {
+    applySectionLocks(regNo, subject);
+  }
+
+  // ৩. মূল পরীক্ষা উইন্ডো প্রদর্শন
+  const examContainer = document.getElementById('examContainer') || document.getElementById('examPaperModal') || document.getElementById('examModal');
+  if (examContainer) examContainer.style.display = 'block';
+
+  if (typeof showToast === 'function') {
+    showToast(`${subject} বিষয়ের পরীক্ষা শুরু হয়েছে। শুভকামনা!`, 'success');
+  }
+}
 </script>
+<!-- শিক্ষার্থীর প্রোফাইলে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার প্রিভিউ উইন্ডো -->
+<div id="studentDocViewerModal" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.85); z-index: 999999; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(4px);">
+  <div style="background: #ffffff; width: 100%; max-width: 850px; height: 85vh; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+    <div style="padding: 12px 20px; background: #0f172a; color: #ffffff; display: flex; justify-content: space-between; align-items: center;">
+      <span style="font-weight: 700; font-size: 1rem;">📄 আপনার আপলোডকৃত উত্তরপত্র</span>
+      <button type="button" onclick="closeStudentDocViewer()" style="background: transparent; border: none; color: #ffffff; font-size: 1.6rem; cursor: pointer; line-height: 1;">&times;</button>
+    </div>
+    <div id="studentDocViewerBody" style="flex: 1; background: #334155; display: flex; align-items: center; justify-content: center; overflow: auto; padding: 12px;">
+      <!-- সরাসরি ছবি বা ফাইল এখানে দেখাবে -->
+    </div>
+  </div>
+</div>
 </body>
 </html>
