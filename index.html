@@ -1427,10 +1427,9 @@ body.dark-mode .ms-table td {
     <!-- রেজিস্ট্রেশন নম্বর ইনপুট -->
     <div style="margin-bottom:12px;">
       <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:5px;">রেজিস্ট্রেশন নম্বর দিন:</label>
-      <input type="number" id="stExReg" placeholder="যেমন: 2026701" oninput="autoDetectStudentAndExam(this.value)" style="width:100%; padding:10px 12px; border:1.5px solid #cbd5e1; border-radius:8px; font-size:1rem; outline:none; box-sizing:border-box; transition:border 0.2s;">
+      <input type="number" id="stExReg" placeholder="যেমন: 123456" oninput="autoDetectStudentAndExam(this.value)" style="width:100%; padding:10px 12px; border:1.5px solid #cbd5e1; border-radius:8px; font-size:1rem; outline:none; box-sizing:border-box; transition:border 0.2s;">
       <div id="regSearchingSpinner" style="display:none; font-size:0.8rem; color:#2563eb; margin-top:4px; font-weight:600;">🔍 যাচাই করা হচ্ছে...</div>
     </div>
-
     <!-- শ্রেণি (অটো-ফিল ও লক) -->
     <div style="margin-bottom:12px;">
       <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:5px;">শ্রেণি (স্বয়ংক্রিয়):</label>
@@ -3795,7 +3794,6 @@ function autoDetectStudentAndExam(regValue) {
   const startBtn = document.getElementById('startExamActiveBtn');
   const spinner = document.getElementById('regSearchingSpinner');
 
-  // ফিল্ড খালি হলে রিসেট
   if (!reg || reg.length < 3) {
     if (classInput) classInput.value = '';
     if (subjectInput) subjectInput.value = '';
@@ -3812,7 +3810,6 @@ function autoDetectStudentAndExam(regValue) {
 
   if (spinner) spinner.style.display = 'block';
 
-  // টাইপ করার ৫০০ms পর ব্যাকএন্ডে সার্চ যাবে
   typingDebounceTimer = setTimeout(async () => {
     try {
       const payload = {
@@ -3831,8 +3828,22 @@ function autoDetectStudentAndExam(regValue) {
       if (res && res.success && res.studentFound) {
         if (classInput) classInput.value = res.studentClass;
 
+        // ১. শিক্ষার্থী ইতিমধ্যে পরীক্ষা দিয়ে থাকলে স্থায়ীভাবে লক
+        if (res.alreadySubmitted) {
+          if (subjectInput) subjectInput.value = res.examSubject;
+          if (lockBanner) lockBanner.style.display = 'block';
+          if (lockMsg) lockMsg.innerHTML = `⚠️ <b>${res.studentName}</b>, আপনি ইতিমধ্যে <b>${res.examSubject}</b> বিষয়ের পরীক্ষা সম্পন্ন করেছেন।<br>একজন শিক্ষার্থী শুধুমাত্র একবারই পরীক্ষা দিতে পারবে।`;
+          if (startBtn) {
+            startBtn.disabled = true;
+            startBtn.style.background = '#94a3b8';
+            startBtn.style.cursor = 'not-allowed';
+          }
+          activeExamSessionData = null;
+          return;
+        }
+
+        // ২. নতুন পরীক্ষা উন্মুক্ত থাকলে
         if (res.hasActiveExam) {
-          // পরীক্ষা চালু আছে
           if (subjectInput) subjectInput.value = res.examSubject;
           if (lockBanner) lockBanner.style.display = 'none';
           if (startBtn) {
@@ -3842,10 +3853,10 @@ function autoDetectStudentAndExam(regValue) {
           }
           activeExamSessionData = res.examData;
         } else {
-          // শিক্ষার্থী আছে কিন্তু কোনো পরীক্ষা পাবলিশ নেই (লক স্টেট)
+          // কোনো পরীক্ষা শিডিউল না থাকলে
           if (subjectInput) subjectInput.value = 'কোনো পরীক্ষা নেই';
           if (lockBanner) lockBanner.style.display = 'block';
-          if (lockMsg) lockMsg.innerHTML = `আপনার শ্রেণি: <b>${res.studentClass}</b>।<br>🔒 বর্তমানে আপনার শ্রেণির কোনো পরীক্ষা শিডিউল বা উন্মুক্ত নেই।`;
+          if (lockMsg) lockMsg.innerHTML = `আপনার শ্রেণি: <b>${res.studentClass}</b>।<br>🔒 বর্তমানে আপনার শ্রেণির কোনো পরীক্ষা শিডিউল নেই।`;
           if (startBtn) {
             startBtn.disabled = true;
             startBtn.style.background = '#94a3b8';
@@ -3854,7 +3865,7 @@ function autoDetectStudentAndExam(regValue) {
           activeExamSessionData = null;
         }
       } else {
-        // শিক্ষার্থী খুঁজে পাওয়া যায়নি
+        // শিক্ষার্থী খুঁজে না পাওয়া গেলে
         if (classInput) classInput.value = 'শিক্ষার্থী পাওয়া যায়নি';
         if (subjectInput) subjectInput.value = '';
         if (lockBanner) lockBanner.style.display = 'block';
@@ -3872,7 +3883,6 @@ function autoDetectStudentAndExam(regValue) {
     }
   }, 500);
 }
-
 /* ==========================================================
    পরীক্ষা শুরু ও লাইভ পেজ প্রদর্শন (১০০% দৃশ্যমান ফিক্স)
 ========================================================== */
