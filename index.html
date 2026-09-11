@@ -3852,7 +3852,7 @@ function autoDetectStudentAndExam(regValue) {
 }
 
 /* ==========================================================
-   ২. পরীক্ষা শুরু করা এবং সেকশন ফিল্টারিং চালু করা
+   পরীক্ষা শুরু ও লাইভ পেজ প্রদর্শন (সংশোধিত)
 ========================================================== */
 function confirmAndLaunchExam() {
   if (!activeExamSessionData) return;
@@ -3860,48 +3860,28 @@ function confirmAndLaunchExam() {
   const regNo = document.getElementById('stExReg').value.trim();
   const subject = document.getElementById('stExSubjectDisplay').value;
 
-  closeModal('examInitModal');
- // শর্ট বা বর্ণনামূলক প্রশ্ন স্ক্রিনে প্রদর্শন
-  const questionBox = document.getElementById('studentRichTextQuestionDisplay');
-  if (questionBox && activeExamSessionData) {
-    let rawContent = activeExamSessionData.textQuestionContent || "";
-    let formattedHtml = "";
-
-    try {
-      const parsed = JSON.parse(rawContent);
-      if (Array.isArray(parsed)) {
-        formattedHtml = parsed.map((item, idx) => {
-          let opts = item.options ? `<div style="margin-top:5px; color:#475569;">${Object.entries(item.options).map(([k, v]) => `<span>(${k}) ${v}</span> &nbsp; `).join('')}</div>` : '';
-          return `<div style="margin-bottom:15px; padding:10px; background:#f8fafc; border-left:4px solid #3b82f6; border-radius:4px;">
-                    <strong>প্রশ্ন ${idx + 1}:</strong> ${item.question || ''}
-                    ${opts}
-                  </div>`;
-        }).join('');
-      } else {
-        formattedHtml = rawContent;
-      }
-    } catch (e) {
-      formattedHtml = rawContent;
-    }
-
-    questionBox.innerHTML = formattedHtml || "<p style='color:#64748b;'>কোনো প্রশ্ন পাওয়া যায়নি।</p>";
+  // ১. ভেরিফিকেশন পপআপ বন্ধ করা
+  const initModal = document.getElementById('examInitModal');
+  if (initModal) {
+    initModal.style.display = 'none';
   }
-  // ১. ডাইনামিক ফিল্টারিং চালু (MCQ / CQ / Text Question)
+
+  // ২. গ্লোবাল এক্সাম ভেরিয়েবলে ব্যাকএন্ড থেকে আসা সম্পূর্ণ ডাটা সেট করা
+  activeExamData = Object.assign({}, activeExamSessionData);
+  activeExamData.studentReg = regNo;
+  activeExamData.studentClass = document.getElementById('stExClassDisplay').value;
+  activeExamData.studentName = activeExamSessionData.studentName || "শিক্ষার্থী";
+
+  // ৩. ডাইনামিক প্রশ্ন ফিল্টার চালানো (যদি থাকে)
   if (typeof filterExamDisplayForClass === 'function') {
-    filterExamDisplayForClass(activeExamSessionData);
+    filterExamDisplayForClass(activeExamData);
   }
 
-  // ২. শিক্ষার্থীর আগের জমা দেওয়া কোনো অংশ থাকলে তা লক করা
-  if (typeof applySectionLocks === 'function') {
-    applySectionLocks(regNo, subject);
-  }
-
-  // ৩. মূল পরীক্ষা উইন্ডো প্রদর্শন
-  const examContainer = document.getElementById('examContainer') || document.getElementById('examPaperModal') || document.getElementById('examModal');
-  if (examContainer) examContainer.style.display = 'block';
+  // ৪. সরাসরি লাইভ পরীক্ষার মূল উইন্ডো চালু এবং টাইমার শুরু করা
+  startLiveExamSession();
 
   if (typeof showToast === 'function') {
-    showToast(`${subject} বিষয়ের পরীক্ষা শুরু হয়েছে। শুভকামনা!`, 'success');
+    showToast(`${subject} বিষয়ের পরীক্ষা শুরু হয়েছে। শুভকামনা!`, 'success');
   }
 }
 /* ==========================================================
