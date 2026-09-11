@@ -1467,7 +1467,7 @@ body.dark-mode .ms-table td {
   <select id="stExSubjectSelect" onchange="onExamSubjectSelectChange()" style="width:100%; padding:10px 12px; background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; font-weight:700; color:#0284c7; box-sizing:border-box; outline:none; font-size:0.95rem;">
     <option value="">রেজিস্ট্রেশন নম্বর দিলে বিষয় আসবে...</option>
   </select>
-</div>>
+</div>
 
     <!-- 🔒 পরীক্ষা না থাকলে স্মার্ট লক স্টেট ব্যানার -->
     <div id="examLockBanner" style="display:none; background:#fff1f2; border:1.5px dashed #f43f5e; border-radius:10px; padding:12px; margin-bottom:15px; text-align:center;">
@@ -3924,9 +3924,11 @@ function onExamSubjectSelectChange() {
 ========================================================== */
 function confirmAndLaunchExam() {
   if (!activeExamSessionData) return;
+const regEl = document.getElementById('stExReg');
+  const regNo = regEl ? regEl.value.trim() : "";
 
-  const regNo = document.getElementById('stExReg').value.trim();
-  const subject = document.getElementById('stExSubjectDisplay').value;
+  const subEl = document.getElementById('stExSubjectDisplay') || document.getElementById('stExSubject') || document.getElementById('examSubject');
+  const subject = subEl ? (subEl.value || subEl.textContent || "").trim() : "";
 
   // ১. ভেরিফিকেশন পপআপকে জোরপূর্বক বন্ধ ও স্ক্রিন থেকে গায়েব করা
   const initModal = document.getElementById('examInitModal');
@@ -3936,11 +3938,15 @@ function confirmAndLaunchExam() {
   }
 
   // ২. গ্লোবাল ডেটা অবজেক্ট তৈরি
-  activeExamData = Object.assign({}, activeExamSessionData);
-  activeExamData.studentReg = regNo;
-  activeExamData.studentClass = document.getElementById('stExClassDisplay').value;
-  activeExamData.studentName = activeExamSessionData.studentName || "শিক্ষার্থী";
-  activeExamData.subject = subject;
+activeExamData = Object.assign({}, activeExamSessionData);
+activeExamData.studentReg = regNo;
+
+// এই লাইনটি আপডেট করুন (শ্রেণির জন্য সেইফগার্ড):
+const clsEl = document.getElementById('stExClassDisplay') || document.getElementById('stExClass');
+activeExamData.studentClass = clsEl ? (clsEl.value || clsEl.textContent || "").trim() : "";
+
+activeExamData.studentName = activeExamSessionData.studentName || "শিক্ষার্থী";
+activeExamData.subject = subject;
 
   // ৩. টাইমার ও প্রশ্ন রেন্ডারিং ফাংশন কার্যকর করা
   if (typeof startLiveExamSession === 'function') {
