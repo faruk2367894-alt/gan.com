@@ -1399,8 +1399,7 @@ body.dark-mode .ms-table td {
         <div id="textUploadStatus" style="font-size: 0.75rem; color: #64748b; margin-top: 6px;">কোনো ফাইল নির্বাচন করা হয়নি</div>
       </div>
     </div>
-    <div class="modal-btns">
-      <button class="btn btn-green" id="examSubmitBtn" onclick="submitLiveExam()">উত্তরপত্র জমা দিন</button>
+    <div class="modal-btns"><button class="btn btn-green" id="examSubmitBtn" onclick="submitShortQuestionStandalone()">উত্তরপত্র জমা দিন</button>
     </div>
   </div>
 </div>
@@ -3862,7 +3861,31 @@ function confirmAndLaunchExam() {
   const subject = document.getElementById('stExSubjectDisplay').value;
 
   closeModal('examInitModal');
+ // শর্ট বা বর্ণনামূলক প্রশ্ন স্ক্রিনে প্রদর্শন
+  const questionBox = document.getElementById('studentRichTextQuestionDisplay');
+  if (questionBox && activeExamSessionData) {
+    let rawContent = activeExamSessionData.textQuestionContent || "";
+    let formattedHtml = "";
 
+    try {
+      const parsed = JSON.parse(rawContent);
+      if (Array.isArray(parsed)) {
+        formattedHtml = parsed.map((item, idx) => {
+          let opts = item.options ? `<div style="margin-top:5px; color:#475569;">${Object.entries(item.options).map(([k, v]) => `<span>(${k}) ${v}</span> &nbsp; `).join('')}</div>` : '';
+          return `<div style="margin-bottom:15px; padding:10px; background:#f8fafc; border-left:4px solid #3b82f6; border-radius:4px;">
+                    <strong>প্রশ্ন ${idx + 1}:</strong> ${item.question || ''}
+                    ${opts}
+                  </div>`;
+        }).join('');
+      } else {
+        formattedHtml = rawContent;
+      }
+    } catch (e) {
+      formattedHtml = rawContent;
+    }
+
+    questionBox.innerHTML = formattedHtml || "<p style='color:#64748b;'>কোনো প্রশ্ন পাওয়া যায়নি।</p>";
+  }
   // ১. ডাইনামিক ফিল্টারিং চালু (MCQ / CQ / Text Question)
   if (typeof filterExamDisplayForClass === 'function') {
     filterExamDisplayForClass(activeExamSessionData);
@@ -3879,6 +3902,80 @@ function confirmAndLaunchExam() {
 
   if (typeof showToast === 'function') {
     showToast(`${subject} বিষয়ের পরীক্ষা শুরু হয়েছে। শুভকামনা!`, 'success');
+  }
+}
+/* ==========================================================
+   শর্ট প্রশ্ন / টেক্সট বক্স এককভাবে সাবমিট ও পার্মানেন্ট লক
+========================================================== */
+async function submitShortQuestionStandalone() {
+  const regNo = document.getElementById('stExReg').value.trim();
+  const studentClass = document.getElementById('stExClassDisplay').value.trim();
+  const subject = document.getElementById('stExSubjectDisplay').value.trim();
+  
+  // শর্ট প্রশ্নের টেক্সট বা খাতার ছবি সংগ্রহ
+  const shortTextAns = (document.getElementById('studentRichTextQuestionDisplay') || document.getElementById('shortAnswerInput') || {}).value || "";
+  const uploadedFiles = window.uploadedStudentFiles || []; // আপনার আপলোড করা ফাইলের তালিকা
+
+  if (!shortTextAns && uploadedFiles.length === 0) {
+    alert("অনুগ্রহ করে শর্ট প্রশ্নের উত্তর লিখুন অথবা খাতার ছবি আপলোড করুন!");
+    return;
+  }
+
+  const submitBtn = document.getElementById('examSubmitBtn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerText = "জমা হচ্ছে...";
+  }
+
+  const payload = {
+    action: "submitSectionWiseExam",
+    regNo: regNo,
+    studentClass: studentClass,
+    subject: subject,
+    sectionType: "text", // সরাসরি টেক্সট/শর্ট প্রশ্ন সেকশন
+    data: JSON.stringify({
+      textAnswer: shortTextAns,
+      files: uploadedFiles
+    }),
+    submissionTime: new Date().toLocaleTimeString()
+  };
+
+  try {
+    const response = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json();
+
+    if (result.success) {
+      alert("✅ শর্ট প্রশ্নের উত্তর সফলভাবে জমা হয়েছে!");
+      
+      // শর্ট প্রশ্ন বক্স চিরতরে লক করা
+      const shortInput = document.getElementById('studentRichTextQuestionDisplay') || document.getElementById('shortAnswerInput');
+      if (shortInput) shortInput.disabled = true;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = "🔒 জমাকৃত (লক)";
+        submitBtn.style.background = "#64748b";
+      }
+
+      // লোকাল স্টোরেজে লক সংরক্ষণ
+      localStorage.setItem(`lock_${regNo}_${subject}_text`, "submitted");
+    } else {
+      alert("জমা দিতে সমস্যা হয়েছে: " + (result.message || ""));
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "পুনরায় জমা দিন";
+      }
+    }
+  } catch(err) {
+    console.error(err);
+    alert("সার্ভার ত্রুটি! ইন্টারনেট কানেকশন চেক করুন।");
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "পুনরায় চেষ্টা করুন";
+    }
   }
 }
 </script>
