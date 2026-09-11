@@ -1095,6 +1095,31 @@ body.dark-mode .ms-table td {
   }
 }
 </style>
+<!-- OneSignal Web Push SDK Integration -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "d90e62f0-9ab2-442b-b086-4be5edb9b760",
+      promptOptions: {
+        slidedown: {
+          prompts: [
+            {
+              type: "push",
+              autoPrompt: true,
+              text: {
+                actionMessage: "নতুন পরীক্ষার সময়সূচি ও রেজাল্ট সাথে সাথে নোটিফিকেশনে পেতে পারমিশন এলাও করুন।",
+                acceptButton: "অনুমতি দিন",
+                cancelButton: "পরে করব"
+              }
+            }
+          ]
+        }
+      }
+    });
+  });
+</script>
 </head>
 <body class="notranslate">
 
@@ -1436,11 +1461,13 @@ body.dark-mode .ms-table td {
       <input type="text" id="stExClassDisplay" readonly placeholder="রেজিস্ট্রেশন দিলে শ্রেণি অটো আসবে..." style="width:100%; padding:10px 12px; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; font-weight:700; color:#1e293b; box-sizing:border-box; cursor:not-allowed;">
     </div>
 
-    <!-- বিষয়ের নাম (অটো-ফিল ও লক) -->
-    <div style="margin-bottom:15px;">
-      <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:5px;">পরীক্ষার বিষয় (স্বয়ংক্রিয়):</label>
-      <input type="text" id="stExSubjectDisplay" readonly placeholder="পাবলিশ হওয়া বিষয়ের নাম আসবে..." style="width:100%; padding:10px 12px; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; font-weight:700; color:#0284c7; box-sizing:border-box; cursor:not-allowed;">
-    </div>
+    <!-- বিষয়ের নাম (ড্রপডাউন সিলেক্টর) -->
+<div style="margin-bottom:15px;">
+  <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:5px;">পরীক্ষার বিষয় নির্বাচন করুন:</label>
+  <select id="stExSubjectSelect" onchange="onExamSubjectSelectChange()" style="width:100%; padding:10px 12px; background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; font-weight:700; color:#0284c7; box-sizing:border-box; outline:none; font-size:0.95rem;">
+    <option value="">রেজিস্ট্রেশন নম্বর দিলে বিষয় আসবে...</option>
+  </select>
+</div>>
 
     <!-- 🔒 পরীক্ষা না থাকলে স্মার্ট লক স্টেট ব্যানার -->
     <div id="examLockBanner" style="display:none; background:#fff1f2; border:1.5px dashed #f43f5e; border-radius:10px; padding:12px; margin-bottom:15px; text-align:center;">
@@ -2174,7 +2201,7 @@ const nctbBooks = {
   "৬ষ্ঠ শ্রেণি": [{ name: "বাংলা", url: "https://nctb.gov.bd" }, { name: "English", url: "https://nctb.gov.bd" }, { name: "গণিত", url: "https://nctb.gov.bd" }, { name: "বিজ্ঞান", url: "https://nctb.gov.bd" }],
   "৭ম শ্রেণি": [{ name: "বাংলা", url: "https://nctb.gov.bd" }, { name: "English", url: "https://nctb.gov.bd" }, { name: "গণিত", url: "https://nctb.gov.bd" }, { name: "বিজ্ঞান", url: "https://nctb.gov.bd" }],
   "৮ম শ্রেণি": [{ name: "বাংলা", url: "https://nctb.gov.bd" }, { name: "English", url: "https://nctb.gov.bd" }, { name: "গণিত", url: "https://nctb.gov.bd" }, { name: "বিজ্ঞান", url: "https://nctb.gov.bd" }],
-  "৯ম শ্রেণি": [{ name: "বাংলা সাহিত্য", url: "https://nctb.gov.bd" }, { name: "English For Today", url: "https://nctb.gov.bd" }, { name: "সাধারণ গণিত", url: "https://nctb.gov.bd" }, { name: "উচ্চতর গণিত", url: "https://nctb.gov.bd" }, { name: "পদার্থবিজ্ঞান", url: "https://nctb.gov.bd" }, { name: "রসায়ন", url: "https://nctb.gov.bd" }],
+  "৯ম শ্রেণি": [{ name: "বাংলা সাহিত্য", url: "https://nctbbook.com/class-9-book-2026/" }, { name: "English For Today", url: "https://nctb.gov.bd" }, { name: "সাধারণ গণিত", url: "https://nctb.gov.bd" }, { name: "উচ্চতর গণিত", url: "https://nctb.gov.bd" }, { name: "পদার্থবিজ্ঞান", url: "https://nctb.gov.bd" }, { name: "রসায়ন", url: "https://nctb.gov.bd" }],
   "১০ম শ্রেণি": [{ name: "বাংলা সাহিত্য", url: "https://nctb.gov.bd" }, { name: "English For Today", url: "https://nctb.gov.bd" }, { name: "সাধারণ গণিত", url: "https://nctb.gov.bd" }, { name: "উচ্চতর গণিত", url: "https://nctb.gov.bd" }, { name: "পদার্থবিজ্ঞান", url: "https://nctb.gov.bd" }, { name: "রসায়ন", url: "https://nctb.gov.bd" }]
 };
 
@@ -3446,12 +3473,12 @@ if (typeof originalSwitchAdminTab === 'function') {
   };
 }
 
-// ৩. ফোনের স্ক্রিন অন হলে বা ব্রাউজারে ফিরে আসলে সব ডাটা ও ট্যাব ফিরিয়ে আনা
+// ৩. স্ক্রিন অন হলে বা ব্রাউজারে ফিরে আসলে সব ডাটা ও ট্যাব ফিরিয়ে আনা (ফিক্সড)
 function restoreAllUserData() {
-  // সকল ইনপুট বক্স ও টেক্সটএরিয়ার ডাটা ফিরিয়ে আনা
   const allInputs = document.querySelectorAll('input, textarea, select');
   allInputs.forEach(el => {
-    if (el.id && !el.type.includes('password')) { // সিকিউরিটির জন্য পাসওয়ার্ড বাদে
+    // পাসওয়ার্ড এবং ফাইল টাইপ ইনপুট বাদে বাকিগুলোর মান রিস্টোর হবে
+    if (el.id && !el.type.includes('password') && el.type !== 'file') {
       const savedVal = localStorage.getItem('auto_save_' + el.id);
       if (savedVal !== null && savedVal !== undefined) {
         el.value = savedVal;
@@ -3459,7 +3486,6 @@ function restoreAllUserData() {
     }
   });
 
-  // ব্যবহারকারী যে ট্যাবে কাজ করছিলেন সেখানে ফিরিয়ে নেওয়া
   const lastTab = localStorage.getItem('last_active_tab_id');
   if (lastTab) {
     const targetTabEl = document.getElementById(lastTab);
@@ -3783,12 +3809,13 @@ function closeStudentDocViewer() {
 ========================================================== */
 let activeExamSessionData = null;
 let typingDebounceTimer = null;
+let currentAvailableExamsList = [];
 
 function autoDetectStudentAndExam(regValue) {
   clearTimeout(typingDebounceTimer);
   const reg = regValue.toString().trim();
   const classInput = document.getElementById('stExClassDisplay');
-  const subjectInput = document.getElementById('stExSubjectDisplay');
+  const subjectSelect = document.getElementById('stExSubjectSelect');
   const lockBanner = document.getElementById('examLockBanner');
   const lockMsg = document.getElementById('examLockMsg');
   const startBtn = document.getElementById('startExamActiveBtn');
@@ -3796,7 +3823,7 @@ function autoDetectStudentAndExam(regValue) {
 
   if (!reg || reg.length < 3) {
     if (classInput) classInput.value = '';
-    if (subjectInput) subjectInput.value = '';
+    if (subjectSelect) subjectSelect.innerHTML = '<option value="">রেজিস্ট্রেশন নম্বর দিলে বিষয় আসবে...</option>';
     if (lockBanner) lockBanner.style.display = 'none';
     if (spinner) spinner.style.display = 'none';
     if (startBtn) {
@@ -3828,35 +3855,23 @@ function autoDetectStudentAndExam(regValue) {
       if (res && res.success && res.studentFound) {
         if (classInput) classInput.value = res.studentClass;
 
-        // ১. শিক্ষার্থী ইতিমধ্যে পরীক্ষা দিয়ে থাকলে স্থায়ীভাবে লক
-        if (res.alreadySubmitted) {
-          if (subjectInput) subjectInput.value = res.examSubject;
-          if (lockBanner) lockBanner.style.display = 'block';
-          if (lockMsg) lockMsg.innerHTML = `⚠️ <b>${res.studentName}</b>, আপনি ইতিমধ্যে <b>${res.examSubject}</b> বিষয়ের পরীক্ষা সম্পন্ন করেছেন।<br>একজন শিক্ষার্থী শুধুমাত্র একবারই পরীক্ষা দিতে পারবে।`;
+        if (res.hasAvailableExams) {
+          currentAvailableExamsList = res.availableExams;
+          if (subjectSelect) {
+            subjectSelect.innerHTML = '<option value="">-- বিষয় নির্বাচন করুন --</option>' + 
+              res.availableExams.map((ex, idx) => `<option value="${idx}">${ex.subject}</option>`).join('');
+          }
+          if (lockBanner) lockBanner.style.display = 'none';
+          
           if (startBtn) {
             startBtn.disabled = true;
             startBtn.style.background = '#94a3b8';
             startBtn.style.cursor = 'not-allowed';
           }
-          activeExamSessionData = null;
-          return;
-        }
-
-        // ২. নতুন পরীক্ষা উন্মুক্ত থাকলে
-        if (res.hasActiveExam) {
-          if (subjectInput) subjectInput.value = res.examSubject;
-          if (lockBanner) lockBanner.style.display = 'none';
-          if (startBtn) {
-            startBtn.disabled = false;
-            startBtn.style.background = '#2563eb';
-            startBtn.style.cursor = 'pointer';
-          }
-          activeExamSessionData = res.examData;
         } else {
-          // কোনো পরীক্ষা শিডিউল না থাকলে
-          if (subjectInput) subjectInput.value = 'কোনো পরীক্ষা নেই';
+          if (subjectSelect) subjectSelect.innerHTML = '<option value="">কোনো পরীক্ষা অবশিষ্ট নেই</option>';
           if (lockBanner) lockBanner.style.display = 'block';
-          if (lockMsg) lockMsg.innerHTML = `আপনার শ্রেণি: <b>${res.studentClass}</b>।<br>🔒 বর্তমানে আপনার শ্রেণির কোনো পরীক্ষা শিডিউল নেই।`;
+          if (lockMsg) lockMsg.innerHTML = `👏 <b>${res.studentName}</b>, আপনার শ্রেণির সকল পরীক্ষা সম্পন্ন হয়েছে অথবা বর্তমানে কোনো পরীক্ষা উন্মুক্ত নেই।`;
           if (startBtn) {
             startBtn.disabled = true;
             startBtn.style.background = '#94a3b8';
@@ -3865,11 +3880,10 @@ function autoDetectStudentAndExam(regValue) {
           activeExamSessionData = null;
         }
       } else {
-        // শিক্ষার্থী খুঁজে না পাওয়া গেলে
-        if (classInput) classInput.value = 'শিক্ষার্থী পাওয়া যায়নি';
-        if (subjectInput) subjectInput.value = '';
+        if (classInput) classInput.value = 'শিক্ষার্থী পাওয়া যায়নি';
+        if (subjectSelect) subjectSelect.innerHTML = '<option value="">বিষয় পাওয়া যায়নি</option>';
         if (lockBanner) lockBanner.style.display = 'block';
-        if (lockMsg) lockMsg.innerText = 'এই রেজিস্ট্রেশন নম্বরের কোনো শিক্ষার্থী পাওয়া যায়নি!';
+        if (lockMsg) lockMsg.innerText = 'এই রেজিস্ট্রেশন নম্বরের কোনো শিক্ষার্থী পাওয়া যায়নি!';
         if (startBtn) {
           startBtn.disabled = true;
           startBtn.style.background = '#94a3b8';
@@ -3882,6 +3896,28 @@ function autoDetectStudentAndExam(regValue) {
       console.error("Exam Verification Error:", err);
     }
   }, 500);
+}
+
+function onExamSubjectSelectChange() {
+  const select = document.getElementById('stExSubjectSelect');
+  const startBtn = document.getElementById('startExamActiveBtn');
+  const selectedIndex = select.value;
+
+  if (selectedIndex !== "" && currentAvailableExamsList[selectedIndex]) {
+    activeExamSessionData = currentAvailableExamsList[selectedIndex];
+    if (startBtn) {
+      startBtn.disabled = false;
+      startBtn.style.background = '#2563eb';
+      startBtn.style.cursor = 'pointer';
+    }
+  } else {
+    activeExamSessionData = null;
+    if (startBtn) {
+      startBtn.disabled = true;
+      startBtn.style.background = '#94a3b8';
+      startBtn.style.cursor = 'not-allowed';
+    }
+  }
 }
 /* ==========================================================
    পরীক্ষা শুরু ও লাইভ পেজ প্রদর্শন (১০০% দৃশ্যমান ফিক্স)
