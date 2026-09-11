@@ -1155,7 +1155,7 @@ body.dark-mode .ms-table td {
           <h2 style="color: #1e1b4b; font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 800;" data-i18n="examPortalTitle">✍️ অনলাইন পরীক্ষা পোর্টাল (১ম - ১০ম শ্রেণি)</h2>
           <p style="color: #475569; margin-top: 4px; font-size: 0.85rem;" data-i18n="examPortalDesc">এডমিন নির্ধারিত শিডিউল অনুযায়ী MCQ বা CQ পরীক্ষা দিন (যেকোনো একটি দিয়েও জমা দেওয়া যাবে)।</p>
         </div>
-        <<button class="btn btn-blue" style="width: auto; padding: 10px 20px;" onclick="document.getElementById('examInitModal').style.display='flex'" data-i18n="startExamBtn">পরীক্ষা শুরু করুন</button>
+        <button class="btn btn-blue" style="width: auto; padding: 10px 20px;" onclick="document.getElementById('examInitModal').style.display='flex'" data-i18n="startExamBtn">পরীক্ষা শুরু করুন</button>
       </div>
     </div>
   </div>
@@ -1349,13 +1349,16 @@ body.dark-mode .ms-table td {
 <!-- লাইভ পরীক্ষা মডাল -->
 <div id="liveExamModal" class="modal">
   <div class="modal-box" style="max-width: 780px;">
-    <div class="modal-header">
-      <div>
-        <h3 id="liveSubjectTitle">পরীক্ষা</h3>
-        <span style="font-size:0.8rem; color:#64748b;">শিক্ষার্থী: <b id="liveStudentName"></b> | মোট MCQ: <b id="liveTotalMarks"></b></span>
-      </div>
-      <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1rem;">MCQ সময়: <span id="timerDisplay">00:00</span></span>
-    </div>
+   <div class="modal-header">
+  <div>
+    <h3 id="liveSubjectTitle">পরীক্ষা</h3>
+    <span style="font-size:0.8rem; color:#64748b;">শিক্ষার্থী: <b id="liveStudentName"></b> | মোট MCQ: <b id="liveTotalMarks"></b></span>
+  </div>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1rem;">MCQ সময়: <span id="timerDisplay">00:00</span></span>
+    <button type="button" class="close-icon-btn" onclick="cancelStudentExam()" title="পরীক্ষা বাতিল করুন" style="color: #ef4444; font-size: 1.8rem; font-weight: bold; cursor: pointer;">&times;</button>
+  </div>
+</div>
     
     <div class="exam-mode-nav">
       <button id="examTabAll" class="exam-nav-btn active" onclick="switchExamSection('all')">উভয় পরীক্ষা (MCQ + CQ)</button>
@@ -1372,11 +1375,16 @@ body.dark-mode .ms-table td {
       <h4 style="font-size:0.95rem; color:#4338ca; margin-bottom:8px;">📝 সৃজনশীল / রচনামূলক লিখিত প্রশ্নপত্র:</h4>
       <div id="cqFormattedContainer"></div>
       <div id="cqQuestionFileLink" style="margin:6px 0;"></div>
-      <div style="border:1.5px dashed #6366f1; padding:12px; border-radius:8px; background:#f5f3ff; margin-top:10px;">
-        <label style="font-size:0.82rem; font-weight:700; color:#312e81;">উত্তরপত্র আপলোড করুন (PDF / Image):</label>
-        <input type="file" id="cqUploadFile" style="margin-top:4px; border:none; padding:4px;">
-        <small style="color:#64748b; font-size:0.75rem; display:block; margin-top:2px;">* শুধু CQ জমা দিতে চাইলে ফাইল সিলেক্ট করে নিচের বাটনে ক্লিক করুন।</small>
-      </div>
+      <div style="border: 1.5px dashed #6366f1; padding: 12px; border-radius: 8px; text-align: center; background: #f5f7ff; margin-top: 10px;">
+  <label style="font-size: 0.85rem; font-weight: 700; color: #312e81; display: block; margin-bottom: 6px;">
+    📄 লিখিত উত্তরপত্রের ছবি বা PDF আপলোড করুন (১টি বা একাধিক পৃষ্ঠা একসাথে নির্বাচন করতে পারেন):
+  </label>
+  <input type="file" id="studentExamMultiFiles" multiple accept="image/*,.pdf" onchange="handleMultipleFileSelect(this)" style="display: none;">
+  <button type="button" class="btn btn-purple" onclick="document.getElementById('studentExamMultiFiles').click()" style="width: auto; padding: 6px 16px; font-size: 0.85rem;">
+    📁 খাতার ছবি/ফাইল সিলেক্ট করুন
+  </button>
+  <div id="multiFileDisplayStatus" style="font-size: 0.8rem; color: #059669; margin-top: 8px; font-weight: 600;">কোনো ফাইল সিলেক্ট করা হয়নি</div>
+</div>
     </div>
 <!-- ছোট ক্লাসের জন্য বর্ণনামূলক প্রশ্ন ও উত্তরপত্র ফাইল আপলোড সেকশন -->
     <div id="textExamSection" style="display: none; margin-bottom: 15px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 15px;">
@@ -1399,8 +1407,10 @@ body.dark-mode .ms-table td {
         <div id="textUploadStatus" style="font-size: 0.75rem; color: #64748b; margin-top: 6px;">কোনো ফাইল নির্বাচন করা হয়নি</div>
       </div>
     </div>
-    <div class="modal-btns"><button class="btn btn-green" id="examSubmitBtn" onclick="submitShortQuestionStandalone()">উত্তরপত্র জমা দিন</button>
-    </div>
+ <div class="modal-btns" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+  <button type="button" class="btn btn-cancel" onclick="cancelStudentExam()" style="width: auto; background: #fee2e2; color: #dc2626; border: 1px solid #f87171;">❌ পরীক্ষা বাতিল (Cancel)</button>
+  <button type="button" class="btn btn-green" id="examSubmitBtn" onclick="submitLiveExam()" style="width: auto; padding: 10px 24px;">উত্তরপত্র জমা দিন</button>
+</div>
   </div>
 </div>
 
@@ -1805,6 +1815,18 @@ body.dark-mode .ms-table td {
     <!-- MCQ & CQ শিডিউল ট্যাব -->
     <div id="mcqTab" class="admin-tab-content" style="display:flex; flex-direction:column; gap:8px;">
       <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:8px;">
+	  <div style="grid-column: 1 / -1; background: #e0f2fe; padding: 10px; border-radius: 8px; border: 1.5px solid #38bdf8; margin-bottom: 8px;">
+  <label style="font-weight: 800; color: #0369a1; display: block; margin-bottom: 4px;">🎯 কোন ধরনের পরীক্ষা নিতে চান সিলেক্ট করুন:</label>
+  <select id="admExamTypeSelector" onchange="toggleAdminQuestionBoxes()" style="font-weight: 700; color: #0c4a6e; background: #fff !important;">
+    <option value="mcq_cq_text">সবগুলো একসাথে (MCQ + CQ + সংক্ষিপ্ত প্রশ্ন)</option>
+    <option value="mcq">শুধুমাত্র MCQ পরীক্ষা</option>
+    <option value="cq">শুধুমাত্র CQ (সৃজনশীল) পরীক্ষা</option>
+    <option value="text">শুধুমাত্র সংক্ষিপ্ত / বর্ণনামূলক পরীক্ষা</option>
+    <option value="mcq_cq">MCQ + CQ পরীক্ষা</option>
+    <option value="mcq_text">MCQ + সংক্ষিপ্ত প্রশ্ন</option>
+    <option value="cq_text">CQ + সংক্ষিপ্ত প্রশ্ন</option>
+  </select>
+</div>
         <div>
           <label style="font-size:0.82rem; font-weight:700;">শ্রেণি নির্বাচন:</label>
           <select id="admClass">
@@ -3852,36 +3874,48 @@ function autoDetectStudentAndExam(regValue) {
 }
 
 /* ==========================================================
-   পরীক্ষা শুরু ও লাইভ পেজ প্রদর্শন (সংশোধিত)
+   পরীক্ষা শুরু ও লাইভ পেজ প্রদর্শন (১০০% দৃশ্যমান ফিক্স)
 ========================================================== */
 function confirmAndLaunchExam() {
   if (!activeExamSessionData) return;
-  
+
   const regNo = document.getElementById('stExReg').value.trim();
   const subject = document.getElementById('stExSubjectDisplay').value;
 
-  // ১. ভেরিফিকেশন পপআপ বন্ধ করা
+  // ১. ভেরিফিকেশন পপআপকে জোরপূর্বক বন্ধ ও স্ক্রিন থেকে গায়েব করা
   const initModal = document.getElementById('examInitModal');
   if (initModal) {
-    initModal.style.display = 'none';
+    initModal.style.setProperty('display', 'none', 'important');
+    initModal.classList.remove('show');
   }
 
-  // ২. গ্লোবাল এক্সাম ভেরিয়েবলে ব্যাকএন্ড থেকে আসা সম্পূর্ণ ডাটা সেট করা
+  // ২. গ্লোবাল ডেটা অবজেক্ট তৈরি
   activeExamData = Object.assign({}, activeExamSessionData);
   activeExamData.studentReg = regNo;
   activeExamData.studentClass = document.getElementById('stExClassDisplay').value;
   activeExamData.studentName = activeExamSessionData.studentName || "শিক্ষার্থী";
+  activeExamData.subject = subject;
 
-  // ৩. ডাইনামিক প্রশ্ন ফিল্টার চালানো (যদি থাকে)
+  // ৩. টাইমার ও প্রশ্ন রেন্ডারিং ফাংশন কার্যকর করা
+  if (typeof startLiveExamSession === 'function') {
+    startLiveExamSession();
+  }
+
+  // ৪. ডাইনামিক ফিল্টারিং চালু করা
   if (typeof filterExamDisplayForClass === 'function') {
     filterExamDisplayForClass(activeExamData);
   }
 
-  // ৪. সরাসরি লাইভ পরীক্ষার মূল উইন্ডো চালু এবং টাইমার শুরু করা
-  startLiveExamSession();
+  // ৫. মূল পরীক্ষা মডালকে (liveExamModal) সবার ওপরে সরাসরি দৃশ্যমান করা
+  const liveModal = document.getElementById('liveExamModal');
+  if (liveModal) {
+    liveModal.classList.add('show');
+    liveModal.style.setProperty('display', 'flex', 'important');
+    liveModal.style.setProperty('z-index', '999999', 'important');
+  }
 
   if (typeof showToast === 'function') {
-    showToast(`${subject} বিষয়ের পরীক্ষা শুরু হয়েছে। শুভকামনা!`, 'success');
+    showToast(`${subject} বিষয়ের পরীক্ষা শুরু হয়েছে। শুভকামনা!`, 'success');
   }
 }
 /* ==========================================================
@@ -3958,6 +3992,184 @@ async function submitShortQuestionStandalone() {
     }
   }
 }
+// ১. এডমিনে সিলেক্ট অনুযায়ী বক্স দেখানো বা লুকানো
+function toggleAdminQuestionBoxes() {
+  const type = document.getElementById('admExamTypeSelector').value;
+  const mcqBox = document.getElementById('rawMcqPaste')?.closest('div');
+  const cqBox = document.getElementById('admCqDesc')?.closest('div[style*="dashed #3b82f6"]');
+  const textBox = document.getElementById('adminTextQuestionInput')?.closest('div[style*="background: #1e293b"]');
+
+  if (mcqBox) mcqBox.style.display = (type.indexOf('mcq') !== -1) ? 'block' : 'none';
+  if (cqBox) cqBox.style.display = (type.indexOf('cq') !== -1) ? 'block' : 'none';
+  if (textBox) textBox.style.display = (type.indexOf('text') !== -1) ? 'block' : 'none';
+}
+
+// ২. এডমিন সেভ ফাংশনে টাইপ ডেটা পাস করা
+const originalSaveScheduledExam = window.saveScheduledExam;
+function saveScheduledExam() {
+  const btn = event?.currentTarget || event?.target;
+  const examType = document.getElementById('admExamTypeSelector').value;
+  const cqFile = document.getElementById('admCqFile').files[0];
+  const cqDesc = document.getElementById('admCqDesc').value;
+  const textQuestion = document.getElementById('adminTextQuestionInput').innerHTML;
+
+  const send = (b64 = "", mime = "") => {
+    postData({
+      action: "saveExamSchedule",
+      classVal: document.getElementById('admClass').value,
+      subject: document.getElementById('admSubject').value,
+      publishDate: document.getElementById('admPublishDate').value,
+      publishTime: document.getElementById('admPublishTime').value,
+      mcqDuration: document.getElementById('admMcqDuration').value || smartParsedMcq.length || 30,
+      cqDuration: document.getElementById('admCqDuration').value || 30,
+      examType: examType,
+      cqDescription: cqDesc,
+      textQuestionContent: textQuestion,
+      cqQuestionFileBase64: b64,
+      cqMime: mime,
+      mcqList: smartParsedMcq
+    }, res => {
+      if (res && res.success) {
+        showAdminMessage("✅ পরীক্ষা শিডিউল ও প্রকাশ সফল!");
+        document.getElementById('rawMcqPaste').value = "";
+        document.getElementById('admCqDesc').value = "";
+        document.getElementById('adminTextQuestionInput').innerHTML = "";
+        document.getElementById('mcqParsedPreview').classList.add('hidden');
+        loadNoticesAndMotivation();
+        loadAdminExamList();
+      }
+    }, btn);
+  };
+
+  if (cqFile) {
+    const reader = new FileReader();
+    reader.onload = e => send(e.target.result, cqFile.type);
+    reader.readAsDataURL(cqFile);
+  } else send();
+}
+
+// ৩. শিক্ষার্থীর সামনে এডমিন নির্ধারিত বক্স ফিল্টারিং লজিক
+function filterExamDisplayForClass(examData) {
+  const mcqSec = document.getElementById('mcqExamSection');
+  const cqSec = document.getElementById('cqExamSection');
+  const textSec = document.getElementById('textExamSection');
+  const examNav = document.querySelector('.exam-mode-nav');
+  const timerBox = document.getElementById('timerBox');
+
+  // সত্যতা যাচাই
+  const showMcq = examData.hasMcq && examData.mcq && examData.mcq.length > 0;
+  const showCq = examData.hasCq && examData.cqDescription && examData.cqDescription.trim().length > 0;
+  const showText = examData.hasTextQuestion && examData.textQuestionContent && examData.textQuestionContent.trim().length > 0;
+
+  if (mcqSec) mcqSec.style.display = showMcq ? 'block' : 'none';
+  if (cqSec) cqSec.style.display = showCq ? 'block' : 'none';
+  if (textSec) {
+    textSec.style.display = showText ? 'block' : 'none';
+    const textDisplay = document.getElementById('studentRichTextQuestionDisplay');
+    if (textDisplay) textDisplay.innerHTML = examData.textQuestionContent;
+  }
+
+  // টাইমার শুধুমাত্র MCQ থাকলে চলবে
+  if (timerBox) timerBox.style.display = showMcq ? 'inline-block' : 'none';
+
+  // একের বেশি সেকশন ওপেন থাকলে ওপরের ট্যাব বাটনগুলো দেখাবে, নাহলে লুকাবে
+  const totalSections = (showMcq ? 1 : 0) + (showCq ? 1 : 0) + (showText ? 1 : 0);
+  if (examNav) examNav.style.display = (totalSections > 1) ? 'flex' : 'none';
+}
+
+// ৪. একাধিক ফাইল হ্যান্ডলার
+let selectedExamFilesList = [];
+function handleMultipleFileSelect(input) {
+  const files = Array.from(input.files);
+  if (files.length === 0) return;
+
+  selectedExamFilesList = [];
+  const status = document.getElementById('multiFileDisplayStatus');
+  status.innerHTML = `⏳ ${files.length} টি ফাইল প্রসেস করা হচ্ছে...`;
+
+  let processedCount = 0;
+  files.forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      selectedExamFilesList.push({
+        name: file.name,
+        mime: file.type,
+        base64: e.target.result
+      });
+      processedCount++;
+      if (processedCount === files.length) {
+        status.innerHTML = `✅ মোট ${files.length} টি উত্তরপত্রের পৃষ্ঠা প্রস্তুত হয়েছে।`;
+        status.style.color = '#15803d';
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// কাস্টম পপ-আপ দিয়ে পরীক্ষা বাতিলের ফাংশন
+function cancelStudentExam() {
+  const modal = document.getElementById('customConfirmModal');
+  if (modal) {
+    modal.style.display = 'flex';
+  }
+}
+
+// পপ-আপে বাটনে ক্লিক করলে কার্যকর হওয়ার লজিক
+function closeCustomConfirm(isConfirmed) {
+  const modal = document.getElementById('customConfirmModal');
+  if (modal) modal.style.display = 'none';
+
+  if (isConfirmed) {
+    // টাইমার বন্ধ করা
+    if (examTimerInterval) clearInterval(examTimerInterval);
+
+    // লাইভ পরীক্ষার মডাল বন্ধ করা
+    const liveModal = document.getElementById('liveExamModal');
+    if (liveModal) {
+      liveModal.style.setProperty('display', 'none', 'important');
+      liveModal.classList.remove('show');
+    }
+
+    selectedExamFilesList = [];
+    showToast("পরীক্ষা বাতিল করা হয়েছে।", "error");
+  }
+}
+
+// ৬. সাবমিট ফাংশনে ফাইল অ্যারে পাঠানো
+function submitLiveExam(isAuto = false) {
+  const btn = document.getElementById('examSubmitBtn');
+  const userAnswers = {};
+
+  if (activeExamData.hasMcq) {
+    activeExamData.mcq.forEach(q => {
+      const checked = document.querySelector(`input[name="ans_${q.id}"]:checked`);
+      if (checked) userAnswers[q.id] = checked.value;
+    });
+  }
+
+  if (examTimerInterval) clearInterval(examTimerInterval);
+
+  const payload = {
+    action: "submitLiveExam",
+    examId: activeExamData.examId,
+    reg: activeExamData.studentReg,
+    classVal: activeExamData.studentClass,
+    subject: activeExamData.subject,
+    userAnswers: userAnswers,
+    fileList: selectedExamFilesList
+  };
+
+  postData(payload, res => {
+    if (res && res.success) {
+      const liveModal = document.getElementById('liveExamModal');
+      if (liveModal) {
+        liveModal.style.setProperty('display', 'none', 'important');
+        liveModal.classList.remove('show');
+      }
+      showExamReview(res);
+    }
+  }, btn);
+}
 </script>
 <!-- শিক্ষার্থীর প্রোফাইলে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার প্রিভিউ উইন্ডো -->
 <div id="studentDocViewerModal" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.85); z-index: 999999; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(4px);">
@@ -3971,5 +4183,30 @@ async function submitShortQuestionStandalone() {
     </div>
   </div>
 </div>
+<!-- কাস্টম আধুনিক কনফার্মেশন পপ-আপ -->
+<div id="customConfirmModal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 9999999; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(5px);">
+  <div style="background: #ffffff; width: 100%; max-width: 420px; border-radius: 16px; padding: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); text-align: center; border: 1px solid #e2e8f0; animation: popIn 0.25s ease-out forwards;">
+    <div style="width: 60px; height: 60px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; font-size: 1.8rem;">
+      ⚠️
+    </div>
+    <h3 style="margin: 0 0 8px 0; color: #1e293b; font-size: 1.25rem; font-weight: 800;">পরীক্ষা বাতিল করতে চান?</h3>
+    <p style="margin: 0 0 20px 0; color: #64748b; font-size: 0.95rem; line-height: 1.5;">আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান? বাতিল করলে কোনো তথ্য বা উত্তরপত্র সংরক্ষণ করা হবে না।</p>
+    <div style="display: flex; gap: 10px; justify-content: center;">
+      <button type="button" onclick="closeCustomConfirm(false)" style="flex: 1; padding: 10px; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.95rem; transition: background 0.2s;">
+        না, চালিয়ে যান
+      </button>
+      <button type="button" onclick="closeCustomConfirm(true)" style="flex: 1; padding: 10px; background: #ef4444; color: #ffffff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); transition: background 0.2s;">
+        হ্যাঁ, বাতিল করুন
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes popIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+</style>
 </body>
 </html>
