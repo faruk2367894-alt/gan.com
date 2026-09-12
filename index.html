@@ -1094,6 +1094,37 @@ body.dark-mode .ms-table td {
     font-size: 0.8rem;
   }
 }
+/* MCQ প্রিভিউ বক্সের লেখা স্পষ্ট কালো ও স্পষ্ট ব্যাকগ্রাউন্ড ফিক্স */
+#mcqParsedPreview {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1.5px solid #cbd5e1 !important;
+}
+
+#mcqParsedPreview * {
+  color: #0f172a !important;
+}
+
+#mcqParsedPreview span {
+  color: #1e293b !important;
+  font-weight: 600 !important;
+}
+
+#mcqParsedPreview b {
+  color: #0f172a !important;
+}
+
+/* ছোট ক্লাসের রিচ টেক্সট ইনপুট বক্সের ব্যাকগ্রাউন্ড ও টেক্সট স্পষ্ট করা */
+#adminTextQuestionInput {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  border: 1.5px solid #475569 !important;
+}
+
+/* টেক্সট বক্সের ওপরের লেবেল স্পষ্ট দৃশ্যমান রাখা */
+#adminTextSectionWrapper label {
+  color: #38bdf8 !important;
+}
 </style>
 <!-- OneSignal Web Push SDK Integration -->
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
@@ -1748,7 +1779,11 @@ body.dark-mode .ms-table td {
 
       <h4 style="margin-top:10px; font-size:0.95rem; color:#1e3a8a;">📜 পরীক্ষার ফলাফল হিস্ট্রি:</h4>
       <ul id="examHistoryList" style="list-style:none; font-size:0.85rem; max-height:140px; overflow-y:auto; border:1px solid #e2e8f0; padding:8px; border-radius:8px; margin-top:6px; display:flex; flex-direction:column; gap:4px;"></ul>
-      
+	  
+      <div style="text-align: center; margin-top: 10px;">
+        <button type="button" class="btn btn-purple" style="width: 100%;" onclick="openStudentEvaluatedScriptViewer()">📑 মূল্যায়িত খাতা দেখুন (দাগানো খাতা ও মার্কস)</button>
+      </div>
+	  
       <button class="btn btn-green" style="margin-top:10px;" onclick="generateSscMarksheet()">📄 একাডেমিক মার্কশিট (PDF Print)</button>
     </div>
   </div>
@@ -1891,7 +1926,8 @@ body.dark-mode .ms-table td {
         </div>
       </div>
 
-      <div style="background:#fff7ed; border:1px solid #fed7aa; padding:8px; border-radius:6px;">
+      <!-- ১. MCQ ইনপুট কন্টেইনার -->
+      <div id="adminMcqSectionWrapper" style="background:#fff7ed; border:1px solid #fed7aa; padding:8px; border-radius:6px;">
         <label style="font-size:0.85rem; font-weight:700; color:#9a3412;">কপিকৃত MCQ টেক্সট পেস্ট করুন (বহুপদী সহ):</label>
         <textarea id="rawMcqPaste" rows="5" placeholder="যেমন: ১. বাংলাদেশের রাজধানী কোনটি?
 ক) ঢাকা
@@ -1900,12 +1936,12 @@ body.dark-mode .ms-table td {
 ঘ) সিলেট
 উত্তর: ক
 ব্যাখ্যা: ঢাকা বাংলাদেশের রাজধানী।"></textarea>
-        <button class="btn btn-amber" style="margin-top:4px;" onclick="autoParseMCQSmart()">⚡ ১০০% নির্ভুল অপশন ও ব্যাখ্যা প্রস্তুত করুন</button>
+        <button type="button" class="btn btn-amber" style="margin-top:4px;" onclick="autoParseMCQSmart()">⚡ ১০০% নির্ভুল অপশন ও ব্যাখ্যা প্রস্তুত করুন</button>
+        <div id="mcqParsedPreview" class="hidden" style="max-height:220px; overflow-y:auto; border:1px solid #cbd5e1; padding:8px; border-radius:6px; background:white; margin-top:6px;"></div>
       </div>
 
-      <div id="mcqParsedPreview" class="hidden" style="max-height:220px; overflow-y:auto; border:1px solid #cbd5e1; padding:8px; border-radius:6px; background:white;"></div>
-
-      <div style="border:1.5px dashed #3b82f6; padding:10px; border-radius:6px; background:#eff6ff;">
+      <!-- ২. CQ ইনপুট কন্টেইনার -->
+      <div id="adminCqSectionWrapper" style="border:1.5px dashed #3b82f6; padding:10px; border-radius:6px; background:#eff6ff;">
         <label style="font-size:0.85rem; font-weight:700; color:#1e40af;">📝 সৃজনশীল (CQ) সম্পূর্ণ প্রশ্ন লিখুন বা পেস্ট করুন:</label>
         <textarea id="admCqDesc" rows="7" placeholder="সম্পূর্ণ সৃজনশীল প্রশ্ন পেস্ট করুন..."></textarea>
         <div style="margin-top:6px;">
@@ -1913,29 +1949,30 @@ body.dark-mode .ms-table td {
           <input type="file" id="admCqFile" style="margin-top:2px; border:none; padding:4px;">
         </div>
       </div>
-	  <!-- ছোট ক্লাসের জন্য বর্ণনামূলক/সংক্ষিপ্ত প্রশ্ন তৈরির রিচ টেক্সট বক্স -->
-<div style="margin-top: 15px; margin-bottom: 12px; background: #1e293b; padding: 12px; border-radius: 8px; border: 1.5px solid #475569;">
-  <label style="color: #38bdf8; font-weight: 700; font-size: 0.9rem; display: block; margin-bottom: 8px;">
-    ✍️ ছোট ক্লাসের সংক্ষিপ্ত / বর্ণনামূলক প্রশ্ন লিখুন (ফন্ট কালার ও সাইজ সাজানো যাবে):
-  </label>
-  
-  <!-- টেক্সট ফরম্যাটিং টুলবার -->
-  <div style="background: #334155; padding: 6px 10px; border-radius: 6px 6px 0 0; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-    <button type="button" onclick="formatAdminText('bold')" style="padding: 3px 8px; font-weight: bold; cursor: pointer; border-radius: 4px; border: 1px solid #64748b;">B</button>
-    <button type="button" onclick="formatAdminText('italic')" style="padding: 3px 8px; font-style: italic; cursor: pointer; border-radius: 4px; border: 1px solid #64748b;">I</button>
-    <button type="button" onclick="formatAdminText('underline')" style="padding: 3px 8px; text-decoration: underline; cursor: pointer; border-radius: 4px; border: 1px solid #64748b;">U</button>
-    <input type="color" onchange="formatAdminText('foreColor', this.value)" title="টেক্সট কালার" style="height: 26px; width: 32px; cursor: pointer; padding: 0; border: none; background: transparent;">
-    <select onchange="formatAdminText('fontSize', this.value)" style="padding: 3px 6px; background: #fff; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">
-      <option value="3">স্বাভাবিক সাইজ</option>
-      <option value="4">মাঝারি</option>
-      <option value="5">বড়</option>
-      <option value="6">খুব বড়</option>
-    </select>
-  </div>
 
-  <!-- শিক্ষক এখানে প্রশ্ন লিখবেন -->
-  <div id="adminTextQuestionInput" contenteditable="true" style="min-height: 100px; background: #0f172a; color: #ffffff; padding: 10px; border-radius: 0 0 6px 6px; outline: none; border: 1px solid #475569; font-size: 0.95rem; line-height: 1.5;" placeholder="এখানে প্রশ্ন লিখুন বা পেস্ট করে কালার/ফন্ট সাজিয়ে নিন..."></div>
-</div>
+      <!-- ৩. সংক্ষিপ্ত / বর্ণনামূলক প্রশ্ন কন্টেইনার -->
+      <div id="adminTextSectionWrapper" style="margin-top: 15px; margin-bottom: 12px; background: #1e293b; padding: 12px; border-radius: 8px; border: 1.5px solid #475569;">
+        <label style="color: #38bdf8; font-weight: 700; font-size: 0.9rem; display: block; margin-bottom: 8px;">
+          ✍️ ছোট ক্লাসের সংক্ষিপ্ত / বর্ণনামূলক প্রশ্ন লিখুন (ফন্ট কালার ও সাইজ সাজানো যাবে):
+        </label>
+        
+        <!-- টেক্সট ফরম্যাটিং টুলবার -->
+        <div style="background: #334155; padding: 6px 10px; border-radius: 6px 6px 0 0; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <button type="button" onclick="formatAdminText('bold')" style="padding: 3px 8px; font-weight: bold; cursor: pointer; border-radius: 4px; border: 1px solid #64748b;">B</button>
+          <button type="button" onclick="formatAdminText('italic')" style="padding: 3px 8px; font-style: italic; cursor: pointer; border-radius: 4px; border: 1px solid #64748b;">I</button>
+          <button type="button" onclick="formatAdminText('underline')" style="padding: 3px 8px; text-decoration: underline; cursor: pointer; border-radius: 4px; border: 1px solid #64748b;">U</button>
+          <input type="color" onchange="formatAdminText('foreColor', this.value)" title="টেক্সট কালার" style="height: 26px; width: 32px; cursor: pointer; padding: 0; border: none; background: transparent;">
+          <select onchange="formatAdminText('fontSize', this.value)" style="padding: 3px 6px; background: #fff; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">
+            <option value="3">স্বাভাবিক সাইজ</option>
+            <option value="4">মাঝারি</option>
+            <option value="5">বড়</option>
+            <option value="6">খুব বড়</option>
+          </select>
+        </div>
+
+        <!-- শিক্ষক এখানে প্রশ্ন লিখবেন -->
+        <div id="adminTextQuestionInput" contenteditable="true" style="min-height: 100px; background: #0f172a; color: #ffffff; padding: 10px; border-radius: 0 0 6px 6px; outline: none; border: 1px solid #475569; font-size: 0.95rem; line-height: 1.5;" placeholder="এখানে প্রশ্ন লিখুন বা পেস্ট করে কালার/ফন্ট সাজিয়ে নিন..."></div>
+      </div>
 
       <div style="display:flex; gap:6px;">
         <button class="btn btn-purple" style="width:35%;" onclick="previewExamBeforePublish()">👁️ প্রিভিউ দেখুন</button>
@@ -2015,33 +2052,61 @@ body.dark-mode .ms-table td {
       <input type="password" id="newPinInput" placeholder="নতুন পিন">
       <button class="btn btn-blue" onclick="changeAdminPin()">পিন আপডেট করুন</button>
     </div>
-	<!-- খাতা মূল্যায়ন ট্যাব -->
+	<!-- স্মার্ট ডিজিটাল খাতা মূল্যায়ন ড্যাশবোর্ড -->
 <div id="evalTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:12px; height:100%; overflow-y:auto;">
-  <div style="display:flex; justify-content:space-between; align-items:center; background:#f1f5f9; padding:10px; border-radius:8px; margin-top:10px;">
-    <h4 style="margin:0; font-size:1rem; color:#1e293b;">জমা হওয়া পরীক্ষার উত্তরপত্র ও খাতা</h4>
-    <button class="btn btn-blue" onclick="loadSubmissionsForAdmin()" style="font-size:0.8rem; padding:6px 12px;">রিফ্রেশ</button>
+  <div style="display:flex; justify-content:space-between; align-items:center; background:#1e293b; color:white; padding:12px; border-radius:8px;">
+    <h4 style="margin:0; font-size:1.1rem; color:#38bdf8;">📋 ডিজিটাল খাতা মূল্যায়ন বোর্ড</h4>
+    <button type="button" class="btn btn-blue" onclick="loadSubmissionsForAdmin()" style="width:auto; padding:6px 14px; font-size:0.85rem;">🔄 রিফ্রেশ</button>
   </div>
 
-  <div style="overflow-x:auto; margin-top:8px;">
-    <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.85rem;">
-      <thead>
-        <tr style="background:#e2e8f0; color:#334155;">
-          <th style="padding:8px; border:1px solid #cbd5e1;">শিক্ষার্থী নাম</th>
-          <th style="padding:8px; border:1px solid #cbd5e1;">ক্লাস ও রোল</th>
-          <th style="padding:8px; border:1px solid #cbd5e1;">বিষয়</th>
-          <th style="padding:8px; border:1px solid #cbd5e1;">MCQ মার্কস</th>
-          <th style="padding:8px; border:1px solid #cbd5e1;">CQ খাতা/ফাইল</th>
-          <th style="padding:8px; border:1px solid #cbd5e1;">CQ মার্কস দিন</th>
-          <th style="padding:8px; border:1px solid #cbd5e1;">মোট মার্কস</th>
-          <th style="padding:8px; border:1px solid #cbd5e1;">অ্যাকশন</th>
-        </tr>
-      </thead>
-      <tbody id="adminSubmissionTableBody">
-        <tr><td colspan="8" style="text-align:center; padding:15px;">লোড হচ্ছে...</td></tr>
-      </tbody>
-    </table>
+  <!-- ১. স্টুডেন্টদের স্মার্ট রোল/রেজিস্ট্রেশন গ্রিড -->
+  <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px;">
+    <label style="font-size:0.85rem; font-weight:700; color:#334155; margin-bottom:8px; display:block;">খাতা দেখার জন্য শিক্ষার্থীর কার্ডে ক্লিক করুন:</label>
+    <div id="studentEvalCardsContainer" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:10px; max-height:220px; overflow-y:auto; padding:4px;">
+      <!-- কার্ড ডাইনামিক আসবে -->
+    </div>
   </div>
-</div>
+
+  <!-- ২. খাতা কাটার ডিজিটাল ক্যানভাস ভিউয়ার -->
+  <div id="digitalCanvasWorkarea" style="display:none; border:2px solid #3b82f6; border-radius:10px; padding:14px; background:#ffffff; box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed #cbd5e1; padding-bottom:8px; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+      <div>
+        <h4 id="evalStudentNameDisplay" style="color:#1e3a8a; margin:0;">শিক্ষার্থীর নাম</h4>
+        <span id="evalSubjectInfoDisplay" style="font-size:0.82rem; color:#64748b;">বিষয় ও শ্রেণি</span>
+      </div>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <button type="button" class="btn" style="background:#ef4444; color:#fff; width:auto; padding:6px 12px; font-size:0.8rem;" onclick="clearCurrentCanvas()">🧹 ক্লিয়ার</button>
+        <button type="button" class="btn btn-cancel" style="width:auto; padding:6px 12px; font-size:0.8rem;" onclick="prevScriptPage()">◀ আগের পাতা</button>
+        <span id="canvasPageIndicator" style="font-weight:bold; font-size:0.85rem;">১/১</span>
+        <button type="button" class="btn btn-cancel" style="width:auto; padding:6px 12px; font-size:0.8rem;" onclick="nextScriptPage()">পরের পাতা ▶</button>
+      </div>
+    </div>
+
+    <!-- ডিজিটাল ড্রয়িং বোর্ড ও টুলস -->
+    <div style="background:#f1f5f9; padding:8px; border-radius:6px; margin-bottom:8px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <span style="font-weight:700; font-size:0.82rem; color:#1e293b;">পেন সাইজ:</span>
+      <input type="range" id="digitalPenSize" min="2" max="10" value="3" style="width:80px;">
+      <span style="font-weight:700; font-size:0.82rem; color:#1e293b; margin-left:10px;">কালার:</span>
+      <input type="color" id="digitalPenColor" value="#ef4444" style="height:28px; width:34px; border:none; cursor:pointer;">
+      <span style="font-size:0.8rem; color:#64748b; margin-left:auto;">(লাল পেন দিয়ে ভুল কাটুন ও টিক দিন)</span>
+    </div>
+
+    <div style="position:relative; width:100%; max-height:550px; overflow:auto; border:1px solid #94a3b8; border-radius:6px; display:flex; justify-content:center; background:#475569;">
+      <canvas id="scriptCanvas" style="cursor:crosshair; background:#fff;"></canvas>
+    </div>
+
+    <!-- পাতাভিত্তিক মার্ক ও ফাইনাল স্কোর -->
+    <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:#eff6ff; padding:10px; border-radius:8px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <label style="font-weight:700; font-size:0.88rem; color:#1e3a8a;">বর্তমান পাতার মার্ক:</label>
+        <input type="number" id="pageWiseMarkInput" oninput="saveCurrentPageMark()" style="width:75px; padding:6px; border:1px solid #3b82f6; border-radius:6px; text-align:center; font-weight:bold;" placeholder="0">
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <label style="font-weight:700; font-size:0.88rem; color:#0f766e;">টোটাল লিখিত/CQ মার্ক:</label>
+        <input type="number" id="finalCqTotalMark" style="width:90px; padding:6px; border:1.5px solid #0d9488; border-radius:6px; text-align:center; font-weight:bold; font-size:1.1rem; color:#0f766e;" readonly>
+      </div>
+      <button type="button" class="btn btn-green" style="width:auto; padding:8px 20px;" onclick="submitEvaluatedScript()">💾 মূল্যায়ন সংরক্ষণ করুন</button>
+    </div>
   </div>
 </div>
 
@@ -2986,47 +3051,102 @@ function updateCorrectAnswerManual(qIdx, optIdx) {
   if (smartParsedMcq[qIdx]) smartParsedMcq[qIdx].correctAnswer = smartParsedMcq[qIdx].options[optIdx];
 }
 function previewExamBeforePublish() {
+  const typeSelect = document.getElementById('admExamTypeSelector');
+  const examType = typeSelect ? typeSelect.value : 'mcq_cq_text';
+
   const cls = document.getElementById('admClass').value;
   const sub = document.getElementById('admSubject').value;
-  const cqDesc = document.getElementById('admCqDesc').value;
+  const cqDesc = document.getElementById('admCqDesc')?.value.trim() || '';
+  const textDesc = document.getElementById('adminTextQuestionInput')?.innerHTML.trim() || '';
   const container = document.getElementById('previewContentContainer');
-  
+
+  // নির্দিষ্ট টাইপ যাচাই
+  const showMcq = (examType === 'mcq' || examType === 'mcq_cq' || examType === 'mcq_text' || examType === 'mcq_cq_text');
+  const showCq = (examType === 'cq' || examType === 'mcq_cq' || examType === 'cq_text' || examType === 'mcq_cq_text');
+  const showText = (examType === 'text' || examType === 'mcq_text' || examType === 'cq_text' || examType === 'mcq_cq_text');
+
+  let headerHtml = `
+    <div style="background:#f1f5f9; padding:12px; border-radius:8px; margin-bottom:12px; border:1px solid #cbd5e1;">
+      <h4 style="color:#1e3a8a; font-weight:800; font-size:1.05rem; margin-bottom:4px;">পরীক্ষা: ${sub || 'বিষয় উল্লেখ নেই'} (${cls || 'শ্রেণি নেই'})</h4>
+      <span style="font-size:0.82rem; background:#e0e7ff; color:#3730a3; padding:2px 8px; border-radius:4px; font-weight:700;">
+        ধরন: ${typeSelect.options[typeSelect.selectedIndex].text}
+      </span>
+    </div>
+  `;
+
+  // ক. আলাদা MCQ প্রিভিউ কার্ড
   let mcqHtml = "";
-  if (smartParsedMcq && smartParsedMcq.length > 0) {
-    mcqHtml = smartParsedMcq.map((q, idx) => `
-      <div class="question-box" style="margin-bottom:8px; padding:10px; border-radius:8px;">
-        <p style="font-weight:700; margin-bottom:6px;">${idx + 1}. ${q.question.replace(/\n/g, '<br>')}</p>
-        <div style="display:flex; flex-direction:column; gap:4px;">
-          ${q.options.map((opt, oIdx) => `
-            <div class="opt-label" style="margin:2px 0; padding:6px 10px; ${opt === q.correctAnswer ? 'font-weight:bold; color:#10b981;' : ''}">
-              <span>${['ক', 'খ', 'গ', 'ঘ'][oIdx]}) ${opt}</span>
-              ${opt === q.correctAnswer ? '<span>✅ (সঠিক উত্তর)</span>' : ''}
-            </div>
-          `).join('')}
+  if (showMcq) {
+    let mcqListHtml = "";
+    if (smartParsedMcq && smartParsedMcq.length > 0) {
+      mcqListHtml = smartParsedMcq.map((q, idx) => `
+        <div class="question-box" style="margin-bottom:8px; padding:10px; border-radius:8px; border:1px solid #e2e8f0; background:#ffffff;">
+          <p style="font-weight:700; margin-bottom:6px; color:#0f172a;">${idx + 1}. ${q.question.replace(/\n/g, '<br>')}</p>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            ${q.options.map((opt, oIdx) => `
+              <div class="opt-label" style="margin:2px 0; padding:6px 10px; border-radius:6px; background:#f8fafc; border:1px solid #e2e8f0; ${opt === q.correctAnswer ? 'font-weight:bold; color:#15803d; background:#f0fdf4; border-color:#86efac;' : 'color:#334155;'}">
+                <span>${['ক', 'খ', 'গ', 'ঘ'][oIdx]}) ${opt}</span>
+                ${opt === q.correctAnswer ? '<span style="color:#15803d; font-size:0.8rem;">✅ (সঠিক উত্তর)</span>' : ''}
+              </div>
+            `).join('')}
+          </div>
+          ${q.explanation ? `<div class="expl-box" style="margin-top:6px; background:#eff6ff; border:1px dashed #60a5fa; padding:6px; border-radius:6px; font-size:0.82rem; color:#1e3a8a;"><b>ব্যাখ্যা:</b> ${q.explanation}</div>` : ''}
         </div>
-        ${q.explanation ? `<div class="expl-box" style="margin-top:6px;"><b>ব্যাখ্যা:</b> ${q.explanation}</div>` : ''}
+      `).join('');
+    } else {
+      mcqListHtml = `<p style="color:#ef4444; font-size:0.85rem; padding:8px; background:#fef2f2; border-radius:6px; border:1px dashed #f87171;">⚠️ কোনো MCQ প্রশ্ন প্রস্তুত করা হয়নি!</p>`;
+    }
+
+    mcqHtml = `
+      <div style="background:#fff7ed; border:1.5px solid #fed7aa; border-radius:8px; padding:12px; margin-bottom:12px;">
+        <h4 style="font-size:0.95rem; color:#9a3412; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+          <span>🔘 বহুনির্বাচনী প্রশ্ন প্রিভিউ (MCQ)</span>
+          <span style="font-size:0.8rem; background:#f97316; color:#fff; padding:2px 8px; border-radius:12px;">মোট: ${smartParsedMcq.length} টি</span>
+        </h4>
+        ${mcqListHtml}
       </div>
-    `).join('');
-  } else {
-    mcqHtml = "<p style='color:#94a3b8; font-size:0.85rem; padding:10px;'>কোনো MCQ প্রস্তুত করা হয়নি।</p>";
+    `;
   }
 
-  container.innerHTML = `
-    <div style="background:#f1f5f9; padding:10px; border-radius:8px; margin-bottom:12px; border:1px solid #cbd5e1;">
-      <h4 style="color:#1e3a8a; font-weight:800; font-size:1.05rem;">পরীক্ষা: ${sub || 'বিষয় উল্লেখ নেই'} (${cls || 'শ্রেণি নেই'})</h4>
-      <p style="font-size:0.85rem; color:#475569; margin-top:3px;">মোট প্রস্তুতকৃত MCQ: <b>${smartParsedMcq.length}</b> টি</p>
-    </div>
-    <div style="margin-bottom:12px;">
-      <h4 style="font-size:0.95rem; color:#7c3aed; margin-bottom:8px;">🔘 MCQ প্রিভিউ:</h4>
-      ${mcqHtml}
-    </div>
-    ${cqDesc ? `
-      <div>
-        <h4 style="font-size:0.95rem; color:#2563eb; margin-bottom:8px;">📝 সৃজনশীল (CQ) প্রিভিউ:</h4>
-        ${renderFormattedCQ(cqDesc)}
+  // খ. আলাদা CQ (সৃজনশীল) প্রিভিউ কার্ড
+  let cqHtml = "";
+  if (showCq) {
+    let cqContentHtml = "";
+    if (cqDesc) {
+      cqContentHtml = renderFormattedCQ(cqDesc);
+    } else {
+      cqContentHtml = `<p style="color:#ef4444; font-size:0.85rem; padding:8px; background:#fef2f2; border-radius:6px; border:1px dashed #f87171;">⚠️ সৃজনশীল প্রশ্ন পেস্ট করা হয়নি!</p>`;
+    }
+
+    cqHtml = `
+      <div style="background:#eff6ff; border:1.5px solid #bfdbfe; border-radius:8px; padding:12px; margin-bottom:12px;">
+        <h4 style="font-size:0.95rem; color:#1e40af; margin-bottom:8px;">📝 সৃজনশীল প্রশ্ন প্রিভিউ (CQ)</h4>
+        ${cqContentHtml}
       </div>
-    ` : ''}
-  `;
+    `;
+  }
+
+  // গ. আলাদা সংক্ষিপ্ত / বর্ণনামূলক প্রিভিউ কার্ড
+  let textHtml = "";
+  if (showText) {
+    let textContentHtml = "";
+    if (textDesc && textDesc !== "<br>") {
+      textContentHtml = `<div style="background:#ffffff; color:#0f172a; padding:12px; border-radius:6px; border:1px solid #cbd5e1; line-height:1.6;">${textDesc}</div>`;
+    } else {
+      textContentHtml = `<p style="color:#ef4444; font-size:0.85rem; padding:8px; background:#fef2f2; border-radius:6px; border:1px dashed #f87171;">⚠️ সংক্ষিপ্ত প্রশ্ন লেখা হয়নি!</p>`;
+    }
+
+    textHtml = `
+      <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:12px;">
+        <h4 style="font-size:0.95rem; color:#334155; margin-bottom:8px;">✍️ সংক্ষিপ্ত / বর্ণনামূলক প্রশ্ন প্রিভিউ</h4>
+        ${textContentHtml}
+      </div>
+    `;
+  }
+
+  const finalContent = (mcqHtml + cqHtml + textHtml) || `<p style="text-align:center; color:#64748b; padding:15px;">কোনো প্রশ্ন যুক্ত করা হয়নি।</p>`;
+
+  container.innerHTML = headerHtml + finalContent;
   openModal('adminPreviewModal');
 }
 
@@ -3370,71 +3490,356 @@ window.addEventListener('load', () => {
   const savedNote = localStorage.getItem('gyan_scratchpad');
   if (savedNote && document.getElementById('scratchpadArea')) document.getElementById('scratchpadArea').value = savedNote;
 });
-// এডমিনের জন্য সকল জমা হওয়া খাতা লোড করা
+let allAdminSubmissions = [];
+let currentEvalIndex = -1;
+let currentEvalScriptPages = [];
+let currentEvalPageIndex = 0;
+let pageMarksArray = [];
+let evaluatedCanvases = [];
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+
+// ১. এডমিনের জন্য শিক্ষার্থীদের সাবমিশন কার্ড আকারে লোড
 function loadSubmissionsForAdmin() {
-  const tbody = document.getElementById('adminSubmissionTableBody');
-  tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:15px;">লোড হচ্ছে...</td></tr>';
-  
+  const container = document.getElementById('studentEvalCardsContainer');
+  container.innerHTML = '<p style="color:#64748b; font-size:0.85rem; padding:10px;">শিক্ষার্থীদের খাতা লোড হচ্ছে...</p>';
+  document.getElementById('digitalCanvasWorkarea').style.display = 'none';
+
   postData({ action: "getAllSubmissions" }, res => {
     if (res && res.success && res.list) {
-      if(res.list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:15px;">কোনো উত্তরপত্র জমা পড়েনি।</td></tr>';
+      allAdminSubmissions = res.list;
+      if (allAdminSubmissions.length === 0) {
+        container.innerHTML = '<p style="color:#ef4444; font-size:0.85rem; padding:10px;">কোনো উত্তরপত্র জমা পড়েনি।</p>';
         return;
       }
-      tbody.innerHTML = res.list.map(s => {
-        const mcq = Number(s.mcqMarks) || 0;
-        const cq = Number(s.cqMarks) || 0;
-        const total = mcq + cq;
-        const cqFileView = s.cqAnswer 
-          ? (s.cqAnswer.startsWith('http') ? `<a href="${s.cqAnswer}" target="_blank" style="color:#2563eb; text-decoration:underline; font-weight:bold;">খাতা দেখুন</a>` : `<span title="${s.cqAnswer}">টেক্সট উত্তর</span>`) 
-          : 'জমা দেয়নি';
-
-        return `
-          <tr style="border-bottom:1px solid #cbd5e1;">
-            <td style="padding:8px; border:1px solid #cbd5e1;"><b>${s.studentName}</b></td>
-            <td style="padding:8px; border:1px solid #cbd5e1;">${s.studentClass} (রোল: ${s.studentRoll})</td>
-            <td style="padding:8px; border:1px solid #cbd5e1;">${s.subject}</td>
-            <td style="padding:8px; border:1px solid #cbd5e1; font-weight:bold; color:#0284c7;">${mcq}</td>
-            <td style="padding:8px; border:1px solid #cbd5e1;">${cqFileView}</td>
-            <td style="padding:8px; border:1px solid #cbd5e1;">
-              <input type="number" id="cqInput_${s.rowId}" value="${s.cqMarks !== '' ? s.cqMarks : ''}" style="width:65px; padding:4px; border:1px solid #94a3b8; border-radius:4px;" placeholder="CQ">
-            </td>
-            <td style="padding:8px; border:1px solid #cbd5e1; font-weight:bold; color:#16a34a;" id="totalMarkView_${s.rowId}">${total}</td>
-            <td style="padding:8px; border:1px solid #cbd5e1;">
-              <button class="btn btn-blue" style="padding:4px 8px; font-size:0.75rem;" onclick="saveCqMarksAdmin('${s.rowId}', ${mcq})">সংরক্ষণ</button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    } else {
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:15px; color:red;">তথ্য লোড করা যায়নি!</td></tr>';
+      container.innerHTML = allAdminSubmissions.map((s, idx) => `
+        <div onclick="selectStudentForEvaluation(${idx})" style="background:#ffffff; border:1.5px solid #cbd5e1; border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s; box-shadow:0 2px 4px rgba(0,0,0,0.05);" onmouseover="this.style.borderColor='#3b82f6'" onmouseout="this.style.borderColor='#cbd5e1'">
+          <div style="font-weight:bold; color:#1e3a8a; font-size:0.95rem;">${s.studentName}</div>
+          <div style="font-size:0.8rem; color:#475569;">শ্রেণি: ${s.studentClass} | রেজি: <b>${s.studentRoll}</b></div>
+          <div style="font-size:0.8rem; color:#0d9488; font-weight:600; margin-top:3px;">বিষয়: ${s.subject}</div>
+          <div style="margin-top:6px; display:flex; justify-content:space-between; font-size:0.75rem;">
+            <span style="background:#e0f2fe; color:#0369a1; padding:2px 6px; border-radius:4px;">MCQ: ${s.mcqMarks}</span>
+            <span style="background:${s.cqMarks ? '#dcfce7' : '#fee2e2'}; color:${s.cqMarks ? '#15803d' : '#b91c1c'}; padding:2px 6px; border-radius:4px;">${s.cqMarks ? 'দেখা হয়েছে (' + s.cqMarks + ')' : 'দেখা হয়নি'}</span>
+          </div>
+        </div>
+      `).join('');
     }
   });
 }
 
-// CQ নম্বর সংরক্ষণ এবং Total ক্যালকুলেশন
-function saveCqMarksAdmin(rowId, mcqMarks) {
-  const cqVal = document.getElementById('cqInput_' + rowId).value;
-  if(cqVal === '') {
-    alert('দয়া করে CQ নম্বর লিখুন');
+// ২. নির্দিষ্ট শিক্ষার্থীর খাতা ক্যানভাসে আনা
+function selectStudentForEvaluation(idx) {
+  currentEvalIndex = idx;
+  const sub = allAdminSubmissions[idx];
+  document.getElementById('digitalCanvasWorkarea').style.display = 'block';
+  document.getElementById('evalStudentNameDisplay').innerText = `${sub.studentName} (রেজি: ${sub.studentRoll})`;
+  document.getElementById('evalSubjectInfoDisplay').innerText = `${sub.studentClass} - ${sub.subject} | MCQ স্কোর: ${sub.mcqMarks}`;
+
+  // লিংকগুলো থেকে ইমেজ ফাইল আলাদা করা
+  let rawLinks = (sub.cqAnswer || "").split(" , ").map(l => l.trim()).filter(l => l.length > 0);
+  
+  // গুগল ড্রাইভ ভিউ লিংককে সরাসরি ইমেজে রূপান্তর
+  currentEvalScriptPages = rawLinks.map(link => {
+    if (link.includes("drive.google.com")) {
+      var fileId = (link.match(/\/d\/([a-zA-Z0-9_-]+)/) || link.match(/id=([a-zA-Z0-9_-]+)/) || [])[1];
+      if (fileId) return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`;
+    }
+    return link;
+  });
+
+  if (currentEvalScriptPages.length === 0) {
+    alert("এই শিক্ষার্থীর কোনো খাতার ফাইল পাওয়া যায়নি!");
     return;
   }
-  const cqMarks = Number(cqVal);
-  const total = mcqMarks + cqMarks;
 
-  postData({
-    action: "gradeCqMarks",
-    rowId: rowId,
-    cqMarks: cqMarks,
-    totalMarks: total
-  }, res => {
-    if(res && res.success) {
-      document.getElementById('totalMarkView_' + rowId).innerText = total;
-      alert('সফলভাবে নম্বর সংরক্ষিত ও শিক্ষার্থীর রেজাল্টে যুক্ত হয়েছে!');
+  currentEvalPageIndex = 0;
+  pageMarksArray = new Array(currentEvalScriptPages.length).fill(0);
+  evaluatedCanvases = new Array(currentEvalScriptPages.length).fill(null);
+  
+  if (sub.cqMarks) {
+    document.getElementById('finalCqTotalMark').value = sub.cqMarks;
+  }
+  
+  initCanvasDrawing();
+  renderPageOnCanvas();
+}
+
+// ৩. ক্যানভাসে ইমেজ লোড ও ড্রয়িং সেটআপ (CORS ও ড্রাইভ প্রিভিউ সম্পূর্ণ ফিক্সড)
+function renderPageOnCanvas() {
+  const canvas = document.getElementById('scriptCanvas');
+  const ctx = canvas.getContext('2d');
+  const rawUrl = currentEvalScriptPages[currentEvalPageIndex];
+
+  document.getElementById('canvasPageIndicator').innerText = `${currentEvalPageIndex + 1} / ${currentEvalScriptPages.length}`;
+  document.getElementById('pageWiseMarkInput').value = pageMarksArray[currentEvalPageIndex] || "";
+
+  // পূর্বে দাগানো থাকলে ক্যাশ থেকে আনা
+  if (evaluatedCanvases[currentEvalPageIndex]) {
+    const prevImg = new Image();
+    prevImg.onload = () => {
+      canvas.width = prevImg.width;
+      canvas.height = prevImg.height;
+      ctx.drawImage(prevImg, 0, 0);
+    };
+    prevImg.src = evaluatedCanvases[currentEvalPageIndex];
+    return;
+  }
+
+  // লোডিং স্টেট প্রদর্শন
+  canvas.width = 800;
+  canvas.height = 1000;
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#2563eb";
+  ctx.font = "bold 20px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("খাতার পাতা লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...", canvas.width / 2, canvas.height / 2);
+
+  // ফাইল আইডি শনাক্ত করা
+  let fileId = "";
+  if (rawUrl.includes("drive.google.com")) {
+    fileId = (rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || rawUrl.match(/id=([a-zA-Z0-9_-]+)/) || [])[1];
+  }
+
+  const drawOnCanvas = (src) => {
+    const img = new Image();
+    img.onload = function() {
+      // খাতার পাতার সঠিক অনুপাত বজায় রেখে স্ক্রিন অনুযায়ী সর্বোচ্চ সাইজ সেট করা
+      const targetWidth = 800;
+      const aspectRatio = img.height / img.width;
+      const targetHeight = Math.round(targetWidth * aspectRatio);
+
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+
+      // ক্যানভাসটি যেন স্ক্রিনের বাইরে ছড়িয়ে না যায়
+      canvas.style.width = "100%";
+      canvas.style.maxWidth = "800px";
+      canvas.style.height = "auto";
+      canvas.style.display = "block";
+
+      ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+    };
+    img.onerror = function() {
+      canvas.width = 800;
+      canvas.height = 1000;
+      canvas.style.width = "100%";
+      canvas.style.maxWidth = "800px";
+      canvas.style.height = "auto";
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#dc2626";
+      ctx.font = "18px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("ছবি লোড হতে ব্যর্থ হয়েছে! ড্রাইভ পারমিশন চেক করুন।", canvas.width / 2, canvas.height / 2);
+    };
+    img.src = src;
+  };
+  
+
+  // সার্ভার থেকে Base64 কনভার্ট করে লোড করা
+  if (fileId) {
+    postData({ action: "getFileAsBase64", fileId: fileId }, res => {
+      if (res && res.success && res.base64) {
+        drawOnCanvas(res.base64);
+      } else {
+        drawOnCanvas(`https://lh3.googleusercontent.com/d/${fileId}`);
+      }
+    });
+  } else {
+    drawOnCanvas(rawUrl);
+  }
+}
+
+// ৬. স্টুডেন্টের প্রোফাইল থেকে মূল্যায়িত খাতা সরাসরি প্রিভিউ (শিক্ষার্থীর স্ক্রিন ফিক্সড)
+function openStudentEvaluatedScriptViewer() {
+  if (!currentStudentProfile || !currentStudentProfile.results.length) {
+    return alert("কোনো পরীক্ষার ফলাফল পাওয়া যায়নি!");
+  }
+  
+  const lastResult = currentStudentProfile.results[currentStudentProfile.results.length - 1];
+  const evalUrls = lastResult[8]; // CQ_Submission_URL কলাম
+
+  if (!evalUrls) {
+    return alert("শিক্ষকের মূল্যায়িত খাতা এখনো আপলোড বা চেক করা হয়নি!");
+  }
+
+  const urls = evalUrls.split(" , ").map(u => u.trim());
+  const modal = document.getElementById('studentDocViewerModal');
+  const body = document.getElementById('studentDocViewerBody');
+  
+  body.innerHTML = `
+    <div style="display:flex; flex-direction:column; gap:15px; width:100%; height:100%; overflow-y:auto; align-items:center; padding:10px;">
+      ${urls.map((u, i) => {
+        let displaySrc = u;
+        if (u.includes("drive.google.com")) {
+          let fileId = (u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/) || [])[1];
+          if (fileId) displaySrc = `https://lh3.googleusercontent.com/d/${fileId}`;
+        }
+        return `
+          <div style="background:#1e293b; padding:10px; border-radius:8px; width:100%; max-width:700px; text-align:center;">
+            <span style="color:#38bdf8; font-size:0.85rem; font-weight:bold; display:block; margin-bottom:8px;">📄 মূল্যায়িত পৃষ্ঠা নম্বর: ${i + 1}</span>
+            <img src="${displaySrc}" style="width:100%; border-radius:6px; border:1px solid #475569; background:#fff;" alt="মূল্যায়িত খাতার পৃষ্ঠা">
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+  modal.style.display = 'flex';
+}
+
+// ৪. ক্যানভাস পেন লজিক (মাউস ও টাচ ফ্রেন্ডলি)
+function initCanvasDrawing() {
+  const canvas = document.getElementById('scriptCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY
+    };
+  }
+
+  function start(e) {
+    isDrawing = true;
+    const pos = getPos(e);
+    lastX = pos.x;
+    lastY = pos.y;
+    e.preventDefault();
+  }
+
+  function draw(e) {
+    if (!isDrawing) return;
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.strokeStyle = document.getElementById('digitalPenColor').value;
+    ctx.lineWidth = document.getElementById('digitalPenSize').value;
+    ctx.lineCap = "round";
+    ctx.stroke();
+    lastX = pos.x;
+    lastY = pos.y;
+    e.preventDefault();
+  }
+
+  function stop() {
+    if (isDrawing) {
+      isDrawing = false;
+      evaluatedCanvases[currentEvalPageIndex] = canvas.toDataURL('image/jpeg', 0.8);
+    }
+  }
+
+  canvas.onmousedown = start;
+  canvas.onmousemove = draw;
+  canvas.onmouseup = stop;
+  canvas.onmouseout = stop;
+
+  canvas.ontouchstart = start;
+  canvas.ontouchmove = draw;
+  canvas.ontouchend = stop;
+}
+
+function clearCurrentCanvas() {
+  evaluatedCanvases[currentEvalPageIndex] = null;
+  renderPageOnCanvas();
+}
+
+function saveCurrentPageMark() {
+  const mark = Number(document.getElementById('pageWiseMarkInput').value) || 0;
+  pageMarksArray[currentEvalPageIndex] = mark;
+  
+  // মোট মার্ক যোগ করা
+  const total = pageMarksArray.reduce((a, b) => a + b, 0);
+  document.getElementById('finalCqTotalMark').value = total;
+}
+
+function nextScriptPage() {
+  const canvas = document.getElementById('scriptCanvas');
+  evaluatedCanvases[currentEvalPageIndex] = canvas.toDataURL('image/jpeg', 0.8);
+  if (currentEvalPageIndex < currentEvalScriptPages.length - 1) {
+    currentEvalPageIndex++;
+    renderPageOnCanvas();
+  }
+}
+
+function prevScriptPage() {
+  const canvas = document.getElementById('scriptCanvas');
+  evaluatedCanvases[currentEvalPageIndex] = canvas.toDataURL('image/jpeg', 0.8);
+  if (currentEvalPageIndex > 0) {
+    currentEvalPageIndex--;
+    renderPageOnCanvas();
+  }
+}
+
+// ৫. ফাইনাল দাগানো খাতা ও মার্কস ড্রাইভে সাবমিট করা
+function submitEvaluatedScript() {
+  const sub = allAdminSubmissions[currentEvalIndex];
+  const finalCq = Number(document.getElementById('finalCqTotalMark').value) || 0;
+  const totalScore = (Number(sub.mcqMarks) || 0) + finalCq;
+
+  // বর্তমান পাতার ক্যানভাস ক্যাশে নেওয়া
+  const canvas = document.getElementById('scriptCanvas');
+  evaluatedCanvases[currentEvalPageIndex] = canvas.toDataURL('image/jpeg', 0.8);
+
+  const cleanImages = evaluatedCanvases.filter(img => img !== null);
+
+  const payload = {
+    action: "saveEvaluatedScript",
+    rowId: sub.rowId,
+    reg: sub.studentRoll,
+    cqMarks: finalCq,
+    totalMarks: totalScore,
+    originalLink: sub.cqAnswer,
+    evaluatedImages: cleanImages
+  };
+
+  showToast("খাতা সংরক্ষণ হচ্ছে, কিছুক্ষণ অপেক্ষা করুন...", "info");
+
+  postData(payload, res => {
+    if (res && res.success) {
+      showToast("✅ খাতা সফলভাবে মূল্যায়িত ও ফলাফল আপডেট হয়েছে!", "success");
+      loadSubmissionsForAdmin();
     } else {
-      alert('সংরক্ষণ করা যায়নি, পুনরায় চেষ্টা করুন।');
+      showToast("সংরক্ষণ ব্যর্থ হয়েছে!", "error");
     }
   });
+}
+
+// ৬. স্টুডেন্টের প্রোফাইল থেকে মূল্যায়িত খাতা সরাসরি প্রিভিউ
+function openStudentEvaluatedScriptViewer() {
+  if (!currentStudentProfile || !currentStudentProfile.results.length) {
+    return alert("কোনো পরীক্ষার ফলাফল পাওয়া যায়নি!");
+  }
+  
+  // রেজাল্ট শিট থেকে CQ_Submission_URL নেওয়া
+  const lastResult = currentStudentProfile.results[currentStudentProfile.results.length - 1];
+  const evalUrls = lastResult[8]; // ৯ম কলাম: CQ_Submission_URL
+
+  if (!evalUrls) {
+    return alert("শিক্ষকের মূল্যায়িত খাতা এখনো আপলোড করা হয়নি!");
+  }
+
+  const urls = evalUrls.split(" , ");
+  const modal = document.getElementById('studentDocViewerModal');
+  const body = document.getElementById('studentDocViewerBody');
+  
+  body.innerHTML = `
+    <div style="display:flex; flex-direction:column; gap:15px; width:100%; height:100%; overflow-y:auto; align-items:center; padding:10px;">
+      ${urls.map((u, i) => `
+        <div style="background:#1e293b; padding:8px; border-radius:8px; width:100%; max-width:700px; text-align:center;">
+          <span style="color:#38bdf8; font-size:0.85rem; font-weight:bold; display:block; margin-bottom:6px;">পৃষ্ঠা নম্বর: ${i + 1}</span>
+          <img src="${u.includes('drive.google.com') ? 'https://drive.google.com/thumbnail?id=' + (u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/) || [])[1] + '&sz=w1000' : u}" style="width:100%; border-radius:6px; border:1px solid #475569;" alt="খাতার পৃষ্ঠা">
+        </div>
+      `).join('')}
+    </div>
+  `;
+  modal.style.display = 'flex';
 }
 /* ==========================================================
    স্ক্রিন অফ/অন হলেও কাজ ও পেজ আগের অবস্থায় ধরে রাখার অটো-সেভ সিস্টেম
@@ -4044,34 +4449,70 @@ async function submitShortQuestionStandalone() {
     }
   }
 }
-// ১. এডমিনে সিলেক্ট অনুযায়ী বক্স দেখানো বা লুকানো
 function toggleAdminQuestionBoxes() {
-  const type = document.getElementById('admExamTypeSelector').value;
-  const mcqBox = document.getElementById('rawMcqPaste')?.closest('div');
-  const cqBox = document.getElementById('admCqDesc')?.closest('div[style*="dashed #3b82f6"]');
-  const textBox = document.getElementById('adminTextQuestionInput')?.closest('div[style*="background: #1e293b"]');
+  const typeSelect = document.getElementById('admExamTypeSelector');
+  if (!typeSelect) return;
+  const type = typeSelect.value;
 
-  if (mcqBox) mcqBox.style.display = (type.indexOf('mcq') !== -1) ? 'block' : 'none';
-  if (cqBox) cqBox.style.display = (type.indexOf('cq') !== -1) ? 'block' : 'none';
-  if (textBox) textBox.style.display = (type.indexOf('text') !== -1) ? 'block' : 'none';
+  const mcqBox = document.getElementById('adminMcqSectionWrapper');
+  const cqBox = document.getElementById('adminCqSectionWrapper');
+  const textBox = document.getElementById('adminTextSectionWrapper');
+
+  const mcqDurInput = document.getElementById('admMcqDuration')?.closest('div');
+  const cqDurInput = document.getElementById('admCqDuration')?.closest('div');
+
+  // ১০০% নিখুঁত ও আলাদা আলাদা ম্যাচিং লজিক
+  const showMcq = (type === 'mcq' || type === 'mcq_cq' || type === 'mcq_text' || type === 'mcq_cq_text');
+  const showCq = (type === 'cq' || type === 'mcq_cq' || type === 'cq_text' || type === 'mcq_cq_text');
+  const showText = (type === 'text' || type === 'mcq_text' || type === 'cq_text' || type === 'mcq_cq_text');
+
+  if (mcqBox) mcqBox.style.display = showMcq ? 'block' : 'none';
+  if (cqBox) cqBox.style.display = showCq ? 'block' : 'none';
+  if (textBox) textBox.style.display = showText ? 'block' : 'none';
+
+  if (mcqDurInput) mcqDurInput.style.display = showMcq ? 'block' : 'none';
+  if (cqDurInput) cqDurInput.style.display = (showCq || showText) ? 'block' : 'none';
 }
 
-// ২. এডমিন সেভ ফাংশনে টাইপ ডেটা পাস করা
-const originalSaveScheduledExam = window.saveScheduledExam;
+// ২. একক এবং ত্রুটিমুক্ত শিডিউল ও প্রকাশ ফাংশন
 function saveScheduledExam() {
   const btn = event?.currentTarget || event?.target;
   const examType = document.getElementById('admExamTypeSelector').value;
-  const cqFile = document.getElementById('admCqFile').files[0];
-  const cqDesc = document.getElementById('admCqDesc').value;
-  const textQuestion = document.getElementById('adminTextQuestionInput').innerHTML;
+  const classVal = document.getElementById('admClass').value;
+  const subject = document.getElementById('admSubject').value.trim();
+  const publishDate = document.getElementById('admPublishDate').value;
+  const publishTime = document.getElementById('admPublishTime').value;
+
+  if (!classVal || !subject || !publishDate || !publishTime) {
+    return alert("দয়া করে শ্রেণি, বিষয়, প্রকাশের তারিখ ও সময় পূরণ করুন!");
+  }
+
+  const hasMcq = examType.indexOf('mcq') !== -1;
+  const hasCq = examType.indexOf('cq') !== -1;
+  const hasText = examType.indexOf('text') !== -1;
+
+  const cqDesc = document.getElementById('admCqDesc')?.value.trim() || "";
+  const cqFile = document.getElementById('admCqFile')?.files[0];
+  const textQuestion = document.getElementById('adminTextQuestionInput')?.innerHTML.trim() || "";
+
+  // ভ্যালিডেশন
+  if (hasMcq && (!smartParsedMcq || smartParsedMcq.length === 0)) {
+    return alert("MCQ প্রশ্ন পেস্ট করে প্রস্তুত করুন!");
+  }
+  if (hasCq && !cqDesc && !cqFile) {
+    return alert("সৃজনশীল (CQ) প্রশ্ন লিখুন অথবা ফাইল আপলোড করুন!");
+  }
+  if (hasText && (!textQuestion || textQuestion === "<br>")) {
+    return alert("সংক্ষিপ্ত/বর্ণনামূলক প্রশ্ন লিখুন!");
+  }
 
   const send = (b64 = "", mime = "") => {
     postData({
       action: "saveExamSchedule",
-      classVal: document.getElementById('admClass').value,
-      subject: document.getElementById('admSubject').value,
-      publishDate: document.getElementById('admPublishDate').value,
-      publishTime: document.getElementById('admPublishTime').value,
+      classVal: classVal,
+      subject: subject,
+      publishDate: publishDate,
+      publishTime: publishTime,
       mcqDuration: document.getElementById('admMcqDuration').value || smartParsedMcq.length || 30,
       cqDuration: document.getElementById('admCqDuration').value || 30,
       examType: examType,
@@ -4079,16 +4520,28 @@ function saveScheduledExam() {
       textQuestionContent: textQuestion,
       cqQuestionFileBase64: b64,
       cqMime: mime,
-      mcqList: smartParsedMcq
+      mcqList: hasMcq ? smartParsedMcq : []
     }, res => {
       if (res && res.success) {
         showAdminMessage("✅ পরীক্ষা শিডিউল ও প্রকাশ সফল!");
+        
+        // সম্পূর্ণ ফর্ম ক্লিয়ার করা
         document.getElementById('rawMcqPaste').value = "";
         document.getElementById('admCqDesc').value = "";
         document.getElementById('adminTextQuestionInput').innerHTML = "";
-        document.getElementById('mcqParsedPreview').classList.add('hidden');
+        document.getElementById('admCqFile').value = "";
+        smartParsedMcq = [];
+        
+        const previewEl = document.getElementById('mcqParsedPreview');
+        if (previewEl) {
+          previewEl.innerHTML = "";
+          previewEl.classList.add('hidden');
+        }
+        
         loadNoticesAndMotivation();
         loadAdminExamList();
+      } else {
+        alert(res?.error || "পরীক্ষা সংরক্ষণ ব্যর্থ হয়েছে!");
       }
     }, btn);
   };
@@ -4097,7 +4550,9 @@ function saveScheduledExam() {
     const reader = new FileReader();
     reader.onload = e => send(e.target.result, cqFile.type);
     reader.readAsDataURL(cqFile);
-  } else send();
+  } else {
+    send();
+  }
 }
 
 // ৩. শিক্ষার্থীর সামনে এডমিন নির্ধারিত বক্স ফিল্টারিং লজিক
@@ -4253,6 +4708,7 @@ function submitLiveExam(isAuto = false) {
     </div>
   </div>
 </div>
+
 
 <style>
 @keyframes popIn {
