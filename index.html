@@ -1129,27 +1129,29 @@ body.dark-mode .ms-table td {
 <!-- OneSignal Web Push SDK Integration -->
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "d90e62f0-9ab2-442b-b086-4be5edb9b760",
-      promptOptions: {
-        slidedown: {
-          prompts: [
-            {
-              type: "push",
-              autoPrompt: true,
-              text: {
-                actionMessage: "নতুন পরীক্ষার সময়সূচি ও রেজাল্ট সাথে সাথে নোটিফিকেশনে পেতে পারমিশন এলাও করুন।",
-                acceptButton: "অনুমতি দিন",
-                cancelButton: "পরে করব"
+ window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "d90e62f0-9ab2-442b-b086-4be5edb9b760",
+        serviceWorkerParam: { scope: "/gan.com/" },
+        serviceWorkerPath: "OneSignalSDKWorker.js",
+        promptOptions: {
+          slidedown: {
+            prompts: [
+              {
+                type: "push",
+                autoPrompt: true,
+                text: {
+                  actionMessage: "নতুন পরীক্ষার সময়সূচি ও রেজাল্ট সাথে সাথে পেতে নোটিফিকেশন চালু করুন।",
+                  acceptButton: "অনুমতি দিন",
+                  cancelButton: "পরে করব"
+                }
               }
-            }
-          ]
+            ]
+          }
         }
-      }
+      });
     });
-  });
 </script>
 </head>
 <body class="notranslate">
