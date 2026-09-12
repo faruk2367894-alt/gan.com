@@ -3810,7 +3810,41 @@ function submitEvaluatedScript() {
     }
   });
 }
+// নিরাপদ ও হালকা সাইজের ইমেজ রিডার (Base64 কম্প্রেসার)
+async function processScriptFile(file) {
+  return new Promise((resolve) => {
+    // ফাইল যদি ছবি না হয় (যেমন PDF), সরাসরি রিড করবে
+    if (!file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target.result);
+      reader.readAsDataURL(file);
+      return;
+    }
 
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const maxW = 1200; // খাতার লেখা স্পষ্ট রেখে সর্বোচ্চ সাইজ
+        let w = img.width;
+        let h = img.height;
+        if (w > maxW) {
+          h = Math.round((h * maxW) / w);
+          w = maxW;
+        }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.7)); // ৭০% কোয়ালিটিতে কম্প্রেস
+      };
+      img.onerror = () => resolve(e.target.result);
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 // ৬. স্টুডেন্টের প্রোফাইল থেকে মূল্যায়িত খাতা সরাসরি প্রিভিউ
 function openStudentEvaluatedScriptViewer() {
   if (!currentStudentProfile || !currentStudentProfile.results.length) {
