@@ -2854,7 +2854,8 @@ function postData(data, callback, btn = null) {
   fetch(SCRIPT_URL, {
     method: "POST",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
+    redirect: "follow" // এটি যুক্ত করা অত্যন্ত জরুরি
   })
   .then(r => r.json())
   .then(res => {
@@ -2864,6 +2865,7 @@ function postData(data, callback, btn = null) {
   .catch(err => {
     if (resetBtn) resetBtn();
     console.error("Server Error:", err);
+    alert("সার্ভারে ডাটা পাঠানো যায়নি! কনসোল এরর চেক করুন।");
   });
 }
 
@@ -4627,7 +4629,7 @@ function submitLiveExam(isAuto = false) {
   const btn = document.getElementById('examSubmitBtn');
   const userAnswers = {};
 
-  if (!activeExamData) return alert("পরীক্ষার সেশন পাওয়া যায়নি!");
+  if (!activeExamData) return alert("পরীক্ষার সেশন পাওয়া যায়নি!");
 
   // MCQ উত্তর সংগ্রহ
   if (activeExamData.mcq && Array.isArray(activeExamData.mcq)) {
@@ -4655,10 +4657,10 @@ function submitLiveExam(isAuto = false) {
     fileList: selectedExamFilesList,
     // ব্যাকএন্ডে সিঙ্গেল ফাইল রিডার থাকলে তার জন্য প্রথম ফাইলের ব্যাকআপ
     cqSubBase64: selectedExamFilesList.length > 0 ? selectedExamFilesList[0].base64 : "",
-    cqSubMime: selectedExamFilesList.length > 0 ? selectedExamFilesList[0].mime : ""
+    cqSubMime: selectedExamFilesList.length > 0 ? selectedExamFilesList[0].mime : "image/jpeg"
   };
 
-  showToast("খাতা গুগল ড্রাইভে জমা হচ্ছে, দয়া করে অপেক্ষা করুন...", "info");
+  showToast("খাতা গুগল ড্রাইভে জমা হচ্ছে, দয়া করে অপেক্ষা করুন...", "info");
 
   postData(payload, res => {
     if (res && res.success) {
@@ -4669,9 +4671,9 @@ function submitLiveExam(isAuto = false) {
       }
       selectedExamFilesList = [];
       showExamReview(res);
-      showToast("✅ পরীক্ষা ও খাতা সফলভাবে সংরক্ষিত হয়েছে!", "success");
+      showToast("✅ পরীক্ষা ও খাতা সফলভাবে সংরক্ষিত হয়েছে!", "success");
     } else {
-      alert("জমা হতে সমস্যা হয়েছে: " + (res?.message || "পুনরায় চেষ্টা করুন"));
+      alert("জমা হতে সমস্যা হয়েছে: " + (res?.message || "পুনরায় চেষ্টা করুন"));
     }
   }, btn);
 }
