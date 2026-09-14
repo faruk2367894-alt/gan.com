@@ -2629,48 +2629,6 @@ function startLiveExamSession() {
   }, 1000);
 }
 
-function submitLiveExam(isAuto = false) {
-  const btn = document.getElementById('examSubmitBtn');
-  const userAnswers = {};
-
-  if (currentExamSection !== 'cq') {
-    activeExamData.mcq.forEach(q => {
-      const checked = document.querySelector(`input[name="ans_${q.id}"]:checked`);
-      if (checked) userAnswers[q.id] = checked.value;
-    });
-  }
-
-  const cqFile = document.getElementById('cqUploadFile').files[0];
-  if (!isAuto && currentExamSection === 'cq' && !cqFile) return alert("লিখিত CQ খাতার ফাইল সিলেক্ট করুন!");
-
-  if (examTimerInterval) clearInterval(examTimerInterval);
-
-  const send = (b64 = "", mime = "") => {
-    const payload = {
-      action: "submitLiveExam",
-      examId: activeExamData.examId,
-      reg: activeExamData.studentReg,
-      classVal: activeExamData.studentClass,
-      subject: activeExamData.subject,
-      userAnswers: userAnswers,
-      cqSubBase64: b64,
-      cqSubMime: mime
-    };
-    postData(payload, res => {
-      if (res && res.success) {
-        closeModal('liveExamModal');
-        showExamReview(res);
-      }
-    }, btn);
-  };
-
-  if (cqFile && currentExamSection !== 'mcq') {
-    const reader = new FileReader();
-    reader.onload = e => send(e.target.result, cqFile.type);
-    reader.readAsDataURL(cqFile);
-  } else send();
-}
-
 function showExamReview(res) {
   document.getElementById('resCorrect').innerText = res.correctCount;
   document.getElementById('resWrong').innerText = res.wrongCount;
