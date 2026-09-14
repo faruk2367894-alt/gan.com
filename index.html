@@ -1410,7 +1410,7 @@ body.dark-mode .ms-table td {
         <label style="font-size: 0.82rem; font-weight: 700; color: #312e81; display: block; margin-bottom: 6px;">
           উত্তরপত্রের ছবি (Image) বা ফাইল (PDF) নির্বাচন করুন:
         </label>
-        <input type="file" id="studentTextExamFile" accept="image/*,.pdf,.doc,.docx" style="display: none;" onchange="handleTextAnswerUpload(this)">
+      <input type="file" id="studentTextExamFile" accept="image/*,.pdf" multiple onchange="handleMultipleTextFiles(this)" style="display: none;">
         <button type="button" class="btn btn-purple" onclick="document.getElementById('studentTextExamFile').click()" style="padding: 6px 14px; font-size: 0.85rem; cursor: pointer;">
           📁 ফাইল নির্বাচন করুন
         </button>
@@ -3529,40 +3529,57 @@ function renderPageOnCanvas() {
 
 // ৬. স্টুডেন্টের প্রোফাইল থেকে মূল্যায়িত খাতা সরাসরি প্রিভিউ (শিক্ষার্থীর স্ক্রিন ফিক্সড)
 function openStudentEvaluatedScriptViewer() {
-  if (!currentStudentProfile || !currentStudentProfile.results.length) {
+  if (!window.currentStudentProfile || !window.currentStudentProfile.results || !window.currentStudentProfile.results.length) {
     return alert("কোনো পরীক্ষার ফলাফল পাওয়া যায়নি!");
   }
+
+  const lastResult = window.currentStudentProfile.results[window.currentStudentProfile.results.length - 1];
   
-  const lastResult = currentStudentProfile.results[currentStudentProfile.results.length - 1];
-  const evalUrls = lastResult[8]; // CQ_Submission_URL কলাম
+  // ৮ নম্বর কলাম বা রেজাল্ট অবজেক্ট থেকে লিংক খোঁজা, না পেলে লোকালস্টোরেজের খাতা চেক করা
+  let evalUrls = (lastResult && (lastResult[8] || lastResult.evaluatedScriptUrl || lastResult.cqSubmissionUrl)) || "";
+  
+  if (!evalUrls || evalUrls.trim() === "" || evalUrls.toLowerCase() === "undefined") {
+    // শিক্ষক এখনো না দেখে থাকলে শিক্ষার্থীর আপলোড করা খাতার ব্যাকআপ নেওয়া
+    evalUrls = localStorage.getItem('student_uploaded_doc') || "";
+  }
 
   if (!evalUrls) {
     return alert("শিক্ষকের মূল্যায়িত খাতা এখনো আপলোড বা চেক করা হয়নি!");
   }
 
-  const urls = evalUrls.split(" , ").map(u => u.trim());
   const modal = document.getElementById('studentDocViewerModal');
   const body = document.getElementById('studentDocViewerBody');
+
+  if (!modal || !body) {
+    window.open(evalUrls, '_blank');
+    return;
+  }
+
+  const urls = evalUrls.split(",").map(u => u.trim()).filter(u => u.length > 0);
   
   body.innerHTML = `
-    <div style="display:flex; flex-direction:column; gap:15px; width:100%; height:100%; overflow-y:auto; align-items:center; padding:10px;">
+    <div style="display:flex; flex-direction:column; gap:15px; width:100%; max-height:75vh; overflow-y:auto; padding:10px;">
       ${urls.map((u, i) => {
         let displaySrc = u;
         if (u.includes("drive.google.com")) {
-          let fileId = (u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/) || [])[1];
-          if (fileId) displaySrc = `https://lh3.googleusercontent.com/d/${fileId}`;
+          let fileIdMatch = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
+          if (fileIdMatch && fileIdMatch[1]) {
+            displaySrc = `https://drive.google.com/thumbnail?id=${fileIdMatch[1]}&sz=w1200`;
+          }
         }
         return `
-          <div style="background:#1e293b; padding:10px; border-radius:8px; width:100%; max-width:700px; text-align:center;">
-            <span style="color:#38bdf8; font-size:0.85rem; font-weight:bold; display:block; margin-bottom:8px;">📄 মূল্যায়িত পৃষ্ঠা নম্বর: ${i + 1}</span>
-            <img src="${displaySrc}" style="width:100%; border-radius:6px; border:1px solid #475569; background:#fff;" alt="মূল্যায়িত খাতার পৃষ্ঠা">
+          <div style="background:#1e293b; padding:10px; border-radius:8px; width:100%; text-align:center;">
+            <span style="color:#38bdf8; font-size:0.85rem; font-weight:bold; display:block; margin-bottom:6px;">পাতা নং - ${i + 1}</span>
+            <img src="${displaySrc}" style="max-width:100%; height:auto; border-radius:6px; border:1px solid #475569;" alt="মূল্যায়িত পাতা" onerror="this.onerror=null; this.src='${u}';" />
           </div>
         `;
       }).join('')}
     </div>
   `;
-  modal.style.display = 'flex';
-}
+
+  // স্ক্রিনের সবার উপরে স্পষ্ট দেখানো (z-index সমাধান)
+  modal.style.cssText = "display: flex !important; position: fixed !important; inset: 0 !important; z-index: 999999999 !important; background: rgba(15, 23, 42, 0.85) !important; align-items: center !important; justify-content: center !important;";
+}s
 
 // ৪. ক্যানভাস পেন লজিক (মাউস ও টাচ ফ্রেন্ডলি)
 function initCanvasDrawing() {
@@ -3978,40 +3995,67 @@ function formatAdminText(command, value = null) {
 ========================================================== */
 let studentUploadedFileBase64 = "";
 
-function handleTextAnswerUpload(input) {
-  const file = input.files[0];
-  if (!file) return;
+async function handleMultipleTextFiles(input) {
+  const files = Array.from(input.files);
+  if (!files || files.length === 0) return;
 
   const statusEl = document.getElementById('textUploadStatus');
-  statusEl.innerText = `নির্বাচিত ফাইল: ${file.name} প্রসেস হচ্ছে...`;
-  statusEl.style.color = '#2563eb';
+  if (statusEl) {
+    statusEl.innerText = `⏳ ${files.length} টি ফাইল কম্প্রেস ও প্রস্তুত করা হচ্ছে...`;
+    statusEl.style.color = '#2563eb';
+  }
 
-  const reader = new FileReader();
-  reader.onload = async function(e) {
-    studentUploadedFileBase64 = e.target.result;
-    
-    // লোকাল ব্যাকআপ
-    localStorage.setItem('student_uploaded_doc', studentUploadedFileBase64);
-    localStorage.setItem('student_uploaded_doc_name', file.name);
+  selectedExamFilesList = []; // আগের তালিকা ক্লিয়ার
 
-    // মূল পরীক্ষার সাবমিশন তালিকায় যোগ করা
-    if (typeof selectedExamFilesList !== 'undefined') {
-      selectedExamFilesList.push({
-        name: file.name,
-        mime: file.type || 'image/jpeg',
-        base64: studentUploadedFileBase64
-      });
-    }
-
-    statusEl.innerText = `✅ ফাইল প্রস্তুত: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
-    statusEl.style.color = '#059669';
-
-    if (typeof showToast === 'function') {
-      showToast('উত্তরপত্রের ফাইল সফলভাবে যুক্ত হয়েছে!', 'success');
-    }
+  const compressImage = (file) => {
+    return new Promise((resolve) => {
+      if (!file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve({ name: file.name, mime: file.type, base64: e.target.result });
+        reader.readAsDataURL(file);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 1200;
+          let width = img.width;
+          let height = img.height;
+          if (width > height && width > maxDim) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else if (height > maxDim) {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressed = canvas.toDataURL('image/jpeg', 0.65);
+          resolve({ name: file.name, mime: 'image/jpeg', base64: compressed });
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
   };
-  reader.readAsDataURL(file);
-}
+
+  for (let file of files) {
+    const item = await compressImage(file);
+    selectedExamFilesList.push(item);
+  }
+
+  // একক ভেরিয়েবল ব্যাকআপ
+  studentUploadedFileBase64 = selectedExamFilesList[0] ? selectedExamFilesList[0].base64 : "";
+
+  if (statusEl) {
+    statusEl.innerText = `✅ মোট ${selectedExamFilesList.length} টি উত্তরপত্রের পাতা প্রস্তুত!`;
+    statusEl.style.color = '#059669';
+  }
+} 
 
 // সাইটের ভেতরে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার ফাংশন
 function openStudentUploadedDoc(targetUrlOrBase64) {
