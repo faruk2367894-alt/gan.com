@@ -3152,7 +3152,7 @@ function loadFullProfile() {
       document.getElementById('cardStudentReg').innerText = res.student[0];
       document.getElementById('cardStudentFather').innerText = res.student[2];
       document.getElementById('cardStudentMobile').innerText = res.student[5];
-      document.getElementById('examHistoryList').innerHTML = res.results.length ? res.results.map((r, i) => `<li><b>${i+1}. ${r[3]}</b>: MCQ- ${r[4]} | Total: ${r[6]} (${r[7]})</li>`).join('') : '<li>কোনো ফলাফল নেই।</li>';
+      document.getElementById('examHistoryList').innerHTML = res.results.length ? res.results.map((r, i) => `<li data-script="${r[8] || ''}"><b>${i+1}. ${r[3] || 'পরীক্ষা'}</b>: MCQ- ${r[4]} | Total: ${r[6]} (${r[7]})</li>`).join('') : '<li>কোনো পরীক্ষার ফলাফল পাওয়া যায়নি</li>';
     } else alert("শিক্ষার্থীর তথ্য মেলেনি!");
   }, btn);
 }
@@ -3528,96 +3528,45 @@ function renderPageOnCanvas() {
 }
 
 /* ==========================================================
-   রেজিস্ট্রেশন নম্বর নির্ভুলভাবে নিয়ে শিট থেকে খাতা দেখানোর ফাংশন
+   রেজিস্ট্রেশন ও প্রোফাইল থেকে নির্দিষ্ট শিক্ষার্থীর খাতা ভিউয়ার
 ========================================================== */
-async function openStudentEvaluatedScriptViewer() {
-  var studentReg = "";
+function openStudentEvaluatedScriptViewer() {
+  var evalUrls = "";
 
-  // ১. কার্ড থেকে শুধু রেজিস্ট্রেশন নম্বর আলাদা করা (মোবাইল নম্বর বাদ)
-  var allCardTexts = document.querySelectorAll('p, span, b, div');
-  for (var i = 0; i < allCardTexts.length; i++) {
-    var txt = allCardTexts[i].innerText || "";
-    if (txt.indexOf('রেজিস্ট্রেশন') !== -1 || txt.indexOf('রেজিঃ') !== -1 || txt.indexOf('রেজি নং') !== -1) {
-      var match = txt.match(/\d{5,}/);
-      if (match) {
-        studentReg = match[0];
+  // ১. বর্তমান লোড হওয়া শিক্ষার্থীর প্রোফাইল ডাটা (currentStudentProfile) থেকে সরাসরি লিংক নেওয়া
+  if (typeof currentStudentProfile !== 'undefined' && currentStudentProfile && currentStudentProfile.results) {
+    for (var i = currentStudentProfile.results.length - 1; i >= 0; i--) {
+      var r = currentStudentProfile.results[i];
+      if (Array.isArray(r) && r[8] && String(r[8]).indexOf('http') === 0) {
+        evalUrls = String(r[8]).trim();
         break;
       }
     }
   }
 
-  // ব্যাকআপ: যদি নির্দিষ্ট আইডিতে থাকে
-  if (!studentReg) {
-    var regEl = document.getElementById('cardStudentReg') || document.getElementById('studentRegNo');
-    if (regEl) {
-      var m = (regEl.innerText || regEl.value || '').match(/\d+/);
-      if (m) studentReg = m[0];
-    }
-  }
-
-  if (!studentReg) {
-    studentReg = prompt("শিক্ষার্থীর রেজিস্ট্রেশন নম্বর লিখুন:");
-  }
-
-  if (!studentReg) return;
-
-  // লোডিং নোটিফিকেশন
-  var loadingDiv = document.createElement('div');
-  loadingDiv.id = 'tempScriptLoader';
-  loadingDiv.style = 'position:fixed; top:20px; right:20px; background:#0284c7; color:#fff; padding:12px 20px; border-radius:8px; z-index:999999; font-weight:bold; box-shadow:0 4px 12px rgba(0,0,0,0.2);';
-  loadingDiv.innerText = 'গুগল শিট থেকে মূল্যায়িত খাতা খোঁজা হচ্ছে...';
-  document.body.appendChild(loadingDiv);
-
-  var evalUrls = "";
-
-  try {
-    // ২. ব্যাকএন্ডে সঠিক রেজিস্ট্রেশন নম্বর পাঠানো
-    var scriptUrl = (typeof SCRIPT_URL !== 'undefined') ? SCRIPT_URL : 
-                    ((typeof APP_URL !== 'undefined') ? APP_URL : 
-                    ((typeof WEB_APP_URL !== 'undefined') ? WEB_APP_URL : ''));
-
-    if (scriptUrl) {
-      // POST রিকোয়েস্ট (যা আপনার সিস্টেমে কাজ করে)
-      var response = await fetch(scriptUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: JSON.stringify({ action: 'getResults', reg: studentReg, roll: studentReg })
-      });
-      var resData = await response.json();
-      var rows = resData.results || resData || [];
-
-      // Results শিট থেকে এই রোলের খাতার লিংক (কলাম I বা কলাম ৮) বের করা
-      for (var rIdx = rows.length - 1; rIdx >= 0; rIdx--) {
-        var row = rows[rIdx];
-        if (Array.isArray(row)) {
-          var rRoll = String(row[1] || '').trim();
-          var rUrl = String(row[8] || '').trim();
-          if (rRoll === String(studentReg).trim() && rUrl.indexOf('http') === 0) {
-            evalUrls = rUrl;
-            break;
-          }
-        }
+  // ২. রেজাল্ট হিস্ট্রি লিস্টের DOM এট্রিবিউট থেকে লিংক খোঁজা
+  if (!evalUrls) {
+    var liItems = document.querySelectorAll('#examHistoryList li');
+    for (var j = liItems.length - 1; j >= 0; j--) {
+      var scriptAttr = liItems[j].getAttribute('data-script');
+      if (scriptAttr && scriptAttr.indexOf('http') === 0) {
+        evalUrls = scriptAttr.trim();
+        break;
       }
     }
-  } catch (err) {
-    console.error("শিট ফেচ এরর:", err);
-  }
-
-  if (document.getElementById('tempScriptLoader')) {
-    document.getElementById('tempScriptLoader').remove();
   }
 
   // ৩. যদি কোনো খাতা না পাওয়া যায়
   if (!evalUrls || evalUrls.indexOf('http') !== 0) {
-    alert("এই শিক্ষার্থীর (রেজিঃ " + studentReg + ") মূল্যায়িত খাতা এখনো আপলোড বা চেক করা হয়নি!");
+    alert("এই শিক্ষার্থীর মূল্যায়িত খাতা এখনো আপলোড বা চেক করা হয়নি!");
     return;
   }
 
-  // ৪. গুগল ড্রাইভ প্রিভিউ মডাল
+  // ৪. গুগল ড্রাইভ প্রিভিউ মডাল ওপেন
   var oldViewer = document.getElementById('forceStudentDocModal');
   if (oldViewer) oldViewer.remove();
 
-  var urls = evalUrls.split(",").map(function(u) { return u.trim(); }).filter(function(u) { return u.length > 0; });
+  var urls = evalUrls.split(',').map(function(u){ return u.trim(); }).filter(Boolean);
 
   var pagesHtml = "";
   for (var k = 0; k < urls.length; k++) {
@@ -3646,7 +3595,7 @@ async function openStudentEvaluatedScriptViewer() {
   var modalHtml = '<div id="forceStudentDocModal" style="position:fixed; inset:0; background:rgba(15,23,42,0.85); backdrop-filter:blur(4px); z-index:2147483647; display:flex; align-items:center; justify-content:center; padding:15px;">' +
     '<div style="background:#ffffff; width:100%; max-width:650px; max-height:90vh; border-radius:12px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);">' +
     '  <div style="padding:14px 18px; background:#0f172a; color:#ffffff; display:flex; justify-content:space-between; align-items:center;">' +
-    '    <b style="font-size:15px;">📝 রেজিঃ ' + studentReg + ' - মূল্যায়িত খাতা</b>' +
+    '    <b style="font-size:15px;">📝 মূল্যায়িত খাতা ও মার্কস</b>' +
     '    <button type="button" onclick="document.getElementById(\'forceStudentDocModal\').remove()" style="background:#ef4444; color:#fff; border:none; border-radius:6px; padding:6px 14px; cursor:pointer; font-weight:bold; font-size:14px;">✕ বন্ধ করুন</button>' +
     '  </div>' +
     '  <div style="padding:15px; overflow-y:auto; flex:1; background:#0b1120;">' +
@@ -3772,6 +3721,13 @@ function submitEvaluatedScript() {
 
   postData(payload, res => {
     if (res && res.success) {
+	// নির্দিষ্ট শিক্ষার্থীর রোল অনুযায়ী মূল্যায়িত খাতা সংরক্ষণ
+      try {
+        var savedUrl = (res.evaluatedUrl || res.url || (cleanImages && cleanImages[0]) || "");
+        if (savedUrl && sub.studentRoll) {
+          localStorage.setItem('eval_script_' + String(sub.studentRoll).trim(), typeof savedUrl === 'string' ? savedUrl : JSON.stringify(savedUrl));
+        }
+      } catch(e) { console.error(e); }
       showToast("✅ খাতা সফলভাবে মূল্যায়িত ও ফলাফল আপডেট হয়েছে!", "success");
       loadSubmissionsForAdmin();
     } else {
