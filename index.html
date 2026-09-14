@@ -1418,7 +1418,7 @@ body.dark-mode .ms-table td {
       </div>
     </div>
  <div class="modal-btns" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-  <button type="button" class="btn btn-cancel" onclick="if(window.confirm('আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান?')){ if(window.examTimerInterval) clearInterval(window.examTimerInterval); var m = document.getElementById('liveExamModal'); if(m){ m.style.cssText = 'display:none !important;'; } window.activeExamData = null; window.selectedExamFilesList = []; window.studentUploadedFileBase64 = ''; if(typeof showToast==='function') showToast('পরীক্ষা বাতিল করা হয়েছে!','info'); }" style="cursor: pointer; position: relative; z-index: 999999;">✕ পরীক্ষা বাতিল (Cancel)</button>
+  <button type="button" class="btn btn-cancel" onclick="showPrettyCancelModal()" style="cursor: pointer; position: relative; z-index: 100;">✕ পরীক্ষা বাতিল (Cancel)</button>
   <button type="button" class="btn btn-green" id="examSubmitBtn" onclick="submitLiveExam()" style="width: auto; padding: 10px 24px;">উত্তরপত্র জমা দিন</button>
 </div>
   </div>
@@ -4521,53 +4521,62 @@ function submitLiveExam(isAuto = false) {
 }
 
 /* ==========================================================
-   কাস্টম সুন্দর কনফার্মেশন পপ-আপ সামনে আনার চূড়ান্ত লজিক
+   সুন্দর আধুনিক কনফার্মেশন কার্ড পপ-আপ (কখনোই আটকাবে না)
 ========================================================== */
-function cancelStudentExam() {
-  const confirmModal = document.getElementById('customConfirmModal');
-  if (confirmModal) {
-    // সরাসরি স্টাইল ও পজিশন দিয়ে স্ক্রিনের সবার উপরে আনা
-    confirmModal.style.cssText = "display: flex !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 2147483647 !important; background: rgba(15, 23, 42, 0.75) !important; align-items: center !important; justify-content: center !important;";
-  } else {
-    // মডাল না পাওয়া গেলে ব্যাকআপ কনফার্মেশন
-    if (confirm("আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান?")) {
-      closeCustomConfirm(true);
-    }
-  }
+function showPrettyCancelModal() {
+  // আগের তৈরি করা থাকলে তা রিমুভ করা
+  const oldBox = document.getElementById('directPrettyConfirmBox');
+  if (oldBox) oldBox.remove();
+
+  // সরাসরি বডিতে আধুনিক সুন্দর কার্ড ইনজেক্ট করা
+  const modalHtml = `
+    <div id="directPrettyConfirmBox" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 999999999; animation: fadeIn 0.2s ease;">
+      <div style="background: #ffffff; width: 90%; max-width: 360px; border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);">
+        <div style="width: 55px; height: 55px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 26px;">
+          ⚠️
+        </div>
+        <h3 style="margin: 0 0 8px; color: #1e293b; font-size: 1.25rem; font-weight: 700;">পরীক্ষা বাতিল করবেন?</h3>
+        <p style="margin: 0 0 20px; color: #64748b; font-size: 0.9rem; line-height: 1.4;">আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান? আপনার বর্তমান উত্তর মুছে যাবে।</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button type="button" onclick="document.getElementById('directPrettyConfirmBox').remove()" style="flex: 1; padding: 10px; background: #f1f5f9; color: #475569; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">না, ফিরে যাই</button>
+          <button type="button" onclick="confirmAndExitExam()" style="flex: 1; padding: 10px; background: #ef4444; color: #ffffff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">হ্যাঁ, বাতিল</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
 }
 
-function closeCustomConfirm(isConfirmed) {
-  const confirmModal = document.getElementById('customConfirmModal');
-  if (confirmModal) {
-    confirmModal.style.cssText = "display: none !important;";
+function confirmAndExitExam() {
+  // পপ-আপ রিমুভ
+  const pop = document.getElementById('directPrettyConfirmBox');
+  if (pop) pop.remove();
+
+  // টাইমার বন্ধ
+  if (window.examTimerInterval) {
+    clearInterval(window.examTimerInterval);
   }
 
-  if (isConfirmed) {
-    // টাইমার বন্ধ
-    if (typeof examTimerInterval !== 'undefined' && examTimerInterval) {
-      clearInterval(examTimerInterval);
-    }
+  // লাইভ পরীক্ষা মডাল জোরপূর্বক বন্ধ করা
+  const liveModal = document.getElementById('liveExamModal');
+  if (liveModal) {
+    liveModal.style.cssText = "display: none !important;";
+  }
 
-    // লাইভ পরীক্ষার মডাল জোরপূর্বক বন্ধ করা
-    const liveModal = document.getElementById('liveExamModal');
-    if (liveModal) {
-      liveModal.style.cssText = "display: none !important;";
-    }
+  // ডেটা ক্লিয়ার
+  window.activeExamData = null;
+  window.selectedExamFilesList = [];
+  window.studentUploadedFileBase64 = "";
 
-    // স্টেট ও ফাইল রিসেট
-    activeExamData = null;
-    selectedExamFilesList = [];
-    studentUploadedFileBase64 = "";
+  const textFile = document.getElementById('studentTextExamFile');
+  if (textFile) textFile.value = "";
 
-    const textInput = document.getElementById('studentTextExamFile');
-    if (textInput) textInput.value = "";
+  const textStatus = document.getElementById('textUploadStatus');
+  if (textStatus) textStatus.innerText = "কোনো ফাইল নির্বাচন করা হয়নি";
 
-    const textStatus = document.getElementById('textUploadStatus');
-    if (textStatus) textStatus.innerText = "কোনো ফাইল নির্বাচন করা হয়নি";
-
-    if (typeof showToast === 'function') {
-      showToast('পরীক্ষা বাতিল করা হয়েছে!', 'info');
-    }
+  if (typeof showToast === 'function') {
+    showToast('পরীক্ষা বাতিল করা হয়েছে!', 'info');
   }
 }
 </script>
