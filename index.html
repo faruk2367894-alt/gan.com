@@ -1418,7 +1418,7 @@ body.dark-mode .ms-table td {
       </div>
     </div>
  <div class="modal-btns" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-  <button type="button" class="btn btn-cancel" onclick="cancelStudentExam()" style="width: auto; background: #fee2e2; color: #dc2626; border: 1px solid #f87171;">❌ পরীক্ষা বাতিল (Cancel)</button>
+  <button type="button" class="btn btn-cancel" onclick="if(window.confirm('আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান?')){ if(window.examTimerInterval) clearInterval(window.examTimerInterval); var m = document.getElementById('liveExamModal'); if(m){ m.style.cssText = 'display:none !important;'; } window.activeExamData = null; window.selectedExamFilesList = []; window.studentUploadedFileBase64 = ''; if(typeof showToast==='function') showToast('পরীক্ষা বাতিল করা হয়েছে!','info'); }" style="cursor: pointer; position: relative; z-index: 999999;">✕ পরীক্ষা বাতিল (Cancel)</button>
   <button type="button" class="btn btn-green" id="examSubmitBtn" onclick="submitLiveExam()" style="width: auto; padding: 10px 24px;">উত্তরপত্র জমা দিন</button>
 </div>
   </div>
@@ -4521,31 +4521,49 @@ function submitLiveExam(isAuto = false) {
 }
 
 /* ==========================================================
-   পরীক্ষা বাতিল ও কাস্টম কনফার্মেশন লজিক (সুন্দর ডিজাইনসহ)
+   কাস্টম সুন্দর কনফার্মেশন পপ-আপ সামনে আনার চূড়ান্ত লজিক
 ========================================================== */
 function cancelStudentExam() {
-  if (confirm("আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান?")) {
-    // টাইমার বন্ধ করা
+  const confirmModal = document.getElementById('customConfirmModal');
+  if (confirmModal) {
+    // সরাসরি স্টাইল ও পজিশন দিয়ে স্ক্রিনের সবার উপরে আনা
+    confirmModal.style.cssText = "display: flex !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 2147483647 !important; background: rgba(15, 23, 42, 0.75) !important; align-items: center !important; justify-content: center !important;";
+  } else {
+    // মডাল না পাওয়া গেলে ব্যাকআপ কনফার্মেশন
+    if (confirm("আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান?")) {
+      closeCustomConfirm(true);
+    }
+  }
+}
+
+function closeCustomConfirm(isConfirmed) {
+  const confirmModal = document.getElementById('customConfirmModal');
+  if (confirmModal) {
+    confirmModal.style.cssText = "display: none !important;";
+  }
+
+  if (isConfirmed) {
+    // টাইমার বন্ধ
     if (typeof examTimerInterval !== 'undefined' && examTimerInterval) {
       clearInterval(examTimerInterval);
     }
 
-    // লাইভ পরীক্ষার মডাল সরাসরি জোরপূর্বক বন্ধ করা
+    // লাইভ পরীক্ষার মডাল জোরপূর্বক বন্ধ করা
     const liveModal = document.getElementById('liveExamModal');
     if (liveModal) {
       liveModal.style.cssText = "display: none !important;";
     }
 
-    // ফাইল ও ডেটা রিসেট
+    // স্টেট ও ফাইল রিসেট
     activeExamData = null;
     selectedExamFilesList = [];
     studentUploadedFileBase64 = "";
 
-    const textFile = document.getElementById('studentTextExamFile');
-    if (textFile) textFile.value = "";
+    const textInput = document.getElementById('studentTextExamFile');
+    if (textInput) textInput.value = "";
 
-    const statusEl = document.getElementById('textUploadStatus');
-    if (statusEl) statusEl.innerText = "কোনো ফাইল নির্বাচন করা হয়নি";
+    const textStatus = document.getElementById('textUploadStatus');
+    if (textStatus) textStatus.innerText = "কোনো ফাইল নির্বাচন করা হয়নি";
 
     if (typeof showToast === 'function') {
       showToast('পরীক্ষা বাতিল করা হয়েছে!', 'info');
