@@ -4519,15 +4519,17 @@ function submitLiveExam(isAuto = false) {
     }
   }, btn);
 }
+
 /* ==========================================================
-   পরীক্ষা বাতিল ও কাস্টম কনফার্মেশন লজিক
+   পরীক্ষা বাতিল ও কাস্টম কনফার্মেশন লজিক (সুন্দর ডিজাইনসহ)
 ========================================================== */
 function cancelStudentExam() {
   const confirmModal = document.getElementById('customConfirmModal');
   if (confirmModal) {
+    confirmModal.style.zIndex = '999999';
     confirmModal.style.display = 'flex';
+    confirmModal.classList.add('show');
   } else {
-    // ব্যাকআপ হিসেবে ব্রাউজার কনফার্মেশন
     if (confirm("আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান?")) {
       closeCustomConfirm(true);
     }
@@ -4536,29 +4538,31 @@ function cancelStudentExam() {
 
 function closeCustomConfirm(isConfirmed) {
   const confirmModal = document.getElementById('customConfirmModal');
-  if (confirmModal) confirmModal.style.display = 'none';
+  if (confirmModal) {
+    confirmModal.style.display = 'none';
+    confirmModal.classList.remove('show');
+  }
 
   if (isConfirmed) {
-    // টাইমার বন্ধ করা
-    if (examTimerInterval) clearInterval(examTimerInterval);
+    if (typeof examTimerInterval !== 'undefined' && examTimerInterval) {
+      clearInterval(examTimerInterval);
+    }
 
-    // লাইভ পরীক্ষার মডাল জোরপূর্বক বন্ধ করা
     const liveModal = document.getElementById('liveExamModal');
     if (liveModal) {
       liveModal.style.setProperty('display', 'none', 'important');
       liveModal.classList.remove('show');
     }
 
-    // ডেটা ও ফাইল খালি করা
     activeExamData = null;
     selectedExamFilesList = [];
     studentUploadedFileBase64 = "";
 
+    const textInput = document.getElementById('studentTextExamFile');
+    if (textInput) textInput.value = "";
+
     const textStatus = document.getElementById('textUploadStatus');
     if (textStatus) textStatus.innerText = "কোনো ফাইল নির্বাচন করা হয়নি";
-
-    const multiStatus = document.getElementById('multiFileDisplayStatus');
-    if (multiStatus) multiStatus.innerText = "কোনো ফাইল সিলেক্ট করা হয়নি";
 
     if (typeof showToast === 'function') {
       showToast('পরীক্ষা বাতিল করা হয়েছে!', 'info');
