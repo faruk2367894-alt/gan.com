@@ -1364,10 +1364,10 @@ body.dark-mode .ms-table td {
     <h3 id="liveSubjectTitle">পরীক্ষা</h3>
     <span style="font-size:0.8rem; color:#64748b;">শিক্ষার্থী: <b id="liveStudentName"></b> | মোট MCQ: <b id="liveTotalMarks"></b></span>
   </div>
-  <div style="display: flex; align-items: center; gap: 10px;">
-    <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1rem;">MCQ সময়: <span id="timerDisplay">00:00</span></span>
-    <button type="button" class="close-icon-btn" onclick="cancelStudentExam()" title="পরীক্ষা বাতিল করুন" style="color: #ef4444; font-size: 1.8rem; font-weight: bold; cursor: pointer;">&times;</button>
-  </div>
+ <div style="display: flex; align-items: center; gap: 10px;">
+          <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1rem;">MCQ সময়: <span id="timerDisplay">00:00</span></span>
+          <button type="button" class="close-icon-btn" onclick="cancelStudentExam()" style="background: #ef4444; color: #fff; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 100;">&times;</button>
+        </div>
 </div>
     
     <div class="exam-mode-nav">
@@ -4524,45 +4524,28 @@ function submitLiveExam(isAuto = false) {
    পরীক্ষা বাতিল ও কাস্টম কনফার্মেশন লজিক (সুন্দর ডিজাইনসহ)
 ========================================================== */
 function cancelStudentExam() {
-  const confirmModal = document.getElementById('customConfirmModal');
-  if (confirmModal) {
-    confirmModal.style.zIndex = '999999';
-    confirmModal.style.display = 'flex';
-    confirmModal.classList.add('show');
-  } else {
-    if (confirm("আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান?")) {
-      closeCustomConfirm(true);
-    }
-  }
-}
-
-function closeCustomConfirm(isConfirmed) {
-  const confirmModal = document.getElementById('customConfirmModal');
-  if (confirmModal) {
-    confirmModal.style.display = 'none';
-    confirmModal.classList.remove('show');
-  }
-
-  if (isConfirmed) {
+  if (confirm("আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান?")) {
+    // টাইমার বন্ধ করা
     if (typeof examTimerInterval !== 'undefined' && examTimerInterval) {
       clearInterval(examTimerInterval);
     }
 
+    // লাইভ পরীক্ষার মডাল সরাসরি জোরপূর্বক বন্ধ করা
     const liveModal = document.getElementById('liveExamModal');
     if (liveModal) {
-      liveModal.style.setProperty('display', 'none', 'important');
-      liveModal.classList.remove('show');
+      liveModal.style.cssText = "display: none !important;";
     }
 
+    // ফাইল ও ডেটা রিসেট
     activeExamData = null;
     selectedExamFilesList = [];
     studentUploadedFileBase64 = "";
 
-    const textInput = document.getElementById('studentTextExamFile');
-    if (textInput) textInput.value = "";
+    const textFile = document.getElementById('studentTextExamFile');
+    if (textFile) textFile.value = "";
 
-    const textStatus = document.getElementById('textUploadStatus');
-    if (textStatus) textStatus.innerText = "কোনো ফাইল নির্বাচন করা হয়নি";
+    const statusEl = document.getElementById('textUploadStatus');
+    if (statusEl) statusEl.innerText = "কোনো ফাইল নির্বাচন করা হয়নি";
 
     if (typeof showToast === 'function') {
       showToast('পরীক্ষা বাতিল করা হয়েছে!', 'info');
