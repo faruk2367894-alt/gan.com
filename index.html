@@ -3527,60 +3527,119 @@ function renderPageOnCanvas() {
   }
 }
 
-// ৬. স্টুডেন্টের প্রোফাইল থেকে মূল্যায়িত খাতা সরাসরি প্রিভিউ (শিক্ষার্থীর স্ক্রিন ফিক্সড)
-function openStudentEvaluatedScriptViewer() {
-  if (!window.currentStudentProfile || !window.currentStudentProfile.results || !window.currentStudentProfile.results.length) {
-    return alert("কোনো পরীক্ষার ফলাফল পাওয়া যায়নি!");
+/* ==========================================================
+   শিক্ষার্থীর প্রোফাইল থেকে খাতা প্রিভিউ (অল-কলাম অটো ডিটেক্টর)
+========================================================== */
+function openStudentEvaluatedScriptViewer(targetSubject) {
+  var evalUrls = "";
+  var profile = window.currentStudentProfile;
+
+  // ১. শিক্ষার্থীর প্রোফাইলের সমস্ত রেজাল্ট ও কলাম গভীরভাবে স্ক্যান করা
+  if (profile && profile.results && profile.results.length) {
+    for (var i = profile.results.length - 1; i >= 0; i--) {
+      var r = profile.results[i];
+
+      if (Array.isArray(r)) {
+        for (var k = 0; k < r.length; k++) {
+          var val = String(r[k] || '').trim();
+          // যেকোনো কলামে ড্রাইভ লিংক, ইমেজ ডেটা বা ড্রাইভ প্রিভিউ লিংক থাকলে নিয়ে নেবে
+          if (val.indexOf('drive.google.com') !== -1 || val.indexOf('data:image') !== -1 || (val.indexOf('http') === 0 && (val.indexOf('.jpg') !== -1 || val.indexOf('.png') !== -1 || val.indexOf('.jpeg') !== -1))) {
+            evalUrls = val;
+            break;
+          }
+        }
+      } else if (typeof r === 'object' && r !== null) {
+        // অবজেক্টের সব প্রোপার্টি স্ক্যান
+        var keys = Object.keys(r);
+        for (var m = 0; m < keys.length; m++) {
+          var valObj = String(r[keys[m]] || '').trim();
+          if (valObj.indexOf('drive.google.com') !== -1 || valObj.indexOf('data:image') !== -1 || (valObj.indexOf('http') === 0 && (valObj.indexOf('.jpg') !== -1 || valObj.indexOf('.png') !== -1))) {
+            evalUrls = valObj;
+            break;
+          }
+        }
+      }
+
+      if (evalUrls) break; // খাতা পেলেই লুপ থামবে
+    }
   }
 
-  const lastResult = window.currentStudentProfile.results[window.currentStudentProfile.results.length - 1];
-  
-  // ৮ নম্বর কলাম বা রেজাল্ট অবজেক্ট থেকে লিংক খোঁজা, না পেলে লোকালস্টোরেজের খাতা চেক করা
-  let evalUrls = (lastResult && (lastResult[8] || lastResult.evaluatedScriptUrl || lastResult.cqSubmissionUrl)) || "";
-  
-  if (!evalUrls || evalUrls.trim() === "" || evalUrls.toLowerCase() === "undefined") {
-    // শিক্ষক এখনো না দেখে থাকলে শিক্ষার্থীর আপলোড করা খাতার ব্যাকআপ নেওয়া
-    evalUrls = localStorage.getItem('student_uploaded_doc') || "";
-  }
-
+  // ২. লোকাল ব্যাকআপ স্ক্যান (যদি শিট থেকে আপডেট আসতে দেরি হয়)
   if (!evalUrls) {
-    return alert("শিক্ষকের মূল্যায়িত খাতা এখনো আপলোড বা চেক করা হয়নি!");
+    var regKey = (profile && (profile.regNo || profile.id || profile.registration)) || "";
+    if (regKey) {
+      evalUrls = localStorage.getItem('eval_doc_' + regKey) || localStorage.getItem('student_uploaded_doc_' + regKey) || "";
+    }
   }
 
-  const modal = document.getElementById('studentDocViewerModal');
-  const body = document.getElementById('studentDocViewerBody');
+  // ৩. গ্লোবাল লাস্ট আপলোড ব্যাকআপ
+  if (!evalUrls) {
+    evalUrls = localStorage.getItem('student_uploaded_doc') || localStorage.getItem('last_evaluated_script') || "";
+  }
 
-  if (!modal || !body) {
-    window.open(evalUrls, '_blank');
+  if (!evalUrls || evalUrls === "undefined" || evalUrls === "null") {
+    alert("এই শিক্ষার্থীর মূল্যায়িত খাতা এখনো আপলোড বা চেক করা হয়নি!");
     return;
   }
 
-  const urls = evalUrls.split(",").map(u => u.trim()).filter(u => u.length > 0);
-  
-  body.innerHTML = `
-    <div style="display:flex; flex-direction:column; gap:15px; width:100%; max-height:75vh; overflow-y:auto; padding:10px;">
-      ${urls.map((u, i) => {
-        let displaySrc = u;
-        if (u.includes("drive.google.com")) {
-          let fileIdMatch = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
-          if (fileIdMatch && fileIdMatch[1]) {
-            displaySrc = `https://drive.google.com/thumbnail?id=${fileIdMatch[1]}&sz=w1200`;
-          }
-        }
-        return `
-          <div style="background:#1e293b; padding:10px; border-radius:8px; width:100%; text-align:center;">
-            <span style="color:#38bdf8; font-size:0.85rem; font-weight:bold; display:block; margin-bottom:6px;">পাতা নং - ${i + 1}</span>
-            <img src="${displaySrc}" style="max-width:100%; height:auto; border-radius:6px; border:1px solid #475569;" alt="মূল্যায়িত পাতা" onerror="this.onerror=null; this.src='${u}';" />
-          </div>
-        `;
-      }).join('')}
-    </div>
-  `;
+  var oldViewer = document.getElementById('forceStudentDocModal');
+  if (oldViewer) oldViewer.remove();
 
-  // স্ক্রিনের সবার উপরে স্পষ্ট দেখানো (z-index সমাধান)
-  modal.style.cssText = "display: flex !important; position: fixed !important; inset: 0 !important; z-index: 999999999 !important; background: rgba(15, 23, 42, 0.85) !important; align-items: center !important; justify-content: center !important;";
-}s
+  // Base64 ইমেজ যাতে কমার কারণে না ভাঙে
+  var urls = [];
+  if (evalUrls.indexOf("data:image") !== -1) {
+    if (evalUrls.indexOf(",data:image") !== -1) {
+      urls = evalUrls.split(/(?=data:image)/).map(function(u) { return u.replace(/^,/, '').trim(); });
+    } else {
+      urls = [evalUrls.trim()];
+    }
+  } else {
+    urls = evalUrls.split(",").map(function(u) { return u.trim(); }).filter(function(u) { return u.length > 0; });
+  }
 
+  var pagesHtml = "";
+  for (var j = 0; j < urls.length; j++) {
+    var u = urls[j];
+    var pageNum = j + 1;
+    pagesHtml += '<div style="background:#1e293b; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center;">';
+    pagesHtml += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding:0 5px;">';
+    pagesHtml += '    <span style="color:#38bdf8; font-weight:bold; font-size:14px;">📄 পাতা নং - ' + pageNum + '</span>';
+    if (u.indexOf('http') === 0) {
+      pagesHtml += '    <a href="' + u + '" target="_blank" style="color:#60a5fa; font-size:13px; text-decoration:none; background:rgba(59,130,246,0.15); padding:3px 8px; border-radius:5px;">ফুল স্ক্রিনে দেখুন ↗</a>';
+    }
+    pagesHtml += '  </div>';
+
+    if (u.indexOf("drive.google.com") !== -1) {
+      var previewUrl = u;
+      var match = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        previewUrl = "https://drive.google.com/file/d/" + match[1] + "/preview";
+      }
+      pagesHtml += '  <div style="width:100%; height:450px; background:#000; border-radius:8px; overflow:hidden; border:1px solid #475569;">';
+      pagesHtml += '    <iframe src="' + previewUrl + '" style="width:100%; height:100%; border:none;"></iframe>';
+      pagesHtml += '  </div>';
+    } else {
+      pagesHtml += '  <div style="width:100%; max-height:70vh; overflow-y:auto; background:#0f172a; border-radius:8px; padding:10px; border:1px solid #334155;">';
+      pagesHtml += '    <img src="' + u + '" style="max-width:100%; height:auto; border-radius:6px; box-shadow:0 4px 10px rgba(0,0,0,0.3);" alt="মূল্যায়িত পাতা ' + pageNum + '" />';
+      pagesHtml += '  </div>';
+    }
+    pagesHtml += '</div>';
+  }
+
+  var modalHtml = '<div id="forceStudentDocModal" style="position:fixed; inset:0; background:rgba(15,23,42,0.85); backdrop-filter:blur(4px); z-index:2147483647; display:flex; align-items:center; justify-content:center; padding:15px;">' +
+    '<div style="background:#ffffff; width:100%; max-width:650px; max-height:90vh; border-radius:12px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);">' +
+    '  <div style="padding:14px 18px; background:#0f172a; color:#ffffff; display:flex; justify-content:space-between; align-items:center;">' +
+    '    <b style="font-size:15px;">📝 মূল্যায়িত খাতা ও মার্কস</b>' +
+    '    <button type="button" onclick="document.getElementById(\'forceStudentDocModal\').remove()" style="background:#ef4444; color:#fff; border:none; border-radius:6px; padding:6px 14px; cursor:pointer; font-weight:bold; font-size:14px;">✕ বন্ধ করুন</button>' +
+    '  </div>' +
+    '  <div style="padding:15px; overflow-y:auto; flex:1; background:#0b1120;">' +
+    pagesHtml +
+    '  </div>' +
+    '</div>' +
+    '</div>';
+
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
 // ৪. ক্যানভাস পেন লজিক (মাউস ও টাচ ফ্রেন্ডলি)
 function initCanvasDrawing() {
   const canvas = document.getElementById('scriptCanvas');
@@ -4158,10 +4217,63 @@ function autoDetectStudentAndExam(regValue) {
 
         if (res.hasAvailableExams) {
           currentAvailableExamsList = res.availableExams;
-          if (subjectSelect) {
-            subjectSelect.innerHTML = '<option value="">-- বিষয় নির্বাচন করুন --</option>' + 
-              res.availableExams.map((ex, idx) => `<option value="${idx}">${ex.subject}</option>`).join('');
+         if (subjectSelect) {
+          // ১. রেসপন্স এবং লোকাল স্টোরেজ থেকে সম্পন্ন পরীক্ষার তালিকা তৈরি
+          var attendedSubjects = [];
+          
+          // সার্ভার রেসপন্স চেক
+          if (res.results && Array.isArray(res.results)) {
+            res.results.forEach(function(r) {
+              var s = Array.isArray(r) ? (r[1] || r[2] || '') : (r.subject || r.examSubject || '');
+              if (s) attendedSubjects.push(String(s).trim().toLowerCase());
+            });
           }
+
+          // স্টুডেন্ট প্রোফাইল গ্লোবাল অবজেক্ট চেক
+          if (window.currentStudentProfile && window.currentStudentProfile.results) {
+            window.currentStudentProfile.results.forEach(function(r) {
+              var s = Array.isArray(r) ? (r[1] || r[2] || '') : (r.subject || r.examSubject || '');
+              if (s) attendedSubjects.push(String(s).trim().toLowerCase());
+            });
+          }
+
+          // লোকাল স্টোরেজে জমা থাকা সাবমিশন হিস্ট্রি চেক
+          var localSubmitted = JSON.parse(localStorage.getItem('student_submitted_exams') || '[]');
+          if (Array.isArray(localSubmitted)) {
+            localSubmitted.forEach(function(s) {
+              if (s) attendedSubjects.push(String(s).trim().toLowerCase());
+            });
+          }
+
+          // ২. যে পরীক্ষাগুলো দেওয়া হয়ে গেছে সেগুলোকে বাদ দিয়ে ফিল্টার করা
+          var filteredExams = res.availableExams.filter(function(ex) {
+            var subName = String(ex.subject || '').trim().toLowerCase();
+            return attendedSubjects.indexOf(subName) === -1;
+          });
+
+          // গ্লোবাল লিস্ট আপডেট
+          currentAvailableExamsList = filteredExams;
+
+          // ৩. ড্রপডাউন তৈরি
+          if (filteredExams.length > 0) {
+            subjectSelect.innerHTML = '<option value="">-- বিষয় নির্বাচন করুন --</option>' +
+              filteredExams.map(function(ex, idx) {
+                return '<option value="' + idx + '">' + ex.subject + '</option>';
+              }).join('');
+            if (startBtn) {
+              startBtn.disabled = true;
+              startBtn.style.background = '#94a3b8';
+              startBtn.style.cursor = 'not-allowed';
+            }
+          } else {
+            subjectSelect.innerHTML = '<option value="">কোনো পরীক্ষা অবশিষ্ট নেই</option>';
+            if (startBtn) {
+              startBtn.disabled = true;
+              startBtn.style.background = '#94a3b8';
+              startBtn.style.cursor = 'not-allowed';
+            }
+          }
+        }
           if (lockBanner) lockBanner.style.display = 'none';
           
           if (startBtn) {
@@ -4515,6 +4627,17 @@ function submitLiveExam(isAuto = false) {
   const userAnswers = {};
 
   if (!activeExamData) return alert("পরীক্ষার সেশন পাওয়া যায়নি!");
+  // সাবমিট করা বিষয়ের নাম লোকাল হিস্ট্রিতে সংরক্ষণ (যাতে ড্রপডাউনে আর না আসে)
+  try {
+    var subName = (activeExamData && (activeExamData.subject || activeExamData.examSubject)) || "";
+    if (subName) {
+      var submittedList = JSON.parse(localStorage.getItem('student_submitted_exams') || '[]');
+      if (submittedList.indexOf(subName) === -1) {
+        submittedList.push(subName);
+        localStorage.setItem('student_submitted_exams', JSON.stringify(submittedList));
+      }
+    }
+  } catch(e) { console.error("সেভ এরর:", e); }
 
   // MCQ উত্তর সংগ্রহ
   if (activeExamData.mcq && Array.isArray(activeExamData.mcq)) {
@@ -4622,6 +4745,29 @@ function confirmAndExitExam() {
   if (typeof showToast === 'function') {
     showToast('পরীক্ষা বাতিল করা হয়েছে!', 'info');
   }
+}
+
+/* বাতিল / ক্যান্সেল বাটনের মডাল বন্ধ করার ফাংশন */
+function cancelStudentExam() {
+  // যদি নির্দিষ্ট আইডি থাকে সেটি লুকানো
+  const regModal = document.getElementById('studentRegistrationModal') || 
+                   document.getElementById('examRegistrationModal') || 
+                   document.getElementById('studentRegModal');
+  if (regModal) {
+    regModal.style.display = 'none';
+  } else {
+    // ব্যাকআপ: দৃশ্যমান যেকোনো ওপেন ডায়ালগ বন্ধ করা
+    const openModals = document.querySelectorAll('.modal, [id*="Modal"]');
+    openModals.forEach(m => {
+      if (m.style.display === 'flex' || m.style.display === 'block') {
+        m.style.display = 'none';
+      }
+    });
+  }
+
+  // ড্রপডাউন ও ইনপুট রিসেট করা
+  const subjectSelect = document.getElementById('subjectSelect') || document.querySelector('select[id*="subject"]');
+  if (subjectSelect) subjectSelect.value = '';
 }
 </script>
 <!-- শিক্ষার্থীর প্রোফাইলে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার প্রিভিউ উইন্ডো -->
