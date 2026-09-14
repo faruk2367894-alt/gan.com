@@ -4112,19 +4112,31 @@ function handleTextAnswerUpload(input) {
   if (!file) return;
 
   const statusEl = document.getElementById('textUploadStatus');
-  statusEl.innerText = `নির্বাচিত ফাইল: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
-  statusEl.style.color = '#059669';
+  statusEl.innerText = `নির্বাচিত ফাইল: ${file.name} প্রসেস হচ্ছে...`;
+  statusEl.style.color = '#2563eb';
 
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = async function(e) {
     studentUploadedFileBase64 = e.target.result;
     
-    // শিক্ষার্থীর ব্রাউজারে ড্রাফট সেভ রাখা যেন প্রোফাইলে দেখতে পারে
+    // লোকাল ব্যাকআপ
     localStorage.setItem('student_uploaded_doc', studentUploadedFileBase64);
     localStorage.setItem('student_uploaded_doc_name', file.name);
 
+    // মূল পরীক্ষার সাবমিশন তালিকায় যোগ করা
+    if (typeof selectedExamFilesList !== 'undefined') {
+      selectedExamFilesList.push({
+        name: file.name,
+        mime: file.type || 'image/jpeg',
+        base64: studentUploadedFileBase64
+      });
+    }
+
+    statusEl.innerText = `✅ ফাইল প্রস্তুত: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+    statusEl.style.color = '#059669';
+
     if (typeof showToast === 'function') {
-      showToast('উত্তরপত্রের ফাইল সফলভাবে যুক্ত হয়েছে!', 'success');
+      showToast('উত্তরপত্রের ফাইল সফলভাবে যুক্ত হয়েছে!', 'success');
     }
   };
   reader.readAsDataURL(file);
