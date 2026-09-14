@@ -107,28 +107,7 @@ body.dark-mode #previewContentContainer .opt-label {
   color: #cbd5e1 !important;
   border-color: #334155 !important;
 }
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Noto Serif Bengali', 'Kalpurush', serif;
-  -webkit-tap-highlight-color: transparent;
-}
 
-body {
-  background-color: #f8fafc;
-  color: #0f172a;
-  min-height: 100vh;
-  overflow-x: hidden;
-  user-select: none;
-  transition: background 0.3s, color 0.3s;
-}
-
-/* ডার্ক মোড কালার রুলস */
-body.dark-mode {
-  background-color: #0b0f19 !important;
-  color: #f8fafc !important;
-}
 body.dark-mode .card,
 body.dark-mode .modal-box,
 body.dark-mode .sidebar,
@@ -3095,44 +3074,6 @@ function previewNoteBeforePublish() {
   openModal('adminPreviewModal');
 }
 
-function saveScheduledExam() {
-  const btn = event?.currentTarget || event?.target;
-  const cqFile = document.getElementById('admCqFile').files[0];
-  const cqDesc = document.getElementById('admCqDesc').value;
-  if (!smartParsedMcq.length && !cqDesc.trim()) return alert("MCQ বা CQ প্রশ্ন দিন!");
-
-  const send = (b64 = "", mime = "") => {
-    postData({
-      action: "saveExamSchedule",
-      classVal: document.getElementById('admClass').value,
-      subject: document.getElementById('admSubject').value,
-      publishDate: document.getElementById('admPublishDate').value,
-      publishTime: document.getElementById('admPublishTime').value,
-      mcqDuration: document.getElementById('admMcqDuration').value || smartParsedMcq.length || 30,
-      cqDuration: document.getElementById('admCqDuration').value || 30,
-      cqDescription: cqDesc,
-      cqQuestionFileBase64: b64,
-      cqMime: mime,
-      mcqList: smartParsedMcq
-    }, res => {
-      if (res && res.success) {
-        showAdminMessage("✅ পরীক্ষা শিডিউল ও লাইভ সফল!");
-        document.getElementById('rawMcqPaste').value = "";
-        document.getElementById('admCqDesc').value = "";
-        document.getElementById('mcqParsedPreview').classList.add('hidden');
-        loadNoticesAndMotivation();
-        loadAdminExamList();
-      }
-    }, btn);
-  };
-
-  if (cqFile) {
-    const reader = new FileReader();
-    reader.onload = e => send(e.target.result, cqFile.type);
-    reader.readAsDataURL(cqFile);
-  } else send();
-}
-
 function publishClassroomNote() {
   const btn = event?.currentTarget || event?.target;
   const classVal = document.getElementById('admNoteClass').value;
@@ -3780,36 +3721,7 @@ async function processScriptFile(file) {
     reader.readAsDataURL(file);
   });
 }
-// ৬. স্টুডেন্টের প্রোফাইল থেকে মূল্যায়িত খাতা সরাসরি প্রিভিউ
-function openStudentEvaluatedScriptViewer() {
-  if (!currentStudentProfile || !currentStudentProfile.results.length) {
-    return alert("কোনো পরীক্ষার ফলাফল পাওয়া যায়নি!");
-  }
-  
-  // রেজাল্ট শিট থেকে CQ_Submission_URL নেওয়া
-  const lastResult = currentStudentProfile.results[currentStudentProfile.results.length - 1];
-  const evalUrls = lastResult[8]; // ৯ম কলাম: CQ_Submission_URL
 
-  if (!evalUrls) {
-    return alert("শিক্ষকের মূল্যায়িত খাতা এখনো আপলোড করা হয়নি!");
-  }
-
-  const urls = evalUrls.split(" , ");
-  const modal = document.getElementById('studentDocViewerModal');
-  const body = document.getElementById('studentDocViewerBody');
-  
-  body.innerHTML = `
-    <div style="display:flex; flex-direction:column; gap:15px; width:100%; height:100%; overflow-y:auto; align-items:center; padding:10px;">
-      ${urls.map((u, i) => `
-        <div style="background:#1e293b; padding:8px; border-radius:8px; width:100%; max-width:700px; text-align:center;">
-          <span style="color:#38bdf8; font-size:0.85rem; font-weight:bold; display:block; margin-bottom:6px;">পৃষ্ঠা নম্বর: ${i + 1}</span>
-          <img src="${u.includes('drive.google.com') ? 'https://drive.google.com/thumbnail?id=' + (u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/) || [])[1] + '&sz=w1000' : u}" style="width:100%; border-radius:6px; border:1px solid #475569;" alt="খাতার পৃষ্ঠা">
-        </div>
-      `).join('')}
-    </div>
-  `;
-  modal.style.display = 'flex';
-}
 /* ==========================================================
    স্ক্রিন অফ/অন হলেও কাজ ও পেজ আগের অবস্থায় ধরে রাখার অটো-সেভ সিস্টেম
 ========================================================== */
@@ -4060,47 +3972,6 @@ function formatAdminText(command, value = null) {
   document.execCommand(command, false, value);
 }
 
-/* ==========================================================
-   ২. নিদিষ্ট শ্রেণির জন্য নিখুঁত ডাইনামিক ফিল্টারিং
-   (যে শ্রেণির জন্য যা সেট হবে শিক্ষার্থী শুধু তাই দেখবে)
-========================================================== */
-function filterExamDisplayForClass(examData) {
-  const mcqSection = document.getElementById('mcqExamSection') || document.querySelector('.mcq-container');
-  const cqSection = document.getElementById('cqExamSection') || document.getElementById('cqFormattedContainer')?.closest('div[style*="margin-bottom"]');
-  const textSection = document.getElementById('textExamSection');
-  const textQuestionDisplay = document.getElementById('studentRichTextQuestionDisplay');
-
-  // ডেটা আছে কি না নিখুঁতভাবে চেক করা
-  const hasMcq = examData.mcqQuestions && examData.mcqQuestions.length > 0;
-  const hasCq = (examData.cqQuestionText && examData.cqQuestionText.trim().length > 0) || examData.cqFileUrl;
-  const hasText = examData.textQuestionContent && examData.textQuestionContent.trim().length > 0;
-
-  // ১. শুধু MCQ থাকলে দেখাবে, না থাকলে একদম লুকাবে
-  if (mcqSection) {
-    mcqSection.style.display = hasMcq ? 'block' : 'none';
-  }
-
-  // ২. শুধু CQ থাকলে দেখাবে, না থাকলে একদম লুকাবে
-  if (cqSection) {
-    cqSection.style.display = hasCq ? 'block' : 'none';
-  }
-
-  // ৩. শুধু টেক্সট প্রশ্ন থাকলে দেখাবে, না থাকলে একদম লুকাবে
-  if (textSection) {
-    if (hasText) {
-      textSection.style.display = 'block';
-      if (textQuestionDisplay) {
-        textQuestionDisplay.innerHTML = examData.textQuestionContent; // শিক্ষকের কালার ও ফন্ট হুবহু থাকবে
-      }
-    } else {
-      textSection.style.display = 'none';
-    }
-  }
-
-  if (typeof showToast === 'function') {
-    showToast('আপনার শ্রেণির জন্য নির্ধারিত প্রশ্ন লোড হয়েছে!', 'success');
-  }
-}
 
 /* ==========================================================
    ৩. উত্তরপত্রের ফাইল আপলোড ও সাইটের ভেতর সরাসরি খাতা দেখা
@@ -4608,6 +4479,7 @@ function submitLiveExam(isAuto = false) {
       if (checked) userAnswers[q.id] = checked.value;
     });
   }
+  
 
   // CQ শুধুমাত্র সিলেক্ট থাকলে ফাইল বাধ্যতামূলক চেক
   if (!isAuto && currentExamSection === 'cq' && selectedExamFilesList.length === 0) {
@@ -4646,6 +4518,52 @@ function submitLiveExam(isAuto = false) {
       alert("জমা হতে সমস্যা হয়েছে: " + (res?.message || "পুনরায় চেষ্টা করুন"));
     }
   }, btn);
+}
+/* ==========================================================
+   পরীক্ষা বাতিল ও কাস্টম কনফার্মেশন লজিক
+========================================================== */
+function cancelStudentExam() {
+  const confirmModal = document.getElementById('customConfirmModal');
+  if (confirmModal) {
+    confirmModal.style.display = 'flex';
+  } else {
+    // ব্যাকআপ হিসেবে ব্রাউজার কনফার্মেশন
+    if (confirm("আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান?")) {
+      closeCustomConfirm(true);
+    }
+  }
+}
+
+function closeCustomConfirm(isConfirmed) {
+  const confirmModal = document.getElementById('customConfirmModal');
+  if (confirmModal) confirmModal.style.display = 'none';
+
+  if (isConfirmed) {
+    // টাইমার বন্ধ করা
+    if (examTimerInterval) clearInterval(examTimerInterval);
+
+    // লাইভ পরীক্ষার মডাল জোরপূর্বক বন্ধ করা
+    const liveModal = document.getElementById('liveExamModal');
+    if (liveModal) {
+      liveModal.style.setProperty('display', 'none', 'important');
+      liveModal.classList.remove('show');
+    }
+
+    // ডেটা ও ফাইল খালি করা
+    activeExamData = null;
+    selectedExamFilesList = [];
+    studentUploadedFileBase64 = "";
+
+    const textStatus = document.getElementById('textUploadStatus');
+    if (textStatus) textStatus.innerText = "কোনো ফাইল নির্বাচন করা হয়নি";
+
+    const multiStatus = document.getElementById('multiFileDisplayStatus');
+    if (multiStatus) multiStatus.innerText = "কোনো ফাইল সিলেক্ট করা হয়নি";
+
+    if (typeof showToast === 'function') {
+      showToast('পরীক্ষা বাতিল করা হয়েছে!', 'info');
+    }
+  }
 }
 </script>
 <!-- শিক্ষার্থীর প্রোফাইলে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার প্রিভিউ উইন্ডো -->
