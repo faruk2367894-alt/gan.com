@@ -1393,6 +1393,24 @@ body.dark-mode .ms-table td {
   <button type="button" class="btn btn-purple" onclick="document.getElementById('studentExamMultiFiles').click()" style="width: auto; padding: 6px 16px; font-size: 0.85rem;">
     📁 খাতার ছবি/ফাইল সিলেক্ট করুন
   </button>
+  <!-- সরাসরি একাধিক ছবি তোলার ক্যামেরা কন্ট্রোল -->
+<div style="margin-top: 10px; width: 100%;">
+  <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+    <!-- সরাসরি ক্যামেরা খোলার বাটন -->
+    <button type="button" onclick="document.getElementById('examCameraInput').click()" style="background: #0284c7; color: #fff; border: none; padding: 9px 14px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+      📷 ক্যামেরা দিয়ে ছবি তুলুন
+    </button>
+    <span id="capturedCountText" style="font-size: 12px; color: #475569; font-weight: 600;">০ টি ছবি তোলা হয়েছে</span>
+  </div>
+
+  <!-- হিডেন ক্যামেরা ইনপুট (যা সরাসরি মোবাইল ক্যামেরা ওপেন করে) -->
+  <input type="file" id="examCameraInput" accept="image/*" capture="environment" style="display: none;" onchange="handleCapturedPhoto(event)">
+
+  <!-- তোলা ছবির থাম্বনেইল প্রিভিউ বক্স -->
+  <div id="capturedImagesPreview" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; padding: 6px; background: #f1f5f9; border-radius: 6px; min-height: 40px; align-items: center;">
+    <span style="font-size: 12px; color: #94a3b8;">এখানে তোলা পাতাগুলো একের পর এক জমা হবে...</span>
+  </div>
+</div>
   <div id="multiFileDisplayStatus" style="font-size: 0.8rem; color: #059669; margin-top: 8px; font-weight: 600;">কোনো ফাইল সিলেক্ট করা হয়নি</div>
 </div>
     </div>
@@ -2036,14 +2054,29 @@ body.dark-mode .ms-table td {
       </div>
     </div>
 
-    <!-- ডিজিটাল ড্রয়িং বোর্ড ও টুলস -->
-    <div style="background:#f1f5f9; padding:8px; border-radius:6px; margin-bottom:8px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-      <span style="font-weight:700; font-size:0.82rem; color:#1e293b;">পেন সাইজ:</span>
-      <input type="range" id="digitalPenSize" min="2" max="10" value="3" style="width:80px;">
-      <span style="font-weight:700; font-size:0.82rem; color:#1e293b; margin-left:10px;">কালার:</span>
-      <input type="color" id="digitalPenColor" value="#ef4444" style="height:28px; width:34px; border:none; cursor:pointer;">
-      <span style="font-size:0.8rem; color:#64748b; margin-left:auto;">(লাল পেন দিয়ে ভুল কাটুন ও টিক দিন)</span>
-    </div>
+   <div style="background:#1e293b; padding:8px 12px; border-radius:8px; margin-bottom:8px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
+  <!-- পেন সাইজ স্লাইডার -->
+  <div style="display:flex; align-items:center; gap:6px;">
+    <span style="font-weight:700; font-size:0.82rem; color:#cbd5e1;">সাইজ:</span>
+    <input type="range" id="digitalPenSize" min="2" max="10" value="3" style="width:70px;">
+  </div>
+
+  <!-- ৪টি রঙিন দ্রুত পেন সিলেক্টর বাটন -->
+  <div style="display:flex; align-items:center; gap:8px;">
+    <span style="font-weight:700; font-size:0.82rem; color:#cbd5e1;">পেন:</span>
+    <button type="button" onclick="document.getElementById('digitalPenColor').value='#ef4444'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#ef4444';" title="লাল" style="width:24px; height:24px; border-radius:50%; background:#ef4444; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
+    <button type="button" onclick="document.getElementById('digitalPenColor').value='#22c55e'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#22c55e';" title="সবুজ" style="width:24px; height:24px; border-radius:50%; background:#22c55e; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
+    <button type="button" onclick="document.getElementById('digitalPenColor').value='#3b82f6'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#3b82f6';" title="নীল" style="width:24px; height:24px; border-radius:50%; background:#3b82f6; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
+    <button type="button" onclick="document.getElementById('digitalPenColor').value='#000000'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#000000';" title="কালো" style="width:24px; height:24px; border-radius:50%; background:#000000; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
+    <!-- মূল হিডেন কালার ইনপুট যা সিস্টেম ব্যবহার করে -->
+    <input type="color" id="digitalPenColor" value="#ef4444" style="display:none;">
+  </div>
+
+  <!-- মোবাইলে পুরো পর্দায় খাতা কাটার বাটন -->
+  <button type="button" onclick="var b=document.getElementById('scriptCanvas').parentElement; if(!document.fullscreenElement){b.requestFullscreen?b.requestFullscreen():b.webkitRequestFullscreen();}else{document.exitFullscreen?document.exitFullscreen():document.webkitExitFullscreen();}" style="background:#3b82f6; color:#fff; border:none; padding:5px 10px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer;">
+    ⛶ ফুল পর্দা
+  </button>
+</div>
 
     <div style="position:relative; width:100%; max-height:550px; overflow:auto; border:1px solid #94a3b8; border-radius:6px; display:flex; justify-content:center; background:#475569;">
       <canvas id="scriptCanvas" style="cursor:crosshair; background:#fff;"></canvas>
@@ -4741,6 +4774,194 @@ function cancelStudentExam() {
   // ড্রপডাউন ও ইনপুট রিসেট করা
   const subjectSelect = document.getElementById('subjectSelect') || document.querySelector('select[id*="subject"]');
   if (subjectSelect) subjectSelect.value = '';
+}
+
+/* ==========================================================
+   যে কাজে বা যে পেজেই থাকুন না কেন, রিফ্রেশে সেখানেই থাকার পারফেক্ট সিস্টেম
+========================================================== */
+(function() {
+  // ১. বর্তমান পেজ, খোলা মোডাল ও অ্যাক্টিভ ট্যাব ট্র্যাক করা
+  function saveCurrentAppState() {
+    // অ্যাক্টিভ পেজ সেভ
+    var activePageEl = document.querySelector('.page.active');
+    if (activePageEl && activePageEl.id) {
+      sessionStorage.setItem('lastActivePageId', activePageEl.id);
+    }
+
+    // দৃশ্যমান মোডাল সেভ
+    var openModals = document.querySelectorAll('.modal');
+    var currentModalId = "";
+    openModals.forEach(function(m) {
+      var style = window.getComputedStyle(m);
+      if (style.display !== 'none' && !m.classList.contains('hidden') && style.visibility !== 'hidden') {
+        currentModalId = m.id;
+      }
+    });
+
+    if (currentModalId) {
+      sessionStorage.setItem('lastActiveModalId', currentModalId);
+    } else {
+      sessionStorage.removeItem('lastActiveModalId');
+    }
+
+    // অ্যাক্টিভ অ্যাডমিন ট্যাব ট্র্যাক
+    var activeTabBtn = document.querySelector('.admin-tab-btn.active');
+    if (activeTabBtn) {
+      var onclickText = activeTabBtn.getAttribute('onclick') || '';
+      var tabMatch = onclickText.match(/['"]([^'"]+)['"]/);
+      if (tabMatch && tabMatch[1]) {
+        sessionStorage.setItem('lastActiveAdminTab', tabMatch[1]);
+      }
+    }
+  }
+
+  // ক্লিকে স্টেট আপডেট (কিন্তু কোনো বাটনের নিজস্ব ফাংশন ব্লক করবে না)
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('button');
+    if (btn) {
+      var txt = (btn.innerText || '').trim();
+      var onc = btn.getAttribute('onclick') || '';
+      // ক্যানসেল বা ক্লোজ চাপলে সাথে সাথে মেমোরি থেকে মোডাল রিমুভ
+      if (txt === 'ক্যান্সেল' || txt === '✕' || txt === 'x' || onc.includes('closeModal')) {
+        sessionStorage.removeItem('lastActiveModalId');
+        sessionStorage.removeItem('lastActiveAdminTab');
+        return;
+      }
+    }
+    setTimeout(saveCurrentAppState, 150);
+  });
+
+  window.addEventListener('beforeunload', saveCurrentAppState);
+
+  // ২. রিফ্রেশ দিলে হুবহু শেষ অবস্থানে ফিরে যাওয়া
+  window.addEventListener('load', function() {
+    var savedPageId = sessionStorage.getItem('lastActivePageId');
+    var savedModalId = sessionStorage.getItem('lastActiveModalId');
+    var savedTabName = sessionStorage.getItem('lastActiveAdminTab');
+
+    // আগের পেজ লোড
+    if (savedPageId && savedPageId !== 'page1') {
+      var p1 = document.getElementById('page1');
+      var targetPage = document.getElementById(savedPageId);
+
+      if (p1) {
+        p1.classList.remove('active');
+        p1.style.display = 'none';
+      }
+      if (targetPage) {
+        targetPage.classList.add('active');
+        targetPage.style.display = 'flex';
+      }
+
+      var pageNum = savedPageId.replace('page', '');
+      if (typeof window.goToPage === 'function' && !isNaN(pageNum)) {
+        window.goToPage(Number(pageNum));
+      }
+    }
+
+    // মোডাল ও ট্যাব ওপেন করা
+    if (savedModalId) {
+      setTimeout(function() {
+        if (typeof window.openModal === 'function') {
+          try { window.openModal(savedModalId); } catch(e){}
+        } else {
+          var modalEl = document.getElementById(savedModalId);
+          if (modalEl) {
+            modalEl.classList.remove('hidden');
+            modalEl.style.display = 'flex';
+          }
+        }
+
+        if (savedTabName) {
+          var targetTabBtn = document.querySelector('[onclick*="' + savedTabName + '"]');
+          if (targetTabBtn) {
+            targetTabBtn.click();
+          } else if (typeof window.switchAdminTab === 'function') {
+            try { window.switchAdminTab(null, savedTabName); } catch(e){}
+          }
+        }
+      }, 350);
+    }
+  });
+})();
+
+/* ==========================================================
+   ক্যামেরার ছবি আগের ফাইলের সাথে স্বয়ংক্রিয়ভাবে যুক্ত করার লজিক
+========================================================== */
+var capturedCameraFiles = [];
+
+function handleSingleCameraSnap(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+
+  // তোলা নতুন ছবিটি তালিকায় যোগ করা
+  capturedCameraFiles.push(file);
+  event.target.value = ''; // রিসেট যাতে পুনরায় ক্যামেরা খোলা যায়
+
+  // মূল ফাইল ইনপুট (studentExamMultiFiles)-এ সব ছবি একসাথে মার্চ করা
+  var mainFileInput = document.getElementById('studentExamMultiFiles');
+  if (mainFileInput && window.DataTransfer) {
+    var dt = new DataTransfer();
+    
+    // গ্যালারি থেকে পূর্বে সিলেক্ট করা ফাইল থাকলে তা রাখা
+    if (mainFileInput.files) {
+      for (var i = 0; i < mainFileInput.files.length; i++) {
+        // ডুপ্লিকেট এড়াতে ক্যামেরা লিস্টের বাইরের ফাইল যোগ
+        if (!capturedCameraFiles.includes(mainFileInput.files[i])) {
+          dt.items.add(mainFileInput.files[i]);
+        }
+      }
+    }
+    // ক্যামেরা দিয়ে তোলা সব ছবি যুক্ত করা
+    capturedCameraFiles.forEach(function(f) {
+      dt.items.add(f);
+    });
+    mainFileInput.files = dt.files;
+    
+    // সিস্টেমে ফাইল পরিবর্তনের সংকেত পাঠানো
+    var changeEvt = new Event('change', { bubbles: true });
+    mainFileInput.dispatchEvent(changeEvt);
+  }
+
+  // থাম্বনেইল প্রিভিউ দেখানো
+  renderSnapPreviews();
+}
+
+function renderSnapPreviews() {
+  var box = document.getElementById('cameraImagesContainer');
+  var countText = document.getElementById('cameraSheetCount');
+  if (!box) return;
+
+  box.innerHTML = '';
+  if (countText) {
+    countText.innerText = capturedCameraFiles.length > 0 ? capturedCameraFiles.length + ' টি পাতা তোলা হয়েছে' : '';
+  }
+
+  capturedCameraFiles.forEach(function(fileItem, idx) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var thumb = document.createElement('div');
+      thumb.style = 'position:relative; width:55px; height:70px; border-radius:4px; overflow:hidden; border:1px solid #cbd5e1;';
+      thumb.innerHTML = '<img src="' + e.target.result + '" style="width:100%; height:100%; object-fit:cover;">' +
+                        '<span style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.65); color:#fff; font-size:9px; text-align:center;">পৃষ্ঠা ' + (idx + 1) + '</span>' +
+                        '<button type="button" onclick="removeSnapPhoto(' + idx + ')" style="position:absolute; top:1px; right:1px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:15px; height:15px; font-size:9px; cursor:pointer; line-height:1; padding:0;">✕</button>';
+      box.appendChild(thumb);
+    };
+    reader.readAsDataURL(fileItem);
+  });
+}
+
+function removeSnapPhoto(idx) {
+  capturedCameraFiles.splice(idx, 1);
+  var mainFileInput = document.getElementById('studentExamMultiFiles');
+  if (mainFileInput && window.DataTransfer) {
+    var dt = new DataTransfer();
+    capturedCameraFiles.forEach(function(f) { dt.items.add(f); });
+    mainFileInput.files = dt.files;
+    var changeEvt = new Event('change', { bubbles: true });
+    mainFileInput.dispatchEvent(changeEvt);
+  }
+  renderSnapPreviews();
 }
 </script>
 <!-- শিক্ষার্থীর প্রোফাইলে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার প্রিভিউ উইন্ডো -->
