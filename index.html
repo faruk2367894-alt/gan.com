@@ -3528,56 +3528,66 @@ function renderPageOnCanvas() {
 }
 
 /* ==========================================================
-   শিক্ষার্থীর প্রোফাইল থেকে খাতা প্রিভিউ (অল-কলাম অটো ডিটেক্টর)
+   গুগল শিট (Results ট্যাব) ভিত্তিক নির্দিষ্ট শিক্ষার্থীর খাতা ভিউয়ার
 ========================================================== */
 function openStudentEvaluatedScriptViewer(targetSubject) {
   var evalUrls = "";
   var profile = window.currentStudentProfile;
 
-  // ১. শিক্ষার্থীর প্রোফাইলের সমস্ত রেজাল্ট ও কলাম গভীরভাবে স্ক্যান করা
+  // শিক্ষার্থীর রোল/রেজিস্ট্রেশন নম্বর সংগ্রহ
+  var studentReg = "";
+  if (profile) {
+    studentReg = String(profile.regNo || profile.roll || profile.id || profile.registration || "").trim();
+  }
+  if (!studentReg) {
+    var regEl = document.getElementById('cardStudentReg') || document.getElementById('studentRegInput');
+    if (regEl) studentReg = String(regEl.innerText || regEl.value || "").trim();
+  }
+
+  // ১. Results শিটের ডেটা থেকে নির্দিষ্ট রোল ও বিষয়ের কলাম I (Index 8) স্ক্যান
   if (profile && profile.results && profile.results.length) {
     for (var i = profile.results.length - 1; i >= 0; i--) {
       var r = profile.results[i];
 
       if (Array.isArray(r)) {
-        for (var k = 0; k < r.length; k++) {
-          var val = String(r[k] || '').trim();
-          // যেকোনো কলামে ড্রাইভ লিংক, ইমেজ ডেটা বা ড্রাইভ প্রিভিউ লিংক থাকলে নিয়ে নেবে
-          if (val.indexOf('drive.google.com') !== -1 || val.indexOf('data:image') !== -1 || (val.indexOf('http') === 0 && (val.indexOf('.jpg') !== -1 || val.indexOf('.png') !== -1 || val.indexOf('.jpeg') !== -1))) {
-            evalUrls = val;
+        var rReg = String(r[1] || "").trim();      // কলাম B: Roll / Reg
+        var rSub = String(r[3] || "").trim();      // কলাম D: Subject
+        var rUrl = String(r[8] || "").trim();      // কলাম I: CQ_File_URL
+
+        // যদি রোল মিলে যায়
+        if (!studentReg || rReg === studentReg) {
+          if (targetSubject) {
+            if (rSub.toLowerCase() === String(targetSubject).trim().toLowerCase() && rUrl) {
+              evalUrls = rUrl;
+              break;
+            }
+          } else if (rUrl) {
+            evalUrls = rUrl;
             break;
           }
         }
       } else if (typeof r === 'object' && r !== null) {
-        // অবজেক্টের সব প্রোপার্টি স্ক্যান
-        var keys = Object.keys(r);
-        for (var m = 0; m < keys.length; m++) {
-          var valObj = String(r[keys[m]] || '').trim();
-          if (valObj.indexOf('drive.google.com') !== -1 || valObj.indexOf('data:image') !== -1 || (valObj.indexOf('http') === 0 && (valObj.indexOf('.jpg') !== -1 || valObj.indexOf('.png') !== -1))) {
-            evalUrls = valObj;
+        var objReg = String(r.roll || r.regNo || r.Roll || r['Roll / Reg'] || '').trim();
+        var objSub = String(r.subject || r.Subject || '').trim();
+        var objUrl = String(r.cq_file_url || r.CQ_File_URL || r.scriptUrl || r.evaluatedScriptUrl || '').trim();
+
+        if (!studentReg || objReg === studentReg) {
+          if (targetSubject) {
+            if (objSub.toLowerCase() === String(targetSubject).trim().toLowerCase() && objUrl) {
+              evalUrls = objUrl;
+              break;
+            }
+          } else if (objUrl) {
+            evalUrls = objUrl;
             break;
           }
         }
       }
-
-      if (evalUrls) break; // খাতা পেলেই লুপ থামবে
     }
   }
 
-  // ২. লোকাল ব্যাকআপ স্ক্যান (যদি শিট থেকে আপডেট আসতে দেরি হয়)
-  if (!evalUrls) {
-    var regKey = (profile && (profile.regNo || profile.id || profile.registration)) || "";
-    if (regKey) {
-      evalUrls = localStorage.getItem('eval_doc_' + regKey) || localStorage.getItem('student_uploaded_doc_' + regKey) || "";
-    }
-  }
-
-  // ৩. গ্লোবাল লাস্ট আপলোড ব্যাকআপ
-  if (!evalUrls) {
-    evalUrls = localStorage.getItem('student_uploaded_doc') || localStorage.getItem('last_evaluated_script') || "";
-  }
-
-  if (!evalUrls || evalUrls === "undefined" || evalUrls === "null") {
+  // ২. যদি কোনো খাতা না পাওয়া যায়
+  if (!evalUrls || evalUrls === "undefined" || evalUrls === "null" || evalUrls.indexOf("http") !== 0) {
     alert("এই শিক্ষার্থীর মূল্যায়িত খাতা এখনো আপলোড বা চেক করা হয়নি!");
     return;
   }
@@ -3585,44 +3595,31 @@ function openStudentEvaluatedScriptViewer(targetSubject) {
   var oldViewer = document.getElementById('forceStudentDocModal');
   if (oldViewer) oldViewer.remove();
 
-  // Base64 ইমেজ যাতে কমার কারণে না ভাঙে
-  var urls = [];
-  if (evalUrls.indexOf("data:image") !== -1) {
-    if (evalUrls.indexOf(",data:image") !== -1) {
-      urls = evalUrls.split(/(?=data:image)/).map(function(u) { return u.replace(/^,/, '').trim(); });
-    } else {
-      urls = [evalUrls.trim()];
-    }
-  } else {
-    urls = evalUrls.split(",").map(function(u) { return u.trim(); }).filter(function(u) { return u.length > 0; });
-  }
+  // কমা দিয়ে আলাদা লিংক থাকলে আলাদা করা
+  var urls = evalUrls.split(",").map(function(u) { return u.trim(); }).filter(function(u) { return u.length > 0; });
 
   var pagesHtml = "";
   for (var j = 0; j < urls.length; j++) {
     var u = urls[j];
     var pageNum = j + 1;
-    pagesHtml += '<div style="background:#1e293b; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center;">';
-    pagesHtml += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding:0 5px;">';
-    pagesHtml += '    <span style="color:#38bdf8; font-weight:bold; font-size:14px;">📄 পাতা নং - ' + pageNum + '</span>';
-    if (u.indexOf('http') === 0) {
-      pagesHtml += '    <a href="' + u + '" target="_blank" style="color:#60a5fa; font-size:13px; text-decoration:none; background:rgba(59,130,246,0.15); padding:3px 8px; border-radius:5px;">ফুল স্ক্রিনে দেখুন ↗</a>';
-    }
-    pagesHtml += '  </div>';
+    var previewUrl = u;
 
+    // গুগল ড্রাইভ লিংক সরাসরি প্রিভিউ মোডে নেওয়া
     if (u.indexOf("drive.google.com") !== -1) {
-      var previewUrl = u;
       var match = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
       if (match && match[1]) {
         previewUrl = "https://drive.google.com/file/d/" + match[1] + "/preview";
       }
-      pagesHtml += '  <div style="width:100%; height:450px; background:#000; border-radius:8px; overflow:hidden; border:1px solid #475569;">';
-      pagesHtml += '    <iframe src="' + previewUrl + '" style="width:100%; height:100%; border:none;"></iframe>';
-      pagesHtml += '  </div>';
-    } else {
-      pagesHtml += '  <div style="width:100%; max-height:70vh; overflow-y:auto; background:#0f172a; border-radius:8px; padding:10px; border:1px solid #334155;">';
-      pagesHtml += '    <img src="' + u + '" style="max-width:100%; height:auto; border-radius:6px; box-shadow:0 4px 10px rgba(0,0,0,0.3);" alt="মূল্যায়িত পাতা ' + pageNum + '" />';
-      pagesHtml += '  </div>';
     }
+
+    pagesHtml += '<div style="background:#1e293b; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center;">';
+    pagesHtml += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding:0 5px;">';
+    pagesHtml += '    <span style="color:#38bdf8; font-weight:bold; font-size:14px;">📄 পাতা নং - ' + pageNum + '</span>';
+    pagesHtml += '    <a href="' + u + '" target="_blank" style="color:#60a5fa; font-size:13px; text-decoration:none; background:rgba(59,130,246,0.15); padding:4px 10px; border-radius:5px;">ফুল স্ক্রিনে দেখুন ↗</a>';
+    pagesHtml += '  </div>';
+    pagesHtml += '  <div style="width:100%; height:480px; background:#000; border-radius:8px; overflow:hidden; border:1px solid #475569;">';
+    pagesHtml += '    <iframe src="' + previewUrl + '" style="width:100%; height:100%; border:none;" allow="autoplay"></iframe>';
+    pagesHtml += '  </div>';
     pagesHtml += '</div>';
   }
 
