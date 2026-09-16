@@ -4679,11 +4679,13 @@ function submitLiveExam(isAuto = false) {
   const userAnswers = {};
 
   if (!activeExamData) return alert("পরীক্ষার সেশন পাওয়া যায়নি!");
-  // শুধুমাত্র যেসব পরীক্ষায় লিখিত/CQ/সংক্ষিপ্ত অংশ আছে, সেগুলোর খাতা চেক করা
-    var currentType = (activeExamData && (activeExamData.examType || activeExamData.type)) || '';
-    var hasWrittenPart = (currentType === 'cq' || currentType === 'text' || currentType === 'mcq_cq' || currentType === 'mcq_text' || currentType === 'cq_text' || currentType === 'mcq_cq_text');
+  // স্ক্রিনে লিখিত (CQ বা Text) সেকশন দৃশ্যমান আছে কি না যাচাই
+    var cqSec = document.getElementById('cqExamSection');
+    var textSec = document.getElementById('textExamSection');
+    var hasWrittenVisible = (cqSec && window.getComputedStyle(cqSec).display !== 'none') || 
+                           (textSec && window.getComputedStyle(textSec).display !== 'none');
 
-    if (hasWrittenPart && !isAuto) {
+    if (hasWrittenVisible && !isAuto) {
       var cameraCount = (typeof capturedCameraFiles !== 'undefined' ? capturedCameraFiles.length : 0);
       var fileCount = (typeof selectedExamFilesList !== 'undefined' ? selectedExamFilesList.length : 0);
 
