@@ -4299,7 +4299,7 @@ function autoDetectStudentAndExam(regValue) {
 
           // ২. যে পরীক্ষাগুলো দেওয়া হয়ে গেছে সেগুলোকে বাদ দিয়ে ফিল্টার করা
           var filteredExams = res.availableExams.filter(function(ex) {
-            var subName = String(ex.subject || '').trim().toLowerCase();
+           var subName = String(ex.subject || ex.name || ex.examSubject || ex.subjectName || '').trim().toLowerCase();
             return attendedSubjects.indexOf(subName) === -1;
           });
 
@@ -4695,7 +4695,9 @@ function submitLiveExam(isAuto = false) {
     }
   // সাবমিট করা বিষয়ের নাম লোকাল হিস্ট্রিতে সংরক্ষণ (যাতে ড্রপডাউনে আর না আসে)
   try {
-    var subName = (activeExamData && (activeExamData.subject || activeExamData.examSubject)) || "";
+    var subEl = document.getElementById('stExSubjectDisplay') || document.getElementById('stExSubject');
+    var subName = (subEl && (subEl.value || subEl.textContent || '')).trim().toLowerCase() || 
+                  String((activeExamData && (activeExamData.subject || activeExamData.examSubject || activeExamData.title)) || '').trim().toLowerCase();
     if (subName) {
       var submittedList = JSON.parse(localStorage.getItem('student_submitted_exams') || '[]');
       if (submittedList.indexOf(subName) === -1) {
