@@ -5013,6 +5013,36 @@ function openEvalFullScreen() {
     evalSection.style.height = '100%';
   }
 }
+/* সাবমিট করা বিষয় স্বয়ংক্রিয়ভাবে ড্রপডাউন থেকে মুছে ফেলার অবজারভার */
+function removeSubmittedExamsFromDropdown() {
+  const selectElem = document.getElementById('stExSubject') || document.getElementById('stExSubjcet');
+  if (!selectElem) return;
+
+  const submittedList = JSON.parse(localStorage.getItem('student_submitted_exams') || '[]');
+  if (submittedList.length === 0) return;
+
+  // ড্রপডাউনে থাকা প্রতিটি অপশন চেক করে সাবমিট করা বিষয় মুছে ফেলা
+  Array.from(selectElem.options).forEach(opt => {
+    const val = opt.value ? opt.value.trim() : '';
+    const txt = opt.text ? opt.text.trim() : '';
+    if (submittedList.includes(val) || submittedList.includes(txt)) {
+      opt.remove();
+    }
+  });
+}
+
+// ড্রপডাউনে যখনই ব্যাকএন্ড থেকে নতুন বিষয় লোড হবে, এটি সাথে সাথে ফিল্টার করবে
+const examDropdownObserver = new MutationObserver(() => {
+  removeSubmittedExamsFromDropdown();
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  const targetDropdown = document.getElementById('stExSubject') || document.getElementById('stExSubjcet');
+  if (targetDropdown) {
+    examDropdownObserver.observe(targetDropdown, { childList: true });
+    removeSubmittedExamsFromDropdown();
+  }
+});
 </script>
 <!-- শিক্ষার্থীর প্রোফাইলে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার প্রিভিউ উইন্ডো -->
 <div id="studentDocViewerModal" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.85); z-index: 999999; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(4px);">
