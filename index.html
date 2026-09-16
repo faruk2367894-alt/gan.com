@@ -4289,19 +4289,35 @@ function autoDetectStudentAndExam(regValue) {
             });
           }
 
-          // লোকাল স্টোরেজে জমা থাকা সাবমিশন হিস্ট্রি চেক
-          var localSubmitted = JSON.parse(localStorage.getItem('student_submitted_exams') || '[]');
-          if (Array.isArray(localSubmitted)) {
-            localSubmitted.forEach(function(s) {
-              if (s) attendedSubjects.push(String(s).trim().toLowerCase());
-            });
-          }
+          // ১. লোকাল স্টোরেজে জমা থাকা সাবমিশন হিস্ট্রি নিখুঁতভাবে চেক
+    var localSubmitted = JSON.parse(localStorage.getItem('student_submitted_exams') || '[]');
+    var attendedSubjects = [];
+    if (Array.isArray(localSubmitted)) {
+      localSubmitted.forEach(function(s) {
+        if (!s) return;
+        if (typeof s === 'string') {
+          attendedSubjects.push(s.trim().toLowerCase());
+        } else if (typeof s === 'object') {
+          var name = s.subject || s.name || s.examSubject || s.title || '';
+          if (name) attendedSubjects.push(String(name).trim().toLowerCase());
+        }
+      });
+    }
 
-          // ২. যে পরীক্ষাগুলো দেওয়া হয়ে গেছে সেগুলোকে বাদ দিয়ে ফিল্টার করা
-          var filteredExams = res.availableExams.filter(function(ex) {
-           var subName = String(ex.subject || ex.name || ex.examSubject || ex.subjectName || '').trim().toLowerCase();
-            return attendedSubjects.indexOf(subName) === -1;
-          });
+    // ২. যে পরীক্ষাগুলো দেওয়া হয়ে গেছে সেগুলোকে ফিল্টার করে বাদ দেওয়া
+    var filteredExams = (res.availableExams || []).filter(function(ex) {
+      var s1 = String(ex.subject || '').trim().toLowerCase();
+      var s2 = String(ex.name || '').trim().toLowerCase();
+      var s3 = String(ex.examSubject || '').trim().toLowerCase();
+      var s4 = String(ex.title || '').trim().toLowerCase();
+
+      // যদি যেকোনো একটি নামও পূর্বে দেওয়া তালিকার সাথে মিলে যায়, তবে তা বাদ যাবে
+      var isSubmitted = attendedSubjects.some(function(att) {
+        return att && (att === s1 || att === s2 || att === s3 || att === s4 || (s1 && att.indexOf(s1) !== -1));
+      });
+
+      return !isSubmitted;
+    });
 
           // গ্লোবাল লিস্ট আপডেট
           currentAvailableExamsList = filteredExams;
@@ -4693,19 +4709,24 @@ function submitLiveExam(isAuto = false) {
         return alert("অনুগ্রহ করে আপনার লিখিত উত্তরপত্রের ছবি যুক্ত করুন!");
       }
     }
-  // সাবমিট করা বিষয়ের নাম লোকাল হিস্ট্রিতে সংরক্ষণ (যাতে ড্রপডাউনে আর না আসে)
-  try {
-    var subEl = document.getElementById('stExSubjectDisplay') || document.getElementById('stExSubject');
-    var subName = (subEl && (subEl.value || subEl.textContent || '')).trim().toLowerCase() || 
-                  String((activeExamData && (activeExamData.subject || activeExamData.examSubject || activeExamData.title)) || '').trim().toLowerCase();
-    if (subName) {
-      var submittedList = JSON.parse(localStorage.getItem('student_submitted_exams') || '[]');
-      if (submittedList.indexOf(subName) === -1) {
-        submittedList.push(subName);
-        localStorage.setItem('student_submitted_exams', JSON.stringify(submittedList));
+// সাবমিট করা বিষয়ের নাম নিখুঁতভাবে লোকাল স্টোরেজে সংরক্ষণ
+    try {
+      var subEl = document.getElementById('stExSubjectDisplay') || document.getElementById('stExSubject');
+      var rawName = (subEl && (subEl.value || subEl.textContent || '')) || 
+                    (activeExamData && (activeExamData.subject || activeExamData.examSubject || activeExamData.name || activeExamData.title)) || '';
+      var currentSubName = String(rawName).trim().toLowerCase();
+
+      if (currentSubName) {
+        var list = JSON.parse(localStorage.getItem('student_submitted_exams') || '[]');
+        if (!Array.isArray(list)) list = [];
+        if (list.indexOf(currentSubName) === -1) {
+          list.push(currentSubName);
+          localStorage.setItem('student_submitted_exams', JSON.stringify(list));
+        }
       }
+    } catch (e) {
+      console.error("সাবমিশন হিস্ট্রি সেভ এরর:", e);
     }
-  } catch(e) { console.error("সেভ এরর:", e); }
 
   // MCQ উত্তর সংগ্রহ
   if (activeExamData.mcq && Array.isArray(activeExamData.mcq)) {
