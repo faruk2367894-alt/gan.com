@@ -1434,6 +1434,16 @@ body.dark-mode .ms-table td {
         </button>
         <div id="textUploadStatus" style="font-size: 0.75rem; color: #64748b; margin-top: 6px;">কোনো ফাইল নির্বাচন করা হয়নি</div>
       </div>
+	  <!-- সংক্ষিপ্ত/বর্ণনামূলক প্রশ্নের জন্য সরাসরি ক্যামেরা আপলোড -->
+        <div style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" class="btn" onclick="document.getElementById('examCameraInput').click()" style="background: #0284c7; color: #ffffff; border: none; padding: 7px 12px; border-radius: 6px; font-weight: bold; font-size: 0.82rem; cursor: pointer;">
+              📷 ক্যামেরা দিয়ে ছবি তুলুন
+            </button>
+            <span id="textCapturedCountText" style="font-size: 0.8rem; color: #475569; font-weight: 600;"></span>
+          </div>
+          <div id="textCapturedImagesPreview" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;"></div>
+        </div>
     </div>
  <div class="modal-btns" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
   <button type="button" class="btn btn-cancel" onclick="showPrettyCancelModal()" style="cursor: pointer; position: relative; z-index: 100;">✕ পরীক্ষা বাতিল (Cancel)</button>
@@ -2552,31 +2562,65 @@ function renderFormattedCQ(rawText) {
 }
 
 function switchExamSection(mode) {
-  currentExamSection = mode;
-  document.getElementById('examTabAll').classList.toggle('active', mode === 'all');
-  document.getElementById('examTabMcq').classList.toggle('active', mode === 'mcq');
-  document.getElementById('examTabCq').classList.toggle('active', mode === 'cq');
+    currentExamSection = mode;
 
-  const mcqSec = document.getElementById('mcqExamSection');
-  const cqSec = document.getElementById('cqExamSection');
-  const timerBox = document.getElementById('timerBox');
+    const tabAll  = document.getElementById('examTabAll');
+    const tabMcq  = document.getElementById('examTabMcq');
+    const tabCq   = document.getElementById('examTabCq');
+    const tabText = document.getElementById('examTabText');
 
-  if (mode === 'all') {
-    mcqSec.style.display = 'block';
-    cqSec.style.display = 'block';
-    timerBox.style.display = 'inline-block';
-    document.getElementById('examSubmitBtn').innerText = "সম্পূর্ণ পরীক্ষা জমা দিন (MCQ + CQ)";
-  } else if (mode === 'mcq') {
-    mcqSec.style.display = 'block';
-    cqSec.style.display = 'none';
-    timerBox.style.display = 'inline-block';
-    document.getElementById('examSubmitBtn').innerText = "শুধুমাত্র MCQ খাতা জমা দিন";
-  } else if (mode === 'cq') {
-    mcqSec.style.display = 'none';
-    cqSec.style.display = 'block';
-    timerBox.style.display = 'none';
-    document.getElementById('examSubmitBtn').innerText = "শুধুমাত্র CQ খাতা জমা দিন";
-  }
+    if (tabAll)  tabAll.classList.toggle('active', mode === 'all' || mode === 'mcq_cq_text');
+    if (tabMcq)  tabMcq.classList.toggle('active', mode === 'mcq');
+    if (tabCq)   tabCq.classList.toggle('active', mode === 'cq');
+    if (tabText) tabText.classList.toggle('active', mode === 'text');
+
+    const mcqSec   = document.getElementById('mcqExamSection');
+    const cqSec    = document.getElementById('cqExamSection');
+    const textSec  = document.getElementById('textExamSection');
+    const timerBox = document.getElementById('timerBox');
+    const submitBtn = document.getElementById('examSubmitBtn');
+
+    // ডিফল্টভাবে সব সেকশন বন্ধ রাখা
+    if (mcqSec)  mcqSec.style.display  = 'none';
+    if (cqSec)   cqSec.style.display   = 'none';
+    if (textSec) textSec.style.display = 'none';
+
+    // সেক্টর অনুযায়ী সঠিক সেকশন অন করা
+    if (mode === 'mcq') {
+        if (mcqSec) mcqSec.style.display = 'block';
+        if (timerBox) timerBox.style.display = 'inline-block';
+        if (submitBtn) submitBtn.innerText = "শুধুমাত্র MCQ খাতা জমা";
+    } else if (mode === 'cq') {
+        if (cqSec) cqSec.style.display = 'block';
+        if (timerBox) timerBox.style.display = 'none';
+        if (submitBtn) submitBtn.innerText = "শুধুমাত্র CQ খাতা জমা";
+    } else if (mode === 'text') {
+        if (textSec) textSec.style.display = 'block';
+        if (timerBox) timerBox.style.display = 'inline-block';
+        if (submitBtn) submitBtn.innerText = "শুধুমাত্র সংক্ষিপ্ত খাতা জমা";
+    } else if (mode === 'mcq_cq') {
+        if (mcqSec) mcqSec.style.display = 'block';
+        if (cqSec)  cqSec.style.display  = 'block';
+        if (timerBox) timerBox.style.display = 'inline-block';
+        if (submitBtn) submitBtn.innerText = "MCQ ও CQ খাতা জমা";
+    } else if (mode === 'mcq_text') {
+        // CQ আসবে না, শুধু MCQ এবং সংক্ষিপ্ত প্রশ্ন আসবে
+        if (mcqSec)  mcqSec.style.display  = 'block';
+        if (textSec) textSec.style.display = 'block';
+        if (timerBox) timerBox.style.display = 'inline-block';
+        if (submitBtn) submitBtn.innerText = "MCQ ও সংক্ষিপ্ত খাতা জমা";
+    } else if (mode === 'cq_text') {
+        if (cqSec)   cqSec.style.display   = 'block';
+        if (textSec) textSec.style.display = 'block';
+        if (timerBox) timerBox.style.display = 'none';
+        if (submitBtn) submitBtn.innerText = "CQ ও সংক্ষিপ্ত খাতা জমা";
+    } else { // 'all' অথবা 'mcq_cq_text'
+        if (mcqSec)  mcqSec.style.display  = 'block';
+        if (cqSec)   cqSec.style.display   = 'block';
+        if (textSec) textSec.style.display = 'block';
+        if (timerBox) timerBox.style.display = 'inline-block';
+        if (submitBtn) submitBtn.innerText = "সম্পূর্ণ পরীক্ষা জমা";
+    }
 }
 
 function loadAndStartExam() {
@@ -2597,6 +2641,8 @@ function loadAndStartExam() {
           activeExamData.studentName = stRes.student[1];
           closeModal('examInitModal');
           startLiveExamSession();
+		  // অ্যাডমিন থেকে নির্ধারিত টাইপ অনুযায়ী MCQ / CQ / সংক্ষিপ্ত সেকশন অন করা
+         switchExamSection(activeExamData.examType || activeExamData.type || 'all');
         } else alert(exRes.message || "পরীক্ষা পাওয়া যায়নি!");
       }, btn);
     } else alert("শিক্ষার্থীর তথ্য মেলেনি!");
@@ -4633,6 +4679,18 @@ function submitLiveExam(isAuto = false) {
   const userAnswers = {};
 
   if (!activeExamData) return alert("পরীক্ষার সেশন পাওয়া যায়নি!");
+  // শুধুমাত্র যেসব পরীক্ষায় লিখিত/CQ/সংক্ষিপ্ত অংশ আছে, সেগুলোর খাতা চেক করা
+    var currentType = (activeExamData && (activeExamData.examType || activeExamData.type)) || '';
+    var hasWrittenPart = (currentType === 'cq' || currentType === 'text' || currentType === 'mcq_cq' || currentType === 'mcq_text' || currentType === 'cq_text' || currentType === 'mcq_cq_text');
+
+    if (hasWrittenPart && !isAuto) {
+      var cameraCount = (typeof capturedCameraFiles !== 'undefined' ? capturedCameraFiles.length : 0);
+      var fileCount = (typeof selectedExamFilesList !== 'undefined' ? selectedExamFilesList.length : 0);
+
+      if (fileCount === 0 && cameraCount === 0) {
+        return alert("অনুগ্রহ করে আপনার লিখিত উত্তরপত্রের ছবি যুক্ত করুন!");
+      }
+    }
   // সাবমিট করা বিষয়ের নাম লোকাল হিস্ট্রিতে সংরক্ষণ (যাতে ড্রপডাউনে আর না আসে)
   try {
     var subName = (activeExamData && (activeExamData.subject || activeExamData.examSubject)) || "";
