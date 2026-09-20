@@ -3606,6 +3606,77 @@ function renderPageOnCanvas() {
   }
 }
 
+// ================= মাল্টি-পেজ স্ক্রিপ্ট ভিউয়ার লজিক =================
+let currentScriptPages = [];
+let currentScriptPageIndex = 0;
+
+function loadEvaluationScriptImages(rawUrlString) {
+  if (!rawUrlString) return;
+
+  // ১. কমা দিয়ে আলাদা করে সবকটি ড্রাইভ বা লোকাল লিংক আলাদা অ্যারেতে নেওয়া
+  currentScriptPages = rawUrlString.split(',')
+    .map(u => u.trim())
+    .filter(u => u.length > 0)
+    .map(u => {
+      // গুগল ড্রাইভ ফাইল আইডি বের করে সরাসরি হাই-রেজ্যুলেশন ইমেজ তৈরি
+      if (u.includes('drive.google.com/file/d/')) {
+        let fileId = u.split('/file/d/')[1].split('/')[0];
+        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`;
+      }
+      return u;
+    });
+
+  currentScriptPageIndex = 0;
+  renderCurrentScriptPage();
+}
+
+function renderCurrentScriptPage() {
+  const total = currentScriptPages.length;
+  if (total === 0) return;
+
+  const currentImgUrl = currentScriptPages[currentScriptPageIndex];
+
+  // ১. পাতা কাউন্টার আপডেট (যেমন: ১/৩, ২/৩)
+  const counterElems = document.querySelectorAll('.page-counter-text, #evalPageCountText');
+  counterElems.forEach(el => {
+    el.innerText = `${currentScriptPageIndex + 1}/${total}`;
+  });
+
+  // ২. আপনার ক্যানভাস ড্রয়িং ইঞ্জিনে নতুন পাতা সেট করা (রঙিন পেন অক্ষত থাকবে)
+  if (typeof loadCanvasBackground === 'function') {
+    loadCanvasBackground(currentImgUrl);
+  } else if (typeof setScriptImage === 'function') {
+    setScriptImage(currentImgUrl);
+  } else {
+    // ডিফল্ট ইমেজ ট্যাগ ব্যাকআপ
+    const imgTag = document.getElementById('evalScriptImage') || document.querySelector('.eval-script-img');
+    if (imgTag) imgTag.src = currentImgUrl;
+  }
+
+  // ৩. আগের ও পরের বাটন এনেবল/ডিজেবল নিয়ন্ত্রণ
+  const prevBtns = document.querySelectorAll('.btn-prev-page, #evalPrevBtn');
+  const nextBtns = document.querySelectorAll('.btn-next-page, #evalNextBtn');
+  
+  prevBtns.forEach(btn => btn.disabled = (currentScriptPageIndex === 0));
+  nextBtns.forEach(btn => btn.disabled = (currentScriptPageIndex === total - 1));
+}
+
+// "পরের পাতা ▶" বাটনের অ্যাকশন
+function showNextScriptPage() {
+  if (currentScriptPageIndex < currentScriptPages.length - 1) {
+    currentScriptPageIndex++;
+    renderCurrentScriptPage();
+  }
+}
+
+// "◀ আগের পাতা" বাটনের অ্যাকশন
+function showPrevScriptPage() {
+  if (currentScriptPageIndex > 0) {
+    currentScriptPageIndex--;
+    renderCurrentScriptPage();
+  }
+}
+// =================================================================
 /* ==========================================================
    রেজিস্ট্রেশন ও প্রোফাইল থেকে নির্দিষ্ট শিক্ষার্থীর খাতা ভিউয়ার
 ========================================================== */
@@ -3645,20 +3716,21 @@ function openStudentEvaluatedScriptViewer() {
   var oldViewer = document.getElementById('forceStudentDocModal');
   if (oldViewer) oldViewer.remove();
 
-  var urls = evalUrls.split(',').map(function(u){ return u.trim(); }).filter(Boolean);
-
-  var pagesHtml = "";
-  for (var k = 0; k < urls.length; k++) {
-    var u = urls[k];
-    var pageNum = k + 1;
-    var previewUrl = u;
-
-    if (u.indexOf("drive.google.com") !== -1) {
-      var match = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
-      if (match && match[1]) {
-        previewUrl = "https://drive.google.com/file/d/" + match[1] + "/preview";
+ var urls = evalUrls.split(',').map(function(u) { return u.trim(); }).filter(function(u) { return u.length > 0; });
+    
+    var pagesHtml = "";
+    for (var k = 0; k < urls.length; k++) {
+      var u = urls[k];
+      var pageNum = k + 1;
+      var previewUrl = u;
+      
+      // গুগল ড্রাইভ লিংক হলে সরাসরি ফুল ইমেজ থাম্বনেইলে রূপান্তর
+      if (u.indexOf("drive.google.com") !== -1) {
+        var match = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+          previewUrl = "https://drive.google.com/thumbnail?id=" + match[1] + "&sz=w1600";
+        }
       }
-    }
 
     pagesHtml += '<div style="background:#1e293b; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center;">';
     pagesHtml += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">';
@@ -4662,15 +4734,14 @@ function filterExamDisplayForClass(examData) {
 
 // ৪. একাধিক খাতার ছবি নিরাপদ সাইজে কম্প্রেস করে প্রস্তুত করার ফাংশন
 let selectedExamFilesList = [];
-async function handleMultipleFileSelect(input) {
-  const files = Array.from(input.files);
-  if (files.length === 0) return;
 
-  // এখানে selectedExamFilesList = []; লাইনটি বাদ দেওয়া হলো যাতে আগের তোলা পাতা মুছে না যায়!
-  
+async function handleMultipleFileSelect(input) {
+  const files = Array.from(input.files || []);
+  if (!files || files.length === 0) return;
+
   const status = document.getElementById('multiFileDisplayStatus');
   if (status) {
-    status.innerHTML = `⏳ ${files.length} টি পাতার ছবি প্রসেস ও হালকা করা হচ্ছে...`;
+    status.innerHTML = `⏳ পাতাগুলো প্রসেস ও হালকা করা হচ্ছে...`;
     status.style.color = '#2563eb';
   }
 
@@ -4678,60 +4749,37 @@ async function handleMultipleFileSelect(input) {
     try {
       const b64 = await processScriptFile(files[i]);
       selectedExamFilesList.push({
-        name: files[i].name,
+        name: files[i].name || `page_${selectedExamFilesList.length + 1}.jpg`,
         mime: files[i].type || 'image/jpeg',
         base64: b64
       });
-      if (status) status.innerHTML = `⏳ প্রসেস হচ্ছে (${i + 1}/${files.length})...`;
     } catch (e) {
-      console.error("ফাইল কমপ্রেস এরর:", e);
+      console.error("ফাইল কম্প্রেস এরর:", e);
     }
   }
 
   if (status) {
-    status.innerHTML = `✅ মোট ${selectedExamFilesList.length} টি পৃষ্ঠার খাতা সফলভাবে প্রস্তুত!`;
+    status.innerHTML = `✅ মোট ${selectedExamFilesList.length} টি পৃষ্ঠার খাতা প্রস্তুত!`;
     status.style.color = '#15803d';
   }
 }
 
-// ৫. ফাইনাল খাতা ও পরীক্ষার উত্তর ড্রাইভে সাবমিট করার ত্রুটিমুক্ত ফাংশন
+// ৫. ফাইনাল খাতা ও পরীক্ষার উত্তর সাবমিট করার স্মার্ট ফাংশন
 function submitLiveExam(isAuto = false) {
   const btn = document.getElementById('examSubmitBtn');
   const userAnswers = {};
 
   if (!activeExamData) return alert("পরীক্ষার সেশন পাওয়া যায়নি!");
-  // স্ক্রিনে লিখিত (CQ বা Text) সেকশন দৃশ্যমান আছে কি না যাচাই
-    var cqSec = document.getElementById('cqExamSection');
-    var textSec = document.getElementById('textExamSection');
-    var hasWrittenVisible = (cqSec && window.getComputedStyle(cqSec).display !== 'none') || 
-                           (textSec && window.getComputedStyle(textSec).display !== 'none');
 
-    if (hasWrittenVisible && !isAuto) {
-      var cameraCount = (typeof capturedCameraFiles !== 'undefined' ? capturedCameraFiles.length : 0);
-      var fileCount = (typeof selectedExamFilesList !== 'undefined' ? selectedExamFilesList.length : 0);
+  // লিখিত সেকশন ওপেন থাকলে ফাইল চেক
+  var cqSec = document.getElementById('cqExamSection');
+  var textSec = document.getElementById('textExamSection');
+  var hasWrittenVisible = (cqSec && window.getComputedStyle(cqSec).display !== 'none') || 
+                          (textSec && window.getComputedStyle(textSec).display !== 'none');
 
-      if (fileCount === 0 && cameraCount === 0) {
-        return alert("অনুগ্রহ করে আপনার লিখিত উত্তরপত্রের ছবি যুক্ত করুন!");
-      }
-    }
-// সাবমিট করা বিষয়ের নাম নিখুঁতভাবে লোকাল স্টোরেজে সংরক্ষণ
-    try {
-      var subEl = document.getElementById('stExSubjectDisplay') || document.getElementById('stExSubject');
-      var rawName = (subEl && (subEl.value || subEl.textContent || '')) || 
-                    (activeExamData && (activeExamData.subject || activeExamData.examSubject || activeExamData.name || activeExamData.title)) || '';
-      var currentSubName = String(rawName).trim().toLowerCase();
-
-      if (currentSubName) {
-        var list = JSON.parse(localStorage.getItem('student_submitted_exams') || '[]');
-        if (!Array.isArray(list)) list = [];
-        if (list.indexOf(currentSubName) === -1) {
-          list.push(currentSubName);
-          localStorage.setItem('student_submitted_exams', JSON.stringify(list));
-        }
-      }
-    } catch (e) {
-      console.error("সাবমিশন হিস্ট্রি সেভ এরর:", e);
-    }
+  if (hasWrittenVisible && !isAuto && selectedExamFilesList.length === 0) {
+    return alert("অনুগ্রহ করে আপনার লিখিত উত্তরপত্রের ছবি যুক্ত করুন!");
+  }
 
   // MCQ উত্তর সংগ্রহ
   if (activeExamData.mcq && Array.isArray(activeExamData.mcq)) {
@@ -4740,16 +4788,10 @@ function submitLiveExam(isAuto = false) {
       if (checked) userAnswers[q.id] = checked.value;
     });
   }
-  
-
-  // CQ শুধুমাত্র সিলেক্ট থাকলে ফাইল বাধ্যতামূলক চেক
-  if (!isAuto && currentExamSection === 'cq' && selectedExamFilesList.length === 0) {
-    return alert("অনুগ্রহ করে লিখিত CQ খাতার ছবি বা ফাইল সিলেক্ট করুন!");
-  }
 
   if (examTimerInterval) clearInterval(examTimerInterval);
 
-  // ব্যাকএন্ড গুগল শিটের উপযোগী পেলোড তৈরি
+  // পেলোড তৈরি (ল্যাপটপ ও গুগল ড্রাইভ উভয়ের উপযোগী)
   const payload = {
     action: "submitLiveExam",
     examId: activeExamData.examId || activeExamData.id,
@@ -4757,19 +4799,51 @@ function submitLiveExam(isAuto = false) {
     classVal: activeExamData.studentClass,
     subject: activeExamData.subject,
     userAnswers: userAnswers,
-    fileList: selectedExamFilesList.map(item => (typeof item === 'object' ? (item.base64 || item.data || item) : item)),
-    // ব্যাকএন্ডে সিঙ্গেল ফাইল রিডার থাকলে তার জন্য প্রথম ফাইলের ব্যাকআপ
-    cqSubBase64: selectedExamFilesList.length > 0 ? selectedExamFilesList[0].base64 : "",
-    cqSubMime: selectedExamFilesList.length > 0 ? selectedExamFilesList[0].mime : "image/jpeg"
+    fileList: selectedExamFilesList.map((item, idx) => ({
+      name: item.name || ("page_" + (idx + 1) + ".jpg"),
+      mime: item.mime || "image/jpeg",
+      base64: (typeof item === 'object' ? (item.base64 || item.data || item) : item)
+    })),
+    cqSubBase64: selectedExamFilesList.length > 0 ? (selectedExamFilesList[0].base64 || selectedExamFilesList[0]) : "",
+    cqSubMime: selectedExamFilesList.length > 0 ? (selectedExamFilesList[0].mime || "image/jpeg") : "image/jpeg"
   };
+
+  // স্মার্ট সেন্ডার কল
+  sendExamDataSmartly(payload, function(res) {
+    if (res && (res.success || res.status === "success")) {
+      alert("✅ সফলভাবে আপনার ফাইল আপলোড হয়েছে, পরীক্ষা সম্পন্ন করুন।");
+      
+      // পরীক্ষার উইন্ডো ও প্রশ্নপত্র বন্ধ করা
+      closeModal('liveExamModal');
+      selectedExamFilesList = [];
+      activeExamData = null;
+      clearAutoSavedData();
+
+      // প্রিভিউ ও স্ট্যাটাস খালি করা
+      var pBox = document.getElementById('capturedImagesPreview');
+      if (pBox) pBox.innerHTML = '<span style="font-size: 12px; color: #94a3b8;">এখানে তোলা পাতাগুলো একের পর এক জমা হবে...</span>';
+      var cText = document.getElementById('capturedCountText');
+      if (cText) cText.innerText = "০ টি ছবি তোলা হয়েছে";
+      var fStatus = document.getElementById('multiFileDisplayStatus');
+      if (fStatus) fStatus.innerText = "কোনো ফাইল সিলেক্ট করা হয়নি";
+
+      if (res.reviewDetails) {
+        showExamReview(res);
+      }
+    } else {
+      alert("খাতা জমা দিতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+    }
+  }, btn);
+}
 
 const LAPTOP_SERVER_URL = "https://recruitment-senators-con-kay.trycloudflare.com";
 
 function sendExamDataSmartly(payload, callback, btn) {
+  const resetBtn = btn ? setBtnLoading(btn) : null;
   const controller = new AbortController();
   const timeoutId = setTimeout(function() {
     controller.abort();
-  }, 20000);
+  }, 4000); // ল্যাপটপ অফ থাকলে দ্রুত (৪ সেকেন্ডে) গুগল ড্রাইভে চলে যাবে
 
   fetch(LAPTOP_SERVER_URL + "/handle-all", {
     method: "POST",
@@ -4783,7 +4857,7 @@ function sendExamDataSmartly(payload, callback, btn) {
   })
   .then(function(data) {
     clearTimeout(timeoutId);
-    console.log("🟢 ল্যাপটপে ফাইল সেভ হয়েছে!");
+    console.log("🟢 ল্যাপটপে ফাইল সেভ হয়েছে!");
     if (data.fileUrls && data.fileUrls.length > 0) {
       var allLinks = data.fileUrls.join(',');
       payload.fileUrl = allLinks;
@@ -4791,18 +4865,22 @@ function sendExamDataSmartly(payload, callback, btn) {
       payload.cqFileUrl = allLinks;
       payload.driveUrl = allLinks;
       delete payload.fileList;
-      delete payload.selectedExamFilesList;
       delete payload.cqSubBase64;
     }
+    // ল্যাপটপের লিংক নিয়ে গুগল শিটে ডাটা সংরক্ষণ
     postData(payload, function(sheetRes) {
-      console.log("✅ গুগল শিটে খাতার লিংক সফলভাবে আপডেট হয়েছে!");
-      if (callback) callback(data);
-    }, btn);
+      if (resetBtn) resetBtn();
+      if (callback) callback(sheetRes || data);
+    }, null);
   })
   .catch(function(err) {
     clearTimeout(timeoutId);
-    console.log("🔴 ল্যাপটপ বন্ধ! সরাসরি গুগলে যাচ্ছে...", err);
-    postData(payload, callback, btn);
+    console.log("🔴 ল্যাপটপ বন্ধ! সরাসরি গুগল ড্রাইভে পাঠানো হচ্ছে...");
+    // ল্যাপটপ বন্ধ থাকলে সরাসরি গুগল শিট ও ড্রাইভে যাবে
+    postData(payload, function(sheetRes) {
+      if (resetBtn) resetBtn();
+      if (callback) callback(sheetRes);
+    }, null);
   });
 }
 
@@ -4998,56 +5076,51 @@ function cancelStudentExam() {
   });
 })();
 
-/* ==========================================================
-   ক্যামেরা দিয়ে একের পর এক ছবি তুলে সরাসরি সিস্টেমে আপলোড ফিক্স
-========================================================== */
-function handleCapturedPhoto(event) {
-  var file = event.target.files && event.target.files[0];
+/* ক্যামেরা দিয়ে একের পর এক ছবি তুলে সরাসরি সিস্টেমে যুক্ত করা */
+async function handleCapturedPhoto(event) {
+  const file = event.target.files && event.target.files[0];
   if (!file) return;
 
-  var mainInput = document.getElementById('studentExamMultiFiles');
-  
-  // ১. ছবিটিকে সরাসরি আপনার মূল সিস্টেমে পাস করা
-  if (typeof handleMultipleFileSelect === 'function') {
-    // যদি সিস্টেমে গ্লোবাল ফাইল অ্যারে থাকে
-    if (typeof selectedFiles !== 'undefined' && Array.isArray(selectedFiles)) {
-      selectedFiles.push(file);
-    } else if (typeof examUploadFiles !== 'undefined' && Array.isArray(examUploadFiles)) {
-      examUploadFiles.push(file);
-    }
-    
-    // মূল ফাংশনে ফাইলটি পাঠিয়ে প্রসেস করানো
-    try {
-      handleMultipleFileSelect({ target: { files: [file] }, files: [file] });
-    } catch(err) {
-      console.log(err);
-    }
+  const previewBox = document.getElementById('capturedImagesPreview');
+  const countText = document.getElementById('capturedCountText');
+  const status = document.getElementById('multiFileDisplayStatus');
+
+  if (status) {
+    status.innerHTML = `⏳ পাতার ছবি প্রসেস হচ্ছে...`;
+    status.style.color = '#2563eb';
   }
 
-  // ২. থাম্বনেইল প্রিভিউ দেখানো ও কাউন্ট বাড়ানো
-  var previewBox = document.getElementById('capturedImagesPreview');
-  var countText = document.getElementById('capturedCountText');
-  
-  if (previewBox) {
-    if (previewBox.innerText.includes('এখানে তোলা পাতাগুলো')) {
-      previewBox.innerHTML = '';
-    }
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      var thumb = document.createElement('div');
-      thumb.style = "position: relative; width: 60px; height: 75px; border-radius: 4px; overflow: hidden; border: 1.5px solid #0284c7; display: inline-block; margin: 3px; background: #fff;";
-      thumb.innerHTML = '<img src="' + e.target.result + '" style="width: 100%; height: 100%; object-fit: cover;">' +
-                        '<span style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.65); color: #fff; font-size: 9px; text-align: center;">পৃষ্ঠা ' + (previewBox.children.length + 1) + '</span>';
-      previewBox.appendChild(thumb);
-      
-      if (countText) {
-        countText.innerText = previewBox.children.length + ' টি ছবি তোলা হয়েছে';
+  try {
+    const b64 = await processScriptFile(file);
+    selectedExamFilesList.push({
+      name: `camera_page_${selectedExamFilesList.length + 1}.jpg`,
+      mime: 'image/jpeg',
+      base64: b64
+    });
+
+    if (previewBox) {
+      if (previewBox.innerText.includes('এখানে তোলা পাতাগুলো')) {
+        previewBox.innerHTML = '';
       }
-    };
-    reader.readAsDataURL(file);
+      const thumb = document.createElement('div');
+      thumb.style = "position: relative; width: 60px; height: 75px; border-radius: 4px; overflow: hidden; border: 1.5px solid #0284c7; display: inline-block; margin: 3px; background: #fff;";
+      thumb.innerHTML = `<img src="${b64}" style="width: 100%; height: 100%; object-fit: cover;">
+                         <span style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.65); color: #fff; font-size: 9px; text-align: center;">পৃষ্ঠা ${selectedExamFilesList.length}</span>`;
+      previewBox.appendChild(thumb);
+    }
+
+    if (countText) {
+      countText.innerText = `${selectedExamFilesList.length} টি ছবি তোলা হয়েছে`;
+    }
+
+    if (status) {
+      status.innerHTML = `✅ মোট ${selectedExamFilesList.length} টি পৃষ্ঠার খাতা প্রস্তুত!`;
+      status.style.color = '#15803d';
+    }
+  } catch (err) {
+    console.error("ক্যামেরা ইমেজ এরর:", err);
   }
 
-  // ইনপুট খালি করা যাতে সাথে সাথে পরবর্তী ছবি তোলা যায়
   event.target.value = '';
 }
 
@@ -5098,7 +5171,7 @@ window.addEventListener('DOMContentLoaded', () => {
     removeSubmittedExamsFromDropdown();
   }
 });
-}
+
 </script>
 <!-- শিক্ষার্থীর প্রোফাইলে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার প্রিভিউ উইন্ডো -->
 <div id="studentDocViewerModal" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.85); z-index: 999999; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(4px);">
