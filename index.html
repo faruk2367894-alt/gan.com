@@ -4761,9 +4761,9 @@ function submitLiveExam(isAuto = false) {
 const LAPTOP_SERVER_URL = "https://recruitment-senators-con-kay.trycloudflare.com";
 
 function sendExamDataSmartly(payload, callback, btn) {
-  // ১. আগে ২ সেকেন্ডের মধ্যে ল্যাপটপ সার্ভারে পাঠানোর চেষ্টা করবে
+  // ছবি আপলোড হতে সময় লাগে, তাই টাইমআউট বাড়িয়ে ২৫ সেকেন্ড দেওয়া হলো
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 2000);
+  const timeoutId = setTimeout(() => controller.abort(), 25000);
 
   fetch(`${LAPTOP_SERVER_URL}/submit-exam`, {
     method: "POST",
@@ -4771,15 +4771,18 @@ function sendExamDataSmartly(payload, callback, btn) {
     body: JSON.stringify(payload),
     signal: controller.signal
   })
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error("সার্ভার রেসপন্স দেয়নি");
+    return res.json();
+  })
   .then(data => {
     clearTimeout(timeoutId);
-    console.log("🟢 ডেটা সরাসরি ল্যাপটপে জমা হয়েছে!");
+    console.log("🟢 ডেটা সফলভাবে ল্যাপটপে সংরক্ষিত হয়েছে!");
     callback(data);
   })
   .catch(err => {
-    // ২. ল্যাপটপ বন্ধ থাকলে বা নেট না পেলে গুগল শিট ও ড্রাইভে চলে যাবে
-    console.log("🔴 ল্যাপটপ বন্ধ! গুগল শিট ও ড্রাইভে পাঠানো হচ্ছে...");
+    clearTimeout(timeoutId);
+    console.log("🔴 ল্যাপটপ বন্ধ বা টাইমআউট! গুগল শিট ও ড্রাইভে পাঠানো হচ্ছে...", err);
     postData(payload, callback, btn);
   });
 }
