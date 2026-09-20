@@ -4761,7 +4761,7 @@ function submitLiveExam(isAuto = false) {
 const LAPTOP_SERVER_URL = "https://recruitment-senators-con-kay.trycloudflare.com";
 
 // আপনার আসল postData ফাংশনের ভেতরের কোডটিকে এভাবে সাজিয়ে নিন:
-function postData(payload, callback, btn) {
+function sendExamDataSmartly(payload, callback, btn) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000); // ২০ সেকেন্ডের টাইমআউট
 
