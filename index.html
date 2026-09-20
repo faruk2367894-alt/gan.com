@@ -4786,7 +4786,7 @@ function sendExamDataSmartly(payload, callback, btn) {
     console.log("🔴 ল্যাপটপ বন্ধ: ডেটা সরাসরি গুগল শিট ও ড্রাইভে পাঠানো হচ্ছে...");
     
     // ২. ল্যাপটপ বন্ধ থাকলে গুগল স্ক্রিপ্টে পাঠানোর আসল fetch কোডটি এখানে এক্সিকিউট হবে
-    sendToGoogleAppsScript(payload, callback, btn);
+   postData(payload, callback, btn);
   });
 }
   showToast("খাতা গুগল ড্রাইভে জমা হচ্ছে, দয়া করে অপেক্ষা করুন...", "info");
