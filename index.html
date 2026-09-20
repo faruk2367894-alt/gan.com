@@ -4784,12 +4784,18 @@ function sendExamDataSmartly(payload, callback, btn) {
     clearTimeout(timeoutId);
     console.log("🟢 ল্যাপটপে ফাইল সফলভাবে সেভ হয়েছে! এবার গুগল শিটে লিংক পাঠানো হচ্ছে...");
     
-    // ল্যাপটপ থেকে যে লিংকগুলো তৈরি হলো, তা শিটে পাঠানোর পে-লোডে বসিয়ে দেওয়া হলো
+   // ল্যাপটপ থেকে যে লিংক আসলো তা পে-লোডে যুক্ত করা
     if (data.fileUrls && data.fileUrls.length > 0) {
-      payload.fileUrl = data.fileUrls.join(','); 
-      payload.cqSubUrl = data.fileUrls[0];
-      // বড় base64 ফাইল বাদ দিয়ে হালকা করে দেওয়া হলো যাতে নিমিষেই শিটে লিংক বসে যায়
+      const allLinks = data.fileUrls.join(',');
+      payload.fileUrl = allLinks;
+      payload.fileUrls = data.fileUrls;
+      payload.cqSubUrl = allLinks;
+      payload.cqFileUrl = allLinks;
+      payload.driveUrl = allLinks; // গুগল স্ক্রিপ্ট সাধারণত এই নামগুলো খোঁজে
+
+      // ভারী ফাইল ডিলিট করে হালকা করা
       delete payload.fileList;
+      delete payload.selectedExamFilesList;
       delete payload.cqSubBase64;
     }
 
