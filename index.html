@@ -4768,9 +4768,8 @@ const LAPTOP_SERVER_URL = "https://recruitment-senators-con-kay.trycloudflare.co
 // আপনার আসল postData ফাংশনের ভেতরের কোডটিকে এভাবে সাজিয়ে নিন:
 function sendExamDataSmartly(payload, callback, btn) {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 20000); // ২০ সেকেন্ডের টাইমআউট
+  const timeoutId = setTimeout(() => controller.abort(), 20000);
 
-  // ১. প্রথমে ল্যাপটপে পাঠানোর চেষ্টা করবে
   fetch(`${LAPTOP_SERVER_URL}/handle-all`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -4783,33 +4782,29 @@ function sendExamDataSmartly(payload, callback, btn) {
   })
   .then(data => {
     clearTimeout(timeoutId);
-    console.log("🟢 ল্যাপটপ সক্রিয়: সব তথ্য ও ফাইল সরাসরি ল্যাপটপে সংরক্ষিত হয়েছে!");
-    if (callback) callback(data);
+    console.log("🟢 ল্যাপটপে ফাইল সফলভাবে সেভ হয়েছে! এবার গুগল শিটে লিংক পাঠানো হচ্ছে...");
+    
+    // ল্যাপটপ থেকে যে লিংকগুলো তৈরি হলো, তা শিটে পাঠানোর পে-লোডে বসিয়ে দেওয়া হলো
+    if (data.fileUrls && data.fileUrls.length > 0) {
+      payload.fileUrl = data.fileUrls.join(','); 
+      payload.cqSubUrl = data.fileUrls[0];
+      // বড় base64 ফাইল বাদ দিয়ে হালকা করে দেওয়া হলো যাতে নিমিষেই শিটে লিংক বসে যায়
+      delete payload.fileList;
+      delete payload.cqSubBase64;
+    }
+
+    // গুগল শিটে রোল, মার্কস ও এই খাতার লিংকটি আপডেট করা
+    postData(payload, (sheetRes) => {
+      console.log("✅ গুগল শিটে খাতার লিংক সফলভাবে আপডেট হয়েছে!");
+      if (callback) callback(data);
+    }, btn);
   })
   .catch(err => {
     clearTimeout(timeoutId);
-    console.log("🔴 ল্যাপটপ বন্ধ: ডেটা সরাসরি গুগল শিট ও ড্রাইভে পাঠানো হচ্ছে...");
-    
-    // ২. ল্যাপটপ বন্ধ থাকলে গুগল স্ক্রিপ্টে পাঠানোর আসল fetch কোডটি এখানে এক্সিকিউট হবে
-   postData(payload, callback, btn);
+    console.log("🔴 ল্যাপটপ বন্ধ! খাতা সরাসরি গুগল ড্রাইভে পাঠানো হচ্ছে...");
+    // ল্যাপটপ অফলাইন থাকলে আগের নিয়মে সোজা গুগল ড্রাইভে চলে যাবে
+    postData(payload, callback, btn);
   });
-}
-  showToast("খাতা গুগল ড্রাইভে জমা হচ্ছে, দয়া করে অপেক্ষা করুন...", "info");
-
-  sendExamDataSmartly(payload, res => {
-    if (res && res.success) {
-      const liveModal = document.getElementById('liveExamModal');
-      if (liveModal) {
-        liveModal.style.setProperty('display', 'none', 'important');
-        liveModal.classList.remove('show');
-      }
-      selectedExamFilesList = [];
-      showExamReview(res);
-      showToast("✅ পরীক্ষা ও খাতা সফলভাবে সংরক্ষিত হয়েছে!", "success");
-    } else {
-      alert("জমা হতে সমস্যা হয়েছে: " + (res?.message || "পুনরায় চেষ্টা করুন"));
-    }
-  }, btn);
 }
 
 /* ==========================================================
