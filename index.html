@@ -4758,9 +4758,34 @@ function submitLiveExam(isAuto = false) {
     cqSubMime: selectedExamFilesList.length > 0 ? selectedExamFilesList[0].mime : "image/jpeg"
   };
 
+const LAPTOP_SERVER_URL = "https://recruitment-senators-con-kay.trycloudflare.com";
+
+function sendExamDataSmartly(payload, callback, btn) {
+  // ১. আগে ২ সেকেন্ডের মধ্যে ল্যাপটপ সার্ভারে পাঠানোর চেষ্টা করবে
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+  fetch(`${LAPTOP_SERVER_URL}/submit-exam`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    signal: controller.signal
+  })
+  .then(res => res.json())
+  .then(data => {
+    clearTimeout(timeoutId);
+    console.log("🟢 ডেটা সরাসরি ল্যাপটপে জমা হয়েছে!");
+    callback(data);
+  })
+  .catch(err => {
+    // ২. ল্যাপটপ বন্ধ থাকলে বা নেট না পেলে গুগল শিট ও ড্রাইভে চলে যাবে
+    console.log("🔴 ল্যাপটপ বন্ধ! গুগল শিট ও ড্রাইভে পাঠানো হচ্ছে...");
+    postData(payload, callback, btn);
+  });
+}
   showToast("খাতা গুগল ড্রাইভে জমা হচ্ছে, দয়া করে অপেক্ষা করুন...", "info");
 
-  postData(payload, res => {
+  sendExamDataSmartly(payload, res => {
     if (res && res.success) {
       const liveModal = document.getElementById('liveExamModal');
       if (liveModal) {
