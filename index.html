@@ -4765,50 +4765,43 @@ function submitLiveExam(isAuto = false) {
 
 const LAPTOP_SERVER_URL = "https://recruitment-senators-con-kay.trycloudflare.com";
 
-// আপনার আসল postData ফাংশনের ভেতরের কোডটিকে এভাবে সাজিয়ে নিন:
 function sendExamDataSmartly(payload, callback, btn) {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 20000);
+  const timeoutId = setTimeout(function() {
+    controller.abort();
+  }, 20000);
 
-  fetch(`${LAPTOP_SERVER_URL}/handle-all`, {
+  fetch(LAPTOP_SERVER_URL + "/handle-all", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
     signal: controller.signal
   })
-  .then(res => {
-    if (!res.ok) throw new Error("ল্যাপটপ অফলাইন");
+  .then(function(res) {
+    if (!res.ok) throw new Error("Server Offline");
     return res.json();
   })
-  .then(data => {
+  .then(function(data) {
     clearTimeout(timeoutId);
-    console.log("🟢 ল্যাপটপে ফাইল সফলভাবে সেভ হয়েছে! এবার গুগল শিটে লিংক পাঠানো হচ্ছে...");
-    
-   // ল্যাপটপ থেকে যে লিংক আসলো তা পে-লোডে যুক্ত করা
+    console.log("🟢 ল্যাপটপে ফাইল সেভ হয়েছে!");
     if (data.fileUrls && data.fileUrls.length > 0) {
-      const allLinks = data.fileUrls.join(',');
+      var allLinks = data.fileUrls.join(',');
       payload.fileUrl = allLinks;
-      payload.fileUrls = data.fileUrls;
       payload.cqSubUrl = allLinks;
       payload.cqFileUrl = allLinks;
-      payload.driveUrl = allLinks; // গুগল স্ক্রিপ্ট সাধারণত এই নামগুলো খোঁজে
-
-      // ভারী ফাইল ডিলিট করে হালকা করা
+      payload.driveUrl = allLinks;
       delete payload.fileList;
       delete payload.selectedExamFilesList;
       delete payload.cqSubBase64;
     }
-
-    // গুগল শিটে রোল, মার্কস ও এই খাতার লিংকটি আপডেট করা
-    postData(payload, (sheetRes) => {
+    postData(payload, function(sheetRes) {
       console.log("✅ গুগল শিটে খাতার লিংক সফলভাবে আপডেট হয়েছে!");
       if (callback) callback(data);
     }, btn);
   })
-  .catch(err => {
+  .catch(function(err) {
     clearTimeout(timeoutId);
-    console.log("🔴 ল্যাপটপ বন্ধ! খাতা সরাসরি গুগল ড্রাইভে পাঠানো হচ্ছে...");
-    // ল্যাপটপ অফলাইন থাকলে আগের নিয়মে সোজা গুগল ড্রাইভে চলে যাবে
+    console.log("🔴 ল্যাপটপ বন্ধ! সরাসরি গুগলে যাচ্ছে...", err);
     postData(payload, callback, btn);
   });
 }
@@ -5105,6 +5098,7 @@ window.addEventListener('DOMContentLoaded', () => {
     removeSubmittedExamsFromDropdown();
   }
 });
+}
 </script>
 <!-- শিক্ষার্থীর প্রোফাইলে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার প্রিভিউ উইন্ডো -->
 <div id="studentDocViewerModal" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.85); z-index: 999999; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(4px);">
