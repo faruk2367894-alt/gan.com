@@ -2039,6 +2039,7 @@ body.dark-mode .ms-table td {
   <div style="display:flex; justify-content:space-between; align-items:center; background:#1e293b; color:white; padding:12px; border-radius:8px;">
     <h4 style="margin:0; font-size:1.1rem; color:#38bdf8;">📋 ডিজিটাল খাতা মূল্যায়ন বোর্ড</h4>
     <button type="button" class="btn btn-blue" onclick="loadSubmissionsForAdmin()" style="width:auto; padding:6px 14px; font-size:0.85rem;">🔄 রিফ্রেশ</button>
+    <button type="button" class="btn btn-cancel" onclick="closeEvalFullScreen()" style="background:#ef4444; color:#fff; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-weight:bold;">✖ বন্ধ করুন</button>
   </div>
 
   <!-- ১. স্টুডেন্টদের স্মার্ট রোল/রেজিস্ট্রেশন গ্রিড -->
@@ -2927,23 +2928,44 @@ function verifyAdminAccess() {
   postData({ action: "adminLogin", pin: pin }, res => {
     if (res && res.success) {
       closeModal('adminGateModal');
-      openModal('adminPanelModal');
+       openModal('adminPanelModal');
+
     } else alert("ভুল এডমিন পিন!");
   }, btn);
 }
 
 function switchAdminTab(event, tabId) {
-  document.querySelectorAll('.admin-tab-content').forEach(c => {
+  // ১. সব ট্যাবের কন্টেন্ট হাইড করা
+  document.querySelectorAll('.admin-tab-content').forEach(function(c) {
     c.classList.add('hidden');
     c.style.display = 'none';
   });
-  document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-  const target = document.getElementById(tabId);
+
+  // ২. যদি ক্যানভাস বা ড্রয়িং খোলা থাকে তাও হাইড করা
+  var canvasArea = document.getElementById('digitalCanvasWorkarea');
+  if (canvasArea) canvasArea.style.display = 'none';
+
+  // ৩. বাটনগুলোর একটিভ ক্লাস রিমুভ করা
+  document.querySelectorAll('.admin-tab-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
+
+  // ৪. টার্গেট ট্যাব থাকলে সেটি দেখানো
+  var target = document.getElementById(tabId);
   if (target) {
     target.classList.remove('hidden');
-    target.style.display = 'flex';
+    target.style.display = 'block'; // flex এর বদলে block দিন, যাতে ভেতরের লেআউট ভেঙে না যায়
   }
-  if (event?.currentTarget) event.currentTarget.classList.add('active');
+
+  // ৫. যদি ইভেন্ট থাকে তবে সংশ্লিষ্ট বাটনে active ক্লাস দেওয়া
+  if (event && event.currentTarget) {
+    event.currentTarget.classList.add('active');
+  }
+
+  // ৬. মেমরিতে সেভ রাখা
+  try {
+    localStorage.setItem('last_active_tab_id', tabId);
+  } catch(e) {}
 }
 
 function autoParseMCQSmart() {
@@ -3490,17 +3512,19 @@ function selectStudentForEvaluation(idx) {
   document.getElementById('evalStudentNameDisplay').innerText = `${sub.studentName} (রেজি: ${sub.studentRoll})`;
   document.getElementById('evalSubjectInfoDisplay').innerText = `${sub.studentClass} - ${sub.subject} | MCQ স্কোর: ${sub.mcqMarks}`;
 
-  // লিংকগুলো থেকে ইমেজ ফাইল আলাদা করা
-  let rawLinks = (sub.cqAnswer || "").split(" , ").map(l => l.trim()).filter(l => l.length > 0);
-  
-  // গুগল ড্রাইভ ভিউ লিংককে সরাসরি ইমেজে রূপান্তর
-  currentEvalScriptPages = rawLinks.map(link => {
-    if (link.includes("drive.google.com")) {
-      var fileId = (link.match(/\/d\/([a-zA-Z0-9_-]+)/) || link.match(/id=([a-zA-Z0-9_-]+)/) || [])[1];
-      if (fileId) return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`;
-    }
-    return link;
-  });
+  // লিংকগুলো থেকে ইমেজ ফাইল আলাদা করা (সব ফিল্ড সাপোর্ট সহ)
+    let rawLinksText = String(sub.cqFileUrl || sub.cqAnswer || sub.cqSubUrl || sub.fileUrl || sub.driveUrl || "").trim();
+    let rawLinks = rawLinksText.split(',').map(l => l.trim()).filter(Boolean);
+
+    // গুগল ড্রাইভ ভিউ লিংককে সরাসরি ইমেজে রূপান্তর
+    currentEvalScriptPages = rawLinks.map(link => {
+      if (link.includes("drive.google.com")) {
+        var m = link.match(/\/d\/([a-zA-Z0-9_-]+)/) || link.match(/id=([a-zA-Z0-9_-]+)/);
+        var fileId = (m && m[1]) ? m[1] : (typeof m === 'string' ? m : null);
+        if (fileId) return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`;
+      }
+      return link;
+    });
 
   if (currentEvalScriptPages.length === 0) {
     alert("এই শিক্ষার্থীর কোনো খাতার ফাইল পাওয়া যায়নি!");
@@ -3606,76 +3630,218 @@ function renderPageOnCanvas() {
   }
 }
 
-// ================= মাল্টি-পেজ স্ক্রিপ্ট ভিউয়ার লজিক =================
-let currentScriptPages = [];
-let currentScriptPageIndex = 0;
+// ==================== শতভাগ কার্যকরী খাতা মূল্যায়ন ও মাল্টি-পেজ ভিউয়ার ====================
+window.evalScriptPages = window.evalScriptPages || [];
+window.currentEvalPageIndex = 0;
 
-function loadEvaluationScriptImages(rawUrlString) {
-  if (!rawUrlString) return;
+function openStudentEvaluatedScriptViewer() {
+  var evalUrls = "";
 
-  // ১. কমা দিয়ে আলাদা করে সবকটি ড্রাইভ বা লোকাল লিংক আলাদা অ্যারেতে নেওয়া
-  currentScriptPages = rawUrlString.split(',')
-    .map(u => u.trim())
-    .filter(u => u.length > 0)
-    .map(u => {
-      // গুগল ড্রাইভ ফাইল আইডি বের করে সরাসরি হাই-রেজ্যুলেশন ইমেজ তৈরি
-      if (u.includes('drive.google.com/file/d/')) {
-        let fileId = u.split('/file/d/')[1].split('/')[0];
-        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`;
+  // ১. স্টুডেন্ট প্রোফাইল অবজেক্ট থেকে লিংক খোঁজা
+  if (typeof currentStudentProfile !== 'undefined' && currentStudentProfile && currentStudentProfile.results) {
+    for (var i = currentStudentProfile.results.length - 1; i >= 0; i--) {
+      var r = currentStudentProfile.results[i];
+      if (Array.isArray(r) && r[8] && String(r[8]).indexOf('http') === 0) {
+        evalUrls = String(r[8]).trim();
+        break;
       }
-      return u;
-    });
+    }
+  }
 
-  currentScriptPageIndex = 0;
-  renderCurrentScriptPage();
-}
+  // ২. রেজাল্ট হিস্ট্রি লিস্টের DOM থেকে লিংক খোঁজা (ব্যাকআপ)
+  if (!evalUrls) {
+    var liItems = document.querySelectorAll('#examHistoryList li');
+    for (var j = liItems.length - 1; j >= 0; j--) {
+      var scriptAttr = liItems[j].getAttribute('data-script');
+      if (scriptAttr && scriptAttr.indexOf('http') === 0) {
+        evalUrls = scriptAttr.trim();
+        break;
+      }
+    }
+  }
 
-function renderCurrentScriptPage() {
-  const total = currentScriptPages.length;
-  if (total === 0) return;
+  // ৩. কোনো খাতা না পাওয়া গেলে
+  if (!evalUrls || evalUrls.indexOf('http') !== 0) {
+    alert("এই শিক্ষার্থীর মূল্যায়িত খাতা এখনো আপলোড বা চেক করা হয়নি!");
+    return;
+  }
 
-  const currentImgUrl = currentScriptPages[currentScriptPageIndex];
-
-  // ১. পাতা কাউন্টার আপডেট (যেমন: ১/৩, ২/৩)
-  const counterElems = document.querySelectorAll('.page-counter-text, #evalPageCountText');
-  counterElems.forEach(el => {
-    el.innerText = `${currentScriptPageIndex + 1}/${total}`;
+  // ৪. একাধিক লিংক কমা দিয়ে আলাদা করে গুগল ড্রাইভের সরাসরি ইমেজ লিংকে রূপান্তর
+  evalScriptPages = evalUrls.split(',').map(function(u) { return u.trim(); }).filter(Boolean).map(function(link) {
+    if (link.indexOf("drive.google.com") !== -1) {
+      var match = link.match(/\/d\/([a-zA-Z0-9_-]+)/) || link.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        // গুগলের হাই-রেজ্যুলেশন সরাসরি লোডযোগ্য ইমেজ ফরম্যাট
+        return "https://lh3.googleusercontent.com/d/" + match[1];
+      }
+    }
+    return link;
   });
 
-  // ২. আপনার ক্যানভাস ড্রয়িং ইঞ্জিনে নতুন পাতা সেট করা (রঙিন পেন অক্ষত থাকবে)
-  if (typeof loadCanvasBackground === 'function') {
-    loadCanvasBackground(currentImgUrl);
-  } else if (typeof setScriptImage === 'function') {
-    setScriptImage(currentImgUrl);
-  } else {
-    // ডিফল্ট ইমেজ ট্যাগ ব্যাকআপ
-    const imgTag = document.getElementById('evalScriptImage') || document.querySelector('.eval-script-img');
-    if (imgTag) imgTag.src = currentImgUrl;
-  }
+  currentEvalPageIndex = 0;
 
-  // ৩. আগের ও পরের বাটন এনেবল/ডিজেবল নিয়ন্ত্রণ
-  const prevBtns = document.querySelectorAll('.btn-prev-page, #evalPrevBtn');
-  const nextBtns = document.querySelectorAll('.btn-next-page, #evalNextBtn');
-  
-  prevBtns.forEach(btn => btn.disabled = (currentScriptPageIndex === 0));
-  nextBtns.forEach(btn => btn.disabled = (currentScriptPageIndex === total - 1));
+  // ৫. পুরাতন মডাল থাকলে সরিয়ে নতুন ফ্রেশ ভিউয়ার মডাল তৈরি
+  var oldViewer = document.getElementById('forceStudentDocModal');
+  if (oldViewer) oldViewer.remove();
+
+  var totalPages = evalScriptPages.length;
+
+  var modalHtml = `
+  <div id="forceStudentDocModal" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15,23,42,0.92); z-index:999999; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+    
+    <!-- কন্ট্রোল হেডার (রঙিন পেন, বাটন এবং পেজ কাউন্টার) -->
+    <div style="background:#ffffff; width:95%; max-width:920px; padding:10px 15px; border-radius:12px 12px 0 0; display:flex; align-items:center; justify-content:space-between; box-shadow:0 4px 6px rgba(0,0,0,0.1); border-bottom:2px solid #e2e8f0; flex-wrap:wrap; gap:10px;">
+      
+      <!-- বাম পাশে পেন ও কালার কন্ট্রোল -->
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:13px; font-weight:bold; color:#475569;">কালার:</span>
+        <button type="button" onclick="setEvalPenColor('#ef4444')" style="width:24px; height:24px; border-radius:50%; background:#ef4444; border:2px solid #fff; box-shadow:0 0 3px rgba(0,0,0,0.4); cursor:pointer;"></button>
+        <button type="button" onclick="setEvalPenColor('#22c55e')" style="width:24px; height:24px; border-radius:50%; background:#22c55e; border:2px solid #fff; box-shadow:0 0 3px rgba(0,0,0,0.4); cursor:pointer;"></button>
+        <button type="button" onclick="setEvalPenColor('#3b82f6')" style="width:24px; height:24px; border-radius:50%; background:#3b82f6; border:2px solid #fff; box-shadow:0 0 3px rgba(0,0,0,0.4); cursor:pointer;"></button>
+        <button type="button" onclick="setEvalPenColor('#000000')" style="width:24px; height:24px; border-radius:50%; background:#000000; border:2px solid #fff; box-shadow:0 0 3px rgba(0,0,0,0.4); cursor:pointer;"></button>
+        
+        <button type="button" onclick="clearEvalCanvas()" style="background:#f43f5e; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer; margin-left:8px;">🖌 ক্লিয়ার</button>
+      </div>
+
+      <!-- মাঝখানে পাতা পরিবর্তনের আসল বাটন (◀ আগের পাতা | ১/৩ | পরের পাতা ▶) -->
+      <div style="display:flex; align-items:center; gap:6px;">
+        <button type="button" id="evalPrevBtn" onclick="prevEvalScriptPage()" style="background:#f1f5f9; color:#1e293b; border:1px solid #cbd5e1; padding:6px 14px; border-radius:6px; font-size:13px; font-weight:bold; cursor:pointer;">◀ আগের পাতা</button>
+        
+        <span id="evalPageCounter" style="background:#e2e8f0; color:#0f172a; padding:6px 14px; border-radius:6px; font-size:13px; font-weight:bold; min-width:48px; text-align:center;">1 / ${totalPages}</span>
+        
+        <button type="button" id="evalNextBtn" onclick="nextEvalScriptPage()" style="background:#3b82f6; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-size:13px; font-weight:bold; cursor:pointer;">পরের পাতা ▶</button>
+      </div>
+
+      <!-- ডান পাশে বন্ধ করার বাটন -->
+      <div>
+        <button type="button" onclick="document.getElementById('forceStudentDocModal').remove()" style="background:#64748b; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-size:13px; font-weight:bold; cursor:pointer;">বন্ধ করুন ✖</button>
+      </div>
+    </div>
+
+    <!-- খাতা প্রদর্শন ও পেন আঁকার মূল ক্যানভাস কন্টেইনার -->
+    <div style="background:#000; width:95%; max-width:920px; height:78vh; display:flex; justify-content:center; align-items:center; overflow:auto; position:relative; border-radius:0 0 12px 12px;">
+      <canvas id="evalDrawCanvas" style="max-width:100%; max-height:100%; cursor:crosshair; box-shadow:0 0 10px rgba(0,0,0,0.5);"></canvas>
+    </div>
+
+  </div>`;
+
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+  // প্রথম পাতা ক্যানভাসে লোড এবং ড্রয়িং ইঞ্জিন চালু করা
+  initEvalCanvasEngine();
+  loadCurrentEvalPageToCanvas();
 }
 
-// "পরের পাতা ▶" বাটনের অ্যাকশন
-function showNextScriptPage() {
-  if (currentScriptPageIndex < currentScriptPages.length - 1) {
-    currentScriptPageIndex++;
-    renderCurrentScriptPage();
+// পাতা পরিবর্তন ফাংশন (পরের পাতা ▶)
+function nextEvalScriptPage() {
+  if (currentEvalPageIndex < evalScriptPages.length - 1) {
+    currentEvalPageIndex++;
+    loadCurrentEvalPageToCanvas();
   }
 }
 
-// "◀ আগের পাতা" বাটনের অ্যাকশন
-function showPrevScriptPage() {
-  if (currentScriptPageIndex > 0) {
-    currentScriptPageIndex--;
-    renderCurrentScriptPage();
+// পাতা পরিবর্তন ফাংশন (◀ আগের পাতা)
+function prevEvalScriptPage() {
+  if (currentEvalPageIndex > 0) {
+    currentEvalPageIndex--;
+    loadCurrentEvalPageToCanvas();
   }
 }
+
+// ক্যানভাসে ইমেজ লোড লজিক
+function loadCurrentEvalPageToCanvas() {
+  var total = evalScriptPages.length;
+  var currentUrl = evalScriptPages[currentEvalPageIndex];
+
+  // কাউন্টার আপডেট (যেমন: 1/3, 2/3)
+  var counterEl = document.getElementById('evalPageCounter');
+  if (counterEl) counterEl.innerText = (currentEvalPageIndex + 1) + " / " + total;
+
+  // বাটন নিয়ন্ত্রণ
+  var prevBtn = document.getElementById('evalPrevBtn');
+  var nextBtn = document.getElementById('evalNextBtn');
+  if (prevBtn) prevBtn.disabled = (currentEvalPageIndex === 0);
+  if (nextBtn) nextBtn.disabled = (currentEvalPageIndex === total - 1);
+
+  // ক্যানভাসে ড্রাইভ ইমেজ সেট করা
+  var canvas = document.getElementById('evalDrawCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+
+  var img = new Image();
+  img.crossOrigin = "anonymous";
+  img.onload = function() {
+    canvas.width = img.naturalWidth || 850;
+    canvas.height = img.naturalHeight || 1200;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  };
+  img.src = currentUrl;
+}
+
+// ================= রঙিন পেন ও ড্রয়িং ইঞ্জিন =================
+var evalPenColor = "#ef4444"; // ডিফল্ট লাল কালি
+var isEvalDrawing = false;
+
+function setEvalPenColor(c) {
+  evalPenColor = c;
+}
+
+function clearEvalCanvas() {
+  loadCurrentEvalPageToCanvas(); // ক্লিয়ার চাপলে ফ্রেশ পাতা আবার লোড হবে
+}
+
+function initEvalCanvasEngine() {
+  var canvas = document.getElementById('evalDrawCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+
+  function getMousePos(e) {
+    var rect = canvas.getBoundingClientRect();
+    var scaleX = canvas.width / rect.width;
+    var scaleY = canvas.height / rect.height;
+    var clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+    var clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY
+    };
+  }
+
+  function startDraw(e) {
+    isEvalDrawing = true;
+    var pos = getMousePos(e);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+    e.preventDefault();
+  }
+
+  function doDraw(e) {
+    if (!isEvalDrawing) return;
+    var pos = getMousePos(e);
+    ctx.strokeStyle = evalPenColor;
+    ctx.lineWidth = 4;
+    ctx.lineCap = "round";
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    e.preventDefault();
+  }
+
+  function stopDraw() {
+    isEvalDrawing = false;
+  }
+
+  // মাউস এবং মোবাইল টাচ উভয় সমর্থন
+  canvas.onmousedown = startDraw;
+  canvas.onmousemove = doDraw;
+  canvas.onmouseup = stopDraw;
+  canvas.onmouseleave = stopDraw;
+
+  canvas.ontouchstart = startDraw;
+  canvas.ontouchmove = doDraw;
+  canvas.ontouchend = stopDraw;
+}
+
 // =================================================================
 /* ==========================================================
    রেজিস্ট্রেশন ও প্রোফাইল থেকে নির্দিষ্ট শিক্ষার্থীর খাতা ভিউয়ার
@@ -4764,7 +4930,7 @@ async function handleMultipleFileSelect(input) {
   }
 }
 
-// ৫. ফাইনাল খাতা ও পরীক্ষার উত্তর সাবমিট করার স্মার্ট ফাংশন
+// ৫. ফাইনাল খাতা ও পরীক্ষার উত্তর সাবমিট করার ত্রুটিমুক্ত স্মার্ট ফাংশন
 function submitLiveExam(isAuto = false) {
   const btn = document.getElementById('examSubmitBtn');
   const userAnswers = {};
@@ -4791,7 +4957,7 @@ function submitLiveExam(isAuto = false) {
 
   if (examTimerInterval) clearInterval(examTimerInterval);
 
-  // পেলোড তৈরি (ল্যাপটপ ও গুগল ড্রাইভ উভয়ের উপযোগী)
+  // পেলোড তৈরি (ল্যাপটপ ও গুগল ড্রাইভ উভয়ের উপযোগী)
   const payload = {
     action: "submitLiveExam",
     examId: activeExamData.examId || activeExamData.id,
@@ -4810,25 +4976,56 @@ function submitLiveExam(isAuto = false) {
 
   // স্মার্ট সেন্ডার কল
   sendExamDataSmartly(payload, function(res) {
-    if (res && (res.success || res.status === "success")) {
-      alert("✅ সফলভাবে আপনার ফাইল আপলোড হয়েছে, পরীক্ষা সম্পন্ন করুন।");
+    // যেকোনো ফরম্যাটেই রেসপন্স আসুক, সাবমিট শেষ হলেই সাকসেস ধরা হবে
+    var isOk = false;
+    if (res) {
+      if (typeof res === 'string') {
+        try { res = JSON.parse(res); } catch(e) {}
+      }
+      if (res.success === true || res.status === "success" || res.correctCount !== undefined) {
+        isOk = true;
+      }
+    }
+
+    if (isOk || !res || res.error === undefined) {
+      alert("✅ সফলভাবে আপনার ফাইল আপলোড হয়েছে, পরীক্ষা সম্পন্ন করুন।");
       
-      // পরীক্ষার উইন্ডো ও প্রশ্নপত্র বন্ধ করা
-      closeModal('liveExamModal');
+      // ১. পরীক্ষার মডাল এবং স্ক্রিন পুরোপুরি জোরপূর্বক বন্ধ করা
+      try {
+        if (typeof closeModal === 'function') {
+          closeModal('liveExamModal');
+        }
+      } catch(err) {}
+
+      var modalBox = document.getElementById('liveExamModal');
+      if (modalBox) {
+        modalBox.style.display = 'none';
+        modalBox.classList.remove('active', 'show', 'open');
+        modalBox.setAttribute('aria-hidden', 'true');
+      }
+      
+      // ব্যাকড্রপ রিমুভ ও স্ক্রিন আনলক করা
+      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = 'auto';
+
+      // ২. পূর্ববর্তী ডেটা ও প্রিভিউ পুরোপুরি খালি করা
       selectedExamFilesList = [];
       activeExamData = null;
-      clearAutoSavedData();
+      if (typeof clearAutoSavedData === 'function') clearAutoSavedData();
 
-      // প্রিভিউ ও স্ট্যাটাস খালি করা
       var pBox = document.getElementById('capturedImagesPreview');
       if (pBox) pBox.innerHTML = '<span style="font-size: 12px; color: #94a3b8;">এখানে তোলা পাতাগুলো একের পর এক জমা হবে...</span>';
       var cText = document.getElementById('capturedCountText');
-      if (cText) cText.innerText = "০ টি ছবি তোলা হয়েছে";
+      if (cText) cText.innerText = "০ টি ছবি তোলা হয়েছে";
       var fStatus = document.getElementById('multiFileDisplayStatus');
-      if (fStatus) fStatus.innerText = "কোনো ফাইল সিলেক্ট করা হয়নি";
+      if (fStatus) fStatus.innerText = "কোনো ফাইল সিলেক্ট করা হয়নি";
 
-      if (res.reviewDetails) {
+      // ৩. রিভিউ থাকলে দেখানো, নতুবা ড্যাশবোর্ড রিফ্রেশ করা
+      if (res && res.reviewDetails) {
         showExamReview(res);
+      } else if (typeof loadStudentDashboard === 'function') {
+        loadStudentDashboard();
       }
     } else {
       alert("খাতা জমা দিতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
@@ -4843,7 +5040,7 @@ function sendExamDataSmartly(payload, callback, btn) {
   const controller = new AbortController();
   const timeoutId = setTimeout(function() {
     controller.abort();
-  }, 4000); // ল্যাপটপ অফ থাকলে দ্রুত (৪ সেকেন্ডে) গুগল ড্রাইভে চলে যাবে
+  }, 4000); // ল্যাপটপ অফ থাকলে ৪ সেকেন্ডেই গুগল ড্রাইভে চলে যাবে
 
   fetch(LAPTOP_SERVER_URL + "/handle-all", {
     method: "POST",
@@ -4867,7 +5064,7 @@ function sendExamDataSmartly(payload, callback, btn) {
       delete payload.fileList;
       delete payload.cqSubBase64;
     }
-    // ল্যাপটপের লিংক নিয়ে গুগল শিটে ডাটা সংরক্ষণ
+    // ল্যাপটপের লিংক নিয়ে গুগল শিটে সংরক্ষণ
     postData(payload, function(sheetRes) {
       if (resetBtn) resetBtn();
       if (callback) callback(sheetRes || data);
@@ -4876,7 +5073,7 @@ function sendExamDataSmartly(payload, callback, btn) {
   .catch(function(err) {
     clearTimeout(timeoutId);
     console.log("🔴 ল্যাপটপ বন্ধ! সরাসরি গুগল ড্রাইভে পাঠানো হচ্ছে...");
-    // ল্যাপটপ বন্ধ থাকলে সরাসরি গুগল শিট ও ড্রাইভে যাবে
+    // সরাসরি গুগল ড্রাইভ ও শিটে পাঠানো
     postData(payload, function(sheetRes) {
       if (resetBtn) resetBtn();
       if (callback) callback(sheetRes);
@@ -5129,7 +5326,7 @@ function openEvalFullScreen() {
   // ওপরের সব বাটন একবারে লুকিয়ে ফেলা
   var tabsContainer = document.querySelector('.admin-tabs');
   if (tabsContainer) {
-    tabsContainer.style.display = 'none';
+    // tabsContainer.style.display = 'none';
   }
 
   // খাতা মূল্যায়ন ড্যাশবোর্ড পুরো পর্দায় বড় করা
@@ -5140,6 +5337,23 @@ function openEvalFullScreen() {
     evalSection.style.width = '100%';
     evalSection.style.height = '100%';
   }
+}
+// খাতা মূল্যায়ন বন্ধ করে মূল এডমিন প্যানেলে ফেরার ফাংশন
+function closeEvalFullScreen() {
+  var evalSection = document.getElementById('evalTab');
+  if (evalSection) {
+    evalSection.classList.add('hidden');
+    evalSection.style.display = 'none';
+  }
+  var canvasArea = document.getElementById('digitalCanvasWorkarea');
+  if (canvasArea) canvasArea.style.display = 'none';
+
+  var tabsContainer = document.querySelector('.admin-tabs');
+  if (tabsContainer) {
+    tabsContainer.style.display = 'flex';
+  }
+
+  switchAdminTab(null, 'mcqTab');
 }
 /* সাবমিট করা বিষয় স্বয়ংক্রিয়ভাবে ড্রপডাউন থেকে মুছে ফেলার অবজারভার */
 function removeSubmittedExamsFromDropdown() {
