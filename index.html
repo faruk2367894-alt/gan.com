@@ -2627,7 +2627,12 @@ function loadAndStartExam() {
   const subject = document.getElementById('stExSubject').value.trim();
 
   if (!reg || !classVal || !subject) return alert("সকল তথ্য দিন!");
-
+// শিক্ষার্থী পূর্বে পরীক্ষাটি সম্পন্ন করেছে কি না যাচাই
+    const checkLockKey = 'lock_' + reg + '_' + classVal + '_' + subject;
+    if (localStorage.getItem(checkLockKey)) {
+        alert("⚠️ আপনি ইতিমধ্যে এই বিষয়ের পরীক্ষা সম্পন্ন করেছেন!");
+        return;
+    }
   postData({ action: "getStudentByClass", reg: reg, classVal: classVal }, stRes => {
     if (stRes && stRes.success) {
       postData({ action: "checkAndGetExam", classVal: classVal, subject: subject }, exRes => {
@@ -4880,6 +4885,11 @@ async function submitShortQuestionStandalone() {
         submitBtn.innerText = "🔒 জমাকৃত (লক)";
         submitBtn.style.background = "#64748b";
       }
+	  
+	  // সফলভাবে জমা হওয়ার ১.৫ সেকেন্ড পর পেজ রিফ্রেশ
+        setTimeout(() => {
+            location.reload();
+        }, 1500);
 
       // লোকাল স্টোরেজে লক সংরক্ষণ
       localStorage.setItem(`lock_${regNo}_${subject}_text`, "submitted");
