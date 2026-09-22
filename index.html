@@ -3251,8 +3251,33 @@ function loadFullProfile() {
       document.getElementById('cardStudentMobile').innerText = res.student[5];
  if (res.results && res.results.length > 0) {
             let boxesHtml = '';
-            for (let i = 0; i < res.results.length; i++) {
-                let r = res.results[i];
+       // বাংলা সংখ্যাকে ইংরেজিতে রূপান্তরের লজিক
+            function toEngNum(str) {
+                const bnNums = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+                return String(str || '').replace(/[০-৯]/g, d => bnNums[d]).replace(/\b0+(\d)/g, '$1');
+            }
+
+            // ডুপ্লিকেট পরীক্ষা ফিল্টার (বাংলা-ইংরেজি তারিখ ও নম্বরের অমিল দূর করতে)
+            let uniqueResults = [];
+            let seenExams = new Set();
+            for (let k = 0; k < res.results.length; k++) {
+                let row = res.results[k];
+                let cleanDate = toEngNum(row[0]).replace(/\s+/g, '');
+                let cleanSub = String(row[3] || '').trim();
+                let mcq = toEngNum(row[4] !== undefined ? row[4] : 0);
+                let written = toEngNum(row[5] !== undefined ? row[5] : 0);
+
+                let key = cleanDate + '_' + cleanSub + '_' + mcq + '_' + written;
+
+                if (!seenExams.has(key)) {
+                    seenExams.add(key);
+                    uniqueResults.push(row);
+                }
+            }
+
+            for (let i = 0; i < uniqueResults.length; i++) {
+                let r = uniqueResults[i];
+				console.log("Exam row data:", r);
                 let examDate = r[0] || 'তারিখ নেই';
                 let stClass = r[2] || (res.student ? res.student[4] : '') || '';
                 let stReg = r[1] || (res.student ? res.student[0] : '') || '';
@@ -3261,7 +3286,8 @@ function loadFullProfile() {
                 let writtenMarks = r[5] !== undefined ? r[5] : 0;
                 let totalMarks = r[6] !== undefined ? r[6] : (Number(mcqMarks) + Number(writtenMarks));
                 let grade = r[7] || '';
-                let hasFile = r[8] && String(r[8]).trim() !== '';
+                let fileVal = r[9] ? String(r[9]).trim() : '';
+                let hasFile = fileVal !== '' && fileVal !== 'null' && fileVal !== 'undefined' && fileVal !== '0' && fileVal !== '-';
 
                // খাতা মূল্যায়ন বাটন (মূল্যায়ন হলে সবুজ, না হলে হলুদ)
                 let khataBtn = hasFile 
@@ -3386,31 +3412,48 @@ function studentLogin() {
          if (pRes.results && pRes.results.length > 0) {
             let boxesHtml = '';
             for (let i = 0; i < pRes.results.length; i++) {
-                let r = pRes.results[i];
+               // ডুপ্লিকেট পরীক্ষা ফিল্টার (২ সার্ভারের ডাবল এন্ট্রি বন্ধ করার জন্য)
+            let uniqueResults = [];
+            let seenExams = new Set();
+            for (let k = 0; k < pRes.results.length; k++) {
+                let row = pRes.results[k];
+                let key = String(row[0] || '').trim() + '_' + String(row[3] || '').trim();
+                if (!seenExams.has(key)) {
+                    seenExams.add(key);
+                    uniqueResults.push(row);
+                }
+            }
+
+            for (let i = 0; i < uniqueResults.length; i++) {
+                let r = uniqueResults[i];
                 let examDate = r[0] || 'তারিখ নেই';
                 let subName = (r[3] && String(r[3]).trim() !== '') ? r[3] : ('পরীক্ষা ' + (i + 1));
-                let totalMarks = r[6] !== undefined ? r[6] : ((Number(r[4]) || 0) + (Number(r[5]) || 0));
+                let mcqMarks = r[4] !== undefined ? r[4] : 0;
+                let writtenMarks = r[5] !== undefined ? r[5] : 0;
+                let totalMarks = r[6] !== undefined ? r[6] : ((Number(mcqMarks) || 0) + (Number(writtenMarks) || 0));
                 let grade = r[7] || '';
                 let hasFile = r[8] && String(r[8]).trim() !== '';
 
-                let statusBadge = hasFile 
-                    ? '<span style="background:#dcfce7; color:#15803d; padding:2px 7px; border-radius:4px; font-size:11px; font-weight:bold;">✔ খাতা দেখুন</span>'
-                    : '<span style="background:#fef3c7; color:#b45309; padding:2px 7px; border-radius:4px; font-size:11px; font-weight:bold;">⏳ মূল্যায়ন প্রক্রিয়াধীন</span>';
+                let khataBtn = hasFile 
+                    ? '<button type="button" onclick="event.stopPropagation(); openStudentEvaluatedScriptViewer(' + i + ')" style="flex:1; background:#16a34a; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📄 খাতা মূল্যায়ন</button>'
+                    : '<button type="button" onclick="event.stopPropagation(); alert(\'এই পরীক্ষার খাতা এখনো মূল্যায়ন করা হয়নি!\')" style="flex:1; background:#fef3c7; color:#b45309; border:1px solid #fde68a; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ খাতা প্রক্রিয়াধীন</button>';
 
-                let clickAction = hasFile ? 'openStudentEvaluatedScriptViewer()' : 'alert(\'এই পরীক্ষার খাতা এখনো মূল্যায়ন করা হয়নি!\')';
+                let transcriptBtn = '<button type="button" onclick="event.stopPropagation(); generateSscMarksheet(' + i + ')" style="flex:1; background:#2563eb; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📑 রেজাল্ট ট্রান্সক্রিপ্ট</button>';
+
                 let borderStyle = hasFile ? 'border: 1.5px solid #22c55e;' : 'border: 1.5px solid #cbd5e1;';
 
-                boxesHtml += '<div onclick="' + clickAction + '" style="background:#ffffff; ' + borderStyle + ' border-radius:8px; padding:12px; cursor:pointer; text-align:left; box-shadow:0 2px 4px rgba(0,0,0,0.04); margin-bottom:4px;">' +
-                    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">' +
-                        '<span style="font-size:13px; color:#1e293b; font-weight:bold;">বিষয়: ' + subName + '</span>' +
-                        statusBadge +
+                boxesHtml += '<div style="background:#ffffff; ' + borderStyle + ' border-radius:10px; padding:14px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.05); margin-bottom:10px;">' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
+                        '<span style="font-size:14px; color:#1e293b; font-weight:bold;">বিষয়: ' + subName + '</span>' +
+                        '<span style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:bold;">নম্বর: ' + totalMarks + (grade ? ' (' + grade + ')' : '') + '</span>' +
                     '</div>' +
-                    '<div style="font-size:11px; color:#64748b; margin-bottom:8px;">তারিখ: ' + examDate + '</div>' +
-                    '<div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed #cbd5e1; padding-top:6px;">' +
-                        '<span style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold;">প্রাপ্ত নম্বর: ' + totalMarks + (grade ? ' (' + grade + ')' : '') + '</span>' +
-                        '<span style="font-size:11px; color:#2563eb; font-weight:500;">' + (hasFile ? 'বিস্তারিত ➔' : 'অপেক্ষমান') + '</span>' +
+                    '<div style="font-size:11px; color:#64748b; margin-bottom:10px;">তারিখ: ' + examDate + ' | MCQ: ' + mcqMarks + ' | লিখিত: ' + writtenMarks + '</div>' +
+                    '<div style="display:flex; gap:8px; border-top:1px dashed #cbd5e1; padding-top:10px;">' +
+                        khataBtn +
+                        transcriptBtn +
                     '</div>' +
                 '</div>';
+            }
             }
             document.getElementById('examHistoryList').innerHTML = '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:12px; margin-top:10px;">' + boxesHtml + '</div>';
         } else {
@@ -3556,7 +3599,20 @@ function loadSubmissionsForAdmin() {
 
   postData({ action: "getAllSubmissions" }, res => {
     if (res && res.success && res.list) {
-      allAdminSubmissions = res.list;
+      // ডুপ্লিকেট খাতা ফিল্টার (ল্যাপটপ ও কম্পিউটার সার্ভার মার্জের ডাবল কার্ড বন্ধ করতে)
+        let uniqueList = [];
+        let seenCards = new Set();
+        (res.list || []).forEach(item => {
+            let reg = String(item.studentReg || item.reg || item[1] || '').trim();
+            let sub = String(item.subject || item[3] || '').trim();
+            let date = String(item.date || item[0] || '').replace(/[০-৯]/g, d => ({'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'}[d])).replace(/\s+/g, '');
+            let key = reg + '_' + sub + '_' + date;
+            if (!seenCards.has(key)) {
+                seenCards.add(key);
+                uniqueList.push(item);
+            }
+        });
+        allAdminSubmissions = uniqueList;
       if (allAdminSubmissions.length === 0) {
         container.innerHTML = '<p style="color:#ef4444; font-size:0.85rem; padding:10px;">কোনো উত্তরপত্র জমা পড়েনি।</p>';
         return;
