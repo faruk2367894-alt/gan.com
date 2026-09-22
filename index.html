@@ -3882,21 +3882,29 @@ function openStudentEvaluatedScriptViewer() {
   var oldViewer = document.getElementById('forceStudentDocModal');
   if (oldViewer) oldViewer.remove();
 
- var urls = evalUrls.split(',').map(function(u) { return u.trim(); }).filter(function(u) { return u.length > 0; });
-    
-    var pagesHtml = "";
-    for (var k = 0; k < urls.length; k++) {
-      var u = urls[k];
-      var pageNum = k + 1;
-      var previewUrl = u;
-      
-      // গুগল ড্রাইভ লিংক হলে সরাসরি ফুল ইমেজ থাম্বনেইলে রূপান্তর
-      if (u.indexOf("drive.google.com") !== -1) {
-        var match = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
-        if (match && match[1]) {
-          previewUrl = "https://drive.google.com/file/d/" + match[1] + "/preview";
-        }
+ // সব লিংক আলাদা করা (কমা বা নিউলাইন যাই থাকুক)
+  var rawLinks = evalUrls.split(/[\n,]+/);
+  var validUrls = [];
+  for (var i = 0; i < rawLinks.length; i++) {
+    var cleanLink = rawLinks[i].trim();
+    if (cleanLink.length > 5 && cleanLink.indexOf('http') === 0) {
+      validUrls.push(cleanLink);
+    }
+  }
+
+  var pagesHtml = "";
+  for (var k = 0; k < validUrls.length; k++) {
+    var u = validUrls[k];
+    var pageNum = k + 1;
+    var previewUrl = u;
+
+    // গুগল ড্রাইভ লিংক সরাসরি প্রিভিউ লিংকে রূপান্তর
+    if (u.indexOf("drive.google.com") !== -1) {
+      var match = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        previewUrl = "https://drive.google.com/file/d/" + match[1] + "/preview";
       }
+    }
 
     pagesHtml += '<div style="background:#1e293b; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center;">';
     pagesHtml += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">';
@@ -5033,7 +5041,7 @@ function submitLiveExam(isAuto = false) {
   }, btn);
 }
 
-const LAPTOP_SERVER_URL = "https://recruitment-senators-con-kay.trycloudflare.com";
+const LAPTOP_SERVER_URL = " https://modifications-divided-scientists-virginia.trycloudflare.com";
 
 function sendExamDataSmartly(payload, callback, btn) {
   const resetBtn = btn ? setBtnLoading(btn) : null;
