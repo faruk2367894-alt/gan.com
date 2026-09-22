@@ -3513,10 +3513,10 @@ function selectStudentForEvaluation(idx) {
   document.getElementById('evalSubjectInfoDisplay').innerText = `${sub.studentClass} - ${sub.subject} | MCQ স্কোর: ${sub.mcqMarks}`;
 
   // লিংকগুলো থেকে ইমেজ ফাইল আলাদা করা (সব ফিল্ড সাপোর্ট সহ)
-    let rawLinksText = String(sub.cqFileUrl || sub.cqAnswer || sub.cqSubUrl || sub.fileUrl || sub.driveUrl || "").trim();
+   let rawLinksText = String(sub.cqFileUrl || sub.cqAnswer || sub.cqSubUrl || "");
     let rawLinks = rawLinksText.split(',').map(l => l.trim()).filter(Boolean);
-
-    // গুগল ড্রাইভ ভিউ লিংককে সরাসরি ইমেজে রূপান্তর
+	
+	// গুগল ড্রাইভ ভিউ লিংককে সরাসরি ইমেজে রূপান্তর
     currentEvalScriptPages = rawLinks.map(link => {
       if (link.includes("drive.google.com")) {
         var m = link.match(/\/d\/([a-zA-Z0-9_-]+)/) || link.match(/id=([a-zA-Z0-9_-]+)/);
@@ -5394,6 +5394,41 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+async function submitDataSmartly(payloadData) {
+  const LAPTOP_SERVER_URL = "https://pebbly-curdle-squint.ngrok-free.dev"; // আপনার ক্লাউডফ্লেয়ার ডোমেইন
+  const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwS6RToyGI5q4DcC0UnVzPKsoBvrKeBvGsWr5TA2Rmqd1p-sTLySufnKpfPRZYT84c/exec"; // গুগল স্ক্রিপ্ট লিংক
+
+  // ১. প্রথমে ল্যাপটপ সার্ভারে পিং পাঠিয়ে পরীক্ষা করা
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000); // ২ সেকেন্ডের মধ্যে উত্তর না পেলে অফলাইন ধরা হবে
+
+    const pingCheck = await fetch(`${LAPTOP_SERVER_URL}/ping`, { 
+      signal: controller.signal 
+    });
+    clearTimeout(timeoutId);
+
+    if (pingCheck.ok) {
+      // ল্যাপটপ চালু আছে: ল্যাপটপ সার্ভার দিয়ে প্রসেস হবে
+      const response = await fetch(`${LAPTOP_SERVER_URL}/handle-all`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payloadData)
+      });
+      return await response.json();
+    }
+  } catch (err) {
+    // ল্যাপটপ বন্ধ থাকলে কোনো এরর না দিয়ে সরাসরি গুগল শিটে চলে যাবে
+  }
+
+  // ২. ল্যাপটপ বন্ধ থাকলে সম্পূর্ণ স্বয়ংক্রিয়ভাবে গুগল শিটে সাবমিট হবে
+  const sheetResponse = await fetch(GOOGLE_SHEET_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payloadData)
+  });
+  return await sheetResponse.json();
+}
 </script>
 <!-- শিক্ষার্থীর প্রোফাইলে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার প্রিভিউ উইন্ডো -->
 <div id="studentDocViewerModal" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.85); z-index: 999999; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(4px);">
