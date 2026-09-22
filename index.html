@@ -1760,14 +1760,10 @@ body.dark-mode .ms-table td {
       </div>
 
       <h4 style="margin-top:10px; font-size:0.95rem; color:#1e3a8a;">📜 পরীক্ষার ফলাফল হিস্ট্রি:</h4>
-      <ul id="examHistoryList" style="list-style:none; font-size:0.85rem; max-height:140px; overflow-y:auto; border:1px solid #e2e8f0; padding:8px; border-radius:8px; margin-top:6px; display:flex; flex-direction:column; gap:4px;"></ul>
+     <div id="examHistoryList" style="margin-top:12px; max-height:350px; overflow-y:auto; padding:4px;"></div>
 	  
-      <div style="text-align: center; margin-top: 10px;">
-        <button type="button" class="btn btn-purple" style="width: 100%;" onclick="openStudentEvaluatedScriptViewer()">📑 মূল্যায়িত খাতা দেখুন (দাগানো খাতা ও মার্কস)</button>
-      </div>
 	  
-      <button class="btn btn-green" style="margin-top:10px;" onclick="generateSscMarksheet()">📄 একাডেমিক মার্কশিট (PDF Print)</button>
-    </div>
+     </div>
   </div>
 </div>
 
@@ -1778,8 +1774,8 @@ body.dark-mode .ms-table td {
       <button class="close-icon-btn" onclick="closeModal('marksheetModal')">×</button>
     </div>
     <div class="marksheet-header">
-      <h2>জ্ঞান.com শিক্ষা বোর্ড</h2>
-      <p>SECONDARY SCHOOL ACADEMIC TRANSCRIPT</p>
+      <h2>জ্ঞান.COM </h2>
+      <p>ACADEMIC RESULT TRANSCRIPT</p>
     </div>
     
     <div class="st-info-grid">
@@ -3253,10 +3249,50 @@ function loadFullProfile() {
       document.getElementById('cardStudentReg').innerText = res.student[0];
       document.getElementById('cardStudentFather').innerText = res.student[2];
       document.getElementById('cardStudentMobile').innerText = res.student[5];
-      document.getElementById('examHistoryList').innerHTML = res.results.length ? res.results.map((r, i) => `<li data-script="${r[8] || ''}"><b>${i+1}. ${r[3] || 'পরীক্ষা'}</b>: MCQ- ${r[4]} | Total: ${r[6]} (${r[7]})</li>`).join('') : '<li>কোনো পরীক্ষার ফলাফল পাওয়া যায়নি</li>';
+ if (res.results && res.results.length > 0) {
+            let boxesHtml = '';
+            for (let i = 0; i < res.results.length; i++) {
+                let r = res.results[i];
+                let examDate = r[0] || 'তারিখ নেই';
+                let stClass = r[2] || (res.student ? res.student[4] : '') || '';
+                let stReg = r[1] || (res.student ? res.student[0] : '') || '';
+                let subName = (r[3] && String(r[3]).trim() !== '') ? r[3] : ('পরীক্ষা ' + (i + 1));
+                let mcqMarks = r[4] !== undefined ? r[4] : 0;
+                let writtenMarks = r[5] !== undefined ? r[5] : 0;
+                let totalMarks = r[6] !== undefined ? r[6] : (Number(mcqMarks) + Number(writtenMarks));
+                let grade = r[7] || '';
+                let hasFile = r[8] && String(r[8]).trim() !== '';
+
+               // খাতা মূল্যায়ন বাটন (মূল্যায়ন হলে সবুজ, না হলে হলুদ)
+                let khataBtn = hasFile 
+                    ? '<button type="button" onclick="event.stopPropagation(); openStudentEvaluatedScriptViewer(' + i + ')" style="flex:1; background:#16a34a; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📄 খাতা মূল্যায়ন</button>'
+                    : '<button type="button" onclick="event.stopPropagation(); alert(\'এই পরীক্ষার খাতা এখনো মূল্যায়ন করা হয়নি!\')" style="flex:1; background:#fef3c7; color:#b45309; border:1px solid #fde68a; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ খাতা প্রক্রিয়াধীন</button>';
+
+                // রেজাল্ট ট্রান্সক্রিপ্ট বাটন
+                let transcriptBtn = '<button type="button" onclick="event.stopPropagation(); generateSscMarksheet(' + i + ')" style="flex:1; background:#2563eb; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📑 রেজাল্ট ট্রান্সক্রিপ্ট</button>';
+
+                let borderStyle = hasFile ? 'border: 1.5px solid #22c55e;' : 'border: 1.5px solid #cbd5e1;';
+
+                boxesHtml += '<div style="background:#ffffff; ' + borderStyle + ' border-radius:10px; padding:14px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.05); margin-bottom:10px;">' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
+                        '<span style="font-size:14px; color:#1e293b; font-weight:bold;">বিষয়: ' + subName + '</span>' +
+                        '<span style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:bold;">নম্বর: ' + totalMarks + (grade ? ' (' + grade + ')' : '') + '</span>' +
+                    '</div>' +
+                    '<div style="font-size:11px; color:#64748b; margin-bottom:10px;">তারিখ: ' + examDate + ' | MCQ: ' + mcqMarks + ' | লিখিত: ' + writtenMarks + '</div>' +
+                    '<div style="display:flex; gap:8px; border-top:1px dashed #cbd5e1; padding-top:10px;">' +
+                        khataBtn +
+                        transcriptBtn +
+                    '</div>' +
+                '</div>';
+            }
+            document.getElementById('examHistoryList').innerHTML = '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:12px; margin-top:10px;">' + boxesHtml + '</div>';
+        } else {
+            document.getElementById('examHistoryList').innerHTML = '<div style="color:#64748b; padding:15px; text-align:center;">কোনো পরীক্ষার মূল্যায়ন তথ্য পাওয়া যায়নি।</div>';
+        }
     } else alert("শিক্ষার্থীর তথ্য মেলেনি!");
   }, btn);
 }
+
 
 async function uploadNewProfilePhoto() {
   const file = document.getElementById('changePhotoInput').files[0];
@@ -3347,15 +3383,51 @@ function studentLogin() {
           document.getElementById('cardStudentReg').innerText = pRes.student[0];
           document.getElementById('cardStudentFather').innerText = pRes.student[2];
           document.getElementById('cardStudentMobile').innerText = pRes.student[5];
-          document.getElementById('examHistoryList').innerHTML = pRes.results.length ? pRes.results.map((r, i) => `<li><b>${i+1}. ${r[3]}</b>: MCQ- ${r[4]} | Total: ${r[6]} (${r[7]})</li>`).join('') : '<li>কোনো ফলাফল নেই।</li>';
+         if (pRes.results && pRes.results.length > 0) {
+            let boxesHtml = '';
+            for (let i = 0; i < pRes.results.length; i++) {
+                let r = pRes.results[i];
+                let examDate = r[0] || 'তারিখ নেই';
+                let subName = (r[3] && String(r[3]).trim() !== '') ? r[3] : ('পরীক্ষা ' + (i + 1));
+                let totalMarks = r[6] !== undefined ? r[6] : ((Number(r[4]) || 0) + (Number(r[5]) || 0));
+                let grade = r[7] || '';
+                let hasFile = r[8] && String(r[8]).trim() !== '';
+
+                let statusBadge = hasFile 
+                    ? '<span style="background:#dcfce7; color:#15803d; padding:2px 7px; border-radius:4px; font-size:11px; font-weight:bold;">✔ খাতা দেখুন</span>'
+                    : '<span style="background:#fef3c7; color:#b45309; padding:2px 7px; border-radius:4px; font-size:11px; font-weight:bold;">⏳ মূল্যায়ন প্রক্রিয়াধীন</span>';
+
+                let clickAction = hasFile ? 'openStudentEvaluatedScriptViewer()' : 'alert(\'এই পরীক্ষার খাতা এখনো মূল্যায়ন করা হয়নি!\')';
+                let borderStyle = hasFile ? 'border: 1.5px solid #22c55e;' : 'border: 1.5px solid #cbd5e1;';
+
+                boxesHtml += '<div onclick="' + clickAction + '" style="background:#ffffff; ' + borderStyle + ' border-radius:8px; padding:12px; cursor:pointer; text-align:left; box-shadow:0 2px 4px rgba(0,0,0,0.04); margin-bottom:4px;">' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">' +
+                        '<span style="font-size:13px; color:#1e293b; font-weight:bold;">বিষয়: ' + subName + '</span>' +
+                        statusBadge +
+                    '</div>' +
+                    '<div style="font-size:11px; color:#64748b; margin-bottom:8px;">তারিখ: ' + examDate + '</div>' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed #cbd5e1; padding-top:6px;">' +
+                        '<span style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold;">প্রাপ্ত নম্বর: ' + totalMarks + (grade ? ' (' + grade + ')' : '') + '</span>' +
+                        '<span style="font-size:11px; color:#2563eb; font-weight:500;">' + (hasFile ? 'বিস্তারিত ➔' : 'অপেক্ষমান') + '</span>' +
+                    '</div>' +
+                '</div>';
+            }
+            document.getElementById('examHistoryList').innerHTML = '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:12px; margin-top:10px;">' + boxesHtml + '</div>';
+        } else {
+            document.getElementById('examHistoryList').innerHTML = '<div style="color:#64748b; padding:15px; text-align:center;">কোনো মূল্যায়ন তথ্য পাওয়া যায়নি।</div>';
+        }
           
           document.getElementById('pReg').value = reg;
           openModal('profileModal');
-        } else {
+        } 
+		
+		else {
           alert("প্রোফাইল ডেটা লোড করা যায়নি!");
         }
       });
-    } else {
+    } 
+	
+	else {
       alert("ভুল রেজিস্ট্রেশন নম্বর অথবা পিন!");
     }
   }, btn);
