@@ -3894,7 +3894,7 @@ function openStudentEvaluatedScriptViewer() {
       if (u.indexOf("drive.google.com") !== -1) {
         var match = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
         if (match && match[1]) {
-          previewUrl = "https://drive.google.com/thumbnail?id=" + match[1] + "&sz=w1600";
+          previewUrl = "https://drive.google.com/file/d/" + match[1] + "/preview";
         }
       }
 
