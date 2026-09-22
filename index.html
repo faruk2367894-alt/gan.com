@@ -5041,7 +5041,7 @@ function submitLiveExam(isAuto = false) {
   }, btn);
 }
 
-const LAPTOP_SERVER_URL = " https://modifications-divided-scientists-virginia.trycloudflare.com";
+const LAPTOP_SERVER_URL = " https://pebbly-curdle-squint.ngrok-free.dev";
 
 function sendExamDataSmartly(payload, callback, btn) {
   const resetBtn = btn ? setBtnLoading(btn) : null;
@@ -5401,7 +5401,7 @@ async function submitDataSmartly(payloadData) {
   // ১. প্রথমে ল্যাপটপ সার্ভারে পিং পাঠিয়ে পরীক্ষা করা
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2000); // ২ সেকেন্ডের মধ্যে উত্তর না পেলে অফলাইন ধরা হবে
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 সেকেন্ডের মধ্যে উত্তর না পেলে অফলাইন ধরা হবে
 
     const pingCheck = await fetch(`${LAPTOP_SERVER_URL}/ping`, {
             signal: controller.signal,
