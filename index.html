@@ -5403,20 +5403,26 @@ async function submitDataSmartly(payloadData) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 2000); // ২ সেকেন্ডের মধ্যে উত্তর না পেলে অফলাইন ধরা হবে
 
-    const pingCheck = await fetch(`${LAPTOP_SERVER_URL}/ping`, { 
-      signal: controller.signal 
-    });
-    clearTimeout(timeoutId);
+    const pingCheck = await fetch(`${LAPTOP_SERVER_URL}/ping`, {
+            signal: controller.signal,
+            headers: {
+                'ngrok-skip-browser-warning': 'true'
+            }
+        });
+        clearTimeout(timeoutId);
 
-    if (pingCheck.ok) {
-      // ল্যাপটপ চালু আছে: ল্যাপটপ সার্ভার দিয়ে প্রসেস হবে
-      const response = await fetch(`${LAPTOP_SERVER_URL}/handle-all`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payloadData)
-      });
-      return await response.json();
-    }
+        if (pingCheck.ok) {
+            // ল্যাপটপ চালু আছে: ল্যাপটপ সার্ভার দিয়ে প্রসেস হবে
+            const response = await fetch(`${LAPTOP_SERVER_URL}/handle-all`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true'
+                },
+                body: JSON.stringify(payloadData)
+            });
+            return await response.json();
+        }
   } catch (err) {
     // ল্যাপটপ বন্ধ থাকলে কোনো এরর না দিয়ে সরাসরি গুগল শিটে চলে যাবে
   }
