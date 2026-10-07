@@ -21,7 +21,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 /* এডমিন প্যানেল ইনপুট ও লেখার স্পষ্ট ভিজিবিলিটি ফিক্স */
 #adminModal input, 
 #adminModal textarea, 
@@ -29,37 +28,35 @@
 .admin-tab-content input,
 .admin-tab-content textarea,
 .admin-tab-content select {
-  background-color: #1e293b !important; /* ডিপ স্লট ব্যাকগ্রাউন্ড */
-  color: #ffffff !important;           /* উজ্জ্বল সাদা টেক্সট */
+  background-color: #1e293b !important;
+  color: #ffffff !important;
   border: 1.5px solid #475569 !important;
   font-size: 0.95rem !important;
   font-weight: 500 !important;
 }
 
-/* প্লেসহোল্ডার টেক্সট যাতে আবছা না লাগে */
 #adminModal textarea::placeholder,
 #adminModal input::placeholder {
-  color: #94a3b8 !important; /* হালকা রূপালি রঙ */
+  color: #94a3b8 !important;
   opacity: 1 !important;
 }
 
-/* ফোকাস করলে বর্ডার হাইলাইট */
 #adminModal input:focus, 
 #adminModal textarea:focus {
-  border-color: #38bdf8 !important; /* স্কাই ব্লু গ্লো */
+  border-color: #38bdf8 !important;
   box-shadow: 0 0 8px rgba(56, 189, 248, 0.4) !important;
   outline: none !important;
 }
 
-/* ওপরের এমসিকিউ প্রিভিউ বা খালি অংশের স্পষ্ট টেক্সট */
 #adminModal label,
 #adminModal p,
 #adminModal span,
 .admin-tab-content label,
 .admin-tab-content span {
-  color: #0f172a !important; /* বাইরে থাকলে স্পষ্ট গাঢ় কালার */
+  color: #0f172a !important;
   font-weight: 600 !important;
 }
+
 * {
   margin: 0;
   padding: 0;
@@ -77,12 +74,11 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
-/* ডার্ক মোড কালার রুলস */
 body.dark-mode {
   background-color: #0b0f19 !important;
   color: #f8fafc !important;
 }
-/* প্রিভিউ ডার্ক মোড কালার ফিক্স */
+
 body.dark-mode #adminPreviewModal .modal-box {
   background-color: #0f172a !important;
   border-color: #7c3aed !important;
@@ -662,7 +658,6 @@ header {
   color: #1e3a8a;
 }
 
-/* ডিজিটাল আইডি কার্ড */
 .id-card-container {
   background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #1e3a8a 100%);
   color: white;
@@ -722,7 +717,6 @@ header {
   margin-top: 4px;
 }
 
-/* মার্কশিট টেক্সট ফিক্স (সাদা বক্স দূর করার জন্য) */
 .marksheet-modal {
   max-width: 750px;
   background: #fffcf5;
@@ -815,7 +809,6 @@ body.dark-mode .ms-table td {
   font-size: 0.85rem;
 }
 
-/* আধুনিক সৃজনশীল (CQ) কার্ড ডিজাইন */
 .cq-card-render {
   background: #ffffff;
   border: 1.5px solid #3b82f6;
@@ -869,7 +862,6 @@ body.dark-mode .ms-table td {
   flex-shrink: 0;
 }
 
-/* ডিকশনারি স্টাইল */
 .dict-mode-switch {
   display: flex;
   gap: 6px;
@@ -908,7 +900,6 @@ body.dark-mode .ms-table td {
   align-items: center;
 }
 
-/* সায়েন্টিফিক ক্যালকুলেটর গ্রিড */
 .sci-calc-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -943,7 +934,6 @@ body.dark-mode .ms-table td {
   color: #991b1b;
 }
 
-/* সাধারণ জ্ঞান ও সূত্র কার্ড */
 .gk-tabs {
   display: flex;
   gap: 6px;
@@ -1073,7 +1063,7 @@ body.dark-mode .ms-table td {
     font-size: 0.8rem;
   }
 }
-/* MCQ প্রিভিউ বক্সের লেখা স্পষ্ট কালো ও স্পষ্ট ব্যাকগ্রাউন্ড ফিক্স */
+
 #mcqParsedPreview {
   background-color: #ffffff !important;
   color: #0f172a !important;
@@ -1093,14 +1083,12 @@ body.dark-mode .ms-table td {
   color: #0f172a !important;
 }
 
-/* ছোট ক্লাসের রিচ টেক্সট ইনপুট বক্সের ব্যাকগ্রাউন্ড ও টেক্সট স্পষ্ট করা */
 #adminTextQuestionInput {
   background-color: #0f172a !important;
   color: #ffffff !important;
   border: 1.5px solid #475569 !important;
 }
 
-/* টেক্সট বক্সের ওপরের লেবেল স্পষ্ট দৃশ্যমান রাখা */
 #adminTextSectionWrapper label {
   color: #38bdf8 !important;
 }
@@ -1170,7 +1158,6 @@ body.dark-mode .ms-table td {
     </div>
   </div>
 </div>
-
 <!-- মেনু বার -->
 <aside id="sidebar" class="sidebar">
   <div>
@@ -1360,15 +1347,15 @@ body.dark-mode .ms-table td {
 <div id="liveExamModal" class="modal">
   <div class="modal-box" style="max-width: 780px;">
    <div class="modal-header">
-  <div>
-    <h3 id="liveSubjectTitle">পরীক্ষা</h3>
-    <span style="font-size:0.8rem; color:#64748b;">শিক্ষার্থী: <b id="liveStudentName"></b> | মোট MCQ: <b id="liveTotalMarks"></b></span>
-  </div>
- <div style="display: flex; align-items: center; gap: 10px;">
-          <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1rem;">MCQ সময়: <span id="timerDisplay">00:00</span></span>
-          <button type="button" class="close-icon-btn" onclick="cancelStudentExam()" style="background: #ef4444; color: #fff; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 100;">&times;</button>
-        </div>
-</div>
+    <div>
+      <h3 id="liveSubjectTitle">পরীক্ষা</h3>
+      <span style="font-size:0.8rem; color:#64748b;">শিক্ষার্থী: <b id="liveStudentName"></b> | মোট MCQ: <b id="liveTotalMarks"></b></span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span id="timerBox" style="color:#dc2626; font-weight:700; font-size:1rem;">MCQ সময়: <span id="timerDisplay">00:00</span></span>
+      <button type="button" class="close-icon-btn" onclick="cancelStudentExam()" style="background: #ef4444; color: #fff; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 100;">&times;</button>
+    </div>
+   </div>
     
     <div class="exam-mode-nav">
       <button id="examTabAll" class="exam-nav-btn active" onclick="switchExamSection('all')">উভয় পরীক্ষা (MCQ + CQ)</button>
@@ -1386,69 +1373,66 @@ body.dark-mode .ms-table td {
       <div id="cqFormattedContainer"></div>
       <div id="cqQuestionFileLink" style="margin:6px 0;"></div>
       <div style="border: 1.5px dashed #6366f1; padding: 12px; border-radius: 8px; text-align: center; background: #f5f7ff; margin-top: 10px;">
-  <label style="font-size: 0.85rem; font-weight: 700; color: #312e81; display: block; margin-bottom: 6px;">
-    📄 লিখিত উত্তরপত্রের ছবি বা PDF আপলোড করুন (১টি বা একাধিক পৃষ্ঠা একসাথে নির্বাচন করতে পারেন):
-  </label>
-  <input type="file" id="studentExamMultiFiles" multiple accept="image/*,.pdf" onchange="handleMultipleFileSelect(this)" style="display: none;">
-  <button type="button" class="btn btn-purple" onclick="document.getElementById('studentExamMultiFiles').click()" style="width: auto; padding: 6px 16px; font-size: 0.85rem;">
-    📁 খাতার ছবি/ফাইল সিলেক্ট করুন
-  </button>
-  <!-- সরাসরি একাধিক ছবি তোলার ক্যামেরা কন্ট্রোল -->
-<div style="margin-top: 10px; width: 100%;">
-  <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-    <!-- সরাসরি ক্যামেরা খোলার বাটন -->
-    <button type="button" onclick="document.getElementById('examCameraInput').click()" style="background: #0284c7; color: #fff; border: none; padding: 9px 14px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-      📷 ক্যামেরা দিয়ে ছবি তুলুন
-    </button>
-    <span id="capturedCountText" style="font-size: 12px; color: #475569; font-weight: 600;">০ টি ছবি তোলা হয়েছে</span>
-  </div>
+        <label style="font-size: 0.85rem; font-weight: 700; color: #312e81; display: block; margin-bottom: 6px;">
+          📄 লিখিত উত্তরপত্রের ছবি বা PDF আপলোড করুন (১টি বা একাধিক পৃষ্ঠা একসাথে নির্বাচন করতে পারেন):
+        </label>
+        <input type="file" id="studentExamMultiFiles" multiple accept="image/*,.pdf" onchange="handleMultipleFileSelect(this)" style="display: none;">
+        <button type="button" class="btn btn-purple" onclick="document.getElementById('studentExamMultiFiles').click()" style="width: auto; padding: 6px 16px; font-size: 0.85rem;">
+          📁 খাতার ছবি/ফাইল সিলেক্ট করুন
+        </button>
+        
+        <div style="margin-top: 10px; width: 100%;">
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <button type="button" onclick="document.getElementById('examCameraInput').click()" style="background: #0284c7; color: #fff; border: none; padding: 9px 14px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+              📷 ক্যামেরা দিয়ে ছবি তুলুন
+            </button>
+            <span id="capturedCountText" style="font-size: 12px; color: #475569; font-weight: 600;">০ টি ছবি তোলা হয়েছে</span>
+          </div>
 
-  <!-- হিডেন ক্যামেরা ইনপুট (যা সরাসরি মোবাইল ক্যামেরা ওপেন করে) -->
-  <input type="file" id="examCameraInput" accept="image/*" capture="environment" style="display: none;" onchange="handleCapturedPhoto(event)">
+          <input type="file" id="examCameraInput" accept="image/*" capture="environment" style="display: none;" onchange="handleCapturedPhoto(event)">
 
-  <!-- তোলা ছবির থাম্বনেইল প্রিভিউ বক্স -->
-  <div id="capturedImagesPreview" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; padding: 6px; background: #f1f5f9; border-radius: 6px; min-height: 40px; align-items: center;">
-    <span style="font-size: 12px; color: #94a3b8;">এখানে তোলা পাতাগুলো একের পর এক জমা হবে...</span>
-  </div>
-</div>
-  <div id="multiFileDisplayStatus" style="font-size: 0.8rem; color: #059669; margin-top: 8px; font-weight: 600;">কোনো ফাইল সিলেক্ট করা হয়নি</div>
-</div>
+          <div id="capturedImagesPreview" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; padding: 6px; background: #f1f5f9; border-radius: 6px; min-height: 40px; align-items: center;">
+            <span style="font-size: 12px; color: #94a3b8;">এখানে তোলা পাতাগুলো একের পর এক জমা হবে...</span>
+          </div>
+        </div>
+        <div id="multiFileDisplayStatus" style="font-size: 0.8rem; color: #059669; margin-top: 8px; font-weight: 600;">কোনো ফাইল সিলেক্ট করা হয়নি</div>
+      </div>
     </div>
-<!-- ছোট ক্লাসের জন্য বর্ণনামূলক প্রশ্ন ও উত্তরপত্র ফাইল আপলোড সেকশন -->
+
+    <!-- ছোট ক্লাসের জন্য বর্ণনামূলক প্রশ্ন ও উত্তরপত্র ফাইল আপলোড সেকশন -->
     <div id="textExamSection" style="display: none; margin-bottom: 15px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 15px;">
       <h4 style="font-size: 0.95rem; color: #4338ca; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">
         📝 সংক্ষিপ্ত / বর্ণনামূলক প্রশ্ন
       </h4>
       
-      <!-- শিক্ষকের সাজানো প্রশ্ন এখানে ফন্ট ও কালারসহ প্রদর্শিত হবে -->
       <div id="studentRichTextQuestionDisplay" style="padding: 12px; background: #f8fafc; border-radius: 6px; border: 1px dashed #cbd5e1; margin-bottom: 12px; font-size: 0.95rem; line-height: 1.6; color: #0f172a;"></div>
 
-      <!-- উত্তরপত্রের ফাইল/ছবি আপলোডার -->
       <div style="border: 1.5px dashed #6366f1; padding: 12px; border-radius: 8px; text-align: center; background: #f5f7ff;">
         <label style="font-size: 0.82rem; font-weight: 700; color: #312e81; display: block; margin-bottom: 6px;">
           উত্তরপত্রের ছবি (Image) বা ফাইল (PDF) নির্বাচন করুন:
         </label>
-      <input type="file" id="studentTextExamFile" accept="image/*,.pdf" multiple onchange="handleMultipleTextFiles(this)" style="display: none;">
+        <input type="file" id="studentTextExamFile" accept="image/*,.pdf" multiple onchange="handleMultipleTextFiles(this)" style="display: none;">
         <button type="button" class="btn btn-purple" onclick="document.getElementById('studentTextExamFile').click()" style="padding: 6px 14px; font-size: 0.85rem; cursor: pointer;">
           📁 ফাইল নির্বাচন করুন
         </button>
         <div id="textUploadStatus" style="font-size: 0.75rem; color: #64748b; margin-top: 6px;">কোনো ফাইল নির্বাচন করা হয়নি</div>
       </div>
-	  <!-- সংক্ষিপ্ত/বর্ণনামূলক প্রশ্নের জন্য সরাসরি ক্যামেরা আপলোড -->
-        <div style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px;">
-          <div style="display: flex; gap: 8px; align-items: center;">
-            <button type="button" class="btn" onclick="document.getElementById('examCameraInput').click()" style="background: #0284c7; color: #ffffff; border: none; padding: 7px 12px; border-radius: 6px; font-weight: bold; font-size: 0.82rem; cursor: pointer;">
-              📷 ক্যামেরা দিয়ে ছবি তুলুন
-            </button>
-            <span id="textCapturedCountText" style="font-size: 0.8rem; color: #475569; font-weight: 600;"></span>
-          </div>
-          <div id="textCapturedImagesPreview" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;"></div>
+      
+      <div style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button type="button" class="btn" onclick="document.getElementById('examCameraInput').click()" style="background: #0284c7; color: #ffffff; border: none; padding: 7px 12px; border-radius: 6px; font-weight: bold; font-size: 0.82rem; cursor: pointer;">
+            📷 ক্যামেরা দিয়ে ছবি তুলুন
+          </button>
+          <span id="textCapturedCountText" style="font-size: 0.8rem; color: #475569; font-weight: 600;"></span>
         </div>
+        <div id="textCapturedImagesPreview" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;"></div>
+      </div>
     </div>
- <div class="modal-btns" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-  <button type="button" class="btn btn-cancel" onclick="showPrettyCancelModal()" style="cursor: pointer; position: relative; z-index: 100;">✕ পরীক্ষা বাতিল (Cancel)</button>
-  <button type="button" class="btn btn-green" id="examSubmitBtn" onclick="submitLiveExam()" style="width: auto; padding: 10px 24px;">উত্তরপত্র জমা দিন</button>
-</div>
+
+    <div class="modal-btns" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+      <button type="button" class="btn btn-cancel" onclick="showPrettyCancelModal()" style="cursor: pointer; position: relative; z-index: 100;">✕ পরীক্ষা বাতিল (Cancel)</button>
+      <button type="button" class="btn btn-green" id="examSubmitBtn" onclick="submitLiveExam()" style="width: auto; padding: 10px 24px;">উত্তরপত্র জমা দিন</button>
+    </div>
   </div>
 </div>
 
@@ -1462,34 +1446,30 @@ body.dark-mode .ms-table td {
       <button type="button" onclick="document.getElementById('examInitModal').style.display='none'" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:#64748b; line-height:1;">&times;</button>
     </div>
 
-    <!-- রেজিস্ট্রেশন নম্বর ইনপুট -->
     <div style="margin-bottom:12px;">
       <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:5px;">রেজিস্ট্রেশন নম্বর দিন:</label>
       <input type="number" id="stExReg" placeholder="যেমন: 123456" oninput="autoDetectStudentAndExam(this.value)" style="width:100%; padding:10px 12px; border:1.5px solid #cbd5e1; border-radius:8px; font-size:1rem; outline:none; box-sizing:border-box; transition:border 0.2s;">
       <div id="regSearchingSpinner" style="display:none; font-size:0.8rem; color:#2563eb; margin-top:4px; font-weight:600;">🔍 যাচাই করা হচ্ছে...</div>
     </div>
-    <!-- শ্রেণি (অটো-ফিল ও লক) -->
+
     <div style="margin-bottom:12px;">
       <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:5px;">শ্রেণি (স্বয়ংক্রিয়):</label>
       <input type="text" id="stExClassDisplay" readonly placeholder="রেজিস্ট্রেশন দিলে শ্রেণি অটো আসবে..." style="width:100%; padding:10px 12px; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; font-weight:700; color:#1e293b; box-sizing:border-box; cursor:not-allowed;">
     </div>
 
-    <!-- বিষয়ের নাম (ড্রপডাউন সিলেক্টর) -->
-<div style="margin-bottom:15px;">
-  <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:5px;">পরীক্ষার বিষয় নির্বাচন করুন:</label>
-  <select id="stExSubjectSelect" onchange="onExamSubjectSelectChange()" style="width:100%; padding:10px 12px; background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; font-weight:700; color:#0284c7; box-sizing:border-box; outline:none; font-size:0.95rem;">
-    <option value="">রেজিস্ট্রেশন নম্বর দিলে বিষয় আসবে...</option>
-  </select>
-</div>
+    <div style="margin-bottom:15px;">
+      <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:5px;">পরীক্ষার বিষয় নির্বাচন করুন:</label>
+      <select id="stExSubjectSelect" onchange="onExamSubjectSelectChange()" style="width:100%; padding:10px 12px; background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; font-weight:700; color:#0284c7; box-sizing:border-box; outline:none; font-size:0.95rem;">
+        <option value="">রেজিস্ট্রেশন নম্বর দিলে বিষয় আসবে...</option>
+      </select>
+    </div>
 
-    <!-- 🔒 পরীক্ষা না থাকলে স্মার্ট লক স্টেট ব্যানার -->
     <div id="examLockBanner" style="display:none; background:#fff1f2; border:1.5px dashed #f43f5e; border-radius:10px; padding:12px; margin-bottom:15px; text-align:center;">
       <div style="font-size:1.4rem; margin-bottom:2px;">🔒</div>
       <div style="font-weight:800; color:#be123c; font-size:0.95rem;">পরীক্ষা লক করা আছে</div>
       <div id="examLockMsg" style="font-size:0.82rem; color:#9f1239; margin-top:4px; line-height:1.4;">বর্তমানে আপনার শ্রেণির কোনো পরীক্ষা উন্মুক্ত নেই।</div>
     </div>
 
-    <!-- একশন বাটন -->
     <div style="display:flex; justify-content:flex-end; gap:8px;">
      <button type="button" onclick="document.getElementById('examInitModal').style.display='none'" style="background:#e2e8f0; color:#475569; padding:8px 16px; border-radius:7px; font-weight:600; cursor:pointer; border:none;">ক্যানসেল</button>
       <button type="button" id="startExamActiveBtn" onclick="confirmAndLaunchExam()" disabled style="background:#94a3b8; color:#fff; padding:8px 18px; border-radius:7px; font-weight:700; cursor:not-allowed; border:none; transition:all 0.3s;">পরীক্ষা শুরু করুন</button>
@@ -1497,6 +1477,7 @@ body.dark-mode .ms-table td {
 
   </div>
 </div>
+
 <!-- পরীক্ষা মূল্যায়ন মডাল -->
 <div id="examReviewModal" class="modal">
   <div class="modal-box" style="max-width: 650px;">
@@ -1760,10 +1741,8 @@ body.dark-mode .ms-table td {
       </div>
 
       <h4 style="margin-top:10px; font-size:0.95rem; color:#1e3a8a;">📜 পরীক্ষার ফলাফল হিস্ট্রি:</h4>
-     <div id="examHistoryList" style="margin-top:12px; max-height:350px; overflow-y:auto; padding:4px;"></div>
-	  
-	  
-     </div>
+      <div id="examHistoryList" style="margin-top:12px; max-height:350px; overflow-y:auto; padding:4px;"></div>
+    </div>
   </div>
 </div>
 
@@ -1848,24 +1827,24 @@ body.dark-mode .ms-table td {
       <button class="admin-tab-btn" onclick="switchAdminTab(event, 'motivationTab')">মোটিভেশনাল উক্তি</button>
       <button class="admin-tab-btn" onclick="switchAdminTab(event, 'noticeTab')">নোটিশ ও রুটিন</button>
       <button class="admin-tab-btn" onclick="switchAdminTab(event, 'pinTab')">পিন পরিবর্তন</button>
-	 <button class="admin-tab-btn" onclick="openEvalFullScreen(); switchAdminTab(event, 'evalTab'); loadSubmissionsForAdmin();">শিক্ষার্থীদের খাতা মূল্যায়ন</button>
+      <button class="admin-tab-btn" onclick="openEvalFullScreen(); switchAdminTab(event, 'evalTab'); loadSubmissionsForAdmin();">শিক্ষার্থীদের খাতা মূল্যায়ন</button>
     </div>
 
     <!-- MCQ & CQ শিডিউল ট্যাব -->
     <div id="mcqTab" class="admin-tab-content" style="display:flex; flex-direction:column; gap:8px;">
       <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:8px;">
-	  <div style="grid-column: 1 / -1; background: #e0f2fe; padding: 10px; border-radius: 8px; border: 1.5px solid #38bdf8; margin-bottom: 8px;">
-  <label style="font-weight: 800; color: #0369a1; display: block; margin-bottom: 4px;">🎯 কোন ধরনের পরীক্ষা নিতে চান সিলেক্ট করুন:</label>
-  <select id="admExamTypeSelector" onchange="toggleAdminQuestionBoxes()" style="font-weight: 700; color: #0c4a6e; background: #fff !important;">
-    <option value="mcq_cq_text">সবগুলো একসাথে (MCQ + CQ + সংক্ষিপ্ত প্রশ্ন)</option>
-    <option value="mcq">শুধুমাত্র MCQ পরীক্ষা</option>
-    <option value="cq">শুধুমাত্র CQ (সৃজনশীল) পরীক্ষা</option>
-    <option value="text">শুধুমাত্র সংক্ষিপ্ত / বর্ণনামূলক পরীক্ষা</option>
-    <option value="mcq_cq">MCQ + CQ পরীক্ষা</option>
-    <option value="mcq_text">MCQ + সংক্ষিপ্ত প্রশ্ন</option>
-    <option value="cq_text">CQ + সংক্ষিপ্ত প্রশ্ন</option>
-  </select>
-</div>
+        <div style="grid-column: 1 / -1; background: #e0f2fe; padding: 10px; border-radius: 8px; border: 1.5px solid #38bdf8; margin-bottom: 8px;">
+          <label style="font-weight: 800; color: #0369a1; display: block; margin-bottom: 4px;">🎯 কোন ধরনের পরীক্ষা নিতে চান সিলেক্ট করুন:</label>
+          <select id="admExamTypeSelector" onchange="toggleAdminQuestionBoxes()" style="font-weight: 700; color: #0c4a6e; background: #fff !important;">
+            <option value="mcq_cq_text">সবগুলো একসাথে (MCQ + CQ + সংক্ষিপ্ত প্রশ্ন)</option>
+            <option value="mcq">শুধুমাত্র MCQ পরীক্ষা</option>
+            <option value="cq">শুধুমাত্র CQ (সৃজনশীল) পরীক্ষা</option>
+            <option value="text">শুধুমাত্র সংক্ষিপ্ত / বর্ণনামূলক পরীক্ষা</option>
+            <option value="mcq_cq">MCQ + CQ পরীক্ষা</option>
+            <option value="mcq_text">MCQ + সংক্ষিপ্ত প্রশ্ন</option>
+            <option value="cq_text">CQ + সংক্ষিপ্ত প্রশ্ন</option>
+          </select>
+        </div>
         <div>
           <label style="font-size:0.82rem; font-weight:700;">শ্রেণি নির্বাচন:</label>
           <select id="admClass">
@@ -1934,7 +1913,6 @@ body.dark-mode .ms-table td {
           ✍️ ছোট ক্লাসের সংক্ষিপ্ত / বর্ণনামূলক প্রশ্ন লিখুন (ফন্ট কালার ও সাইজ সাজানো যাবে):
         </label>
         
-        <!-- টেক্সট ফরম্যাটিং টুলবার -->
         <div style="background: #334155; padding: 6px 10px; border-radius: 6px 6px 0 0; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
           <button type="button" onclick="formatAdminText('bold')" style="padding: 3px 8px; font-weight: bold; cursor: pointer; border-radius: 4px; border: 1px solid #64748b;">B</button>
           <button type="button" onclick="formatAdminText('italic')" style="padding: 3px 8px; font-style: italic; cursor: pointer; border-radius: 4px; border: 1px solid #64748b;">I</button>
@@ -1948,7 +1926,6 @@ body.dark-mode .ms-table td {
           </select>
         </div>
 
-        <!-- শিক্ষক এখানে প্রশ্ন লিখবেন -->
         <div id="adminTextQuestionInput" contenteditable="true" style="min-height: 100px; background: #0f172a; color: #ffffff; padding: 10px; border-radius: 0 0 6px 6px; outline: none; border: 1px solid #475569; font-size: 0.95rem; line-height: 1.5;" placeholder="এখানে প্রশ্ন লিখুন বা পেস্ট করে কালার/ফন্ট সাজিয়ে নিন..."></div>
       </div>
 
@@ -2030,151 +2007,153 @@ body.dark-mode .ms-table td {
       <input type="password" id="newPinInput" placeholder="নতুন পিন">
       <button class="btn btn-blue" onclick="changeAdminPin()">পিন আপডেট করুন</button>
     </div>
-	<!-- স্মার্ট ডিজিটাল খাতা মূল্যায়ন ড্যাশবোর্ড -->
-<div id="evalTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:12px; height:100%; overflow-y:auto;">
-  <div style="display:flex; justify-content:space-between; align-items:center; background:#1e293b; color:white; padding:12px; border-radius:8px;">
-    <h4 style="margin:0; font-size:1.1rem; color:#38bdf8;">📋 ডিজিটাল খাতা মূল্যায়ন বোর্ড</h4>
-    <button type="button" class="btn btn-blue" onclick="loadSubmissionsForAdmin()" style="width:auto; padding:6px 14px; font-size:0.85rem;">🔄 রিফ্রেশ</button>
-    <button type="button" class="btn btn-cancel" onclick="closeEvalFullScreen()" style="background:#ef4444; color:#fff; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-weight:bold;">✖ বন্ধ করুন</button>
-  </div>
 
-  <!-- ১. স্টুডেন্টদের স্মার্ট রোল/রেজিস্ট্রেশন গ্রিড -->
-  <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px;">
-    <label style="font-size:0.85rem; font-weight:700; color:#334155; margin-bottom:8px; display:block;">খাতা দেখার জন্য শিক্ষার্থীর কার্ডে ক্লিক করুন:</label>
-    <div id="studentEvalCardsContainer" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:10px; max-height:220px; overflow-y:auto; padding:4px;">
-      <!-- কার্ড ডাইনামিক আসবে -->
-    </div>
-  </div>
-
-  <!-- ২. খাতা কাটার ডিজিটাল ক্যানভাস ভিউয়ার -->
-  <div id="digitalCanvasWorkarea" style="display:none; border:2px solid #3b82f6; border-radius:10px; padding:14px; background:#ffffff; box-shadow:0 10px 25px rgba(0,0,0,0.1);">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed #cbd5e1; padding-bottom:8px; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
-      <div>
-        <h4 id="evalStudentNameDisplay" style="color:#1e3a8a; margin:0;">শিক্ষার্থীর নাম</h4>
-        <span id="evalSubjectInfoDisplay" style="font-size:0.82rem; color:#64748b;">বিষয় ও শ্রেণি</span>
+    <!-- স্মার্ট ডিজিটাল খাতা মূল্যায়ন ড্যাশবোর্ড -->
+    <div id="evalTab" class="admin-tab-content hidden" style="display:flex; flex-direction:column; gap:12px; height:100%; overflow-y:auto;">
+      <div style="display:flex; justify-content:space-between; align-items:center; background:#1e293b; color:white; padding:12px; border-radius:8px;">
+        <h4 style="margin:0; font-size:1.1rem; color:#38bdf8;">📋 ডিজিটাল খাতা মূল্যায়ন বোর্ড</h4>
+        <button type="button" class="btn btn-blue" onclick="loadSubmissionsForAdmin()" style="width:auto; padding:6px 14px; font-size:0.85rem;">🔄 রিফ্রেশ</button>
+        <button type="button" class="btn btn-cancel" onclick="closeEvalFullScreen()" style="background:#ef4444; color:#fff; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-weight:bold;">✖ বন্ধ করুন</button>
       </div>
-      <div style="display:flex; gap:6px; align-items:center;">
-        <button type="button" class="btn" style="background:#ef4444; color:#fff; width:auto; padding:6px 12px; font-size:0.8rem;" onclick="clearCurrentCanvas()">🧹 ক্লিয়ার</button>
-        <button type="button" class="btn btn-cancel" style="width:auto; padding:6px 12px; font-size:0.8rem;" onclick="prevScriptPage()">◀ আগের পাতা</button>
-        <span id="canvasPageIndicator" style="font-weight:bold; font-size:0.85rem;">১/১</span>
-        <button type="button" class="btn btn-cancel" style="width:auto; padding:6px 12px; font-size:0.8rem;" onclick="nextScriptPage()">পরের পাতা ▶</button>
+
+      <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px;">
+        <label style="font-size:0.85rem; font-weight:700; color:#334155; margin-bottom:8px; display:block;">খাতা দেখার জন্য শিক্ষার্থীর কার্ডে ক্লিক করুন:</label>
+        <div id="studentEvalCardsContainer" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:10px; max-height:220px; overflow-y:auto; padding:4px;">
+        </div>
+      </div>
+
+      <div id="digitalCanvasWorkarea" style="display:none; border:2px solid #3b82f6; border-radius:10px; padding:14px; background:#ffffff; box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed #cbd5e1; padding-bottom:8px; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+          <div>
+            <h4 id="evalStudentNameDisplay" style="color:#1e3a8a; margin:0;">শিক্ষার্থীর নাম</h4>
+            <span id="evalSubjectInfoDisplay" style="font-size:0.82rem; color:#64748b;">বিষয় ও শ্রেণি</span>
+          </div>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <button type="button" class="btn" style="background:#ef4444; color:#fff; width:auto; padding:6px 12px; font-size:0.8rem;" onclick="clearCurrentCanvas()">🧹 ক্লিয়ার</button>
+            <button type="button" class="btn btn-cancel" style="width:auto; padding:6px 12px; font-size:0.8rem;" onclick="prevScriptPage()">◀ আগের পাতা</button>
+            <span id="canvasPageIndicator" style="font-weight:bold; font-size:0.85rem;">১/১</span>
+            <button type="button" class="btn btn-cancel" style="width:auto; padding:6px 12px; font-size:0.8rem;" onclick="nextScriptPage()">পরের পাতা ▶</button>
+          </div>
+        </div>
+
+        <div style="background:#1e293b; padding:8px 12px; border-radius:8px; margin-bottom:8px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-weight:700; font-size:0.82rem; color:#cbd5e1;">সাইজ:</span>
+            <input type="range" id="digitalPenSize" min="2" max="10" value="3" style="width:70px;">
+          </div>
+
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-weight:700; font-size:0.82rem; color:#cbd5e1;">পেন:</span>
+            <button type="button" onclick="document.getElementById('digitalPenColor').value='#ef4444'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#ef4444';" title="লাল" style="width:24px; height:24px; border-radius:50%; background:#ef4444; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
+            <button type="button" onclick="document.getElementById('digitalPenColor').value='#22c55e'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#22c55e';" title="সবুজ" style="width:24px; height:24px; border-radius:50%; background:#22c55e; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
+            <button type="button" onclick="document.getElementById('digitalPenColor').value='#3b82f6'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#3b82f6';" title="নীল" style="width:24px; height:24px; border-radius:50%; background:#3b82f6; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
+            <button type="button" onclick="document.getElementById('digitalPenColor').value='#000000'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#000000';" title="কালো" style="width:24px; height:24px; border-radius:50%; background:#000000; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
+            <input type="color" id="digitalPenColor" value="#ef4444" style="display:none;">
+          </div>
+
+          <button type="button" onclick="var b=document.getElementById('scriptCanvas').parentElement; if(!document.fullscreenElement){b.requestFullscreen?b.requestFullscreen():b.webkitRequestFullscreen();}else{document.exitFullscreen?document.exitFullscreen():document.webkitExitFullscreen();}" style="background:#3b82f6; color:#fff; border:none; padding:5px 10px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer;">
+            ⛶ ফুল পর্দা
+          </button>
+        </div>
+
+        <div id="canvas-container" style="position:relative; width:100%; max-height:600px; overflow:auto; border:1px solid #94a3b8; border-radius:6px; text-align:center; background:#334155; display:flex; justify-content:center;">
+          <canvas id="scriptCanvas" style="cursor:crosshair; background:#ffffff; box-shadow:0 0 10px rgba(0,0,0,0.3); touch-action:none;"></canvas>
+        </div>
+
+        <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:#eff6ff; padding:10px; border-radius:8px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label style="font-weight:700; font-size:0.88rem; color:#1e3a8a;">বর্তমান পাতার মার্ক:</label>
+            <input type="number" id="pageWiseMarkInput" oninput="saveCurrentPageMark()" style="width:75px; padding:6px; border:1px solid #3b82f6; border-radius:6px; text-align:center; font-weight:bold;" placeholder="0">
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label style="font-weight:700; font-size:0.88rem; color:#0f766e;">টোটাল লিখিত/CQ মার্ক:</label>
+            <input type="number" id="finalCqTotalMark" style="width:90px; padding:6px; border:1.5px solid #0d9488; border-radius:6px; text-align:center; font-weight:bold; font-size:1.1rem; color:#0f766e;" readonly>
+          </div>
+          <button type="button" class="btn btn-green" style="width:auto; padding:8px 20px;" onclick="submitEvaluatedScript()">💾 মূল্যায়ন সংরক্ষণ করুন</button>
+        </div>
       </div>
     </div>
 
-   <div style="background:#1e293b; padding:8px 12px; border-radius:8px; margin-bottom:8px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
-  <!-- পেন সাইজ স্লাইডার -->
-  <div style="display:flex; align-items:center; gap:6px;">
-    <span style="font-weight:700; font-size:0.82rem; color:#cbd5e1;">সাইজ:</span>
-    <input type="range" id="digitalPenSize" min="2" max="10" value="3" style="width:70px;">
-  </div>
-
-  <!-- ৪টি রঙিন দ্রুত পেন সিলেক্টর বাটন -->
-  <div style="display:flex; align-items:center; gap:8px;">
-    <span style="font-weight:700; font-size:0.82rem; color:#cbd5e1;">পেন:</span>
-    <button type="button" onclick="document.getElementById('digitalPenColor').value='#ef4444'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#ef4444';" title="লাল" style="width:24px; height:24px; border-radius:50%; background:#ef4444; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
-    <button type="button" onclick="document.getElementById('digitalPenColor').value='#22c55e'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#22c55e';" title="সবুজ" style="width:24px; height:24px; border-radius:50%; background:#22c55e; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
-    <button type="button" onclick="document.getElementById('digitalPenColor').value='#3b82f6'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#3b82f6';" title="নীল" style="width:24px; height:24px; border-radius:50%; background:#3b82f6; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
-    <button type="button" onclick="document.getElementById('digitalPenColor').value='#000000'; if(typeof ctx!=='undefined'&&ctx) ctx.strokeStyle='#000000';" title="কালো" style="width:24px; height:24px; border-radius:50%; background:#000000; border:2px solid #ffffff; cursor:pointer; padding:0;"></button>
-    <!-- মূল হিডেন কালার ইনপুট যা সিস্টেম ব্যবহার করে -->
-    <input type="color" id="digitalPenColor" value="#ef4444" style="display:none;">
-  </div>
-
-  <!-- মোবাইলে পুরো পর্দায় খাতা কাটার বাটন -->
-  <button type="button" onclick="var b=document.getElementById('scriptCanvas').parentElement; if(!document.fullscreenElement){b.requestFullscreen?b.requestFullscreen():b.webkitRequestFullscreen();}else{document.exitFullscreen?document.exitFullscreen():document.webkitExitFullscreen();}" style="background:#3b82f6; color:#fff; border:none; padding:5px 10px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer;">
-    ⛶ ফুল পর্দা
-  </button>
-</div>
-
-    <div style="position:relative; width:100%; max-height:550px; overflow:auto; border:1px solid #94a3b8; border-radius:6px; display:flex; justify-content:center; background:#475569;">
-      <canvas id="scriptCanvas" style="cursor:crosshair; background:#fff;"></canvas>
-    </div>
-
-    <!-- পাতাভিত্তিক মার্ক ও ফাইনাল স্কোর -->
-    <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:#eff6ff; padding:10px; border-radius:8px;">
-      <div style="display:flex; align-items:center; gap:8px;">
-        <label style="font-weight:700; font-size:0.88rem; color:#1e3a8a;">বর্তমান পাতার মার্ক:</label>
-        <input type="number" id="pageWiseMarkInput" oninput="saveCurrentPageMark()" style="width:75px; padding:6px; border:1px solid #3b82f6; border-radius:6px; text-align:center; font-weight:bold;" placeholder="0">
+    <!-- শিডিউল এডিট মডাল -->
+    <div id="editScheduleModal" class="modal">
+      <div class="modal-box" style="max-width: 440px;">
+        <div class="modal-header"><h3>শিডিউল এডিট</h3><button class="close-icon-btn" onclick="closeModal('editScheduleModal')">×</button></div>
+        <input type="hidden" id="editExamId">
+        <select id="editExamClass">
+          <option value="">শ্রেণি নির্বাচন করুন</option>
+          <option value="১ম শ্রেণি">১ম শ্রেণি</option>
+          <option value="২য় শ্রেণি">২য় শ্রেণি</option>
+          <option value="৩য় শ্রেণি">৩য় শ্রেণি</option>
+          <option value="৪র্থ শ্রেণি">৪র্থ শ্রেণি</option>
+          <option value="৫ম শ্রেণি">৫ম শ্রেণি</option>
+          <option value="৬ষ্ঠ শ্রেণি">৬ষ্ঠ শ্রেণি</option>
+          <option value="৭ম শ্রেণি">৭ম শ্রেণি</option>
+          <option value="৮ম শ্রেণি">৮ম শ্রেণি</option>
+          <option value="৯ম শ্রেণি">৯ম শ্রেণি</option>
+          <option value="১০ম শ্রেণি">১০ম শ্রেণি</option>
+        </select>
+        <input type="text" id="editExamSubject" placeholder="বিষয়">
+        <input type="date" id="editExamDate">
+        <input type="time" id="editExamTime">
+        <input type="number" id="editExamMcqDur" placeholder="MCQ মিনিট">
+        <input type="number" id="editExamCqDur" placeholder="CQ মিনিট">
+        <div style="margin-top:10px;">
+          <label style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:4px;">MCQ প্রশ্নাবলি (JSON):</label>
+          <textarea id="editExamMcqJson" class="form-control" rows="4" style="font-size:0.8rem; font-family:monospace; width:100%; box-sizing:border-box;" placeholder="MCQ JSON ডেটা..."></textarea>
+        </div>
+        <div style="margin-top:10px; margin-bottom:12px;">
+          <label style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:4px;">সৃজনশীল প্রশ্ন (CQ):</label>
+          <textarea id="editExamCqDesc" class="form-control" rows="4" style="width:100%; box-sizing:border-box;" placeholder="সৃজনশীল প্রশ্ন লিখুন..."></textarea>
+        </div>
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeModal('editScheduleModal')">ক্যানসেল</button>
+          <button class="btn btn-blue" style="width:auto;" onclick="submitExamUpdate()">আপডেট সংরক্ষণ</button>
+        </div>
       </div>
-      <div style="display:flex; align-items:center; gap:8px;">
-        <label style="font-weight:700; font-size:0.88rem; color:#0f766e;">টোটাল লিখিত/CQ মার্ক:</label>
-        <input type="number" id="finalCqTotalMark" style="width:90px; padding:6px; border:1.5px solid #0d9488; border-radius:6px; text-align:center; font-weight:bold; font-size:1.1rem; color:#0f766e;" readonly>
-      </div>
-      <button type="button" class="btn btn-green" style="width:auto; padding:8px 20px;" onclick="submitEvaluatedScript()">💾 মূল্যায়ন সংরক্ষণ করুন</button>
     </div>
-  </div>
-</div>
 
-<!-- শিডিউল এডিট মডাল -->
-<div id="editScheduleModal" class="modal">
-  <div class="modal-box" style="max-width: 440px;">
-    <div class="modal-header"><h3>শিডিউল এডিট</h3><button class="close-icon-btn" onclick="closeModal('editScheduleModal')">×</button></div>
-    <input type="hidden" id="editExamId">
-    <select id="editExamClass">
-      <option value="">শ্রেণি নির্বাচন করুন</option>
-      <option value="১ম শ্রেণি">১ম শ্রেণি</option>
-      <option value="২য় শ্রেণি">২য় শ্রেণি</option>
-      <option value="৩য় শ্রেণি">৩য় শ্রেণি</option>
-      <option value="৪র্থ শ্রেণি">৪র্থ শ্রেণি</option>
-      <option value="৫ম শ্রেণি">৫ম শ্রেণি</option>
-      <option value="৬ষ্ঠ শ্রেণি">৬ষ্ঠ শ্রেণি</option>
-      <option value="৭ম শ্রেণি">৭ম শ্রেণি</option>
-      <option value="৮ম শ্রেণি">৮ম শ্রেণি</option>
-      <option value="৯ম শ্রেণি">৯ম শ্রেণি</option>
-      <option value="১০ম শ্রেণি">১০ম শ্রেণি</option>
-    </select>
-    <input type="text" id="editExamSubject" placeholder="বিষয়">
-    <input type="date" id="editExamDate">
-    <input type="time" id="editExamTime">
-    <input type="number" id="editExamMcqDur" placeholder="MCQ মিনিট">
-    <input type="number" id="editExamCqDur" placeholder="CQ মিনিট">
-	<div style="margin-top:10px;">
-        <label style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:4px;">MCQ প্রশ্নাবলি (JSON):</label>
-        <textarea id="editExamMcqJson" class="form-control" rows="4" style="font-size:0.8rem; font-family:monospace; width:100%; box-sizing:border-box;" placeholder="MCQ JSON ডেটা..."></textarea>
+    <!-- প্রিভিউ মডাল -->
+    <div id="adminPreviewModal" class="modal">
+      <div class="modal-box" style="max-width: 680px; border: 2px solid #7c3aed;">
+        <div class="modal-header">
+          <h3 style="color: #7c3aed;">👁️ পাবলিশ পূর্বরূপ (Preview)</h3>
+          <button class="close-icon-btn" onclick="closeModal('adminPreviewModal')">×</button>
+        </div>
+        <div id="previewContentContainer" style="max-height: 480px; overflow-y: auto; padding: 6px 0;"></div>
+        <div class="modal-btns">
+          <button class="btn btn-blue" style="width: auto;" onclick="closeModal('adminPreviewModal')">ঠিক আছে</button>
+        </div>
       </div>
-      <div style="margin-top:10px; margin-bottom:12px;">
-        <label style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:4px;">সৃজনশীল প্রশ্ন (CQ):</label>
-        <textarea id="editExamCqDesc" class="form-control" rows="4" style="width:100%; box-sizing:border-box;" placeholder="সৃজনশীল প্রশ্ন লিখুন..."></textarea>
+    </div>
+
+    <div id="feedbackModal" class="modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>আপনার মতামত লিখুন</h3>
+          <button class="close-icon-btn" onclick="closeModal('feedbackModal')">×</button>
+        </div>
+        <input type="text" id="fbName" placeholder="আপনার নাম">
+        <textarea id="fbMsg" rows="4" placeholder="আপনার বার্তা..."></textarea>
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeModal('feedbackModal')">ক্যানসেল</button>
+          <button class="btn btn-blue" style="width:auto;" onclick="submitFeedback()">পাঠিয়ে দিন</button>
+        </div>
       </div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('editScheduleModal')">ক্যানসেল</button>
-      <button class="btn btn-blue" style="width:auto;" onclick="submitExamUpdate()">আপডেট সংরক্ষণ</button>
-    </div>
-  </div>
-</div>
-
-<!-- প্রিভিউ মডাল -->
-<div id="adminPreviewModal" class="modal">
-  <div class="modal-box" style="max-width: 680px; border: 2px solid #7c3aed;">
-    <div class="modal-header">
-      <h3 style="color: #7c3aed;">👁️ পাবলিশ পূর্বরূপ (Preview)</h3>
-      <button class="close-icon-btn" onclick="closeModal('adminPreviewModal')">×</button>
-    </div>
-    <div id="previewContentContainer" style="max-height: 480px; overflow-y: auto; padding: 6px 0;"></div>
-    <div class="modal-btns">
-      <button class="btn btn-blue" style="width: auto;" onclick="closeModal('adminPreviewModal')">ঠিক আছে</button>
-    </div>
-  </div>
-</div>
-
-<div id="feedbackModal" class="modal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>আপনার মতামত লিখুন</h3>
-      <button class="close-icon-btn" onclick="closeModal('feedbackModal')">×</button>
-    </div>
-    <input type="text" id="fbName" placeholder="আপনার নাম">
-    <textarea id="fbMsg" rows="4" placeholder="আপনার বার্তা..."></textarea>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('feedbackModal')">ক্যানসেল</button>
-      <button class="btn btn-blue" style="width:auto;" onclick="submitFeedback()">পাঠিয়ে দিন</button>
     </div>
   </div>
 </div>
 
 <!-- স্ক্রিপ্ট অংশ -->
 <script>
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwS6RToyGI5q4DcC0UnVzPKsoBvrKeBvGsWr5TA2Rmqd1p-sTLySufnKpfPRZYT84c/exec";
-var SERVER_URL = SCRIPT_URL;
+// === ১. ফ্রেশ ডাইনামিক হোস্ট ও ngrok কনফিগারেশন (গুগল ড্রাইভ ও শিট সম্পূর্ণ মুক্ত) ===
+const BASE_HOST_URL = (window.location.origin && window.location.origin.startsWith("http")) ? window.location.origin : "";
+var SCRIPT_URL = BASE_HOST_URL;
+var SERVER_URL = BASE_HOST_URL;
+const UBUNTU_SERVER_URL = BASE_HOST_URL;
+const LAPTOP_SERVER_URL = BASE_HOST_URL;
+const GOOGLE_BACKUP_URL = "";
+const GOOGLE_SHEET_URL = "";
+
 let activeExamData = null;
 let examTimerInterval = null;
 let smartParsedMcq = [];
@@ -2314,7 +2293,7 @@ function renderGk(tab, filter = "") {
         <div class="gk-cat-title">📁 ${cat.category}</div>
         ${matchedItems.map((it, idx) => `
           <div class="gk-item">
-            <div class="gk-q">${idx + 1}. ${it.q}</div>
+            <div class="gk-q">${idx + 1}.${it.q}</div>
             <div class="gk-a">উত্তরঃ ${it.a}</div>
           </div>
         `).join('')}
@@ -2397,7 +2376,6 @@ function loadLiveFormulas() {
       });
     }
   });
-
 }
 
 function loadAdminExamList() {
@@ -2453,7 +2431,7 @@ function submitExamUpdate() {
     publishTime: document.getElementById('editExamTime').value,
     mcqDuration: document.getElementById('editExamMcqDur').value,
     cqDuration: document.getElementById('editExamCqDur').value,
-	mcqList: document.getElementById('editExamMcqJson').value,
+    mcqList: document.getElementById('editExamMcqJson').value,
     cqDescription: document.getElementById('editExamCqDesc').value,
   }, res => {
     if (res && res.success) {
@@ -2577,12 +2555,10 @@ function switchExamSection(mode) {
     const timerBox = document.getElementById('timerBox');
     const submitBtn = document.getElementById('examSubmitBtn');
 
-    // ডিফল্টভাবে সব সেকশন বন্ধ রাখা
     if (mcqSec)  mcqSec.style.display  = 'none';
     if (cqSec)   cqSec.style.display   = 'none';
     if (textSec) textSec.style.display = 'none';
 
-    // সেক্টর অনুযায়ী সঠিক সেকশন অন করা
     if (mode === 'mcq') {
         if (mcqSec) mcqSec.style.display = 'block';
         if (timerBox) timerBox.style.display = 'inline-block';
@@ -2601,7 +2577,6 @@ function switchExamSection(mode) {
         if (timerBox) timerBox.style.display = 'inline-block';
         if (submitBtn) submitBtn.innerText = "MCQ ও CQ খাতা জমা";
     } else if (mode === 'mcq_text') {
-        // CQ আসবে না, শুধু MCQ এবং সংক্ষিপ্ত প্রশ্ন আসবে
         if (mcqSec)  mcqSec.style.display  = 'block';
         if (textSec) textSec.style.display = 'block';
         if (timerBox) timerBox.style.display = 'inline-block';
@@ -2611,7 +2586,7 @@ function switchExamSection(mode) {
         if (textSec) textSec.style.display = 'block';
         if (timerBox) timerBox.style.display = 'none';
         if (submitBtn) submitBtn.innerText = "CQ ও সংক্ষিপ্ত খাতা জমা";
-    } else { // 'all' অথবা 'mcq_cq_text'
+    } else {
         if (mcqSec)  mcqSec.style.display  = 'block';
         if (cqSec)   cqSec.style.display   = 'block';
         if (textSec) textSec.style.display = 'block';
@@ -2620,19 +2595,96 @@ function switchExamSection(mode) {
     }
 }
 
+function goToPage(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + n).classList.add('active');
+  if (n === 2) loadNoticesAndMotivation();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add('show');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+  if(id === 'liveExamModal' && examTimerInterval) clearInterval(examTimerInterval);
+}
+
+function setBtnLoading(btn, text = "অপেক্ষা করুন...") {
+  if (!btn) return null;
+  const originalText = btn.innerHTML;
+  btn.innerHTML = `⏳ ${text}`;
+  btn.disabled = true;
+  btn.style.cursor = "not-allowed";
+  btn.style.opacity = "0.7";
+  return () => {
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+    btn.style.cursor = "pointer";
+    btn.style.opacity = "1";
+  };
+}
+
+function showAdminMessage(msg) {
+  const banner = document.getElementById('adminSuccessAlert');
+  banner.innerText = msg;
+  banner.style.display = "block";
+  setTimeout(() => { banner.style.display = "none"; }, 4000);
+}
+
+// === ২. লোকাল Node.js ও ngrok উপযোগী ফ্রেশ postData ফাংশন ===
+function postData(data, callback, btn = null) {
+  let resetBtn = null;
+  if (btn) {
+    let originalText = btn.innerHTML;
+    btn.innerHTML = "⏳ অপেক্ষা করুন...";
+    btn.disabled = true;
+    resetBtn = () => {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    };
+  }
+
+  fetch(BASE_HOST_URL + "/handle-all", {
+    method: "POST",
+    headers: { 
+      "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "69420"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("সার্ভার কোড: " + res.status);
+    return res.json();
+  })
+  .then(resData => {
+    if (resetBtn) resetBtn();
+    if (callback) callback(resData);
+  })
+  .catch(err => {
+    if (resetBtn) resetBtn();
+    console.error("সার্ভার ত্রুটি:", err);
+    alert("সার্ভারের সাথে সংযোগ স্থাপন সম্ভব হয়নি! টার্মিনালে node server.js চালু আছে কি না পরীক্ষা করুন।");
+  });
+}
 function loadAndStartExam() {
   const btn = event?.currentTarget || event?.target;
   const reg = document.getElementById('stExReg').value;
-  const classVal = document.getElementById('stExClass').value.trim();
-  const subject = document.getElementById('stExSubject').value.trim();
+  const classVal = document.getElementById('stExClassDisplay').value.trim();
+  const subject = document.getElementById('stExSubjectSelect').value.trim();
 
   if (!reg || !classVal || !subject) return alert("সকল তথ্য দিন!");
-// শিক্ষার্থী পূর্বে পরীক্ষাটি সম্পন্ন করেছে কি না যাচাই
-    const checkLockKey = 'lock_' + reg + '_' + classVal + '_' + subject;
-    if (localStorage.getItem(checkLockKey)) {
-        alert("⚠️ আপনি ইতিমধ্যে এই বিষয়ের পরীক্ষা সম্পন্ন করেছেন!");
-        return;
-    }
+
+  const checkLockKey = 'lock_' + reg + '_' + classVal + '_' + subject;
+  if (localStorage.getItem(checkLockKey)) {
+    alert("⚠️ আপনি ইতিমধ্যে এই বিষয়ের পরীক্ষা সম্পন্ন করেছেন!");
+    return;
+  }
+
   postData({ action: "getStudentByClass", reg: reg, classVal: classVal }, stRes => {
     if (stRes && stRes.success) {
       postData({ action: "checkAndGetExam", classVal: classVal, subject: subject }, exRes => {
@@ -2643,8 +2695,7 @@ function loadAndStartExam() {
           activeExamData.studentName = stRes.student[1];
           closeModal('examInitModal');
           startLiveExamSession();
-		  // অ্যাডমিন থেকে নির্ধারিত টাইপ অনুযায়ী MCQ / CQ / সংক্ষিপ্ত সেকশন অন করা
-         switchExamSection(activeExamData.examType || activeExamData.type || 'all');
+          switchExamSection(activeExamData.examType || activeExamData.type || 'all');
         } else alert(exRes.message || "পরীক্ষা পাওয়া যায়নি!");
       }, btn);
     } else alert("শিক্ষার্থীর তথ্য মেলেনি!");
@@ -2652,98 +2703,94 @@ function loadAndStartExam() {
 }
 
 function startLiveExamSession() {
-    if (typeof examTimerInterval !== 'undefined') clearInterval(examTimerInterval);
+  if (typeof examTimerInterval !== 'undefined') clearInterval(examTimerInterval);
 
-    // ১. পরীক্ষার প্রাথমিক তথ্য সেট করা
-    var data = (typeof activeExamData !== 'undefined' && activeExamData) ? activeExamData : {};
-    var subjEl = document.getElementById('liveSubjectTitle');
-    var stdEl = document.getElementById('liveStudentName');
-    var marksEl = document.getElementById('liveTotalMarks');
-    if (subjEl) subjEl.innerText = data.subject || '';
-    if (stdEl) stdEl.innerText = data.studentName || '';
-    if (marksEl) marksEl.innerText = data.totalMarks || '';
+  var data = (typeof activeExamData !== 'undefined' && activeExamData) ? activeExamData : {};
+  var subjEl = document.getElementById('liveSubjectTitle');
+  var stdEl = document.getElementById('liveStudentName');
+  var marksEl = document.getElementById('liveTotalMarks');
+  if (subjEl) subjEl.innerText = data.subject || '';
+  if (stdEl) stdEl.innerText = data.studentName || '';
+  if (marksEl) marksEl.innerText = data.totalMarks || '';
 
-    // ২. MCQ প্রশ্ন রেন্ডার করা
-    var container = document.getElementById('questionsRenderContainer');
-    var mcqList = Array.isArray(data.mcq) ? data.mcq : [];
-    if (container) {
-        var mcqHtml = '';
-        for (var i = 0; i < mcqList.length; i++) {
-            var q = mcqList[i] || {};
-            var qText = q.q || '';
-            var qOpts = Array.isArray(q.options) ? q.options : [];
-            var qId = (q && q.id) ? q.id : i;
-            
-            mcqHtml += '<div class="question-box">';
-            mcqHtml += '<p style="font-weight:700; font-size:0.95rem; margin-bottom:8px;">' + (i + 1) + '. ' + qText + '</p>';
-            for (var j = 0; j < qOpts.length; j++) {
-                var opt = qOpts[j];
-                mcqHtml += '<label class="opt-label">';
-                mcqHtml += '<span>' + opt + '</span>';
-                mcqHtml += '<input type="radio" name="ans_' + qId + '" value="' + opt + '">';
-                mcqHtml += '</label>';
-            }
-            mcqHtml += '</div>';
-        }
-        container.innerHTML = mcqHtml;
+  var container = document.getElementById('questionsRenderContainer');
+  var mcqList = Array.isArray(data.mcq) ? data.mcq : [];
+  if (container) {
+    var mcqHtml = '';
+    for (var i = 0; i < mcqList.length; i++) {
+      var q = mcqList[i] || {};
+      var qText = q.q || q.question || '';
+      var qOpts = Array.isArray(q.options) ? q.options : [];
+      var qId = (q && q.id) ? q.id : i;
+      
+      mcqHtml += '<div class="question-box">';
+      mcqHtml += '<p style="font-weight:700; font-size:0.95rem; margin-bottom:8px;">' + (i + 1) + '. ' + qText + '</p>';
+      for (var j = 0; j < qOpts.length; j++) {
+        var opt = qOpts[j];
+        // ডাবল ক) বা (ক) মুছে ফেলা
+        var cleanOpt = String(opt).replace(/^[\(\[\{]?[কখগঘabcdABCD][\)\]\}\.\-:\s]*/i, '').trim();
+        var optLabel = ['ক', 'খ', 'গ', 'ঘ'][j] || (j + 1);
+        
+        mcqHtml += '<label class="opt-label">';
+        mcqHtml += '<span>' + optLabel + ') ' + cleanOpt + '</span>';
+        mcqHtml += '<input type="radio" name="ans_' + qId + '" value="' + opt + '">';
+        mcqHtml += '</label>';
+      }
+      mcqHtml += '</div>';
     }
+    container.innerHTML = mcqHtml;
+  }
 
-    // ৩. লিখিত বা সংক্ষিপ্ত প্রশ্ন স্ক্রিনে প্রদর্শন করা
-    var textCont = document.getElementById('textQuestionContainer') || document.getElementById('cqFormattedContainer');
-    var textBody = data.textQuestion || data.cqText || data.description || '';
-    if (textCont && textBody) {
-        textCont.style.display = 'block';
-        textCont.innerHTML = '<div style="padding:15px; font-size:1rem; line-height:1.6; color:#000;">' + textBody + '</div>';
+  var textCont = document.getElementById('textQuestionContainer') || document.getElementById('cqFormattedContainer');
+  var textBody = data.textQuestion || data.cqDescription || data.description || '';
+  if (textCont && textBody) {
+    textCont.style.display = 'block';
+    textCont.innerHTML = renderFormattedCQ(textBody);
+  }
+
+  var modalEl = document.getElementById('liveExamModal');
+  if (modalEl) {
+    modalEl.style.display = 'block';
+    modalEl.style.zIndex = '99999';
+  }
+  if (typeof openModal === 'function') {
+    openModal('liveExamModal');
+  }
+
+  var currentData = (typeof activeExamData !== 'undefined' && activeExamData) ? activeExamData : (typeof data !== 'undefined' ? data : {});
+  var currentMode = (currentData.actualMode || currentData.examMode || currentData.mode || currentData.type || currentData.examType || '').toLowerCase();
+
+  if (typeof switchExamSection === 'function') {
+    if (currentMode.includes('text') || currentMode.includes('desc') || currentMode === 'only_text' || (!currentData.mcq || currentData.mcq.length === 0)) {
+      switchExamSection('text');
+      document.querySelectorAll('[id*="upload"], [id*="Upload"], [class*="upload"]').forEach(function(el) {
+        el.style.display = 'block';
+      });
+    } else if (currentMode.includes('cq') && !currentMode.includes('mcq')) {
+      switchExamSection('cq');
+    } else if (currentMode.includes('mcq') && !currentMode.includes('cq') && !currentMode.includes('text')) {
+      switchExamSection('mcq');
+    } else {
+      switchExamSection('all');
     }
+  }
 
-    // ৪. মডাল বক্স স্ক্রিনে দৃশ্যমান করা
-    var modalEl = document.getElementById('liveExamModal');
-    if (modalEl) {
-        modalEl.style.display = 'block';
-        modalEl.style.zIndex = '99999';
+  var duration = parseInt(data.mcqDuration) || parseInt(data.totalMarks) || parseInt(data.duration) || 30;
+  var timeLeft = duration * 60;
+  var display = document.getElementById('timerDisplay');
+  
+  examTimerInterval = setInterval(function () {
+    var m = Math.floor(timeLeft / 60);
+    var s = timeLeft % 60;
+    if (display) {
+      display.innerText = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
     }
-    if (typeof openModal === 'function') {
-        openModal('liveExamModal');
+    if (--timeLeft < 0) {
+      clearInterval(examTimerInterval);
+      alert("পরীক্ষার সময় শেষ! খাতা জমা নেওয়া হচ্ছে...");
+      if (typeof submitLiveExam === 'function') submitLiveExam(true);
     }
-
-  // ডাটা থেকে মোড নিশ্চিত করা
-    var currentData = (typeof activeExamData !== 'undefined' && activeExamData) ? activeExamData : (typeof data !== 'undefined' ? data : {});
-    var currentMode = (currentData.actualMode || currentData.examMode || currentData.mode || currentData.type || '').toLowerCase();
-
-    // সংক্ষিপ্ত বা বর্ণনামূলক মোড থাকলে সরাসরি চালু করা
-    if (typeof switchExamSection === 'function') {
-        if (currentMode.includes('text') || currentMode.includes('desc') || currentMode === 'only_text' || (!currentData.mcq || currentData.mcq.length === 0)) {
-            switchExamSection('text');
-            document.querySelectorAll('[id*="upload"], [id*="Upload"], [class*="upload"]').forEach(function(el) {
-                el.style.display = 'block';
-            });
-        } else if (currentMode.includes('cq') && !currentMode.includes('mcq')) {
-            switchExamSection('cq');
-        } else if (currentMode.includes('mcq') && !currentMode.includes('cq') && !currentMode.includes('text')) {
-            switchExamSection('mcq');
-        } else {
-            switchExamSection('all');
-        }
-    
-    }
-
-    // ৬. টাইমার চালু করা
-    var duration = parseInt(data.mcqDuration) || parseInt(data.totalMarks) || parseInt(data.duration) || 30;
-    var timeLeft = duration * 60;
-    var display = document.getElementById('timerDisplay');
-    
-    examTimerInterval = setInterval(function () {
-        var m = Math.floor(timeLeft / 60);
-        var s = timeLeft % 60;
-        if (display) {
-            display.innerText = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
-        }
-        if (--timeLeft < 0) {
-            clearInterval(examTimerInterval);
-            alert("পরীক্ষার সময় শেষ! খাতা জমা নেওয়া হচ্ছে...");
-            if (typeof submitLiveExam === 'function') submitLiveExam(true);
-        }
-    }, 1000);
+  }, 1000);
 }
 
 function showExamReview(res) {
@@ -2883,71 +2930,6 @@ function speakWord() {
   window.speechSynthesis.speak(utterance);
 }
 
-function goToPage(n) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page' + n).classList.add('active');
-  if (n === 2) loadNoticesAndMotivation();
-}
-
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-}
-
-function openModal(id) {
-  document.getElementById(id).classList.add('show');
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('show');
-  if(id === 'liveExamModal' && examTimerInterval) clearInterval(examTimerInterval);
-}
-
-function setBtnLoading(btn, text = "অপেক্ষা করুন...") {
-  if (!btn) return null;
-  const originalText = btn.innerHTML;
-  btn.innerHTML = `⏳ ${text}`;
-  btn.disabled = true;
-  btn.style.cursor = "not-allowed";
-  btn.style.opacity = "0.7";
-  return () => {
-    btn.innerHTML = originalText;
-    btn.disabled = false;
-    btn.style.cursor = "pointer";
-    btn.style.opacity = "1";
-  };
-}
-
-function showAdminMessage(msg) {
-  const banner = document.getElementById('adminSuccessAlert');
-  banner.innerText = msg;
-  banner.style.display = "block";
-  setTimeout(() => { banner.style.display = "none"; }, 4000);
-}
-
-function postData(data, callback, btn = null) {
-  const resetBtn = btn ? setBtnLoading(btn) : null;
-  fetch("https://script.google.com/macros/s/AKfycbwS6RToyGI5q4DcC0UnVzPKsoBvrKeBvGsWr5TA2Rmqd1p-sTLySufnKpfPRZYT84c/exec", {
-    method: "POST",
-    headers: { 
-      "Content-Type": "application/json",
-      "ngrok-skip-browser-warning": "true"
-    },
-    body: JSON.stringify(data)
-  })
-  .then(r => {
-    if (!r.ok) throw new Error("Server status " + r.status);
-    return r.json();
-  })
-  .then(res => {
-    if (resetBtn) resetBtn();
-    if (callback) callback(res);
-  })
-  .catch(err => {
-    if (resetBtn) resetBtn();
-    console.error("Server Error:", err);
-  });
-}
-
 function compressImage(file, maxWidth = 350, quality = 0.5) {
   return new Promise((resolve, reject) => {
     if (!file.type.match(/image.*/)) {
@@ -2970,7 +2952,7 @@ function compressImage(file, maxWidth = 350, quality = 0.5) {
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-        resolve({ base64: canvas.toDataURL('image/jpeg', quality), mime: 'image/jpeg' });
+        resolve({ base64: canvas.toDataURL("image/jpeg", quality), mime: 'image/jpeg' });
       };
       img.src = re.target.result;
     };
@@ -2990,41 +2972,34 @@ function verifyAdminAccess() {
   postData({ action: "adminLogin", pin: pin }, res => {
     if (res && res.success) {
       closeModal('adminGateModal');
-       openModal('adminPanelModal');
-
+      openModal('adminPanelModal');
     } else alert("ভুল এডমিন পিন!");
   }, btn);
 }
 
 function switchAdminTab(event, tabId) {
-  // ১. সব ট্যাবের কন্টেন্ট হাইড করা
   document.querySelectorAll('.admin-tab-content').forEach(function(c) {
     c.classList.add('hidden');
     c.style.display = 'none';
   });
 
-  // ২. যদি ক্যানভাস বা ড্রয়িং খোলা থাকে তাও হাইড করা
   var canvasArea = document.getElementById('digitalCanvasWorkarea');
   if (canvasArea) canvasArea.style.display = 'none';
 
-  // ৩. বাটনগুলোর একটিভ ক্লাস রিমুভ করা
   document.querySelectorAll('.admin-tab-btn').forEach(function(b) {
     b.classList.remove('active');
   });
 
-  // ৪. টার্গেট ট্যাব থাকলে সেটি দেখানো
   var target = document.getElementById(tabId);
   if (target) {
     target.classList.remove('hidden');
-    target.style.display = 'block'; // flex এর বদলে block দিন, যাতে ভেতরের লেআউট ভেঙে না যায়
+    target.style.display = 'block';
   }
 
-  // ৫. যদি ইভেন্ট থাকে তবে সংশ্লিষ্ট বাটনে active ক্লাস দেওয়া
   if (event && event.currentTarget) {
     event.currentTarget.classList.add('active');
   }
 
-  // ৬. মেমরিতে সেভ রাখা
   try {
     localStorage.setItem('last_active_tab_id', tabId);
   } catch(e) {}
@@ -3065,13 +3040,13 @@ function autoParseMCQSmart() {
       for (let i = 0; i < 4; i++) {
         let start = optMatches[i].index;
         let end = (i + 1 < 4) ? optMatches[i + 1].index : text.length;
-        let optStr = text.substring(start, end).replace(/^[কখগঘabcdABCD\)\.\-:\s]+/i, '').trim();
+       let optStr = text.substring(start, end).replace(/^[\(\[\{]?[কখগঘabcdABCD][\)\]\}\.\-:\s]*/i, '').trim();
         if (optStr) options.push(optStr);
       }
     } else {
       const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
       if (lines.length >= 5) {
-        options = lines.slice(-4).map(l => l.replace(/^[কখগঘabcdABCD\)\.\-:\s]+/i, '').trim());
+        options = lines.slice(-4).map(l => l.replace(/^[\(\[\{]?[কখগঘabcdABCD][\)\]\}\.\-:\s]*/i, '').trim());
         qText = lines.slice(0, -4).join('<br>').replace(/^[০-৯\d]+[\.\)]\s*/, '').trim();
       } else {
         qText = lines[0] ? lines[0].replace(/^[০-৯\d]+[\.\)]\s*/, '').trim() : "প্রশ্ন";
@@ -3115,7 +3090,7 @@ function renderAdminMcqPreview() {
       <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
         ${q.options.map((opt, optIdx) => `
           <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-            <input type="radio" name="preview_ans_${i}" value="${optIdx}" ${opt === q.correctAnswer ? 'checked' : ''} onchange="updateCorrectAnswerManual(${i}, ${optIdx})">
+            <input type="radio" name="preview_ans_${i}" value="${optIdx}" ${opt === q.correctAnswer ? 'checked' : ''} onchange="updateCorrectAnswerManual(${i},${optIdx})">
             <span style="${opt === q.correctAnswer ? 'color:#15803d; font-weight:bold;' : ''}">${['ক', 'খ', 'গ', 'ঘ'][optIdx]}) ${opt}</span>
           </label>
         `).join('')}
@@ -3137,7 +3112,6 @@ function previewExamBeforePublish() {
   const textDesc = document.getElementById('adminTextQuestionInput')?.innerHTML.trim() || '';
   const container = document.getElementById('previewContentContainer');
 
-  // নির্দিষ্ট টাইপ যাচাই
   const showMcq = (examType === 'mcq' || examType === 'mcq_cq' || examType === 'mcq_text' || examType === 'mcq_cq_text');
   const showCq = (examType === 'cq' || examType === 'mcq_cq' || examType === 'cq_text' || examType === 'mcq_cq_text');
   const showText = (examType === 'text' || examType === 'mcq_text' || examType === 'cq_text' || examType === 'mcq_cq_text');
@@ -3151,7 +3125,6 @@ function previewExamBeforePublish() {
     </div>
   `;
 
-  // ক. আলাদা MCQ প্রিভিউ কার্ড
   let mcqHtml = "";
   if (showMcq) {
     let mcqListHtml = "";
@@ -3162,8 +3135,7 @@ function previewExamBeforePublish() {
           <div style="display:flex; flex-direction:column; gap:4px;">
             ${q.options.map((opt, oIdx) => `
               <div class="opt-label" style="margin:2px 0; padding:6px 10px; border-radius:6px; background:#f8fafc; border:1px solid #e2e8f0; ${opt === q.correctAnswer ? 'font-weight:bold; color:#15803d; background:#f0fdf4; border-color:#86efac;' : 'color:#334155;'}">
-                <span>${['ক', 'খ', 'গ', 'ঘ'][oIdx]}) ${opt}</span>
-                ${opt === q.correctAnswer ? '<span style="color:#15803d; font-size:0.8rem;">✅ (সঠিক উত্তর)</span>' : ''}
+                <span>${['ক', 'খ', 'গ', 'ঘ'][oIdx]}) ${opt}</span>${opt === q.correctAnswer ? '<span style="color:#15803d; font-size:0.8rem;">✅ (সঠিক উত্তর)</span>' : ''}
               </div>
             `).join('')}
           </div>
@@ -3185,7 +3157,6 @@ function previewExamBeforePublish() {
     `;
   }
 
-  // খ. আলাদা CQ (সৃজনশীল) প্রিভিউ কার্ড
   let cqHtml = "";
   if (showCq) {
     let cqContentHtml = "";
@@ -3203,7 +3174,6 @@ function previewExamBeforePublish() {
     `;
   }
 
-  // গ. আলাদা সংক্ষিপ্ত / বর্ণনামূলক প্রিভিউ কার্ড
   let textHtml = "";
   if (showText) {
     let textContentHtml = "";
@@ -3315,76 +3285,70 @@ function loadFullProfile() {
       document.getElementById('cardStudentReg').innerText = res.student[0];
       document.getElementById('cardStudentFather').innerText = res.student[2];
       document.getElementById('cardStudentMobile').innerText = res.student[5];
- if (res.results && res.results.length > 0) {
-            let boxesHtml = '';
-       // বাংলা সংখ্যাকে ইংরেজিতে রূপান্তরের লজিক
-            function toEngNum(str) {
-                const bnNums = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
-                return String(str || '').replace(/[০-৯]/g, d => bnNums[d]).replace(/\b0+(\d)/g, '$1');
-            }
 
-            // ডুপ্লিকেট পরীক্ষা ফিল্টার (বাংলা-ইংরেজি তারিখ ও নম্বরের অমিল দূর করতে)
-            let uniqueResults = [];
-            let seenExams = new Set();
-            for (let k = 0; k < res.results.length; k++) {
-                let row = res.results[k];
-                let cleanDate = toEngNum(row[0]).replace(/\s+/g, '');
-                let cleanSub = String(row[3] || '').trim();
-                let mcq = toEngNum(row[4] !== undefined ? row[4] : 0);
-                let written = toEngNum(row[5] !== undefined ? row[5] : 0);
-
-                let key = cleanDate + '_' + cleanSub + '_' + mcq + '_' + written;
-
-                if (!seenExams.has(key)) {
-                    seenExams.add(key);
-                    uniqueResults.push(row);
-                }
-            }
-
-            for (let i = 0; i < uniqueResults.length; i++) {
-                let r = uniqueResults[i];
-				console.log("Exam row data:", r);
-                let examDate = r[0] || 'তারিখ নেই';
-                let stClass = r[2] || (res.student ? res.student[4] : '') || '';
-                let stReg = r[1] || (res.student ? res.student[0] : '') || '';
-                let subName = (r[3] && String(r[3]).trim() !== '') ? r[3] : ('পরীক্ষা ' + (i + 1));
-                let mcqMarks = r[4] !== undefined ? r[4] : 0;
-                let writtenMarks = r[5] !== undefined ? r[5] : 0;
-                let totalMarks = r[6] !== undefined ? r[6] : (Number(mcqMarks) + Number(writtenMarks));
-                let grade = r[7] || '';
-                let fileVal = r[9] ? String(r[9]).trim() : '';
-                let hasFile = fileVal !== '' && fileVal !== 'null' && fileVal !== 'undefined' && fileVal !== '0' && fileVal !== '-';
-
-               // খাতা মূল্যায়ন বাটন (মূল্যায়ন হলে সবুজ, না হলে হলুদ)
-                let khataBtn = hasFile 
-                    ? '<button type="button" onclick="event.stopPropagation(); openStudentEvaluatedScriptViewer(' + i + ')" style="flex:1; background:#16a34a; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📄 খাতা মূল্যায়ন</button>'
-                    : '<button type="button" onclick="event.stopPropagation(); alert(\'এই পরীক্ষার খাতা এখনো মূল্যায়ন করা হয়নি!\')" style="flex:1; background:#fef3c7; color:#b45309; border:1px solid #fde68a; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ খাতা প্রক্রিয়াধীন</button>';
-
-                // রেজাল্ট ট্রান্সক্রিপ্ট বাটন
-                let transcriptBtn = '<button type="button" onclick="event.stopPropagation(); generateSscMarksheet(' + i + ')" style="flex:1; background:#2563eb; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📑 রেজাল্ট ট্রান্সক্রিপ্ট</button>';
-
-                let borderStyle = hasFile ? 'border: 1.5px solid #22c55e;' : 'border: 1.5px solid #cbd5e1;';
-
-                boxesHtml += '<div style="background:#ffffff; ' + borderStyle + ' border-radius:10px; padding:14px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.05); margin-bottom:10px;">' +
-                    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
-                        '<span style="font-size:14px; color:#1e293b; font-weight:bold;">বিষয়: ' + subName + '</span>' +
-                        '<span style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:bold;">নম্বর: ' + totalMarks + (grade ? ' (' + grade + ')' : '') + '</span>' +
-                    '</div>' +
-                    '<div style="font-size:11px; color:#64748b; margin-bottom:10px;">তারিখ: ' + examDate + ' | MCQ: ' + mcqMarks + ' | লিখিত: ' + writtenMarks + '</div>' +
-                    '<div style="display:flex; gap:8px; border-top:1px dashed #cbd5e1; padding-top:10px;">' +
-                        khataBtn +
-                        transcriptBtn +
-                    '</div>' +
-                '</div>';
-            }
-            document.getElementById('examHistoryList').innerHTML = '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:12px; margin-top:10px;">' + boxesHtml + '</div>';
-        } else {
-            document.getElementById('examHistoryList').innerHTML = '<div style="color:#64748b; padding:15px; text-align:center;">কোনো পরীক্ষার মূল্যায়ন তথ্য পাওয়া যায়নি।</div>';
+      if (res.results && res.results.length > 0) {
+        let boxesHtml = '';
+        function toEngNum(str) {
+          const bnNums = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+          return String(str || '').replace(/[০-৯]/g, d => bnNums[d]).replace(/\b0+(\d)/g, '$1');
         }
+
+        let uniqueResults = [];
+        let seenExams = new Set();
+        for (let k = 0; k < res.results.length; k++) {
+          let row = res.results[k];
+          let cleanDate = toEngNum(row[0]).replace(/\s+/g, '');
+          let cleanSub = String(row[3] || '').trim();
+          let mcq = toEngNum(row[4] !== undefined ? row[4] : 0);
+          let written = toEngNum(row[5] !== undefined ? row[5] : 0);
+
+          let key = cleanDate + '_' + cleanSub + '_' + mcq + '_' + written;
+
+          if (!seenExams.has(key)) {
+            seenExams.add(key);
+            uniqueResults.push(row);
+          }
+        }
+
+        for (let i = 0; i < uniqueResults.length; i++) {
+          let r = uniqueResults[i];
+          let examDate = r[0] || 'তারিখ নেই';
+          let subName = (r[3] && String(r[3]).trim() !== '') ? r[3] : ('পরীক্ষা ' + (i + 1));
+          let mcqMarks = r[4] !== undefined ? r[4] : 0;
+          let writtenMarks = r[5] !== undefined ? r[5] : 0;
+          let totalMarks = r[6] !== undefined ? r[6] : (Number(mcqMarks) + Number(writtenMarks));
+          let grade = r[7] || '';
+          // r[9] হলো এডমিনের মূল্যায়িত খাতা (evaluatedUrl)
+          let evalVal = (r[9] !== undefined && r[9] !== null) ? String(r[9]).trim() : '';
+          let hasFile = evalVal !== '' && evalVal !== 'null' && evalVal !== 'undefined' && evalVal !== '0' && evalVal !== '-';
+		  
+          let khataBtn = hasFile 
+            ? '<button type="button" onclick="event.stopPropagation(); openStudentEvaluatedScriptViewer(' + i + ')" style="flex:1; background:#16a34a; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📄 খাতা মূল্যায়ন</button>'
+            : '<button type="button" onclick="event.stopPropagation(); alert(\'এই পরীক্ষার খাতা এখনো মূল্যায়ন করা হয়নি!\')" style="flex:1; background:#fef3c7; color:#b45309; border:1px solid #fde68a; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ খাতা প্রক্রিয়াধীন</button>';
+
+          let transcriptBtn = '<button type="button" onclick="event.stopPropagation(); generateSscMarksheet(' + i + ')" style="flex:1; background:#2563eb; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📑 রেজাল্ট ট্রান্সক্রিপ্ট</button>';
+
+          let borderStyle = hasFile ? 'border: 1.5px solid #22c55e;' : 'border: 1.5px solid #cbd5e1;';
+
+          boxesHtml += '<div style="background:#ffffff; ' + borderStyle + ' border-radius:10px; padding:14px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.05); margin-bottom:10px;">' +
+            '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
+              '<span style="font-size:14px; color:#1e293b; font-weight:bold;">বিষয়: ' + subName + '</span>' +
+              '<span style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:bold;">নম্বর: ' + totalMarks + (grade ? ' (' + grade + ')' : '') + '</span>' +
+            '</div>' +
+            '<div style="font-size:11px; color:#64748b; margin-bottom:10px;">তারিখ: ' + examDate + ' | MCQ: ' + mcqMarks + ' | লিখিত: ' + writtenMarks + '</div>' +
+            '<div style="display:flex; gap:8px; border-top:1px dashed #cbd5e1; padding-top:10px;">' +
+              khataBtn +
+              transcriptBtn +
+            '</div>' +
+          '</div>';
+        }
+        document.getElementById('examHistoryList').innerHTML = '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:12px; margin-top:10px;">' + boxesHtml + '</div>';
+      } else {
+        document.getElementById('examHistoryList').innerHTML = '<div style="color:#64748b; padding:15px; text-align:center;">কোনো পরীক্ষার মূল্যায়ন তথ্য পাওয়া যায়নি।</div>';
+      }
     } else alert("শিক্ষার্থীর তথ্য মেলেনি!");
   }, btn);
 }
-
 
 async function uploadNewProfilePhoto() {
   const file = document.getElementById('changePhotoInput').files[0];
@@ -3475,68 +3439,62 @@ function studentLogin() {
           document.getElementById('cardStudentReg').innerText = pRes.student[0];
           document.getElementById('cardStudentFather').innerText = pRes.student[2];
           document.getElementById('cardStudentMobile').innerText = pRes.student[5];
-         if (pRes.results && pRes.results.length > 0) {
+
+          if (pRes.results && pRes.results.length > 0) {
             let boxesHtml = '';
-            for (let i = 0; i < pRes.results.length; i++) {
-               // ডুপ্লিকেট পরীক্ষা ফিল্টার (২ সার্ভারের ডাবল এন্ট্রি বন্ধ করার জন্য)
             let uniqueResults = [];
             let seenExams = new Set();
             for (let k = 0; k < pRes.results.length; k++) {
-                let row = pRes.results[k];
-                let key = String(row[0] || '').trim() + '_' + String(row[3] || '').trim();
-                if (!seenExams.has(key)) {
-                    seenExams.add(key);
-                    uniqueResults.push(row);
-                }
+              let row = pRes.results[k];
+              let key = String(row[0] || '').trim() + '_' + String(row[3] || '').trim();
+              if (!seenExams.has(key)) {
+                seenExams.add(key);
+                uniqueResults.push(row);
+              }
             }
 
             for (let i = 0; i < uniqueResults.length; i++) {
-                let r = uniqueResults[i];
-                let examDate = r[0] || 'তারিখ নেই';
-                let subName = (r[3] && String(r[3]).trim() !== '') ? r[3] : ('পরীক্ষা ' + (i + 1));
-                let mcqMarks = r[4] !== undefined ? r[4] : 0;
-                let writtenMarks = r[5] !== undefined ? r[5] : 0;
-                let totalMarks = r[6] !== undefined ? r[6] : ((Number(mcqMarks) || 0) + (Number(writtenMarks) || 0));
-                let grade = r[7] || '';
-                let hasFile = r[8] && String(r[8]).trim() !== '';
+              let r = uniqueResults[i];
+              let examDate = r[0] || 'তারিখ নেই';
+              let subName = (r[3] && String(r[3]).trim() !== '') ? r[3] : ('পরীক্ষা ' + (i + 1));
+              let mcqMarks = r[4] !== undefined ? r[4] : 0;
+              let writtenMarks = r[5] !== undefined ? r[5] : 0;
+              let totalMarks = r[6] !== undefined ? r[6] : ((Number(mcqMarks) || 0) + (Number(writtenMarks) || 0));
+              let grade = r[7] || '';
+              let hasFile = r[8] && String(r[8]).trim() !== '';
 
-                let khataBtn = hasFile 
-                    ? '<button type="button" onclick="event.stopPropagation(); openStudentEvaluatedScriptViewer(' + i + ')" style="flex:1; background:#16a34a; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📄 খাতা মূল্যায়ন</button>'
-                    : '<button type="button" onclick="event.stopPropagation(); alert(\'এই পরীক্ষার খাতা এখনো মূল্যায়ন করা হয়নি!\')" style="flex:1; background:#fef3c7; color:#b45309; border:1px solid #fde68a; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ খাতা প্রক্রিয়াধীন</button>';
+              let khataBtn = hasFile 
+                ? '<button type="button" onclick="event.stopPropagation(); openStudentEvaluatedScriptViewer(' + i + ')" style="flex:1; background:#16a34a; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📄 খাতা মূল্যায়ন</button>'
+                : '<button type="button" onclick="event.stopPropagation(); alert(\'এই পরীক্ষার খাতা এখনো মূল্যায়ন করা হয়নি!\')" style="flex:1; background:#fef3c7; color:#b45309; border:1px solid #fde68a; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ খাতা প্রক্রিয়াধীন</button>';
 
-                let transcriptBtn = '<button type="button" onclick="event.stopPropagation(); generateSscMarksheet(' + i + ')" style="flex:1; background:#2563eb; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📑 রেজাল্ট ট্রান্সক্রিপ্ট</button>';
+              let transcriptBtn = '<button type="button" onclick="event.stopPropagation(); generateSscMarksheet(' + i + ')" style="flex:1; background:#2563eb; color:#ffffff; border:none; padding:7px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">📑 রেজাল্ট ট্রান্সক্রিপ্ট</button>';
 
-                let borderStyle = hasFile ? 'border: 1.5px solid #22c55e;' : 'border: 1.5px solid #cbd5e1;';
+              let borderStyle = hasFile ? 'border: 1.5px solid #22c55e;' : 'border: 1.5px solid #cbd5e1;';
 
-                boxesHtml += '<div style="background:#ffffff; ' + borderStyle + ' border-radius:10px; padding:14px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.05); margin-bottom:10px;">' +
-                    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
-                        '<span style="font-size:14px; color:#1e293b; font-weight:bold;">বিষয়: ' + subName + '</span>' +
-                        '<span style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:bold;">নম্বর: ' + totalMarks + (grade ? ' (' + grade + ')' : '') + '</span>' +
-                    '</div>' +
-                    '<div style="font-size:11px; color:#64748b; margin-bottom:10px;">তারিখ: ' + examDate + ' | MCQ: ' + mcqMarks + ' | লিখিত: ' + writtenMarks + '</div>' +
-                    '<div style="display:flex; gap:8px; border-top:1px dashed #cbd5e1; padding-top:10px;">' +
-                        khataBtn +
-                        transcriptBtn +
-                    '</div>' +
-                '</div>';
-            }
+              boxesHtml += '<div style="background:#ffffff; ' + borderStyle + ' border-radius:10px; padding:14px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.05); margin-bottom:10px;">' +
+                '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
+                  '<span style="font-size:14px; color:#1e293b; font-weight:bold;">বিষয়: ' + subName + '</span>' +
+                  '<span style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:bold;">নম্বর: ' + totalMarks + (grade ? ' (' + grade + ')' : '') + '</span>' +
+                '</div>' +
+                '<div style="font-size:11px; color:#64748b; margin-bottom:10px;">তারিখ: ' + examDate + ' | MCQ: ' + mcqMarks + ' | লিখিত: ' + writtenMarks + '</div>' +
+                '<div style="display:flex; gap:8px; border-top:1px dashed #cbd5e1; padding-top:10px;">' +
+                  khataBtn +
+                  transcriptBtn +
+                '</div>' +
+              '</div>';
             }
             document.getElementById('examHistoryList').innerHTML = '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:12px; margin-top:10px;">' + boxesHtml + '</div>';
-        } else {
+          } else {
             document.getElementById('examHistoryList').innerHTML = '<div style="color:#64748b; padding:15px; text-align:center;">কোনো মূল্যায়ন তথ্য পাওয়া যায়নি।</div>';
-        }
+          }
           
           document.getElementById('pReg').value = reg;
           openModal('profileModal');
-        } 
-		
-		else {
+        } else {
           alert("প্রোফাইল ডেটা লোড করা যায়নি!");
         }
       });
-    } 
-	
-	else {
+    } else {
       alert("ভুল রেজিস্ট্রেশন নম্বর অথবা পিন!");
     }
   }, btn);
@@ -3648,6 +3606,7 @@ window.addEventListener('load', () => {
   const savedNote = localStorage.getItem('gyan_scratchpad');
   if (savedNote && document.getElementById('scratchpadArea')) document.getElementById('scratchpadArea').value = savedNote;
 });
+
 let allAdminSubmissions = [];
 let currentEvalIndex = -1;
 let currentEvalScriptPages = [];
@@ -3665,20 +3624,19 @@ function loadSubmissionsForAdmin() {
 
   postData({ action: "getAllSubmissions" }, res => {
     if (res && res.success && res.list) {
-      // ডুপ্লিকেট খাতা ফিল্টার (ল্যাপটপ ও কম্পিউটার সার্ভার মার্জের ডাবল কার্ড বন্ধ করতে)
-        let uniqueList = [];
-        let seenCards = new Set();
-        (res.list || []).forEach(item => {
-            let reg = String(item.studentReg || item.reg || item[1] || '').trim();
-            let sub = String(item.subject || item[3] || '').trim();
-            let date = String(item.date || item[0] || '').replace(/[০-৯]/g, d => ({'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'}[d])).replace(/\s+/g, '');
-            let key = reg + '_' + sub + '_' + date;
-            if (!seenCards.has(key)) {
-                seenCards.add(key);
-                uniqueList.push(item);
-            }
-        });
-        allAdminSubmissions = uniqueList;
+      let uniqueList = [];
+      let seenCards = new Set();
+      (res.list || []).forEach(item => {
+        let reg = String(item.studentReg || item.reg || item.studentRoll || item[1] || '').trim();
+        let sub = String(item.subject || item[3] || '').trim();
+        let date = String(item.date || item[0] || '').replace(/[০-৯]/g, d => ({'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'}[d])).replace(/\s+/g, '');
+        let key = reg + '_' + sub + '_' + date;
+        if (!seenCards.has(key)) {
+          seenCards.add(key);
+          uniqueList.push(item);
+        }
+      });
+      allAdminSubmissions = uniqueList;
       if (allAdminSubmissions.length === 0) {
         container.innerHTML = '<p style="color:#ef4444; font-size:0.85rem; padding:10px;">কোনো উত্তরপত্র জমা পড়েনি।</p>';
         return;
@@ -3706,19 +3664,10 @@ function selectStudentForEvaluation(idx) {
   document.getElementById('evalStudentNameDisplay').innerText = `${sub.studentName} (রেজি: ${sub.studentRoll})`;
   document.getElementById('evalSubjectInfoDisplay').innerText = `${sub.studentClass} - ${sub.subject} | MCQ স্কোর: ${sub.mcqMarks}`;
 
-  // লিংকগুলো থেকে ইমেজ ফাইল আলাদা করা (সব ফিল্ড সাপোর্ট সহ)
-   let rawLinksText = String(sub.cqFileUrl || sub.cqAnswer || sub.cqSubUrl || "");
-    let rawLinks = rawLinksText.split(',').map(l => l.trim()).filter(Boolean);
-	
-	// গুগল ড্রাইভ ভিউ লিংককে সরাসরি ইমেজে রূপান্তর
-    currentEvalScriptPages = rawLinks.map(link => {
-      if (link.includes("drive.google.com")) {
-        var m = link.match(/\/d\/([a-zA-Z0-9_-]+)/) || link.match(/id=([a-zA-Z0-9_-]+)/);
-        var fileId = (m && m[1]) ? m[1] : (typeof m === 'string' ? m : null);
-        if (fileId) return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`;
-      }
-      return link;
-    });
+  let rawLinksText = String(sub.cqFileUrl || sub.cqAnswer || sub.cqSubUrl || "");
+  let rawLinks = rawLinksText.split(',').map(l => l.trim()).filter(Boolean);
+
+  currentEvalScriptPages = rawLinks;
 
   if (currentEvalScriptPages.length === 0) {
     alert("এই শিক্ষার্থীর কোনো খাতার ফাইল পাওয়া যায়নি!");
@@ -3736,168 +3685,178 @@ function selectStudentForEvaluation(idx) {
   initCanvasDrawing();
   renderPageOnCanvas();
 }
+// ৩. ক্যানভাসে ইমেজ লোড ও ড্রয়িং সেটআপ (CORS ও লোকাল ইমেজ শতভাগ সাপোর্ট)
+// ক্যানভাসে দাগ কাটা বা ড্রয়িং ইঞ্জিন
+function initCanvasDrawing() {
+  const canvas = document.getElementById('scriptCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
 
-// ৩. ক্যানভাসে ইমেজ লোড ও ড্রয়িং সেটআপ (CORS ও ড্রাইভ প্রিভিউ সম্পূর্ণ ফিক্সড)
+  function getCanvasPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY
+    };
+  }
+
+  function start(e) {
+    isDrawing = true;
+    const pos = getCanvasPos(e);
+    lastX = pos.x;
+    lastY = pos.y;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    if (e.cancelable) e.preventDefault();
+  }
+
+  function draw(e) {
+    if (!isDrawing) return;
+    const pos = getCanvasPos(e);
+
+    const penColorInput = document.getElementById('digitalPenColor');
+    const penSizeInput = document.getElementById('digitalPenSize');
+    
+    ctx.strokeStyle = penColorInput ? penColorInput.value : '#ef4444';
+    ctx.lineWidth = penSizeInput ? Number(penSizeInput.value) : 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    lastX = pos.x;
+    lastY = pos.y;
+    if (e.cancelable) e.preventDefault();
+  }
+
+  function stop() {
+    if (!isDrawing) return;
+    isDrawing = false;
+    ctx.closePath();
+  }
+
+  canvas.onmousedown = start;
+  canvas.onmousemove = draw;
+  canvas.onmouseup = stop;
+  canvas.onmouseleave = stop;
+
+  canvas.ontouchstart = start;
+  canvas.ontouchmove = draw;
+  canvas.ontouchend = stop;
+}
+
+// ক্যানভাসে শিক্ষার্থীর খাতার ছবি রেন্ডার
 function renderPageOnCanvas() {
   const canvas = document.getElementById('scriptCanvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const rawUrl = currentEvalScriptPages[currentEvalPageIndex];
 
   document.getElementById('canvasPageIndicator').innerText = `${currentEvalPageIndex + 1} / ${currentEvalScriptPages.length}`;
   document.getElementById('pageWiseMarkInput').value = pageMarksArray[currentEvalPageIndex] || "";
 
-  // পূর্বে দাগানো থাকলে ক্যাশ থেকে আনা
+  // পূর্বে দাগানো থাকলে ক্যাশ থেকে সরাসরি রিস্টোর করা
   if (evaluatedCanvases[currentEvalPageIndex]) {
     const prevImg = new Image();
     prevImg.onload = () => {
       canvas.width = prevImg.width;
       canvas.height = prevImg.height;
       ctx.drawImage(prevImg, 0, 0);
+      initCanvasDrawing();
     };
     prevImg.src = evaluatedCanvases[currentEvalPageIndex];
     return;
   }
 
-  // লোডিং স্টেট প্রদর্শন
+  // লোডিং টেক্সট
   canvas.width = 800;
   canvas.height = 1000;
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "#2563eb";
-  ctx.font = "bold 20px sans-serif";
+  ctx.font = "bold 22px sans-serif";
   ctx.textAlign = "center";
   ctx.fillText("খাতার পাতা লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...", canvas.width / 2, canvas.height / 2);
 
-  // ফাইল আইডি শনাক্ত করা
-  let fileId = "";
-  if (rawUrl.includes("drive.google.com")) {
-    fileId = (rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || rawUrl.match(/id=([a-zA-Z0-9_-]+)/) || [])[1];
-  }
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.onload = function() {
+    const targetWidth = Math.min(img.naturalWidth || 800, 1000);
+    const aspectRatio = (img.naturalHeight || 1000) / (img.naturalWidth || 800);
+    const targetHeight = Math.round(targetWidth * aspectRatio);
 
-  const drawOnCanvas = (src) => {
-    const img = new Image();
-    img.onload = function() {
-      // খাতার পাতার সঠিক অনুপাত বজায় রেখে স্ক্রিন অনুযায়ী সর্বোচ্চ সাইজ সেট করা
-      const targetWidth = 800;
-      const aspectRatio = img.height / img.width;
-      const targetHeight = Math.round(targetWidth * aspectRatio);
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    canvas.style.width = "auto";
+    canvas.style.maxWidth = "100%";
+    canvas.style.height = "auto";
+    canvas.style.display = "block";
 
-      canvas.width = targetWidth;
-      canvas.height = targetHeight;
-
-      // ক্যানভাসটি যেন স্ক্রিনের বাইরে ছড়িয়ে না যায়
-      canvas.style.width = "100%";
-      canvas.style.maxWidth = "800px";
-      canvas.style.height = "auto";
-      canvas.style.display = "block";
-
-      ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
-    };
-    img.onerror = function() {
-      canvas.width = 800;
-      canvas.height = 1000;
-      canvas.style.width = "100%";
-      canvas.style.maxWidth = "800px";
-      canvas.style.height = "auto";
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#dc2626";
-      ctx.font = "18px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("ছবি লোড হতে ব্যর্থ হয়েছে! ড্রাইভ পারমিশন চেক করুন।", canvas.width / 2, canvas.height / 2);
-    };
-    img.src = src;
+    ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+    initCanvasDrawing();
   };
-  
-
-  // সার্ভার থেকে Base64 কনভার্ট করে লোড করা
-  if (fileId) {
-    postData({ action: "getFileAsBase64", fileId: fileId }, res => {
-      if (res && res.success && res.base64) {
-        drawOnCanvas(res.base64);
-      } else {
-        drawOnCanvas(`https://lh3.googleusercontent.com/d/${fileId}`);
-      }
-    });
-  } else {
-    drawOnCanvas(rawUrl);
-  }
+  img.onerror = function() {
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#dc2626";
+    ctx.font = "bold 20px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("ছবি লোড হতে ব্যর্থ হয়েছে!", canvas.width / 2, canvas.height / 2);
+  };
+  img.src = rawUrl;
 }
-
 // ==================== শতভাগ কার্যকরী খাতা মূল্যায়ন ও মাল্টি-পেজ ভিউয়ার ====================
 window.evalScriptPages = window.evalScriptPages || [];
 window.currentEvalPageIndex = 0;
 
-function openStudentEvaluatedScriptViewer() {
+function openStudentEvaluatedScriptViewer(resultIndex = null) {
   var evalUrls = "";
 
-  // ১. স্টুডেন্ট প্রোফাইল অবজেক্ট থেকে লিংক খোঁজা
-  if (typeof currentStudentProfile !== 'undefined' && currentStudentProfile && currentStudentProfile.results) {
+  // নির্দিষ্ট রেজাল্ট রো থেকে মূল্যায়িত লিংক (r[9]) নেওয়া
+  if (resultIndex !== null && typeof currentStudentProfile !== 'undefined' && currentStudentProfile && currentStudentProfile.results) {
+    var r = currentStudentProfile.results[resultIndex];
+    if (Array.isArray(r) && r[9]) {
+      evalUrls = String(r[9]).trim();
+    }
+  }
+
+  if (!evalUrls && typeof currentStudentProfile !== 'undefined' && currentStudentProfile && currentStudentProfile.results) {
     for (var i = currentStudentProfile.results.length - 1; i >= 0; i--) {
-      var r = currentStudentProfile.results[i];
-      if (Array.isArray(r) && r[8] && String(r[8]).indexOf('http') === 0) {
-        evalUrls = String(r[8]).trim();
+      var rRow = currentStudentProfile.results[i];
+      if (Array.isArray(rRow) && rRow[9]) {
+        evalUrls = String(rRow[9]).trim();
         break;
       }
     }
   }
 
-  // ২. রেজাল্ট হিস্ট্রি লিস্টের DOM থেকে লিংক খোঁজা (ব্যাকআপ)
-  if (!evalUrls) {
-    var liItems = document.querySelectorAll('#examHistoryList li');
-    for (var j = liItems.length - 1; j >= 0; j--) {
-      var scriptAttr = liItems[j].getAttribute('data-script');
-      if (scriptAttr && scriptAttr.indexOf('http') === 0) {
-        evalUrls = scriptAttr.trim();
-        break;
-      }
-    }
-  }
-
-  // ৩. কোনো খাতা না পাওয়া গেলে
-  if (!evalUrls || evalUrls.indexOf('http') !== 0) {
-    alert("এই শিক্ষার্থীর মূল্যায়িত খাতা এখনো আপলোড বা চেক করা হয়নি!");
+  if (!evalUrls || evalUrls === 'null' || evalUrls === 'undefined' || evalUrls === '-') {
+    alert("এই পরীক্ষার খাতা এখনো শিক্ষক মূল্যায়ন করেননি!");
     return;
   }
 
-  // ৪. একাধিক লিংক কমা দিয়ে আলাদা করে গুগল ড্রাইভের সরাসরি ইমেজ লিংকে রূপান্তর
-  evalScriptPages = evalUrls.split(',').map(function(u) { return u.trim(); }).filter(Boolean).map(function(link) {
-    if (link.indexOf("drive.google.com") !== -1) {
-      var match = link.match(/\/d\/([a-zA-Z0-9_-]+)/) || link.match(/id=([a-zA-Z0-9_-]+)/);
-      if (match && match[1]) {
-        // গুগলের হাই-রেজ্যুলেশন সরাসরি লোডযোগ্য ইমেজ ফরম্যাট
-        return "https://lh3.googleusercontent.com/d/" + match[1];
-      }
-    }
-    return link;
-  });
-
+  evalScriptPages = evalUrls.split(',').map(function(u) { return u.trim(); }).filter(Boolean);
   currentEvalPageIndex = 0;
 
-  // ৫. পুরাতন মডাল থাকলে সরিয়ে নতুন ফ্রেশ ভিউয়ার মডাল তৈরি
   var oldViewer = document.getElementById('forceStudentDocModal');
   if (oldViewer) oldViewer.remove();
 
   var totalPages = evalScriptPages.length;
 
+  // স্টুডেন্টের জন্য শুধুমাত্র খাতা দেখার ইন্টারফেস (কোনো পেন বা কালার থাকবে না)
   var modalHtml = `
-  <div id="forceStudentDocModal" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15,23,42,0.92); z-index:999999; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+  <div id="forceStudentDocModal" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15,23,42,0.95); z-index:999999; display:flex; flex-direction:column; justify-content:center; align-items:center;">
     
-    <!-- কন্ট্রোল হেডার (রঙিন পেন, বাটন এবং পেজ কাউন্টার) -->
-    <div style="background:#ffffff; width:95%; max-width:920px; padding:10px 15px; border-radius:12px 12px 0 0; display:flex; align-items:center; justify-content:space-between; box-shadow:0 4px 6px rgba(0,0,0,0.1); border-bottom:2px solid #e2e8f0; flex-wrap:wrap; gap:10px;">
+    <div style="background:#ffffff; width:95%; max-width:920px; padding:10px 18px; border-radius:12px 12px 0 0; display:flex; align-items:center; justify-content:space-between; box-shadow:0 4px 6px rgba(0,0,0,0.1); border-bottom:2px solid #e2e8f0; flex-wrap:wrap; gap:10px;">
       
-      <!-- বাম পাশে পেন ও কালার কন্ট্রোল -->
-      <div style="display:flex; align-items:center; gap:8px;">
-        <span style="font-size:13px; font-weight:bold; color:#475569;">কালার:</span>
-        <button type="button" onclick="setEvalPenColor('#ef4444')" style="width:24px; height:24px; border-radius:50%; background:#ef4444; border:2px solid #fff; box-shadow:0 0 3px rgba(0,0,0,0.4); cursor:pointer;"></button>
-        <button type="button" onclick="setEvalPenColor('#22c55e')" style="width:24px; height:24px; border-radius:50%; background:#22c55e; border:2px solid #fff; box-shadow:0 0 3px rgba(0,0,0,0.4); cursor:pointer;"></button>
-        <button type="button" onclick="setEvalPenColor('#3b82f6')" style="width:24px; height:24px; border-radius:50%; background:#3b82f6; border:2px solid #fff; box-shadow:0 0 3px rgba(0,0,0,0.4); cursor:pointer;"></button>
-        <button type="button" onclick="setEvalPenColor('#000000')" style="width:24px; height:24px; border-radius:50%; background:#000000; border:2px solid #fff; box-shadow:0 0 3px rgba(0,0,0,0.4); cursor:pointer;"></button>
-        
-        <button type="button" onclick="clearEvalCanvas()" style="background:#f43f5e; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer; margin-left:8px;">🖌 ক্লিয়ার</button>
+      <div style="font-weight:bold; color:#1e3a8a; font-size:14px;">
+        📄 শিক্ষকের মূল্যায়িত উত্তরপত্র (শুধুমাত্র দর্শন)
       </div>
 
-      <!-- মাঝখানে পাতা পরিবর্তনের আসল বাটন (◀ আগের পাতা | ১/৩ | পরের পাতা ▶) -->
       <div style="display:flex; align-items:center; gap:6px;">
         <button type="button" id="evalPrevBtn" onclick="prevEvalScriptPage()" style="background:#f1f5f9; color:#1e293b; border:1px solid #cbd5e1; padding:6px 14px; border-radius:6px; font-size:13px; font-weight:bold; cursor:pointer;">◀ আগের পাতা</button>
         
@@ -3906,27 +3865,21 @@ function openStudentEvaluatedScriptViewer() {
         <button type="button" id="evalNextBtn" onclick="nextEvalScriptPage()" style="background:#3b82f6; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-size:13px; font-weight:bold; cursor:pointer;">পরের পাতা ▶</button>
       </div>
 
-      <!-- ডান পাশে বন্ধ করার বাটন -->
       <div>
-        <button type="button" onclick="document.getElementById('forceStudentDocModal').remove()" style="background:#64748b; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-size:13px; font-weight:bold; cursor:pointer;">বন্ধ করুন ✖</button>
+        <button type="button" onclick="document.getElementById('forceStudentDocModal').remove()" style="background:#ef4444; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-size:13px; font-weight:bold; cursor:pointer;">✖ বন্ধ করুন</button>
       </div>
     </div>
 
-    <!-- খাতা প্রদর্শন ও পেন আঁকার মূল ক্যানভাস কন্টেইনার -->
-    <div style="background:#000; width:95%; max-width:920px; height:78vh; display:flex; justify-content:center; align-items:center; overflow:auto; position:relative; border-radius:0 0 12px 12px;">
-      <canvas id="evalDrawCanvas" style="max-width:100%; max-height:100%; cursor:crosshair; box-shadow:0 0 10px rgba(0,0,0,0.5);"></canvas>
+    <div style="background:#1e293b; width:95%; max-width:920px; height:80vh; display:flex; justify-content:center; align-items:center; overflow:auto; position:relative; border-radius:0 0 12px 12px; padding:10px;">
+      <img id="studentViewOnlyImg" src="" alt="মূল্যায়িত খাতা" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:6px; box-shadow:0 4px 15px rgba(0,0,0,0.5);" />
     </div>
 
   </div>`;
 
   document.body.insertAdjacentHTML('beforeend', modalHtml);
-
-  // প্রথম পাতা ক্যানভাসে লোড এবং ড্রয়িং ইঞ্জিন চালু করা
-  initEvalCanvasEngine();
   loadCurrentEvalPageToCanvas();
 }
 
-// পাতা পরিবর্তন ফাংশন (পরের পাতা ▶)
 function nextEvalScriptPage() {
   if (currentEvalPageIndex < evalScriptPages.length - 1) {
     currentEvalPageIndex++;
@@ -3934,7 +3887,6 @@ function nextEvalScriptPage() {
   }
 }
 
-// পাতা পরিবর্তন ফাংশন (◀ আগের পাতা)
 function prevEvalScriptPage() {
   if (currentEvalPageIndex > 0) {
     currentEvalPageIndex--;
@@ -3942,39 +3894,25 @@ function prevEvalScriptPage() {
   }
 }
 
-// ক্যানভাসে ইমেজ লোড লজিক
 function loadCurrentEvalPageToCanvas() {
   var total = evalScriptPages.length;
   var currentUrl = evalScriptPages[currentEvalPageIndex];
 
-  // কাউন্টার আপডেট (যেমন: 1/3, 2/3)
   var counterEl = document.getElementById('evalPageCounter');
   if (counterEl) counterEl.innerText = (currentEvalPageIndex + 1) + " / " + total;
 
-  // বাটন নিয়ন্ত্রণ
   var prevBtn = document.getElementById('evalPrevBtn');
   var nextBtn = document.getElementById('evalNextBtn');
   if (prevBtn) prevBtn.disabled = (currentEvalPageIndex === 0);
   if (nextBtn) nextBtn.disabled = (currentEvalPageIndex === total - 1);
 
-  // ক্যানভাসে ড্রাইভ ইমেজ সেট করা
-  var canvas = document.getElementById('evalDrawCanvas');
-  if (!canvas) return;
-  var ctx = canvas.getContext('2d');
-
-  var img = new Image();
-  img.crossOrigin = "anonymous";
-  img.onload = function() {
-    canvas.width = img.naturalWidth || 850;
-    canvas.height = img.naturalHeight || 1200;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  };
-  img.src = currentUrl;
+  var imgEl = document.getElementById('studentViewOnlyImg');
+  if (imgEl) {
+    imgEl.src = currentUrl;
+  }
 }
 
-// ================= রঙিন পেন ও ড্রয়িং ইঞ্জিন =================
-var evalPenColor = "#ef4444"; // ডিফল্ট লাল কালি
+var evalPenColor = "#ef4444";
 var isEvalDrawing = false;
 
 function setEvalPenColor(c) {
@@ -3982,7 +3920,7 @@ function setEvalPenColor(c) {
 }
 
 function clearEvalCanvas() {
-  loadCurrentEvalPageToCanvas(); // ক্লিয়ার চাপলে ফ্রেশ পাতা আবার লোড হবে
+  loadCurrentEvalPageToCanvas();
 }
 
 function initEvalCanvasEngine() {
@@ -4025,7 +3963,6 @@ function initEvalCanvasEngine() {
     isEvalDrawing = false;
   }
 
-  // মাউস এবং মোবাইল টাচ উভয় সমর্থন
   canvas.onmousedown = startDraw;
   canvas.onmousemove = doDraw;
   canvas.onmouseup = stopDraw;
@@ -4034,135 +3971,6 @@ function initEvalCanvasEngine() {
   canvas.ontouchstart = startDraw;
   canvas.ontouchmove = doDraw;
   canvas.ontouchend = stopDraw;
-}
-
-// =================================================================
-/* ==========================================================
-   রেজিস্ট্রেশন ও প্রোফাইল থেকে নির্দিষ্ট শিক্ষার্থীর খাতা ভিউয়ার
-========================================================== */
-// স্টুডেন্টের নির্দিষ্ট বিষয়ের মূল্যায়িত খাতা দেখার সংশোধিত ফাংশন
-function openStudentEvaluatedScriptViewer(resultIndex) {
-  var evalUrls = "";
-
-  if (typeof currentStudentProfile !== 'undefined' && currentStudentProfile && currentStudentProfile.results) {
-    var r = currentStudentProfile.results[resultIndex];
-    if (r) {
-      // কলাম ১০ (ইনডেক্স ৯) এ মূল্যায়িত খাতা থাকে, না থাকলে কলাম ৯ (ইনডেক্স ৮)
-      evalUrls = String(r[9] || r[8] || "").trim();
-    }
-  }
-
-  // ড্রাইভ লিংক ফিল্টার
-  var rawLinks = evalUrls.split(/[\n,]+/);
-  var validUrls = [];
-  for (var i = 0; i < rawLinks.length; i++) {
-    var cleanLink = rawLinks[i].trim();
-    if (cleanLink.length > 5 && cleanLink.indexOf('http') === 0) {
-      validUrls.push(cleanLink);
-    }
-  }
-
-  if (validUrls.length === 0) {
-    alert("এই পরীক্ষার খাতা এখনো শিক্ষক কর্তৃক মূল্যায়ন করা হয়নি!");
-    return;
-  }
-
-  var pagesHtml = "";
-  for (var k = 0; k < validUrls.length; k++) {
-    var u = validUrls[k];
-    var pageNum = k + 1;
-    var previewUrl = u;
-
-    if (u.indexOf("drive.google.com") !== -1) {
-      var match = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
-      if (match && match[1]) {
-        previewUrl = "https://drive.google.com/file/d/" + match[1] + "/preview";
-      }
-    }
-
-    pagesHtml += '<div style="background:#1e293b; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center;">' +
-      '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">' +
-      '  <span style="color:#38bdf8; font-weight:bold; font-size:14px;">📄 মূল্যায়িত পাতা নং - ' + pageNum + '</span>' +
-      '  <a href="' + u + '" target="_blank" style="color:#60a5fa; font-size:13px; text-decoration:none; background:rgba(59,130,246,0.15); padding:4px 10px; border-radius:5px;">ফুল স্ক্রিনে দেখুন ↗</a>' +
-      '</div>' +
-      '<div style="width:100%; height:500px; background:#000; border-radius:8px; overflow:hidden; border:1px solid #475569;">' +
-      '  <iframe src="' + previewUrl + '" style="width:100%; height:100%; border:none;" allow="autoplay"></iframe>' +
-      '</div>' +
-    '</div>';
-  }
-
-  var oldViewer = document.getElementById('forceStudentDocModal');
-  if (oldViewer) oldViewer.remove();
-
-  var modalHtml = '<div id="forceStudentDocModal" style="position:fixed; inset:0; background:rgba(15,23,42,0.85); backdrop-filter:blur(4px); z-index:2147483647; display:flex; align-items:center; justify-content:center; padding:15px;">' +
-    '<div style="background:#ffffff; width:100%; max-width:650px; max-height:90vh; border-radius:12px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);">' +
-    '  <div style="padding:14px 18px; background:#0f172a; color:#ffffff; display:flex; justify-content:space-between; align-items:center;">' +
-    '    <b style="font-size:15px;">📝 শিক্ষকের মূল্যায়িত খাতা</b>' +
-    '    <button type="button" onclick="document.getElementById(\'forceStudentDocModal\').remove()" style="background:#ef4444; color:#fff; border:none; border-radius:6px; padding:6px 14px; cursor:pointer; font-weight:bold; font-size:14px;">✕ বন্ধ করুন</button>' +
-    '  </div>' +
-    '  <div style="padding:15px; overflow-y:auto; flex:1; background:#0b1120;">' +
-    pagesHtml +
-    '  </div>' +
-    '</div>' +
-    '</div>';
-
-  document.body.insertAdjacentHTML('beforeend', modalHtml);
-}
-// ৪. ক্যানভাস পেন লজিক (মাউস ও টাচ ফ্রেন্ডলি)
-function initCanvasDrawing() {
-  const canvas = document.getElementById('scriptCanvas');
-  const ctx = canvas.getContext('2d');
-
-  function getPos(e) {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    return {
-      x: (clientX - rect.left) * scaleX,
-      y: (clientY - rect.top) * scaleY
-    };
-  }
-
-  function start(e) {
-    isDrawing = true;
-    const pos = getPos(e);
-    lastX = pos.x;
-    lastY = pos.y;
-    e.preventDefault();
-  }
-
-  function draw(e) {
-    if (!isDrawing) return;
-    const pos = getPos(e);
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.strokeStyle = document.getElementById('digitalPenColor').value;
-    ctx.lineWidth = document.getElementById('digitalPenSize').value;
-    ctx.lineCap = "round";
-    ctx.stroke();
-    lastX = pos.x;
-    lastY = pos.y;
-    e.preventDefault();
-  }
-
-  function stop() {
-    if (isDrawing) {
-      isDrawing = false;
-      evaluatedCanvases[currentEvalPageIndex] = canvas.toDataURL('image/jpeg', 0.8);
-    }
-  }
-
-  canvas.onmousedown = start;
-  canvas.onmousemove = draw;
-  canvas.onmouseup = stop;
-  canvas.onmouseout = stop;
-
-  canvas.ontouchstart = start;
-  canvas.ontouchmove = draw;
-  canvas.ontouchend = stop;
 }
 
 function clearCurrentCanvas() {
@@ -4174,14 +3982,20 @@ function saveCurrentPageMark() {
   const mark = Number(document.getElementById('pageWiseMarkInput').value) || 0;
   pageMarksArray[currentEvalPageIndex] = mark;
   
-  // মোট মার্ক যোগ করা
   const total = pageMarksArray.reduce((a, b) => a + b, 0);
   document.getElementById('finalCqTotalMark').value = total;
 }
 
 function nextScriptPage() {
   const canvas = document.getElementById('scriptCanvas');
-  evaluatedCanvases[currentEvalPageIndex] = canvas.toDataURL('image/jpeg', 0.8);
+  evaluatedCanvases[currentEvalPageIndex] = (function(){
+    try {
+      return canvas.toDataURL("image/jpeg", 0.8);
+    } catch(e) {
+      console.warn("Bypassing canvas SecurityError:", e);
+      return "";
+    }
+  })();
   if (currentEvalPageIndex < currentEvalScriptPages.length - 1) {
     currentEvalPageIndex++;
     renderPageOnCanvas();
@@ -4190,24 +4004,37 @@ function nextScriptPage() {
 
 function prevScriptPage() {
   const canvas = document.getElementById('scriptCanvas');
-  evaluatedCanvases[currentEvalPageIndex] = canvas.toDataURL('image/jpeg', 0.8);
+  evaluatedCanvases[currentEvalPageIndex] = (function(){
+    try {
+      return canvas.toDataURL("image/jpeg", 0.8);
+    } catch(e) {
+      console.warn("Bypassing canvas SecurityError:", e);
+      return "";
+    }
+  })();
   if (currentEvalPageIndex > 0) {
     currentEvalPageIndex--;
     renderPageOnCanvas();
   }
 }
 
-// ৫. ফাইনাল দাগানো খাতা ও মার্কস ড্রাইভে সাবমিট করা
+// ৫. ফাইনাল দাগানো খাতা ও মার্কস লোকাল সার্ভারে সংরক্ষণ করা
 function submitEvaluatedScript() {
   const sub = allAdminSubmissions[currentEvalIndex];
   const finalCq = Number(document.getElementById('finalCqTotalMark').value) || 0;
   const totalScore = (Number(sub.mcqMarks) || 0) + finalCq;
 
-  // বর্তমান পাতার ক্যানভাস ক্যাশে নেওয়া
   const canvas = document.getElementById('scriptCanvas');
-  evaluatedCanvases[currentEvalPageIndex] = canvas.toDataURL('image/jpeg', 0.8);
+  evaluatedCanvases[currentEvalPageIndex] = (function(){
+    try {
+      return canvas.toDataURL("image/jpeg", 0.8);
+    } catch(e) {
+      console.warn("Bypassing canvas SecurityError:", e);
+      return "";
+    }
+  })();
 
-  const cleanImages = evaluatedCanvases.filter(img => img !== null);
+  const cleanImages = evaluatedCanvases.filter(img => img !== null && img !== "");
 
   const payload = {
     action: "saveEvaluatedScript",
@@ -4223,7 +4050,6 @@ function submitEvaluatedScript() {
 
   postData(payload, res => {
     if (res && res.success) {
-	// নির্দিষ্ট শিক্ষার্থীর রোল অনুযায়ী মূল্যায়িত খাতা সংরক্ষণ
       try {
         var savedUrl = (res.evaluatedUrl || res.url || (cleanImages && cleanImages[0]) || "");
         if (savedUrl && sub.studentRoll) {
@@ -4237,10 +4063,9 @@ function submitEvaluatedScript() {
     }
   });
 }
-// নিরাপদ ও হালকা সাইজের ইমেজ রিডার (Base64 কম্প্রেসার)
+
 async function processScriptFile(file) {
   return new Promise((resolve) => {
-    // ফাইল যদি ছবি না হয় (যেমন PDF), সরাসরি রিড করবে
     if (!file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = (e) => resolve(e.target.result);
@@ -4253,7 +4078,7 @@ async function processScriptFile(file) {
       const img = new Image();
       img.onload = function() {
         const canvas = document.createElement('canvas');
-        const maxW = 1200; // খাতার লেখা স্পষ্ট রেখে সর্বোচ্চ সাইজ
+        const maxW = 1200;
         let w = img.width;
         let h = img.height;
         if (w > maxW) {
@@ -4264,7 +4089,14 @@ async function processScriptFile(file) {
         canvas.height = h;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', 0.7)); // ৭০% কোয়ালিটিতে কম্প্রেস
+        resolve((function(){
+          try {
+            return canvas.toDataURL("image/jpeg", 0.8);
+          } catch(e) {
+            console.warn("Bypassing canvas SecurityError:", e);
+            return "";
+          }
+        })());
       };
       img.onerror = () => resolve(e.target.result);
       img.src = e.target.result;
@@ -4273,11 +4105,7 @@ async function processScriptFile(file) {
   });
 }
 
-/* ==========================================================
-   স্ক্রিন অফ/অন হলেও কাজ ও পেজ আগের অবস্থায় ধরে রাখার অটো-সেভ সিস্টেম
-========================================================== */
-
-// ১. ব্যবহারকারী যাই টাইপ বা সিলেক্ট করুক না কেন সাথে সাথে সেভ রাখা
+/* অটো-সেভ ও স্টেট রিস্টোর লজিক */
 document.addEventListener('input', function(e) {
   if (e.target && e.target.id) {
     try {
@@ -4294,14 +4122,12 @@ document.addEventListener('change', function(e) {
   }
 });
 
-// ২. ব্যবহারকারী বর্তমানে কোন ট্যাবে বা মডালে আছেন তা ট্র্যাক করে রাখা
 function recordActiveState(tabId) {
   if (tabId) {
     localStorage.setItem('last_active_tab_id', tabId);
   }
 }
 
-// এডমিন ট্যাব বদলালে তা সংরক্ষণ
 const originalSwitchAdminTab = window.switchAdminTab;
 if (typeof originalSwitchAdminTab === 'function') {
   window.switchAdminTab = function(event, tabId) {
@@ -4310,11 +4136,9 @@ if (typeof originalSwitchAdminTab === 'function') {
   };
 }
 
-// ৩. স্ক্রিন অন হলে বা ব্রাউজারে ফিরে আসলে সব ডাটা ও ট্যাব ফিরিয়ে আনা (ফিক্সড)
 function restoreAllUserData() {
   const allInputs = document.querySelectorAll('input, textarea, select');
   allInputs.forEach(el => {
-    // পাসওয়ার্ড এবং ফাইল টাইপ ইনপুট বাদে বাকিগুলোর মান রিস্টোর হবে
     if (el.id && !el.type.includes('password') && el.type !== 'file') {
       const savedVal = localStorage.getItem('auto_save_' + el.id);
       if (savedVal !== null && savedVal !== undefined) {
@@ -4334,20 +4158,16 @@ function restoreAllUserData() {
   }
 }
 
-// ফোনের আলো নিভলে/জ্বললে স্বয়ংক্রিয় শনাক্তকরণ (Visibility Listener)
 document.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'visible') {
-    // স্ক্রিন অন হওয়ার পর ডাটা রিস্টোর
     restoreAllUserData();
   }
 });
 
-// পেজ নতুন করে লোড হলে স্বয়ংক্রিয় রিস্টোর চালু
 window.addEventListener('load', function() {
   restoreAllUserData();
 });
 
-// ৪. পরীক্ষা সফলভাবে জমা দিলে বা লগআউট করলে পুরনো ক্যাশ মুছে ফেলা
 function clearAutoSavedData() {
   Object.keys(localStorage).forEach(key => {
     if (key.startsWith('auto_save_')) {
@@ -4356,11 +4176,8 @@ function clearAutoSavedData() {
   });
   localStorage.removeItem('last_active_tab_id');
 }
-/* ==========================================================
-   কাস্টম প্রিমিয়াম স্টাইল অ্যালার্ট (সফল / ব্যর্থ মেসেজ পপআপ)
-========================================================== */
 
-// স্টাইল ইনজেক্ট করা (কোনো সিএসএস ফাইলে আলাদা হাত দিতে হবে না)
+/* কাস্টম টোস্ট নোটিফিকেশন */
 (function initToastStyles() {
   const style = document.createElement('style');
   style.innerHTML = `
@@ -4419,41 +4236,28 @@ function clearAutoSavedData() {
   document.body.appendChild(container);
 })();
 
-// গ্লোবাল অ্যালার্ট ফাংশন ওভাররাইড
 window.showToast = function(message, type = 'success') {
   const container = document.getElementById('customToastBox');
   if (!container) return;
 
   const toast = document.createElement('div');
   const isErr = type === 'error' || /ভুল|ব্যর্থ|পাওয়া যায়নি|সমস্যা|error|failed/i.test(message);
-  
   toast.className = `custom-toast ${isErr ? 'toast-error' : 'toast-success'}`;
-  
-  const icon = isErr 
-    ? `<span style="font-size:1.3rem;">⚠️</span>` 
-    : `<span style="font-size:1.3rem;">✅</span>`;
-
+  const icon = isErr ? `<span style="font-size:1.3rem;">⚠️</span>` : `<span style="font-size:1.3rem;">✅</span>`;
   toast.innerHTML = `${icon} <span>${message}</span>`;
   container.appendChild(toast);
 
-  // ৩.৫ সেকেন্ড পর স্বয়ংক্রিয়ভাবে মুছে যাবে
   setTimeout(() => {
     toast.style.animation = 'toastOut 0.35s ease forwards';
     setTimeout(() => toast.remove(), 350);
   }, 3500);
 };
 
-// ব্রাউজারের ডিফল্ট alert() কে কাস্টম নোটিফিকেশনে রূপান্তর
 window.alert = function(message) {
   window.showToast(message);
 };
-/* ==========================================================
-   পাবলিশ বা ক্লাস পরিবর্তনের পর MCQ ও CQ বক্স সম্পূর্ণ খালি করার সিস্টেম
-========================================================== */
 
-// ১. পুরো ফর্ম ও প্রিভিউ ঝকঝকে পরিষ্কার করার মূল ফাংশন
 function resetAdminExamForm() {
-  // সকল ইনপুট ও টেক্সটবক্স খালি করা
   const selectors = [
     'textarea',
     'input[type="text"]',
@@ -4466,14 +4270,10 @@ function resetAdminExamForm() {
   selectors.forEach(sel => {
     document.querySelectorAll(sel).forEach(el => {
       el.value = '';
-      // লোকাল স্টোরেজের অটো-সেভ ক্যাশ মুছে ফেলা
-      if (el.id) {
-        localStorage.removeItem('auto_save_' + el.id);
-      }
+      if (el.id) localStorage.removeItem('auto_save_' + el.id);
     });
   });
 
-  // MCQ ও CQ এর নিচের প্রিভিউ বক্সগুলো ফাঁকা করা
   const previewBoxes = document.querySelectorAll(
     '#mcqPreviewContainer, #mcqPreview, #cqPreview, .preview-container, #previewArea'
   );
@@ -4481,18 +4281,15 @@ function resetAdminExamForm() {
     if (box) box.innerHTML = '';
   });
 
-  // গ্লোবাল ভেরিয়েবলে কোনো আগের ডাটা জমে থাকলে তা খালি করা
   if (window.parsedQuestions) window.parsedQuestions = [];
   if (window.mcqData) window.mcqData = [];
   if (window.cqData) window.cqData = [];
 }
 
-// ২. ক্লাস পরিবর্তন করলেই যাতে আগের ক্লাসের MCQ/CQ সাথে সাথে মুছে যায়
 document.addEventListener('DOMContentLoaded', function() {
   const classDropdowns = document.querySelectorAll('select');
   classDropdowns.forEach(select => {
     select.addEventListener('change', function() {
-      // শুধুমাত্র ক্লাস সংক্রান্ত ড্রপডাউন পরিবর্তন হলে বক্সগুলো ফাঁকা হবে
       const textareas = document.querySelectorAll('textarea');
       textareas.forEach(ta => {
         ta.value = '';
@@ -4504,29 +4301,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// ৩. 'শিডিউল ও প্রকাশ করুন' বাটনে চাপ সফল হলে স্বয়ংক্রিয়ভাবে মুছে যাওয়ার ট্রিপার
-const originalPublishExam = window.publishExam || window.scheduleAndPublishExam;
-if (typeof originalPublishExam === 'function') {
-  window.publishExam = async function() {
-    const result = await originalPublishExam.apply(this, arguments);
-    resetAdminExamForm();
-    if (typeof showToast === 'function') {
-      showToast('পরীক্ষা সফলভাবে প্রকাশ হয়েছে এবং ফর্ম খালি করা হয়েছে!', 'success');
-    }
-    return result;
-  };
-}
-/* ==========================================================
-   ১. এডমিন টেক্সট প্রশ্ন ফরম্যাটিং টুল
-========================================================== */
 function formatAdminText(command, value = null) {
   document.execCommand(command, false, value);
 }
 
-
-/* ==========================================================
-   ৩. উত্তরপত্রের ফাইল আপলোড ও সাইটের ভেতর সরাসরি খাতা দেখা
-========================================================== */
 let studentUploadedFileBase64 = "";
 
 async function handleMultipleTextFiles(input) {
@@ -4539,92 +4317,44 @@ async function handleMultipleTextFiles(input) {
     statusEl.style.color = '#2563eb';
   }
 
-  // selectedExamFilesList খালি না করে নতুন ফাইলগুলোকে বিদ্যমান তালিকায় যুক্ত করা
   if (typeof selectedExamFilesList === 'undefined' || !Array.isArray(selectedExamFilesList)) {
     selectedExamFilesList = [];
   }
 
-  const compressImage = (file) => {
-    return new Promise((resolve) => {
-      if (!file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve({ name: file.name, mime: file.type, base64: e.target.result });
-        reader.readAsDataURL(file);
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const maxDim = 1200;
-          let width = img.width;
-          let height = img.height;
-          if (width > height && width > maxDim) {
-            height = Math.round((height * maxDim) / width);
-            width = maxDim;
-          } else if (height > maxDim) {
-            width = Math.round((width * maxDim) / height);
-            height = maxDim;
-          }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          const compressed = canvas.toDataURL('image/jpeg', 0.65);
-          resolve({ name: file.name, mime: 'image/jpeg', base64: compressed });
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    });
-  };
-
   for (let file of files) {
-    const item = await compressImage(file);
-    selectedExamFilesList.push(item);
+    const item = await processScriptFile(file);
+    selectedExamFilesList.push({
+      name: file.name,
+      mime: file.type || 'image/jpeg',
+      base64: item
+    });
   }
 
-  // প্রিভিউ স্ট্যাটাস আপডেট
   if (statusEl) {
     statusEl.innerText = `✅ মোট ${selectedExamFilesList.length} টি উত্তরপত্রের পাতা প্রস্তুত!`;
     statusEl.style.color = '#059669';
   }
 
-  // ইনপুট রিসেট করা যাতে পরবর্তীতে আবারও একই বা নতুন ফাইল বেছে নেওয়া যায়
   input.value = '';
 }
 
-// সাইটের ভেতরে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার ফাংশন
 function openStudentUploadedDoc(targetUrlOrBase64) {
   const fileData = targetUrlOrBase64 || localStorage.getItem('student_uploaded_doc');
   const modal = document.getElementById('studentDocViewerModal');
   const viewerBody = document.getElementById('studentDocViewerBody');
 
   if (!fileData) {
-    if (typeof showToast === 'function') {
-      showToast('আপলোডকৃত কোনো উত্তরপত্র পাওয়া যায়নি!', 'error');
-    }
+    if (typeof showToast === 'function') showToast('আপলোডকৃত কোনো উত্তরপত্র পাওয়া যায়নি!', 'error');
     return;
   }
 
   viewerBody.innerHTML = '';
 
-  // ১. গুগল ড্রাইভ লিংক হলে এম্বেড প্রিভিউ
-  if (fileData.includes('drive.google.com')) {
-    const embedUrl = fileData.replace('/view?usp=drivesdk', '/preview').replace('/view', '/preview');
-    viewerBody.innerHTML = `<iframe src="${embedUrl}" style="width:100%; height:100%; border:none; background:#fff; border-radius:8px;"></iframe>`;
-  }
-  // ২. ছবি হলে (JPG, PNG ইত্যাদি)
-  else if (fileData.startsWith('data:image/') || fileData.match(/\.(jpeg|jpg|gif|png|webp)/i)) {
+  if (fileData.startsWith('data:image/') || fileData.match(/\.(jpeg|jpg|gif|png|webp)/i)) {
     viewerBody.innerHTML = `<img src="${fileData}" alt="উত্তরপত্র" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:8px;">`;
-  }
-  // ৩. পিডিএফ ফাইল হলে
-  else if (fileData.startsWith('data:application/pdf')) {
+  } else if (fileData.startsWith('data:application/pdf') || fileData.endsWith('.pdf')) {
     viewerBody.innerHTML = `<iframe src="${fileData}" style="width:100%; height:100%; border:none; border-radius:8px;"></iframe>`;
-  }
-  // ৪. অন্য কোনো ডকুমেন্ট ফরম্যাট হলে ডাউনলোড অপশন
-  else {
+  } else {
     viewerBody.innerHTML = `
       <div style="color:#ffffff; text-align:center;">
         <p>ফাইলটি সরাসরি প্রিভিউ করা যাচ্ছে না।</p>
@@ -4643,9 +4373,7 @@ function closeStudentDocViewer() {
   if (modal) modal.style.display = 'none';
   document.getElementById('studentDocViewerBody').innerHTML = '';
 }
-/* ==========================================================
-   ১. অটো ক্লাস ও বিষয় ডিটেকশন + স্মার্ট লক লজিক
-========================================================== */
+
 let activeExamSessionData = null;
 let typingDebounceTimer = null;
 let currentAvailableExamsList = [];
@@ -4676,19 +4404,8 @@ function autoDetectStudentAndExam(regValue) {
 
   if (spinner) spinner.style.display = 'block';
 
-  typingDebounceTimer = setTimeout(async () => {
-    try {
-      const payload = {
-        action: "checkStudentActiveExam",
-        regNo: reg
-      };
-
-      const response = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: JSON.stringify(payload)
-      });
-      const res = await response.json();
+  typingDebounceTimer = setTimeout(() => {
+    postData({ action: "checkStudentActiveExam", regNo: reg }, res => {
       if (spinner) spinner.style.display = 'none';
 
       if (res && res.success && res.studentFound) {
@@ -4696,86 +4413,11 @@ function autoDetectStudentAndExam(regValue) {
 
         if (res.hasAvailableExams) {
           currentAvailableExamsList = res.availableExams;
-         if (subjectSelect) {
-          // ১. রেসপন্স এবং লোকাল স্টোরেজ থেকে সম্পন্ন পরীক্ষার তালিকা তৈরি
-          var attendedSubjects = [];
-          
-          // সার্ভার রেসপন্স চেক
-          if (res.results && Array.isArray(res.results)) {
-            res.results.forEach(function(r) {
-              var s = Array.isArray(r) ? (r[1] || r[2] || '') : (r.subject || r.examSubject || '');
-              if (s) attendedSubjects.push(String(s).trim().toLowerCase());
-            });
-          }
-
-          // স্টুডেন্ট প্রোফাইল গ্লোবাল অবজেক্ট চেক
-          if (window.currentStudentProfile && window.currentStudentProfile.results) {
-            window.currentStudentProfile.results.forEach(function(r) {
-              var s = Array.isArray(r) ? (r[1] || r[2] || '') : (r.subject || r.examSubject || '');
-              if (s) attendedSubjects.push(String(s).trim().toLowerCase());
-            });
-          }
-
-          // ১. লোকাল স্টোরেজে জমা থাকা সাবমিশন হিস্ট্রি নিখুঁতভাবে চেক
-    var localSubmitted = JSON.parse(localStorage.getItem('student_submitted_exams') || '[]');
-    var attendedSubjects = [];
-    if (Array.isArray(localSubmitted)) {
-      localSubmitted.forEach(function(s) {
-        if (!s) return;
-        if (typeof s === 'string') {
-          attendedSubjects.push(s.trim().toLowerCase());
-        } else if (typeof s === 'object') {
-          var name = s.subject || s.name || s.examSubject || s.title || '';
-          if (name) attendedSubjects.push(String(name).trim().toLowerCase());
-        }
-      });
-    }
-
-    // ২. যে পরীক্ষাগুলো দেওয়া হয়ে গেছে সেগুলোকে ফিল্টার করে বাদ দেওয়া
-    var filteredExams = (res.availableExams || []).filter(function(ex) {
-      var s1 = String(ex.subject || '').trim().toLowerCase();
-      var s2 = String(ex.name || '').trim().toLowerCase();
-      var s3 = String(ex.examSubject || '').trim().toLowerCase();
-      var s4 = String(ex.title || '').trim().toLowerCase();
-
-      // যদি যেকোনো একটি নামও পূর্বে দেওয়া তালিকার সাথে মিলে যায়, তবে তা বাদ যাবে
-      var isSubmitted = attendedSubjects.some(function(att) {
-        return att && (att === s1 || att === s2 || att === s3 || att === s4 || (s1 && att.indexOf(s1) !== -1));
-      });
-
-      return !isSubmitted;
-    });
-
-          // গ্লোবাল লিস্ট আপডেট
-          currentAvailableExamsList = filteredExams;
-
-          // ৩. ড্রপডাউন তৈরি
-          if (filteredExams.length > 0) {
+          if (subjectSelect) {
             subjectSelect.innerHTML = '<option value="">-- বিষয় নির্বাচন করুন --</option>' +
-              filteredExams.map(function(ex, idx) {
-                return '<option value="' + idx + '">' + ex.subject + '</option>';
-              }).join('');
-            if (startBtn) {
-              startBtn.disabled = true;
-              startBtn.style.background = '#94a3b8';
-              startBtn.style.cursor = 'not-allowed';
-            }
-          } else {
-            subjectSelect.innerHTML = '<option value="">কোনো পরীক্ষা অবশিষ্ট নেই</option>';
-            if (startBtn) {
-              startBtn.disabled = true;
-              startBtn.style.background = '#94a3b8';
-              startBtn.style.cursor = 'not-allowed';
-            }
+              res.availableExams.map((ex, idx) => `<option value="${idx}">${ex.subject}</option>`).join('');
           }
-        }
           if (lockBanner) lockBanner.style.display = 'none';
-          
-          if (startBtn) {
-            startBtn.disabled = true;
-            startBtn.style.background = '#94a3b8';
-            startBtn.style.cursor = 'not-allowed';
-          }
         } else {
           if (subjectSelect) subjectSelect.innerHTML = '<option value="">কোনো পরীক্ষা অবশিষ্ট নেই</option>';
           if (lockBanner) lockBanner.style.display = 'block';
@@ -4799,10 +4441,7 @@ function autoDetectStudentAndExam(regValue) {
         }
         activeExamSessionData = null;
       }
-    } catch(err) {
-      if (spinner) spinner.style.display = 'none';
-      console.error("Exam Verification Error:", err);
-    }
+    });
   }, 500);
 }
 
@@ -4827,25 +4466,13 @@ function onExamSubjectSelectChange() {
     }
   }
 }
-/* ==========================================================
-   পরীক্ষা শুরু ও লাইভ পেজ প্রদর্শন (১০০% দৃশ্যমান ফিক্স)
-========================================================== */
+
 function confirmAndLaunchExam() {
   if (!activeExamSessionData) return;
 
   const regEl = document.getElementById('stExReg');
   const regNo = regEl ? regEl.value.trim() : "";
 
-  const subEl = document.getElementById('stExSubjectSelect') || document.getElementById('stExSubjectDisplay') || document.getElementById('stExSubject');
-  let subject = "";
-  if (subEl) {
-    subject = subEl.options && subEl.selectedIndex >= 0 ? subEl.options[subEl.selectedIndex].text : (subEl.value || "");
-    if (subject.includes("--")) subject = activeExamSessionData.subject || "";
-  } else {
-    subject = activeExamSessionData.subject || "";
-  }
-
-  // যাচাইকরণ মডাল বন্ধ করা
   const initModal = document.getElementById('examInitModal');
   if (initModal) {
     initModal.style.setProperty('display', 'none', 'important');
@@ -4855,13 +4482,10 @@ function confirmAndLaunchExam() {
   activeExamData = Object.assign({}, activeExamSessionData);
   activeExamData.studentReg = regNo;
 
-  const clsEl = document.getElementById('stExClassDisplay') || document.getElementById('stExClass');
-  activeExamData.studentClass = clsEl ? (clsEl.value || clsEl.textContent || "").trim() : (activeExamSessionData.classVal || "");
+  const clsEl = document.getElementById('stExClassDisplay');
+  activeExamData.studentClass = clsEl ? clsEl.value.trim() : (activeExamSessionData.classVal || "");
   activeExamData.studentName = activeExamSessionData.studentName || "শিক্ষার্থী";
-  activeExamData.subject = activeExamSessionData.subject || subject;
-  activeExamData.examType = activeExamSessionData.examType || "mcq_cq_text";
 
-  // MCQ অ্যারে নির্ধারণ
   if (!activeExamData.mcq && activeExamData.mcqList) {
     activeExamData.mcq = activeExamData.mcqList;
   }
@@ -4869,21 +4493,9 @@ function confirmAndLaunchExam() {
     activeExamData.hasMcq = true;
     activeExamData.totalMarks = activeExamData.mcq.length;
   }
-  if (activeExamData.cqDescription) {
-    activeExamData.hasCq = true;
-  }
-  if (activeExamData.textQuestionContent) {
-    activeExamData.hasTextQuestion = true;
-  }
 
-  // স্ক্রিন ও প্রশ্ন সাজানো
-  if (typeof startLiveExamSession === 'function') {
-    startLiveExamSession();
-  }
-
-  if (typeof filterExamDisplayForClass === 'function') {
-    filterExamDisplayForClass(activeExamData);
-  }
+  startLiveExamSession();
+  filterExamDisplayForClass(activeExamData);
 
   const liveModal = document.getElementById('liveExamModal');
   if (liveModal) {
@@ -4896,85 +4508,7 @@ function confirmAndLaunchExam() {
     showToast(`${activeExamData.subject} বিষয়ের পরীক্ষা শুরু হয়েছে। শুভকামনা!`, 'success');
   }
 }
-/* ==========================================================
-   শর্ট প্রশ্ন / টেক্সট বক্স এককভাবে সাবমিট ও পার্মানেন্ট লক
-========================================================== */
-async function submitShortQuestionStandalone() {
-  const regNo = document.getElementById('stExReg').value.trim();
-  const studentClass = document.getElementById('stExClassDisplay').value.trim();
-  const subject = document.getElementById('stExSubjectDisplay').value.trim();
-  
-  // শর্ট প্রশ্নের টেক্সট বা খাতার ছবি সংগ্রহ
-  const shortTextAns = (document.getElementById('studentRichTextQuestionDisplay') || document.getElementById('shortAnswerInput') || {}).value || "";
-  const uploadedFiles = window.uploadedStudentFiles || []; // আপনার আপলোড করা ফাইলের তালিকা
 
-  if (!shortTextAns && uploadedFiles.length === 0) {
-    alert("অনুগ্রহ করে শর্ট প্রশ্নের উত্তর লিখুন অথবা খাতার ছবি আপলোড করুন!");
-    return;
-  }
-
-  const submitBtn = document.getElementById('examSubmitBtn');
-  if (submitBtn) {
-    submitBtn.disabled = true;
-    submitBtn.innerText = "জমা হচ্ছে...";
-  }
-
-  const payload = {
-    action: "submitSectionWiseExam",
-    regNo: regNo,
-    studentClass: studentClass,
-    subject: subject,
-    sectionType: "text", // সরাসরি টেক্সট/শর্ট প্রশ্ন সেকশন
-    data: JSON.stringify({
-      textAnswer: shortTextAns,
-      files: uploadedFiles
-    }),
-    submissionTime: new Date().toLocaleTimeString()
-  };
-
-  try {
-    const response = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: JSON.stringify(payload)
-    });
-    const result = await response.json();
-
-    if (result.success) {
-      alert("✅ শর্ট প্রশ্নের উত্তর সফলভাবে জমা হয়েছে!");
-      
-      // শর্ট প্রশ্ন বক্স চিরতরে লক করা
-      const shortInput = document.getElementById('studentRichTextQuestionDisplay') || document.getElementById('shortAnswerInput');
-      if (shortInput) shortInput.disabled = true;
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerText = "🔒 জমাকৃত (লক)";
-        submitBtn.style.background = "#64748b";
-      }
-	  
-	  // সফলভাবে জমা হওয়ার ১.৫ সেকেন্ড পর পেজ রিফ্রেশ
-        setTimeout(() => {
-            location.reload();
-        }, 1500);
-
-      // লোকাল স্টোরেজে লক সংরক্ষণ
-      localStorage.setItem(`lock_${regNo}_${subject}_text`, "submitted");
-    } else {
-      alert("জমা দিতে সমস্যা হয়েছে: " + (result.message || ""));
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerText = "পুনরায় জমা দিন";
-      }
-    }
-  } catch(err) {
-    console.error(err);
-    alert("সার্ভার ত্রুটি! ইন্টারনেট কানেকশন চেক করুন।");
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.innerText = "পুনরায় চেষ্টা করুন";
-    }
-  }
-}
 function toggleAdminQuestionBoxes() {
   const typeSelect = document.getElementById('admExamTypeSelector');
   if (!typeSelect) return;
@@ -4984,10 +4518,6 @@ function toggleAdminQuestionBoxes() {
   const cqBox = document.getElementById('adminCqSectionWrapper');
   const textBox = document.getElementById('adminTextSectionWrapper');
 
-  const mcqDurInput = document.getElementById('admMcqDuration')?.closest('div');
-  const cqDurInput = document.getElementById('admCqDuration')?.closest('div');
-
-  // ১০০% নিখুঁত ও আলাদা আলাদা ম্যাচিং লজিক
   const showMcq = (type === 'mcq' || type === 'mcq_cq' || type === 'mcq_text' || type === 'mcq_cq_text');
   const showCq = (type === 'cq' || type === 'mcq_cq' || type === 'cq_text' || type === 'mcq_cq_text');
   const showText = (type === 'text' || type === 'mcq_text' || type === 'cq_text' || type === 'mcq_cq_text');
@@ -4995,12 +4525,8 @@ function toggleAdminQuestionBoxes() {
   if (mcqBox) mcqBox.style.display = showMcq ? 'block' : 'none';
   if (cqBox) cqBox.style.display = showCq ? 'block' : 'none';
   if (textBox) textBox.style.display = showText ? 'block' : 'none';
-
-  if (mcqDurInput) mcqDurInput.style.display = showMcq ? 'block' : 'none';
-  if (cqDurInput) cqDurInput.style.display = (showCq || showText) ? 'block' : 'none';
 }
 
-// ২. একক এবং ত্রুটিমুক্ত শিডিউল ও প্রকাশ ফাংশন
 function saveScheduledExam() {
   const btn = event?.currentTarget || event?.target;
   const examTypeSelect = document.getElementById('admExamTypeSelector');
@@ -5015,7 +4541,6 @@ function saveScheduledExam() {
     return alert("দয়া করে শ্রেণি, বিষয়, প্রকাশের তারিখ ও সময় পূরণ করুন!");
   }
 
-  // মোড অনুযায়ী কোন কোন প্রশ্ন লাগবে তা নিখুঁতভাবে চেক করা
   const requiresMcq = (examType === 'mcq' || examType === 'mcq_cq' || examType === 'mcq_text' || examType === 'mcq_cq_text');
   const requiresCq = (examType === 'cq' || examType === 'mcq_cq' || examType === 'cq_text' || examType === 'mcq_cq_text');
   const requiresText = (examType === 'text' || examType === 'mcq_text' || examType === 'cq_text' || examType === 'mcq_cq_text');
@@ -5024,17 +4549,12 @@ function saveScheduledExam() {
   const cqFile = document.getElementById('admCqFile')?.files[0];
   const textQuestion = document.getElementById('adminTextQuestionInput')?.innerHTML.trim() || "";
 
-  // ১. যদি শুধুই MCQ বা যেটাতে MCQ আছে, তখন MCQ চেক করবে
   if (requiresMcq && (!smartParsedMcq || smartParsedMcq.length === 0)) {
     return alert("MCQ প্রশ্ন পেস্ট করে প্রস্তুত করুন!");
   }
-
-  // ২. যদি মোডে CQ থাকে (শুধু MCQ হলে এই ব্লকে ঢুকবেই না)
   if (requiresCq && !cqDesc && !cqFile) {
     return alert("সৃজনশীল (CQ) প্রশ্ন লিখুন অথবা ফাইল আপলোড করুন!");
   }
-
-  // ৩. যদি মোডে সংক্ষিপ্ত প্রশ্ন থাকে
   if (requiresText && (!textQuestion || textQuestion === "<br>")) {
     return alert("সংক্ষিপ্ত/বর্ণনামূলক প্রশ্ন লিখুন!");
   }
@@ -5057,8 +4577,6 @@ function saveScheduledExam() {
     }, res => {
       if (res && res.success) {
         showAdminMessage("✅ পরীক্ষা শিডিউল ও প্রকাশ সফল!");
-        
-        // ফর্ম ক্লিয়ার করা
         document.getElementById('rawMcqPaste').value = "";
         if (document.getElementById('admCqDesc')) document.getElementById('admCqDesc').value = "";
         if (document.getElementById('adminTextQuestionInput')) document.getElementById('adminTextQuestionInput').innerHTML = "";
@@ -5071,10 +4589,10 @@ function saveScheduledExam() {
           previewEl.classList.add('hidden');
         }
         
-        if (typeof loadNoticesAndMotivation === 'function') loadNoticesAndMotivation();
-        if (typeof loadAdminExamList === 'function') loadAdminExamList();
+        loadNoticesAndMotivation();
+        loadAdminExamList();
       } else {
-        alert(res?.error || "পরীক্ষা সংরক্ষণ ব্যর্থ হয়েছে!");
+        alert("পরীক্ষা সংরক্ষণ ব্যর্থ হয়েছে!");
       }
     }, btn);
   };
@@ -5088,7 +4606,6 @@ function saveScheduledExam() {
   }
 }
 
-// ৩. শিক্ষার্থীর সামনে এডমিন নির্ধারিত বক্স ফিল্টারিং লজিক
 function filterExamDisplayForClass(examData) {
   const mcqSec = document.getElementById('mcqExamSection');
   const cqSec = document.getElementById('cqExamSection');
@@ -5098,17 +4615,13 @@ function filterExamDisplayForClass(examData) {
 
   const mode = String(examData.examType || examData.type || 'mcq_cq_text').toLowerCase();
 
-  // ৭টি মোড অনুযায়ী নিখুঁত সেকশন বিভাজন
   const showMcq = (mode === 'mcq' || mode === 'mcq_cq' || mode === 'mcq_text' || mode === 'mcq_cq_text') && 
                   examData.mcq && examData.mcq.length > 0;
-                  
   const showCq = (mode === 'cq' || mode === 'mcq_cq' || mode === 'cq_text' || mode === 'mcq_cq_text') && 
                  examData.cqDescription && examData.cqDescription.trim().length > 0;
-                 
   const showText = (mode === 'text' || mode === 'mcq_text' || mode === 'cq_text' || mode === 'mcq_cq_text') && 
                    examData.textQuestionContent && examData.textQuestionContent.trim().length > 0;
 
-  // সেকশন ডিসপ্লে নিয়ন্ত্রণ
   if (mcqSec) mcqSec.style.display = showMcq ? 'block' : 'none';
   if (cqSec) cqSec.style.display = showCq ? 'block' : 'none';
   if (textSec) {
@@ -5117,20 +4630,16 @@ function filterExamDisplayForClass(examData) {
     if (textDisplay) textDisplay.innerHTML = examData.textQuestionContent || '';
   }
 
-  // টাইমার শুধুমাত্র MCQ থাকলেই চলবে
   if (timerBox) timerBox.style.display = showMcq ? 'inline-block' : 'none';
 
-  // শুধু MCQ হলে উপরে অন্য কোনো ট্যাবের সুইচ বাটন থাকবে না
   const activeCount = (showMcq ? 1 : 0) + (showCq ? 1 : 0) + (showText ? 1 : 0);
   if (examNav) examNav.style.display = (activeCount > 1) ? 'flex' : 'none';
 
-  // নির্দিষ্ট মোডে ইন্টারফেস ফোকাস
   if (typeof switchExamSection === 'function') {
     switchExamSection(mode);
   }
 }
 
-// ৪. একাধিক খাতার ছবি নিরাপদ সাইজে কম্প্রেস করে প্রস্তুত করার ফাংশন
 let selectedExamFilesList = [];
 
 async function handleMultipleFileSelect(input) {
@@ -5162,7 +4671,6 @@ async function handleMultipleFileSelect(input) {
   }
 }
 
-// ৫. ফাইনাল খাতা ও পরীক্ষার উত্তর সাবমিট করার ত্রুটিমুক্ত স্মার্ট ফাংশন
 function submitLiveExam(isAuto = false) {
   const btn = document.getElementById('examSubmitBtn');
   const userAnswers = {};
@@ -5170,11 +4678,7 @@ function submitLiveExam(isAuto = false) {
   if (!activeExamData) return alert("পরীক্ষার সেশন পাওয়া যায়নি!");
 
   const mode = String(activeExamData.examType || activeExamData.type || 'mcq_cq_text').toLowerCase();
-
-  // মোড যদি শুধুই MCQ হয়, তবে লিখিত খাতার কোনো ফাইল চাওয়া হবে না
   const isOnlyMcq = (mode === 'mcq');
-  
-  // MCQ ব্যতীত বাকি ৬টি মোডে লিখিত খাতার ফাইল আবশ্যক
   const requiresWrittenUpload = !isOnlyMcq && (
     mode === 'cq' || mode === 'text' || mode === 'mcq_cq' || 
     mode === 'mcq_text' || mode === 'cq_text' || mode === 'mcq_cq_text'
@@ -5184,7 +4688,6 @@ function submitLiveExam(isAuto = false) {
     return alert("অনুগ্রহ করে আপনার লিখিত উত্তরপত্রের ছবি/ফাইল ক্যামেরা বা ফাইল ম্যানেজার থেকে যুক্ত করুন!");
   }
 
-  // MCQ উত্তর সংগ্রহ
   if (activeExamData.mcq && Array.isArray(activeExamData.mcq)) {
     activeExamData.mcq.forEach(q => {
       const qId = q.id || q._id;
@@ -5195,7 +4698,6 @@ function submitLiveExam(isAuto = false) {
 
   if (examTimerInterval) clearInterval(examTimerInterval);
 
-  // পেলোড প্রস্তুত
   const payload = {
     action: "submitLiveExam",
     examId: activeExamData.examId || activeExamData.id,
@@ -5213,37 +4715,17 @@ function submitLiveExam(isAuto = false) {
     cqSubMime: selectedExamFilesList.length > 0 ? (selectedExamFilesList[0].mime || "image/jpeg") : "image/jpeg"
   };
 
-  sendExamDataSmartly(payload, function(res) {
-    let isOk = false;
-    if (res) {
-      if (typeof res === 'string') {
-        try { res = JSON.parse(res); } catch(e) {}
-      }
-      if (res.success === true || res.status === "success" || res.correctCount !== undefined) {
-        isOk = true;
-      }
-    }
-
-    if (isOk || !res || res.error === undefined) {
+  postData(payload, function(res) {
+    if (res && res.success) {
       alert("✅ পরীক্ষা ও উত্তরপত্র সফলভাবে জমা সম্পন্ন হয়েছে!");
 
-      try {
-        if (typeof closeModal === 'function') closeModal('liveExamModal');
-      } catch(err) {}
-
+      closeModal('liveExamModal');
       const modalBox = document.getElementById('liveExamModal');
-      if (modalBox) {
-        modalBox.style.display = 'none';
-        modalBox.classList.remove('active', 'show', 'open');
-      }
-
-      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-      document.body.classList.remove('modal-open');
-      document.body.style.overflow = 'auto';
+      if (modalBox) modalBox.style.display = 'none';
 
       selectedExamFilesList = [];
       activeExamData = null;
-      if (typeof clearAutoSavedData === 'function') clearAutoSavedData();
+      clearAutoSavedData();
 
       const pBox = document.getElementById('capturedImagesPreview');
       if (pBox) pBox.innerHTML = '<span style="font-size: 12px; color: #94a3b8;">এখানে তোলা পাতাগুলো একের পর এক জমা হবে...</span>';
@@ -5254,8 +4736,6 @@ function submitLiveExam(isAuto = false) {
 
       if (res && res.reviewDetails && res.reviewDetails.length > 0) {
         showExamReview(res);
-      } else if (typeof loadStudentDashboard === 'function') {
-        loadStudentDashboard();
       }
     } else {
       alert("খাতা জমা দিতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
@@ -5263,65 +4743,12 @@ function submitLiveExam(isAuto = false) {
   }, btn);
 }
 
-const LAPTOP_SERVER_URL = " https://pebbly-curdle-squint.ngrok-free.dev";
-
-function sendExamDataSmartly(payload, callback, btn) {
-  const resetBtn = btn ? setBtnLoading(btn) : null;
-  const controller = new AbortController();
-  const timeoutId = setTimeout(function() {
-    controller.abort();
-  }, 4000); // ল্যাপটপ অফ থাকলে ৪ সেকেন্ডেই গুগল ড্রাইভে চলে যাবে
-
-  fetch(LAPTOP_SERVER_URL + "/handle-all", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-    signal: controller.signal
-  })
-  .then(function(res) {
-    if (!res.ok) throw new Error("Server Offline");
-    return res.json();
-  })
-  .then(function(data) {
-    clearTimeout(timeoutId);
-    console.log("🟢 ল্যাপটপে ফাইল সেভ হয়েছে!");
-    if (data.fileUrls && data.fileUrls.length > 0) {
-      var allLinks = data.fileUrls.join(',');
-      payload.fileUrl = allLinks;
-      payload.cqSubUrl = allLinks;
-      payload.cqFileUrl = allLinks;
-      payload.driveUrl = allLinks;
-      delete payload.fileList;
-      delete payload.cqSubBase64;
-    }
-    // ল্যাপটপের লিংক নিয়ে গুগল শিটে সংরক্ষণ
-    postData(payload, function(sheetRes) {
-      if (resetBtn) resetBtn();
-      if (callback) callback(sheetRes || data);
-    }, null);
-  })
-  .catch(function(err) {
-    clearTimeout(timeoutId);
-    console.log("🔴 ল্যাপটপ বন্ধ! সরাসরি গুগল ড্রাইভে পাঠানো হচ্ছে...");
-    // সরাসরি গুগল ড্রাইভ ও শিটে পাঠানো
-    postData(payload, function(sheetRes) {
-      if (resetBtn) resetBtn();
-      if (callback) callback(sheetRes);
-    }, null);
-  });
-}
-
-/* ==========================================================
-   সুন্দর আধুনিক কনফার্মেশন কার্ড পপ-আপ (কখনোই আটকাবে না)
-========================================================== */
 function showPrettyCancelModal() {
-  // আগের তৈরি করা থাকলে তা রিমুভ করা
   const oldBox = document.getElementById('directPrettyConfirmBox');
   if (oldBox) oldBox.remove();
 
-  // সরাসরি বডিতে আধুনিক সুন্দর কার্ড ইনজেক্ট করা
   const modalHtml = `
-    <div id="directPrettyConfirmBox" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 999999999; animation: fadeIn 0.2s ease;">
+    <div id="directPrettyConfirmBox" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 999999999;">
       <div style="background: #ffffff; width: 90%; max-width: 360px; border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);">
         <div style="width: 55px; height: 55px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 26px;">
           ⚠️
@@ -5340,22 +4767,14 @@ function showPrettyCancelModal() {
 }
 
 function confirmAndExitExam() {
-  // পপ-আপ রিমুভ
   const pop = document.getElementById('directPrettyConfirmBox');
   if (pop) pop.remove();
 
-  // টাইমার বন্ধ
-  if (window.examTimerInterval) {
-    clearInterval(window.examTimerInterval);
-  }
+  if (window.examTimerInterval) clearInterval(window.examTimerInterval);
 
-  // লাইভ পরীক্ষা মডাল জোরপূর্বক বন্ধ করা
   const liveModal = document.getElementById('liveExamModal');
-  if (liveModal) {
-    liveModal.style.cssText = "display: none !important;";
-  }
+  if (liveModal) liveModal.style.cssText = "display: none !important;";
 
-  // ডেটা ক্লিয়ার
   window.activeExamData = null;
   window.selectedExamFilesList = [];
   window.studentUploadedFileBase64 = "";
@@ -5366,47 +4785,25 @@ function confirmAndExitExam() {
   const textStatus = document.getElementById('textUploadStatus');
   if (textStatus) textStatus.innerText = "কোনো ফাইল নির্বাচন করা হয়নি";
 
-  if (typeof showToast === 'function') {
-    showToast('পরীক্ষা বাতিল করা হয়েছে!', 'info');
-  }
+  showToast('পরীক্ষা বাতিল করা হয়েছে!', 'info');
 }
 
-/* বাতিল / ক্যান্সেল বাটনের মডাল বন্ধ করার ফাংশন */
 function cancelStudentExam() {
-  // যদি নির্দিষ্ট আইডি থাকে সেটি লুকানো
-  const regModal = document.getElementById('studentRegistrationModal') || 
-                   document.getElementById('examRegistrationModal') || 
-                   document.getElementById('studentRegModal');
-  if (regModal) {
-    regModal.style.display = 'none';
-  } else {
-    // ব্যাকআপ: দৃশ্যমান যেকোনো ওপেন ডায়ালগ বন্ধ করা
-    const openModals = document.querySelectorAll('.modal, [id*="Modal"]');
-    openModals.forEach(m => {
-      if (m.style.display === 'flex' || m.style.display === 'block') {
-        m.style.display = 'none';
-      }
-    });
-  }
-
-  // ড্রপডাউন ও ইনপুট রিসেট করা
-  const subjectSelect = document.getElementById('subjectSelect') || document.querySelector('select[id*="subject"]');
-  if (subjectSelect) subjectSelect.value = '';
+  const openModals = document.querySelectorAll('.modal, [id*="Modal"]');
+  openModals.forEach(m => {
+    if (m.style.display === 'flex' || m.style.display === 'block') {
+      m.style.display = 'none';
+    }
+  });
 }
 
-/* ==========================================================
-   যে কাজে বা যে পেজেই থাকুন না কেন, রিফ্রেশে সেখানেই থাকার পারফেক্ট সিস্টেম
-========================================================== */
 (function() {
-  // ১. বর্তমান পেজ, খোলা মোডাল ও অ্যাক্টিভ ট্যাব ট্র্যাক করা
   function saveCurrentAppState() {
-    // অ্যাক্টিভ পেজ সেভ
     var activePageEl = document.querySelector('.page.active');
     if (activePageEl && activePageEl.id) {
       sessionStorage.setItem('lastActivePageId', activePageEl.id);
     }
 
-    // দৃশ্যমান মোডাল সেভ
     var openModals = document.querySelectorAll('.modal');
     var currentModalId = "";
     openModals.forEach(function(m) {
@@ -5422,7 +4819,6 @@ function cancelStudentExam() {
       sessionStorage.removeItem('lastActiveModalId');
     }
 
-    // অ্যাক্টিভ অ্যাডমিন ট্যাব ট্র্যাক
     var activeTabBtn = document.querySelector('.admin-tab-btn.active');
     if (activeTabBtn) {
       var onclickText = activeTabBtn.getAttribute('onclick') || '';
@@ -5433,13 +4829,11 @@ function cancelStudentExam() {
     }
   }
 
-  // ক্লিকে স্টেট আপডেট (কিন্তু কোনো বাটনের নিজস্ব ফাংশন ব্লক করবে না)
   document.addEventListener('click', function(e) {
     var btn = e.target.closest('button');
     if (btn) {
       var txt = (btn.innerText || '').trim();
       var onc = btn.getAttribute('onclick') || '';
-      // ক্যানসেল বা ক্লোজ চাপলে সাথে সাথে মেমোরি থেকে মোডাল রিমুভ
       if (txt === 'ক্যান্সেল' || txt === '✕' || txt === 'x' || onc.includes('closeModal')) {
         sessionStorage.removeItem('lastActiveModalId');
         sessionStorage.removeItem('lastActiveAdminTab');
@@ -5451,13 +4845,11 @@ function cancelStudentExam() {
 
   window.addEventListener('beforeunload', saveCurrentAppState);
 
-  // ২. রিফ্রেশ দিলে হুবহু শেষ অবস্থানে ফিরে যাওয়া
   window.addEventListener('load', function() {
     var savedPageId = sessionStorage.getItem('lastActivePageId');
     var savedModalId = sessionStorage.getItem('lastActiveModalId');
     var savedTabName = sessionStorage.getItem('lastActiveAdminTab');
 
-    // আগের পেজ লোড
     if (savedPageId && savedPageId !== 'page1') {
       var p1 = document.getElementById('page1');
       var targetPage = document.getElementById(savedPageId);
@@ -5477,7 +4869,6 @@ function cancelStudentExam() {
       }
     }
 
-    // মোডাল ও ট্যাব ওপেন করা
     if (savedModalId) {
       setTimeout(function() {
         if (typeof window.openModal === 'function') {
@@ -5503,7 +4894,6 @@ function cancelStudentExam() {
   });
 })();
 
-/* ক্যামেরা দিয়ে একের পর এক ছবি তুলে সরাসরি সিস্টেমে যুক্ত করা */
 async function handleCapturedPhoto(event) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
@@ -5551,15 +4941,7 @@ async function handleCapturedPhoto(event) {
   event.target.value = '';
 }
 
-/* শিক্ষার্থীদের খাতা মূল্যায়নে ক্লিক করলে অ্যাডমিন তালিকা লুকিয়ে পুরো স্ক্রিন করা */
 function openEvalFullScreen() {
-  // ওপরের সব বাটন একবারে লুকিয়ে ফেলা
-  var tabsContainer = document.querySelector('.admin-tabs');
-  if (tabsContainer) {
-    // tabsContainer.style.display = 'none';
-  }
-
-  // খাতা মূল্যায়ন ড্যাশবোর্ড পুরো পর্দায় বড় করা
   var evalSection = document.getElementById('evalTab');
   if (evalSection) {
     evalSection.classList.remove('hidden');
@@ -5568,7 +4950,7 @@ function openEvalFullScreen() {
     evalSection.style.height = '100%';
   }
 }
-// খাতা মূল্যায়ন বন্ধ করে মূল এডমিন প্যানেলে ফেরার ফাংশন
+
 function closeEvalFullScreen() {
   var evalSection = document.getElementById('evalTab');
   if (evalSection) {
@@ -5585,79 +4967,8 @@ function closeEvalFullScreen() {
 
   switchAdminTab(null, 'mcqTab');
 }
-/* সাবমিট করা বিষয় স্বয়ংক্রিয়ভাবে ড্রপডাউন থেকে মুছে ফেলার অবজারভার */
-function removeSubmittedExamsFromDropdown() {
-  const selectElem = document.getElementById('stExSubject') || document.getElementById('stExSubjcet');
-  if (!selectElem) return;
-
-  const submittedList = JSON.parse(localStorage.getItem('student_submitted_exams') || '[]');
-  if (submittedList.length === 0) return;
-
-  // ড্রপডাউনে থাকা প্রতিটি অপশন চেক করে সাবমিট করা বিষয় মুছে ফেলা
-  Array.from(selectElem.options).forEach(opt => {
-    const val = opt.value ? opt.value.trim() : '';
-    const txt = opt.text ? opt.text.trim() : '';
-    if (submittedList.includes(val) || submittedList.includes(txt)) {
-      opt.remove();
-    }
-  });
-}
-
-// ড্রপডাউনে যখনই ব্যাকএন্ড থেকে নতুন বিষয় লোড হবে, এটি সাথে সাথে ফিল্টার করবে
-const examDropdownObserver = new MutationObserver(() => {
-  removeSubmittedExamsFromDropdown();
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-  const targetDropdown = document.getElementById('stExSubject') || document.getElementById('stExSubjcet');
-  if (targetDropdown) {
-    examDropdownObserver.observe(targetDropdown, { childList: true });
-    removeSubmittedExamsFromDropdown();
-  }
-});
-
-async function submitDataSmartly(payloadData) {
-  const LAPTOP_SERVER_URL = "https://pebbly-curdle-squint.ngrok-free.dev"; // আপনার ক্লাউডফ্লেয়ার ডোমেইন
-  const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwS6RToyGI5q4DcC0UnVzPKsoBvrKeBvGsWr5TA2Rmqd1p-sTLySufnKpfPRZYT84c/exec"; // গুগল স্ক্রিপ্ট লিংক
-
-  // ১. প্রথমে ল্যাপটপ সার্ভারে পিং পাঠিয়ে পরীক্ষা করা
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 সেকেন্ডের মধ্যে উত্তর না পেলে অফলাইন ধরা হবে
-
-    const pingCheck = await fetch(`${LAPTOP_SERVER_URL}/ping`, {
-            signal: controller.signal,
-            headers: {
-                'ngrok-skip-browser-warning': 'true'
-            }
-        });
-        clearTimeout(timeoutId);
-
-        if (pingCheck.ok) {
-            // ল্যাপটপ চালু আছে: ল্যাপটপ সার্ভার দিয়ে প্রসেস হবে
-            const response = await fetch(`${LAPTOP_SERVER_URL}/handle-all`, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'ngrok-skip-browser-warning': 'true'
-                },
-                body: JSON.stringify(payloadData)
-            });
-            return await response.json();
-        }
-  } catch (err) {
-    // ল্যাপটপ বন্ধ থাকলে কোনো এরর না দিয়ে সরাসরি গুগল শিটে চলে যাবে
-  }
-
-  // ২. ল্যাপটপ বন্ধ থাকলে সম্পূর্ণ স্বয়ংক্রিয়ভাবে গুগল শিটে সাবমিট হবে
-  const sheetResponse = await fetch(GOOGLE_SHEET_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payloadData)
-  });
-  return await sheetResponse.json();
-}
 </script>
+
 <!-- শিক্ষার্থীর প্রোফাইলে ড্রাইভে না গিয়ে সরাসরি খাতা দেখার প্রিভিউ উইন্ডো -->
 <div id="studentDocViewerModal" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.85); z-index: 999999; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(4px);">
   <div style="background: #ffffff; width: 100%; max-width: 850px; height: 85vh; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
@@ -5665,12 +4976,10 @@ async function submitDataSmartly(payloadData) {
       <span style="font-weight: 700; font-size: 1rem;">📄 আপনার আপলোডকৃত উত্তরপত্র</span>
       <button type="button" onclick="closeStudentDocViewer()" style="background: transparent; border: none; color: #ffffff; font-size: 1.6rem; cursor: pointer; line-height: 1;">&times;</button>
     </div>
-    <div id="studentDocViewerBody" style="flex: 1; background: #334155; display: flex; align-items: center; justify-content: center; overflow: auto; padding: 12px;">
-      <!-- সরাসরি ছবি বা ফাইল এখানে দেখাবে -->
-    </div>
+    <div id="studentDocViewerBody" style="flex: 1; background: #334155; display: flex; align-items: center; justify-content: center; overflow: auto; padding: 12px;"></div>
   </div>
 </div>
-<!-- কাস্টম আধুনিক কনফার্মেশন পপ-আপ -->
+
 <div id="customConfirmModal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 9999999; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(5px);">
   <div style="background: #ffffff; width: 100%; max-width: 420px; border-radius: 16px; padding: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); text-align: center; border: 1px solid #e2e8f0; animation: popIn 0.25s ease-out forwards;">
     <div style="width: 60px; height: 60px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; font-size: 1.8rem;">
@@ -5679,16 +4988,15 @@ async function submitDataSmartly(payloadData) {
     <h3 style="margin: 0 0 8px 0; color: #1e293b; font-size: 1.25rem; font-weight: 800;">পরীক্ষা বাতিল করতে চান?</h3>
     <p style="margin: 0 0 20px 0; color: #64748b; font-size: 0.95rem; line-height: 1.5;">আপনি কি নিশ্চিত পরীক্ষা বাতিল করতে চান? বাতিল করলে কোনো তথ্য বা উত্তরপত্র সংরক্ষণ করা হবে না।</p>
     <div style="display: flex; gap: 10px; justify-content: center;">
-      <button type="button" onclick="closeCustomConfirm(false)" style="flex: 1; padding: 10px; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.95rem; transition: background 0.2s;">
+      <button type="button" onclick="closeCustomConfirm(false)" style="flex: 1; padding: 10px; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.95rem;">
         না, চালিয়ে যান
       </button>
-      <button type="button" onclick="closeCustomConfirm(true)" style="flex: 1; padding: 10px; background: #ef4444; color: #ffffff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); transition: background 0.2s;">
+      <button type="button" onclick="closeCustomConfirm(true)" style="flex: 1; padding: 10px; background: #ef4444; color: #ffffff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.95rem;">
         হ্যাঁ, বাতিল করুন
       </button>
     </div>
   </div>
 </div>
-
 
 <style>
 @keyframes popIn {
