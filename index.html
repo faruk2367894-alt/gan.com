@@ -24,7 +24,6 @@
       border: none;
       display: none;
     }
-    /* অফলাইন অ্যানিমেশন কন্টেইনার */
     #offlineScreen {
       display: flex;
       flex-direction: column;
@@ -35,7 +34,6 @@
       padding: 24px;
       background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
     }
-    /* পালসিং সার্ভার আইকন */
     .pulse-box {
       position: relative;
       width: 110px;
@@ -58,7 +56,6 @@
       z-index: 2;
       animation: float 2.5s ease-in-out infinite;
     }
-    /* টেক্সট ডিজাইন */
     h2 {
       font-size: 22px;
       color: #38bdf8;
@@ -72,7 +69,6 @@
       line-height: 1.6;
       margin-bottom: 25px;
     }
-    /* স্ট্যাটাস ব্যাজ */
     .status-badge {
       display: inline-flex;
       align-items: center;
@@ -92,14 +88,11 @@
       border-radius: 50%;
       animation: blink 1.2s infinite;
     }
-    /* রিট্রাই টেক্সট */
     .retry-hint {
       font-size: 12px;
       color: #64748b;
       margin-top: 15px;
     }
-
-    /* কীফ্রেম অ্যানিমেশন */
     @keyframes ripple {
       0% { transform: scale(0.7); opacity: 1; }
       100% { transform: scale(1.4); opacity: 0; }
@@ -116,7 +109,7 @@
 </head>
 <body>
 
-  <!-- সার্ভার বন্ধ থাকলে এই অ্যানিমেটেড স্ক্রিন দেখাবে -->
+  <!-- অফলাইন স্ক্রিন -->
   <div id="offlineScreen">
     <div class="pulse-box">
       <div class="pulse-ring"></div>
@@ -140,47 +133,55 @@
 
     let isServerLive = false;
 
-    // সার্ভার অনলাইনে আছে কিনা নীরবে টেস্ট করার ফাংশন
     async function checkServerStatus() {
       try {
-        // ngrok বা সার্ভারে পিং পাঠিয়ে পরীক্ষা
-        await fetch(SERVER_URL, { mode: 'no-cors', cache: 'no-store' });
-        
-        // কানেক্ট হতে পারলে আইফ্রেম অন করে অফলাইন স্ক্রিন লুকানো হবে
-        if (!isServerLive) {
-          isServerLive = true;
-          iframe.src = SERVER_URL;
-          iframe.style.display = "block";
-          offlineScreen.style.display = "none";
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+        // ngrok ওয়ার্নিং হেডারের সাথে রিকোয়েস্ট পাঠানো
+        const res = await fetch(SERVER_URL, {
+          method: 'GET',
+          headers: {
+            'ngrok-skip-browser-warning': 'true'
+          },
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        // সার্ভার বন্ধ থাকলে ngrok সাধারণত 502/503/504 পাঠায়
+        if (res.ok && res.status < 400) {
+          if (!isServerLive) {
+            isServerLive = true;
+            iframe.src = SERVER_URL;
+            iframe.style.display = "block";
+            offlineScreen.style.display = "none";
+          }
+        } else {
+          throw new Error("Server not fully online");
         }
       } catch (err) {
-        // পিসি বন্ধ বা নেট না থাকলে অ্যানিমেশন স্ক্রিন ধরে রাখা হবে
+        // সার্ভার বন্ধ থাকলে সরাসরি কাস্টম অ্যানিমেশন স্ক্রিন দেখাবে
         isServerLive = false;
+        iframe.src = "about:blank";
         iframe.style.display = "none";
         offlineScreen.style.display = "flex";
       }
     }
 
-    // অ্যাপ খোলার সাথে সাথে পরীক্ষা
+    // পেজ লোড হওয়ার সাথে সাথে চেক
     checkServerStatus();
 
-    // প্রতি ৮ সেকেন্ড পর পর চেক করবে পিসি বা বিদ্যুৎ ফিরে এসেছে কিনা
-    setInterval(() => {
-      if (!isServerLive) {
-        checkServerStatus();
-      }
-    }, 8000);
+    // প্রতি ৫ সেকেন্ড পর পর সার্ভারের লাইভ স্ট্যাটাস পর্যবেক্ষণ করবে
+    setInterval(checkServerStatus, 5000);
 
-    // অফলাইনে অ্যাপ সচল রাখার সার্ভিস ওয়ার্কার নিবন্ধন
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').then(() => {
-      console.log('অফলাইন সার্ভিস ওয়ার্কার সক্রিয় হয়েছে');
-    }).catch((err) => {
-      console.log('সার্ভিস ওয়ার্কার এরর:', err);
-    });
-  });
-}
+    // অফলাইন ও সার্ভিস ওয়ার্কার নিবন্ধন
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./onesignalsdworkar.js').then(() => {
+          console.log('অফলাইন সার্ভিস সচল');
+        }).catch(() => {});
+      });
+    }
   </script>
 </body>
 </html>
