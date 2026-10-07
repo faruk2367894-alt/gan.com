@@ -9,69 +9,178 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    html, body {
+    body, html {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background-color: #1e1b4b;
+      background: #0f172a;
+      color: #fff;
     }
     iframe {
       width: 100%;
       height: 100%;
       border: none;
-      display: block;
+      display: none;
+    }
+    /* অফলাইন অ্যানিমেশন কন্টেইনার */
+    #offlineScreen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 24px;
+      background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
+    }
+    /* পালসিং সার্ভার আইকন */
+    .pulse-box {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pulse-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid #6366f1;
+      animation: ripple 2s infinite ease-out;
+    }
+    .server-icon {
+      font-size: 54px;
+      z-index: 2;
+      animation: float 2.5s ease-in-out infinite;
+    }
+    /* টেক্সট ডিজাইন */
+    h2 {
+      font-size: 22px;
+      color: #38bdf8;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    p {
+      font-size: 15px;
+      color: #94a3b8;
+      max-width: 320px;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+    /* স্ট্যাটাস ব্যাজ */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      background-color: #ef4444;
+      border-radius: 50%;
+      animation: blink 1.2s infinite;
+    }
+    /* রিট্রাই টেক্সট */
+    .retry-hint {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 15px;
+    }
+
+    /* কীফ্রেম অ্যানিমেশন */
+    @keyframes ripple {
+      0% { transform: scale(0.7); opacity: 1; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
     }
   </style>
 </head>
 <body>
 
-  <iframe id="mainAppFrame" src="https://pebbly-curdle-squint.ngrok-free.dev" allow="camera; microphone; fullscreen; clipboard-read; clipboard-write"></iframe>
+  <!-- সার্ভার বন্ধ থাকলে এই অ্যানিমেটেড স্ক্রিন দেখাবে -->
+  <div id="offlineScreen">
+    <div class="pulse-box">
+      <div class="pulse-ring"></div>
+      <div class="server-icon">⚡</div>
+    </div>
+    <h2>সার্ভার সাময়িক অফলাইনে রয়েছে</h2>
+    <p>বিদ্যুৎ বিভ্রাট বা সার্ভার রক্ষণাবেক্ষণের কাজ চলছে। সার্ভার চালু হওয়া মাত্রই অ্যাপটি স্বয়ংক্রিয়ভাবে সচল হবে।</p>
+    <div class="status-badge">
+      <span class="dot"></span> পুনঃসংযোগের চেষ্টা করা হচ্ছে...
+    </div>
+    <div class="retry-hint">অনুগ্রহ করে কয়েক মিনিট অপেক্ষা করুন</div>
+  </div>
+
+  <!-- মূল লাইভ সার্ভার আইফ্রেম -->
+  <iframe id="mainAppFrame" allow="camera; microphone; fullscreen; clipboard-read; clipboard-write"></iframe>
 
   <script>
-    const frame = document.getElementById('mainAppFrame');
+    const SERVER_URL = "https://pebbly-curdle-squint.ngrok-free.dev";
+    const iframe = document.getElementById('mainAppFrame');
+    const offlineScreen = document.getElementById('offlineScreen');
 
-    // আইফ্রেমের ভেতর পাসওয়ার্ড ডিটেক্টর ব্লক করার স্ক্রিপ্ট
-    frame.addEventListener('load', () => {
+    let isServerLive = false;
+
+    // সার্ভার অনলাইনে আছে কিনা নীরবে টেস্ট করার ফাংশন
+    async function checkServerStatus() {
       try {
-        const frameDoc = frame.contentDocument || frame.contentWindow.document;
-        if (!frameDoc) return;
-
-        // স্টাইল ইনজেক্ট করা (ডট দেখাবে কিন্তু পাসওয়ার্ড টাইপ থাকবে না)
-        const style = frameDoc.createElement('style');
-        style.innerHTML = `
-          input.secure-pin-mask {
-            -webkit-text-security: disc !important;
-          }
-        `;
-        frameDoc.head.appendChild(style);
-
-        // সমস্ত পাসওয়ার্ড ইনপুট টেক্সট করে ফেলা যাতে গুগল ডেটা-ব্রিচ অ্যালার্ট না দিতে পারে
-        const neutralizePasswords = () => {
-          const passInputs = frameDoc.querySelectorAll('input[type="password"]');
-          passInputs.forEach(input => {
-            input.setAttribute('type', 'tel');
-            input.setAttribute('inputmode', 'numeric');
-            input.setAttribute('autocomplete', 'off');
-            input.setAttribute('data-lpignore', 'true');
-            input.setAttribute('data-form-type', 'other');
-            input.classList.add('secure-pin-mask');
-          });
-        };
-
-        neutralizePasswords();
-
-        // পরবর্তীতে ওপেন হওয়া মডালগুলোর জন্যও পর্যবেক্ষণ
-        const observer = new MutationObserver(() => {
-          neutralizePasswords();
-        });
-        observer.observe(frameDoc.body, { childList: true, subtree: true });
-
-      } catch (e) {
-        // ক্রস-অরিজিন পলিসি থাকলে ব্যাকআপ হ্যান্ডলার
-        console.log("Frame loaded with cross-origin isolation.");
+        // ngrok বা সার্ভারে পিং পাঠিয়ে পরীক্ষা
+        await fetch(SERVER_URL, { mode: 'no-cors', cache: 'no-store' });
+        
+        // কানেক্ট হতে পারলে আইফ্রেম অন করে অফলাইন স্ক্রিন লুকানো হবে
+        if (!isServerLive) {
+          isServerLive = true;
+          iframe.src = SERVER_URL;
+          iframe.style.display = "block";
+          offlineScreen.style.display = "none";
+        }
+      } catch (err) {
+        // পিসি বন্ধ বা নেট না থাকলে অ্যানিমেশন স্ক্রিন ধরে রাখা হবে
+        isServerLive = false;
+        iframe.style.display = "none";
+        offlineScreen.style.display = "flex";
       }
+    }
+
+    // অ্যাপ খোলার সাথে সাথে পরীক্ষা
+    checkServerStatus();
+
+    // প্রতি ৮ সেকেন্ড পর পর চেক করবে পিসি বা বিদ্যুৎ ফিরে এসেছে কিনা
+    setInterval(() => {
+      if (!isServerLive) {
+        checkServerStatus();
+      }
+    }, 8000);
+
+    // অফলাইনে অ্যাপ সচল রাখার সার্ভিস ওয়ার্কার নিবন্ধন
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').then(() => {
+      console.log('অফলাইন সার্ভিস ওয়ার্কার সক্রিয় হয়েছে');
+    }).catch((err) => {
+      console.log('সার্ভিস ওয়ার্কার এরর:', err);
     });
+  });
+}
   </script>
 </body>
 </html>
