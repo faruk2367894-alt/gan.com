@@ -3908,7 +3908,7 @@ function loadCurrentEvalPageToCanvas() {
 
   var imgEl = document.getElementById('studentViewOnlyImg');
   if (imgEl) {
-    imgEl.src = currentUrl;
+    imgEl.src = (currentUrl && currentUrl.startsWith('/')) ? (BASE_HOST_URL + currentUrl) : currentUrl;
   }
 }
 
