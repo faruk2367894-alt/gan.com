@@ -116,11 +116,11 @@
       <div class="server-icon">⚡</div>
     </div>
     <h2>সার্ভার সাময়িক অফলাইনে রয়েছে</h2>
-    <p>বিদ্যুৎ বিভ্রাট বা সার্ভার রক্ষণাবেক্ষণের কাজ চলছে। সার্ভার চালু হওয়া মাত্রই অ্যাপটি স্বয়ংক্রিয়ভাবে সচল হবে।</p>
+    <p>বিদ্যুৎ বিভ্রাট বা সার্ভার রক্ষণাবেক্ষণের কাজ চলছে। সার্ভার চালু হওয়া মাত্রই অ্যাপটি স্বয়ংক্রিয়ভাবে সচল হবে।</p>
     <div class="status-badge">
       <span class="dot"></span> পুনঃসংযোগের চেষ্টা করা হচ্ছে...
     </div>
-    <div class="retry-hint">অনুগ্রহ করে কয়েক মিনিট অপেক্ষা করুন</div>
+    <div class="retry-hint">অনুগ্রহ করে কয়েক মিনিট অপেক্ষা করুন</div>
   </div>
 
   <!-- মূল লাইভ সার্ভার আইফ্রেম -->
@@ -134,47 +134,49 @@
     let isServerLive = false;
 
     async function checkServerStatus() {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4000);
 
-        // ngrok ওয়ার্নিং হেডারের সাথে রিকোয়েস্ট পাঠানো
-        const res = await fetch(SERVER_URL, {
+      try {
+        // mode: 'no-cors' ব্যবহার করায় ব্রাউজার CORS পলিসির কারণে রিকোয়েস্ট ব্লক করবে না
+        await fetch(SERVER_URL, {
           method: 'GET',
-          headers: {
-            'bypass-tunnel-reminder': 'true'
-          },
+          mode: 'no-cors',
+          cache: 'no-cache',
           signal: controller.signal
         });
+
         clearTimeout(timeoutId);
 
-        // সার্ভার বন্ধ থাকলে ngrok সাধারণত 502/503/504 পাঠায়
-        if (res.ok && res.status < 400) {
-          if (!isServerLive) {
-            isServerLive = true;
+        // সার্ভার থেকে সফল সিগন্যাল পেলে আইফ্রেম লাইভ হবে
+        if (!isServerLive) {
+          isServerLive = true;
+          if (!iframe.src || iframe.src === "about:blank") {
             iframe.src = SERVER_URL;
-            iframe.style.display = "block";
-            offlineScreen.style.display = "none";
           }
-        } else {
-          throw new Error("Server not fully online");
+          iframe.style.display = "block";
+          offlineScreen.style.display = "none";
         }
       } catch (err) {
-        // সার্ভার বন্ধ থাকলে সরাসরি কাস্টম অ্যানিমেশন স্ক্রিন দেখাবে
-        isServerLive = false;
-        iframe.src = "about:blank";
-        iframe.style.display = "none";
-        offlineScreen.style.display = "flex";
+        clearTimeout(timeoutId);
+
+        // সার্ভার বন্ধ বা অফলাইনে থাকলে অফলাইন নোটিশ স্ক্রিন দেখাবে
+        if (isServerLive) {
+          isServerLive = false;
+          iframe.src = "about:blank";
+          iframe.style.display = "none";
+          offlineScreen.style.display = "flex";
+        }
       }
     }
 
-    // পেজ লোড হওয়ার সাথে সাথে চেক
+    // পেজ লোড হওয়ার সাথে সাথে চেক চালু
     checkServerStatus();
 
-    // প্রতি ৫ সেকেন্ড পর পর সার্ভারের লাইভ স্ট্যাটাস পর্যবেক্ষণ করবে
+    // প্রতি ৫ সেকেন্ড পর পর সার্ভার সচল আছে কি না পরীক্ষা করবে
     setInterval(checkServerStatus, 5000);
 
-    // অফলাইন ও সার্ভিস ওয়ার্কার নিবন্ধন
+    // অফলাইন ও সার্ভিস ওয়ার্কার নিবন্ধন
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./onesignalsdworkar.js').then(() => {
