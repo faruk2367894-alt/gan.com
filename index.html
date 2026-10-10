@@ -9,37 +9,174 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     body, html {
       width: 100%;
       height: 100%;
       overflow: hidden;
       background: #0f172a;
+      color: #fff;
     }
     iframe {
       width: 100%;
       height: 100%;
       border: none;
-      display: block;
+      display: none;
+    }
+    #offlineScreen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 24px;
+      background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
+    }
+    .pulse-box {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pulse-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid #6366f1;
+      animation: ripple 2s infinite ease-out;
+    }
+    .server-icon {
+      font-size: 54px;
+      z-index: 2;
+      animation: float 2.5s ease-in-out infinite;
+    }
+    h2 {
+      font-size: 22px;
+      color: #38bdf8;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    p {
+      font-size: 15px;
+      color: #94a3b8;
+      max-width: 320px;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      background-color: #ef4444;
+      border-radius: 50%;
+      animation: blink 1.2s infinite;
+    }
+    .retry-hint {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 15px;
+    }
+    @keyframes ripple {
+      0% { transform: scale(0.7); opacity: 1; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
     }
   </style>
 </head>
 <body>
 
-  <!-- সরাসরি লাইভ সার্ভার আইফ্রেম -->
-  <iframe 
-    id="mainAppFrame" 
-    src="https://gyanexam.xyz" 
-    allow="camera; microphone; fullscreen; clipboard-read; clipboard-write">
-  </iframe>
+  <!-- অফলাইন স্ক্রিন -->
+  <div id="offlineScreen">
+    <div class="pulse-box">
+      <div class="pulse-ring"></div>
+      <div class="server-icon">⚡</div>
+    </div>
+    <h2>সার্ভার সাময়িক অফলাইনে রয়েছে</h2>
+    <p>বিদ্যুৎ বিভ্রাট বা সার্ভার রক্ষণাবেক্ষণের কাজ চলছে। সার্ভার চালু হওয়া মাত্রই অ্যাপটি স্বয়ংক্রিয়ভাবে সচল হবে।</p>
+    <div class="status-badge">
+      <span class="dot"></span> পুনঃসংযোগের চেষ্টা করা হচ্ছে...
+    </div>
+    <div class="retry-hint">অনুগ্রহ করে কয়েক মিনিট অপেক্ষা করুন</div>
+  </div>
+
+  <!-- মূল লাইভ সার্ভার আইফ্রেম (সব মিডিয়া পারমিশন সহ) -->
+  <iframe id="mainAppFrame" allow="autoplay; fullscreen; camera; microphone; display-capture; clipboard-read; clipboard-write; encrypted-media"></iframe>
 
   <script>
-    // পুরোনো কোনো সার্ভিস ওয়ার্কার ক্যাশ থাকলে তা সম্পূর্ণ মুছে ফেলবে
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
-        for (let registration of registrations) {
-          registration.unregister();
+    const SERVER_URL = "https://gyanexam.xyz";
+    const iframe = document.getElementById('mainAppFrame');
+    const offlineScreen = document.getElementById('offlineScreen');
+
+    let isServerLive = false;
+
+    async function checkServerStatus() {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+        // mode: 'no-cors' ব্যবহার করায় ব্রাউজার ক্রস-অরিজিন পলিসিতে ব্লক করবে না
+        await fetch(SERVER_URL + '/?check=' + Date.now(), {
+          method: 'GET',
+          mode: 'no-cors',
+          cache: 'no-store',
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        // যদি সার্ভার কানেকশন পায় এবং আইফ্রেম এখনও না থাকে তবেই লোড করবে
+        if (!isServerLive) {
+          isServerLive = true;
+          iframe.src = SERVER_URL;
+          iframe.style.display = "block";
+          offlineScreen.style.display = "none";
         }
+      } catch (err) {
+        // সার্ভার বন্ধ বা অফলাইন হলে আইফ্রেম লুকিয়ে অফলাইন স্ক্রিন দেখাবে
+        if (isServerLive) {
+          isServerLive = false;
+          iframe.src = "about:blank";
+          iframe.style.display = "none";
+          offlineScreen.style.display = "flex";
+        }
+      }
+    }
+
+    // পেজ লোড হওয়ার সাথে সাথে চেক
+    checkServerStatus();
+
+    // প্রতি ৫ সেকেন্ড পর পর ব্যাকগ্রাউন্ডে চেক করবে (সার্ভার লাইভ থাকলে রিলোড দেবে না, সেশন ঠিক থাকবে)
+    setInterval(checkServerStatus, 5000);
+
+    // অফলাইন ও সার্ভিস ওয়ার্কার
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./onesignalsdworkar.js').then(() => {
+          console.log('সার্ভিস ওয়ার্কার সচল');
+        }).catch(() => {});
       });
     }
   </script>
