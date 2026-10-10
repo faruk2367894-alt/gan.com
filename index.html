@@ -127,7 +127,7 @@
   <iframe id="mainAppFrame" allow="camera; microphone; fullscreen; clipboard-read; clipboard-write"></iframe>
 
   <script>
-    const SERVER_URL = "https://pebbly-curdle-squint.ngrok-free.dev";
+    const SERVER_URL = "https://gyan-exam-bd.loca.lt";
     const iframe = document.getElementById('mainAppFrame');
     const offlineScreen = document.getElementById('offlineScreen');
 
@@ -142,7 +142,7 @@
         const res = await fetch(SERVER_URL, {
           method: 'GET',
           headers: {
-            'ngrok-skip-browser-warning': 'true'
+            'bypass-tunnel-reminder': 'true'
           },
           signal: controller.signal
         });
