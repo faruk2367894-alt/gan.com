@@ -1,4 +1,5 @@
-importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
+// পরে ওয়ানসিগন্যাল সেটআপ করার সময় নিচের লাইনটির কমেন্ট তুলে দেবেন:
+// importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
 
 const CACHE_NAME = 'gyanexam-offline-v1';
 const OFFLINE_URLS = [
