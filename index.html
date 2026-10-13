@@ -109,7 +109,7 @@
 </head>
 <body>
 
-  <!-- অফলাইন স্ক্রিন -->
+  <!-- অফলাইন স্ক্রিন (শুধুমাত্র একদম প্রথমে সাইট লোড নেওয়ার আগে সার্ভার অফলাইন থাকলে দেখাবে) -->
   <div id="offlineScreen">
     <div class="pulse-box">
       <div class="pulse-ring"></div>
@@ -123,7 +123,7 @@
     <div class="retry-hint">অনুগ্রহ করে কয়েক মিনিট অপেক্ষা করুন</div>
   </div>
 
-  <!-- মূল লাইভ সার্ভার আইফ্রেম (সব মিডিয়া পারমিশন সহ) -->
+  <!-- মূল লাইভ সার্ভার আইফ্রেম -->
   <iframe id="mainAppFrame" allow="autoplay; fullscreen; camera; microphone; display-capture; clipboard-read; clipboard-write; encrypted-media"></iframe>
 
   <script>
@@ -134,11 +134,13 @@
     let isServerLive = false;
 
     async function checkServerStatus() {
+      // যদি একবার অ্যাপ ওপেন হয়ে যায়, তবে নেট ড্রপ করলেও আইফ্রেম কাটবে না
+      if (isServerLive) return;
+
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 4000);
 
-        // mode: 'no-cors' ব্যবহার করায় ব্রাউজার ক্রস-অরিজিন পলিসিতে ব্লক করবে না
         await fetch(SERVER_URL + '/?check=' + Date.now(), {
           method: 'GET',
           mode: 'no-cors',
@@ -147,7 +149,6 @@
         });
         clearTimeout(timeoutId);
 
-        // যদি সার্ভার কানেকশন পায় এবং আইফ্রেম এখনও না থাকে তবেই লোড করবে
         if (!isServerLive) {
           isServerLive = true;
           iframe.src = SERVER_URL;
@@ -155,21 +156,22 @@
           offlineScreen.style.display = "none";
         }
       } catch (err) {
-        // সার্ভার বন্ধ বা অফলাইন হলে আইফ্রেম লুকিয়ে অফলাইন স্ক্রিন দেখাবে
-        if (isServerLive) {
-          isServerLive = false;
-          iframe.src = "about:blank";
-          iframe.style.display = "none";
-          offlineScreen.style.display = "flex";
-        }
+        // প্রথমবার চালু করার সময় সার্ভার বন্ধ থাকলে অফলাইন স্ক্রিন থাকবে
+        console.warn("সার্ভার কানেকশন খোঁজা হচ্ছে...");
       }
     }
 
     // পেজ লোড হওয়ার সাথে সাথে চেক
     checkServerStatus();
 
-    // প্রতি ৫ সেকেন্ড পর পর ব্যাকগ্রাউন্ডে চেক করবে (সার্ভার লাইভ থাকলে রিলোড দেবে না, সেশন ঠিক থাকবে)
-    setInterval(checkServerStatus, 5000);
+    // যতক্ষণ না প্রথমবার সার্ভার কানেক্ট হচ্ছে, প্রতি ৪ সেকেন্ড পর পর চেক করবে
+    const retryInterval = setInterval(() => {
+      if (isServerLive) {
+        clearInterval(retryInterval);
+      } else {
+        checkServerStatus();
+      }
+    }, 4000);
 
     // অফলাইন ও সার্ভিস ওয়ার্কার
     if ('serviceWorker' in navigator) {
